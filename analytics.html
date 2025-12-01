@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics Dashboard - BizzShort</title>
+    <link rel="stylesheet" href="assets/css/modern-design.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+    <link rel="stylesheet" href="assets/css/animations.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        .analytics-hero {
+            background: linear-gradient(135deg, #0066CC 0%, #00A3FF 100%);
+            color: white;
+            padding: 60px 0 40px;
+            text-align: center;
+        }
+
+        .analytics-hero h1 {
+            font-size: 42px;
+            margin-bottom: 16px;
+            font-weight: 700;
+        }
+
+        .analytics-hero p {
+            font-size: 18px;
+            opacity: 0.95;
+        }
+
+        .analytics-dashboard {
+            padding: 40px 0;
+            background: #f9fafb;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 28px;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-card .icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 16px;
+        }
+
+        .stat-card.blue .icon {
+            background: rgba(0, 102, 204, 0.1);
+            color: #0066CC;
+        }
+
+        .stat-card.green .icon {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10B981;
+        }
+
+        .stat-card.orange .icon {
+            background: rgba(255, 107, 53, 0.1);
+            color: #FF6B35;
+        }
+
+        .stat-card.purple .icon {
+            background: rgba(139, 92, 246, 0.1);
+            color: #8B5CF6;
+        }
+
+        .stat-card h3 {
+            font-size: 14px;
+            color: #6B7280;
+            font-weight: 500;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-card .value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 8px;
+        }
+
+        .stat-card .change {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .stat-card .change.positive {
+            color: #10B981;
+        }
+
+        .stat-card .change.negative {
+            color: #EF4444;
+        }
+
+        .chart-section {
+            background: white;
+            padding: 32px;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            margin-bottom: 24px;
+        }
+
+        .chart-section h2 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .chart-section h2 i {
+            color: #0066CC;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 350px;
+        }
+
+        .data-table {
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .data-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th {
+            background: #f9fafb;
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+            color: #374151;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .data-table td {
+            padding: 16px;
+            border-top: 1px solid #f0f0f0;
+            color: #6B7280;
+        }
+
+        .data-table tbody tr:hover {
+            background: #f9fafb;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge.success {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+
+        .badge.warning {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+
+        .badge.danger {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .filter-tab {
+            padding: 10px 20px;
+            border: 2px solid #E5E7EB;
+            background: white;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 500;
+            color: #6B7280;
+            transition: all 0.3s ease;
+        }
+
+        .filter-tab:hover, .filter-tab.active {
+            background: #0066CC;
+            color: white;
+            border-color: #0066CC;
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .chart-container {
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-top">
+            <div class="container">
+                <div class="header-top-content">
+                    <div class="contact-info">
+                        <span><i class="fas fa-phone"></i> <a href="tel:+919876543210">+91 9876543210</a></span>
+                        <span><i class="fas fa-envelope"></i> <a href="mailto:info@bizzshort.com">info@bizzshort.com</a></span>
+                    </div>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="https://www.instagram.com/bizz_short" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="header-main">
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo">
+                        <a href="index.html" style="display: flex; align-items: center; gap: 12px; text-decoration: none;">
+                            <img src="assets/images/logo.svg" alt="BizzShort Logo" style="width: 50px; height: 50px; border-radius: 12px;">
+                            <div>
+                                <h1>BizzShort</h1>
+                                <p>Business News & Market Insights</p>
+                            </div>
+                        </a>
+                    </div>
+                    <nav class="main-nav">
+                        <ul>
+                            <li><a href="index.html">Home</a></li>
+                            <li><a href="blog.html">Blog</a></li>
+                            <li><a href="events.html">Events</a></li>
+                            <li><a href="about.html">About</a></li>
+                            <li><a href="contact.html">Contact</a></li>
+                            <li><a href="analytics.html" class="active">Analytics</a></li>
+                            <li><a href="advertise.html">Advertise</a></li>
+                        </ul>
+                    </nav>
+                    <div class="mobile-menu-toggle">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Analytics Hero -->
+    <section class="analytics-hero">
+        <div class="container">
+            <h1 class="animate-fade-in-down">📊 Analytics Dashboard</h1>
+            <p class="animate-fade-in-up">Real-time insights and performance metrics for BizzShort</p>
+        </div>
+    </section>
+
+    <!-- Analytics Dashboard -->
+    <section class="analytics-dashboard">
+        <div class="container">
+            <!-- Stats Overview -->
+            <div class="stats-grid">
+                <div class="stat-card blue stagger-item">
+                    <div class="icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Total Visitors</h3>
+                    <div class="value">245,382</div>
+                    <div class="change positive">
+                        <i class="fas fa-arrow-up"></i> 12.5% vs last month
+                    </div>
+                </div>
+
+                <div class="stat-card green stagger-item">
+                    <div class="icon">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <h3>Page Views</h3>
+                    <div class="value">1.2M</div>
+                    <div class="change positive">
+                        <i class="fas fa-arrow-up"></i> 18.3% vs last month
+                    </div>
+                </div>
+
+                <div class="stat-card orange stagger-item">
+                    <div class="icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3>Avg. Session Time</h3>
+                    <div class="value">4:32</div>
+                    <div class="change positive">
+                        <i class="fas fa-arrow-up"></i> 8.7% vs last month
+                    </div>
+                </div>
+
+                <div class="stat-card purple stagger-item">
+                    <div class="icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Bounce Rate</h3>
+                    <div class="value">32.4%</div>
+                    <div class="change negative">
+                        <i class="fas fa-arrow-down"></i> 5.2% vs last month
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filter Tabs -->
+            <div class="filter-tabs">
+                <button class="filter-tab active" data-period="7d">Last 7 Days</button>
+                <button class="filter-tab" data-period="30d">Last 30 Days</button>
+                <button class="filter-tab" data-period="90d">Last 3 Months</button>
+                <button class="filter-tab" data-period="1y">Last Year</button>
+            </div>
+
+            <!-- Traffic Chart -->
+            <div class="chart-section animate-fade-in">
+                <h2><i class="fas fa-chart-area"></i> Traffic Overview</h2>
+                <div class="chart-container">
+                    <canvas id="trafficChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Engagement Metrics -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 24px; margin-bottom: 24px;">
+                <div class="chart-section animate-fade-in">
+                    <h2><i class="fas fa-chart-pie"></i> Content Categories</h2>
+                    <div class="chart-container" style="height: 300px;">
+                        <canvas id="categoryChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-section animate-fade-in">
+                    <h2><i class="fas fa-chart-bar"></i> Traffic Sources</h2>
+                    <div class="chart-container" style="height: 300px;">
+                        <canvas id="sourceChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Top Content Table -->
+            <div class="data-table animate-fade-in">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Article Title</th>
+                            <th>Category</th>
+                            <th>Views</th>
+                            <th>Engagement</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Indian Stock Market Hits New All-Time High</strong></td>
+                            <td>Market Updates</td>
+                            <td>45,234</td>
+                            <td>87%</td>
+                            <td><span class="badge success">Trending</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Startups Raise Record $12B in Funding</strong></td>
+                            <td>Business News</td>
+                            <td>38,192</td>
+                            <td>82%</td>
+                            <td><span class="badge success">Trending</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>RBI Announces New Digital Banking Guidelines</strong></td>
+                            <td>Finance</td>
+                            <td>32,456</td>
+                            <td>79%</td>
+                            <td><span class="badge success">Trending</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>India's Exports Cross $450B Mark</strong></td>
+                            <td>Economy</td>
+                            <td>28,891</td>
+                            <td>75%</td>
+                            <td><span class="badge warning">Popular</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Tech IPOs Expected to Dominate 2026</strong></td>
+                            <td>Tech News</td>
+                            <td>24,532</td>
+                            <td>71%</td>
+                            <td><span class="badge warning">Popular</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>About BizzShort</h3>
+                    <p>Your premier source for business news, market insights, and industry analysis.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="advertise.html">Advertise</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p><i class="fas fa-envelope"></i> info@bizzshort.com</p>
+                    <p><i class="fas fa-phone"></i> +91 9876543210</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 BizzShort. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/script.js"></script>
+    <script src="assets/js/enhanced.js"></script>
+    <script>
+        // Traffic Overview Chart
+        const trafficCtx = document.getElementById('trafficChart').getContext('2d');
+        new Chart(trafficCtx, {
+            type: 'line',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    label: 'Visitors',
+                    data: [32000, 35000, 38000, 42000, 39000, 45000, 48000],
+                    borderColor: '#0066CC',
+                    backgroundColor: 'rgba(0, 102, 204, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }, {
+                    label: 'Page Views',
+                    data: [128000, 140000, 152000, 168000, 156000, 180000, 192000],
+                    borderColor: '#00A3FF',
+                    backgroundColor: 'rgba(0, 163, 255, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return value >= 1000 ? (value/1000) + 'K' : value;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Category Chart
+        const categoryCtx = document.getElementById('categoryChart').getContext('2d');
+        new Chart(categoryCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Business News', 'Market Updates', 'Tech News', 'Interviews', 'Analysis'],
+                datasets: [{
+                    data: [35, 25, 20, 12, 8],
+                    backgroundColor: [
+                        '#0066CC',
+                        '#00A3FF',
+                        '#FF6B35',
+                        '#FFB800',
+                        '#10B981'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+
+        // Source Chart
+        const sourceCtx = document.getElementById('sourceChart').getContext('2d');
+        new Chart(sourceCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Direct', 'Google', 'Social Media', 'Referral', 'Email'],
+                datasets: [{
+                    label: 'Traffic Sources',
+                    data: [45000, 38000, 28000, 15000, 12000],
+                    backgroundColor: [
+                        '#0066CC',
+                        '#00A3FF',
+                        '#FF6B35',
+                        '#FFB800',
+                        '#10B981'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return value >= 1000 ? (value/1000) + 'K' : value;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Filter Tab Functionality
+        document.querySelectorAll('.filter-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                // Here you would typically fetch new data based on the period
+            });
+        });
+    </script>
+</body>
+</html>

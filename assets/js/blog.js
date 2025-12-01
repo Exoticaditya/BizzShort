@@ -214,7 +214,8 @@ document.addEventListener('DOMContentLoaded', function() {
     popularPosts.forEach(post => {
         post.addEventListener('click', function() {
             // Analytics tracking could go here
-            console.log('Popular post clicked:', this.querySelector('h4').textContent);
+            // Track popular post click
+            const postTitle = this.querySelector('h4').textContent;
         });
     });
     
