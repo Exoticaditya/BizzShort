@@ -83,6 +83,28 @@
    HEADER MAIN FIXES
 ============================================ */
 
+/* Fix sticky header issues - remove all sticky positioning */
+.top-ad-banner {
+    position: relative !important;
+    top: auto !important;
+    z-index: auto !important;
+}
+
+.header {
+    position: relative !important;
+    top: auto !important;
+    background: white !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08) !important;
+}
+
+.header-main {
+    position: relative !important;
+    top: auto !important;
+    background: white !important;
+    padding: 15px 0 !important;
+    z-index: auto !important;
+}
+
 .header-content {
     display: flex !important;
     justify-content: space-between !important;
@@ -145,6 +167,8 @@
     flex: 1 !important;
     display: flex !important;
     justify-content: center !important;
+    position: relative !important;
+    z-index: 50 !important;
 }
 
 .main-nav ul {
@@ -159,6 +183,7 @@
 
 .main-nav li {
     white-space: nowrap !important;
+    position: relative !important;
 }
 
 .main-nav a {
@@ -170,12 +195,21 @@
     transition: all 0.3s ease !important;
     display: inline-block !important;
     border-radius: 6px !important;
+    position: relative !important;
 }
 
 .main-nav a:hover,
 .main-nav a.active {
     color: #0066CC !important;
     background: rgba(0, 102, 204, 0.1) !important;
+}
+
+/* Fix any dropdown menus */
+.main-nav .dropdown {
+    position: absolute !important;
+    top: 100% !important;
+    left: 0 !important;
+    z-index: 1000 !important;
 }
 
 /* Language Switcher Positioning */
@@ -224,12 +258,40 @@
     .mobile-menu-toggle {
         order: 2;
         margin-left: 0 !important;
+        display: flex !important;
     }
     
     .main-nav {
         order: 3;
-        width: 100%;
+        width: 100% !important;
         display: none !important;
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
+    }
+    
+    .main-nav.active {
+        display: block !important;
+    }
+    
+    .main-nav ul {
+        flex-direction: column !important;
+        gap: 0 !important;
+        background: white !important;
+        padding: 10px 0 !important;
+        border-radius: 8px !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+    }
+    
+    .main-nav li {
+        width: 100% !important;
+    }
+    
+    .main-nav a {
+        display: block !important;
+        width: 100% !important;
+        padding: 12px 20px !important;
+        border-radius: 0 !important;
     }
 }
 
@@ -278,12 +340,28 @@
 }
 
 /* ============================================
+   CONTENT SPACING FIXES
+============================================ */
+
+/* Fix content overlap with header */
+body {
+    padding-top: 0 !important;
+    margin: 0 !important;
+}
+
+section {
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+/* ============================================
    HERO SECTION FIXES
 ============================================ */
 
 .hero-section {
     padding: 40px 0 !important;
     background: #f9fafb !important;
+    margin-top: 0 !important;
 }
 
 .hero-grid {
@@ -360,9 +438,16 @@
    GENERAL IMPROVEMENTS
 ============================================ */
 
-/* Smooth scrolling */
+/* Smooth scrolling and fix body issues */
 html {
     scroll-behavior: smooth !important;
+    overflow-x: hidden !important;
+}
+
+body {
+    overflow-x: hidden !important;
+    width: 100% !important;
+    position: relative !important;
 }
 
 /* Container max-width */
@@ -370,6 +455,19 @@ html {
     max-width: 1200px !important;
     margin: 0 auto !important;
     padding: 0 20px !important;
+    width: 100% !important;
+}
+
+/* Fix any width overflow issues */
+* {
+    box-sizing: border-box !important;
+}
+
+/* Prevent horizontal scroll */
+section,
+article,
+div {
+    max-width: 100% !important;
 }
 
 /* Image lazy loading fix */
@@ -397,4 +495,70 @@ a {
 *:focus-visible {
     outline: 2px solid #0066CC !important;
     outline-offset: 2px !important;
+}
+
+/* ============================================
+   FIX ALL POSITIONING CONFLICTS
+============================================ */
+
+/* Override any sticky/fixed headers from other stylesheets */
+header,
+.header,
+.header-main,
+.header-top,
+.top-banner,
+.top-ad-banner {
+    position: relative !important;
+    top: auto !important;
+}
+
+/* Ensure proper stacking context */
+.header {
+    z-index: 100 !important;
+}
+
+.main-content,
+main,
+.content {
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+/* Fix language switcher positioning */
+.language-switcher {
+    position: relative !important;
+}
+
+.language-dropdown {
+    position: absolute !important;
+}
+
+/* Ensure sections don't overlap */
+section + section {
+    margin-top: 0 !important;
+}
+
+/* Fix mobile menu z-index */
+@media (max-width: 1023px) {
+    .main-nav.active {
+        z-index: 999 !important;
+    }
+}
+
+/* Prevent layout shift */
+img {
+    display: block !important;
+}
+
+/* Fix button positioning */
+button,
+.btn {
+    position: relative !important;
+}
+
+/* Fix card positioning */
+.card,
+.article-card,
+.news-card {
+    position: relative !important;
 }
