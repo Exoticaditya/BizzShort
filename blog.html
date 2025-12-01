@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Blog - BizzShort | Market Insights & Industry Analysis</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/additional.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+    <link rel="stylesheet" href="assets/css/blog.css">
+    <link rel="stylesheet" href="assets/css/enhanced-features.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-top">
+            <div class="container">
+                <div class="header-top-content">
+                    <div class="contact-info">
+                        <span><i class="fas fa-phone"></i> +91 9999935011</span>
+                        <span><i class="fas fa-envelope"></i> info@bizzshort.com</span>
+                    </div>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                        <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="header-main">
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo">
+                        <a href="index.html">
+                            <h1>Garvik India</h1>
+                            <p>Industry Excellence & Innovation</p>
+                        </a>
+                    </div>
+                    <nav class="main-nav">
+                        <ul>
+                            <li><a href="index.html">Home</a></li>
+                            <li><a href="blog.html" class="active">Blog</a></li>
+                            <li><a href="index.html#interviews">Interviews</a></li>
+                            <li><a href="index.html#news">News</a></li>
+                            <li><a href="index.html#tech-articles">Tech Articles</a></li>
+                            <li><a href="about.html">About</a></li>
+                            <li><a href="contact.html">Contact</a></li>
+                        </ul>
+                    </nav>
+                    <div class="mobile-menu-toggle">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Blog Hero Section -->
+    <section class="page-hero blog-hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Industry Insights & Analysis</h1>
+                <p>Discover the latest trends, innovations, and thought leadership shaping India's industrial landscape</p>
+                <div class="search-box">
+                    <input type="text" placeholder="Search articles, topics, or companies...">
+                    <button><i class="fas fa-search"></i></button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Article -->
+    <section class="featured-article-section">
+        <div class="container">
+            <div class="featured-article">
+                <div class="featured-content">
+                    <span class="featured-badge">Featured Article</span>
+                    <h2>The Future of Smart Manufacturing in India: A Comprehensive Analysis</h2>
+                    <p>Exploring how Industry 4.0 technologies are revolutionizing manufacturing processes across various sectors in India, driving efficiency, sustainability, and innovation.</p>
+                    <div class="article-meta">
+                        <div class="author-info">
+                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="Author">
+                            <span>By Rajesh Kumar</span>
+                        </div>
+                        <div class="article-stats">
+                            <span><i class="far fa-calendar"></i> Nov 27, 2025</span>
+                            <span><i class="far fa-clock"></i> 8 min read</span>
+                            <span><i class="far fa-eye"></i> 2.5K views</span>
+                        </div>
+                    </div>
+                    <a href="article.html" class="read-more-btn">Read Full Article</a>
+                </div>
+                <div class="featured-image">
+                    <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Smart Manufacturing">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Category Filter -->
+    <section class="category-filter">
+        <div class="container">
+            <div class="filter-tabs">
+                <button class="filter-btn active" data-category="all">All Articles</button>
+                <button class="filter-btn" data-category="interviews">Interviews</button>
+                <button class="filter-btn" data-category="technology">Technology</button>
+                <button class="filter-btn" data-category="sustainability">Sustainability</button>
+                <button class="filter-btn" data-category="innovation">Innovation</button>
+                <button class="filter-btn" data-category="market-analysis">Market Analysis</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Grid -->
+    <main class="blog-main">
+        <div class="container">
+            <div class="blog-grid">
+                <!-- Left Content -->
+                <div class="blog-content">
+                    <div class="articles-grid" id="articlesGrid">
+                        <!-- Article 1 -->
+                        <article class="blog-card" data-category="technology">
+                            <div class="blog-image">
+                                <img src="https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Industrial Automation">
+                                <span class="category-badge">Technology</span>
+                            </div>
+                            <div class="blog-content-area">
+                                <h3>Advanced Industrial Automation: Transforming Production Lines</h3>
+                                <p>How cutting-edge automation technologies are enhancing productivity and quality in modern manufacturing facilities...</p>
+                                <div class="blog-meta">
+                                    <span><i class="far fa-calendar"></i> Nov 25, 2025</span>
+                                    <span><i class="far fa-clock"></i> 5 min read</span>
+                                </div>
+                                <a href="article.html" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </article>
+
+                        <!-- Article 2 -->
+                        <article class="blog-card" data-category="sustainability">
+                            <div class="blog-image">
+                                <img src="https://images.unsplash.com/photo-1466611653911-95081537e5b7?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Green Manufacturing">
+                                <span class="category-badge sustainability">Sustainability</span>
+                            </div>
+                            <div class="blog-content-area">
+                                <h3>Sustainable Manufacturing: Building a Greener Future</h3>
+                                <p>Exploring eco-friendly practices and technologies that are helping Indian manufacturers reduce their environmental impact...</p>
+                                <div class="blog-meta">
+                                    <span><i class="far fa-calendar"></i> Nov 24, 2025</span>
+                                    <span><i class="far fa-clock"></i> 6 min read</span>
+                                </div>
+                                <a href="article.html" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </article>
+
+                        <!-- Article 3 -->
+                        <article class="blog-card" data-category="interviews">
+                            <div class="blog-image">
+                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="CEO Interview">
+                                <span class="category-badge interviews">Interview</span>
+                            </div>
+                            <div class="blog-content-area">
+                                <h3>Leadership Insights: CEO of TechManu Industries</h3>
+                                <p>An exclusive conversation about strategic vision, innovation challenges, and the future of manufacturing in India...</p>
+                                <div class="blog-meta">
+                                    <span><i class="far fa-calendar"></i> Nov 23, 2025</span>
+                                    <span><i class="far fa-clock"></i> 12 min read</span>
+                                </div>
+                                <a href="article.html" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </article>
+
+                        <!-- Article 4 -->
+                        <article class="blog-card" data-category="innovation">
+                            <div class="blog-image">
+                                <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Innovation">
+                                <span class="category-badge innovation">Innovation</span>
+                            </div>
+                            <div class="blog-content-area">
+                                <h3>Breakthrough Technologies Reshaping Manufacturing</h3>
+                                <p>From AI-driven quality control to IoT-enabled predictive maintenance, discover the innovations transforming industry...</p>
+                                <div class="blog-meta">
+                                    <span><i class="far fa-calendar"></i> Nov 22, 2025</span>
+                                    <span><i class="far fa-clock"></i> 7 min read</span>
+                                </div>
+                                <a href="article.html" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </article>
+
+                        <!-- Article 5 -->
+                        <article class="blog-card" data-category="market-analysis">
+                            <div class="blog-image">
+                                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Market Analysis">
+                                <span class="category-badge market">Market Analysis</span>
+                            </div>
+                            <div class="blog-content-area">
+                                <h3>Indian Manufacturing Sector: Growth Trends & Opportunities</h3>
+                                <p>Comprehensive market analysis revealing key growth drivers and emerging opportunities in India's manufacturing landscape...</p>
+                                <div class="blog-meta">
+                                    <span><i class="far fa-calendar"></i> Nov 21, 2025</span>
+                                    <span><i class="far fa-clock"></i> 9 min read</span>
+                                </div>
+                                <a href="article.html" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </article>
+
+                        <!-- Article 6 -->
+                        <article class="blog-card" data-category="technology">
+                            <div class="blog-image">
+                                <img src="https://images.unsplash.com/photo-1587560699334-cc4ff634909a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Quality Control">
+                                <span class="category-badge">Technology</span>
+                            </div>
+                            <div class="blog-content-area">
+                                <h3>AI-Powered Quality Control: The New Standard</h3>
+                                <p>How artificial intelligence is revolutionizing quality assurance processes and reducing defects in manufacturing...</p>
+                                <div class="blog-meta">
+                                    <span><i class="far fa-calendar"></i> Nov 20, 2025</span>
+                                    <span><i class="far fa-clock"></i> 6 min read</span>
+                                </div>
+                                <a href="article.html" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </article>
+                    </div>
+
+                    <!-- Load More Button -->
+                    <div class="load-more-section">
+                        <button class="load-more-btn">
+                            <i class="fas fa-plus"></i>
+                            Load More Articles
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Right Sidebar -->
+                <aside class="blog-sidebar">
+                    <!-- Popular Posts -->
+                    <div class="sidebar-widget">
+                        <h3>Popular This Week</h3>
+                        <div class="popular-posts">
+                            <div class="popular-post">
+                                <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Popular Article">
+                                <div class="popular-content">
+                                    <h4>Digital Transformation in Manufacturing</h4>
+                                    <span>15.2K views</span>
+                                </div>
+                            </div>
+                            <div class="popular-post">
+                                <img src="https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Popular Article">
+                                <div class="popular-content">
+                                    <h4>Supply Chain Innovation Trends</h4>
+                                    <span>12.8K views</span>
+                                </div>
+                            </div>
+                            <div class="popular-post">
+                                <img src="https://images.unsplash.com/photo-1466611653911-95081537e5b7?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Popular Article">
+                                <div class="popular-content">
+                                    <h4>Sustainable Energy Solutions</h4>
+                                    <span>10.5K views</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tags Cloud -->
+                    <div class="sidebar-widget">
+                        <h3>Popular Topics</h3>
+                        <div class="tags-cloud">
+                            <span class="tag">Manufacturing</span>
+                            <span class="tag">Industry 4.0</span>
+                            <span class="tag">Automation</span>
+                            <span class="tag">Sustainability</span>
+                            <span class="tag">Innovation</span>
+                            <span class="tag">AI</span>
+                            <span class="tag">IoT</span>
+                            <span class="tag">Quality Control</span>
+                            <span class="tag">Supply Chain</span>
+                            <span class="tag">Digital Transform</span>
+                        </div>
+                    </div>
+
+                    <!-- Newsletter -->
+                    <div class="sidebar-widget newsletter-widget">
+                        <h3>Stay Updated</h3>
+                        <p>Get the latest industry insights delivered weekly</p>
+                        <form class="newsletter-form">
+                            <input type="email" placeholder="Enter your email" required>
+                            <button type="submit">Subscribe</button>
+                        </form>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>BizzShort</h3>
+                    <p>Your premier source for business news, market updates, and industry insights. Stay ahead with the latest developments in the Indian business landscape.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="#advertise">Advertise</a></li>
+                        <li><a href="#privacy">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Categories</h3>
+                    <ul>
+                        <li><a href="blog.html">All Articles</a></li>
+                        <li><a href="#interviews">Interviews</a></li>
+                        <li><a href="#tech-articles">Technical Articles</a></li>
+                        <li><a href="#news">Industry News</a></li>
+                        <li><a href="#events">Events</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <div class="contact-info">
+                        <p><i class="fas fa-phone"></i> +91 9999935011</p>
+                        <p><i class="fas fa-envelope"></i> info@bizzshort.com</p>
+                        <p><i class="fas fa-map-marker-alt"></i> B-64, Sector 65, Noida, Uttar Pradesh</p>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 BizzShort. All rights reserved. | Your Business News Partner</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/script.js"></script>
+    <script src="assets/js/blog.js"></script>
+    <script src="assets/js/search.js"></script>
+    <script src="assets/js/enhanced-features.js"></script>
+</body>
+</html>

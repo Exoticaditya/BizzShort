@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - BizzShort</title>
+    <link rel="stylesheet" href="assets/css/theme-blue-white.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #F8FAFC;
+        }
+
+        .admin-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, #0066CC 0%, #003D7A 100%);
+            color: white;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-header {
+            padding: 25px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar-header h2 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .sidebar-header p {
+            font-size: 13px;
+            opacity: 0.8;
+        }
+
+        .sidebar-menu {
+            padding: 20px 0;
+        }
+
+        .menu-section {
+            margin-bottom: 30px;
+        }
+
+        .menu-section-title {
+            padding: 0 20px 10px;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.6;
+            font-weight: 600;
+        }
+
+        .menu-item {
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .menu-item:hover,
+        .menu-item.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-left: 4px solid white;
+            padding-left: 16px;
+        }
+
+        .menu-item i {
+            font-size: 18px;
+            width: 25px;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            transition: all 0.3s ease;
+        }
+
+        .top-bar {
+            background: white;
+            padding: 20px 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+
+        .page-title h1 {
+            font-size: 28px;
+            color: #1F2937;
+        }
+
+        .page-title p {
+            font-size: 14px;
+            color: #6B7280;
+        }
+
+        .top-bar-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .notification-btn {
+            position: relative;
+            background: none;
+            border: none;
+            font-size: 22px;
+            color: #6B7280;
+            cursor: pointer;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #EF4444;
+            color: white;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 10px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 15px;
+            background: #F8FAFC;
+            border-radius: 50px;
+            cursor: pointer;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0066CC 0%, #4A90E2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+        }
+
+        .logout-btn {
+            padding: 10px 20px;
+            background: #EF4444;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: #DC2626;
+        }
+
+        /* Content Area */
+        .content-area {
+            padding: 30px;
+        }
+
+        .dashboard-section {
+            display: none;
+        }
+
+        .dashboard-section.active {
+            display: block;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            border-left: 4px solid #0066CC;
+        }
+
+        .stat-card h3 {
+            font-size: 14px;
+            color: #6B7280;
+            margin-bottom: 10px;
+        }
+
+        .stat-card .value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1F2937;
+        }
+
+        /* Ad Upload Section */
+        .upload-section {
+            background: white;
+            padding: 35px;
+            border-radius: 16px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            color: #1F2937;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #E6F2FF;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #1F2937;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #E5E7EB;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #0066CC;
+            box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+        }
+
+        .file-upload-area {
+            border: 3px dashed #CBD5E1;
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            background: #F8FAFC;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .file-upload-area:hover {
+            border-color: #0066CC;
+            background: #E6F2FF;
+        }
+
+        .file-upload-area.dragover {
+            border-color: #0066CC;
+            background: #E6F2FF;
+        }
+
+        .file-upload-icon {
+            font-size: 48px;
+            color: #0066CC;
+            margin-bottom: 15px;
+        }
+
+        .file-upload-area h4 {
+            font-size: 18px;
+            color: #1F2937;
+            margin-bottom: 8px;
+        }
+
+        .file-upload-area p {
+            font-size: 14px;
+            color: #6B7280;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .preview-area {
+            margin-top: 20px;
+            display: none;
+        }
+
+        .preview-image {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary {
+            padding: 14px 32px;
+            background: linear-gradient(135deg, #0066CC 0%, #4A90E2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 102, 204, 0.4);
+        }
+
+        /* Ad Management Table */
+        .ads-table {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #F8FAFC;
+        }
+
+        th {
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+            color: #1F2937;
+            font-size: 14px;
+            border-bottom: 2px solid #E5E7EB;
+        }
+
+        td {
+            padding: 16px;
+            border-bottom: 1px solid #E5E7EB;
+            color: #6B7280;
+            font-size: 14px;
+        }
+
+        tbody tr:hover {
+            background: #F8FAFC;
+        }
+
+        .ad-thumbnail {
+            width: 80px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 6px;
+        }
+
+        .status-badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .status-active {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+
+        .status-pending {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+
+        .status-inactive {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-icon {
+            width: 35px;
+            height: 35px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-edit {
+            background: #DBEAFE;
+            color: #1E40AF;
+        }
+
+        .btn-edit:hover {
+            background: #0066CC;
+            color: white;
+        }
+
+        .btn-delete {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+
+        .btn-delete:hover {
+            background: #EF4444;
+            color: white;
+        }
+
+        .btn-approve {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+
+        .btn-approve:hover {
+            background: #10B981;
+            color: white;
+        }
+
+        /* Success Message */
+        .success-message {
+            background: #D1FAE5;
+            color: #065F46;
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+            border-left: 4px solid #10B981;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.mobile-open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>🚀 BizzShort</h2>
+                <p>Admin Dashboard</p>
+            </div>
+
+            <nav class="sidebar-menu">
+                <div class="menu-section">
+                    <div class="menu-section-title">Main Menu</div>
+                    <a class="menu-item active" data-section="dashboard">
+                        <i class="fas fa-th-large"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a class="menu-item" data-section="ad-upload">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <span>Upload Advertisement</span>
+                    </a>
+                    <a class="menu-item" data-section="ad-management">
+                        <i class="fas fa-ad"></i>
+                        <span>Manage Ads</span>
+                    </a>
+                    <a class="menu-item" data-section="banner-settings">
+                        <i class="fas fa-sliders-h"></i>
+                        <span>Banner Adjustment</span>
+                    </a>
+                </div>
+
+                <div class="menu-section">
+                    <div class="menu-section-title">Analytics & Reports</div>
+                    <a class="menu-item" data-section="analytics">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Analytics Dashboard</span>
+                    </a>
+                    <a class="menu-item" data-section="reports">
+                        <i class="fas fa-file-chart"></i>
+                        <span>Analysis Reports</span>
+                    </a>
+                    <a class="menu-item" data-section="revenue">
+                        <i class="fas fa-dollar-sign"></i>
+                        <span>Revenue Tracking</span>
+                    </a>
+                </div>
+
+                <div class="menu-section">
+                    <div class="menu-section-title">Verification</div>
+                    <a class="menu-item" data-section="verification">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Ad Verification</span>
+                    </a>
+                    <a class="menu-item" data-section="approvals">
+                        <i class="fas fa-clipboard-check"></i>
+                        <span>Pending Approvals</span>
+                    </a>
+                </div>
+
+                <div class="menu-section">
+                    <div class="menu-section-title">Settings</div>
+                    <a class="menu-item" data-section="settings">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Bar -->
+            <div class="top-bar">
+                <div class="page-title">
+                    <h1 id="pageTitle">Dashboard Overview</h1>
+                    <p id="pageSubtitle">Welcome back, Admin!</p>
+                </div>
+
+                <div class="top-bar-actions">
+                    <button class="notification-btn">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge">5</span>
+                    </button>
+
+                    <div class="user-profile">
+                        <div class="user-avatar">A</div>
+                        <div>
+                            <div style="font-weight: 600; font-size: 14px; color: #1F2937;">Admin</div>
+                            <div style="font-size: 12px; color: #6B7280;">Administrator</div>
+                        </div>
+                    </div>
+
+                    <button class="logout-btn" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+
+            <!-- Content Area -->
+            <div class="content-area">
+                <!-- Dashboard Section -->
+                <div class="dashboard-section active" id="dashboard">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <h3>Total Advertisements</h3>
+                            <div class="value">0</div>
+                            <p style="color: #6B7280; font-size: 13px; margin-top: 8px;">
+                                <i class="fas fa-info-circle"></i> Start by uploading ads
+                            </p>
+                        </div>
+
+                        <div class="stat-card">
+                            <h3>Active Campaigns</h3>
+                            <div class="value">0</div>
+                            <p style="color: #6B7280; font-size: 13px; margin-top: 8px;">
+                                <i class="fas fa-info-circle"></i> No active campaigns
+                            </p>
+                        </div>
+
+                        <div class="stat-card">
+                            <h3>Total Impressions</h3>
+                            <div class="value">0</div>
+                            <p style="color: #6B7280; font-size: 13px; margin-top: 8px;">
+                                <i class="fas fa-info-circle"></i> Impressions will appear here
+                            </p>
+                        </div>
+
+                        <div class="stat-card">
+                            <h3>Revenue (This Month)</h3>
+                            <div class="value">₹0</div>
+                            <p style="color: #6B7280; font-size: 13px; margin-top: 8px;">
+                                <i class="fas fa-info-circle"></i> Revenue tracking starts here
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="upload-section">
+                        <h3 class="section-title">Quick Actions</h3>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                            <button class="btn-primary" onclick="switchSection('ad-upload')">
+                                <i class="fas fa-plus-circle"></i> Upload New Ad
+                            </button>
+                            <button class="btn-primary" onclick="switchSection('verification')">
+                                <i class="fas fa-check"></i> Verify Pending Ads
+                            </button>
+                            <button class="btn-primary" onclick="switchSection('analytics')">
+                                <i class="fas fa-chart-bar"></i> View Analytics
+                            </button>
+                            <button class="btn-primary" onclick="switchSection('reports')">
+                                <i class="fas fa-download"></i> Generate Report
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ad Upload Section -->
+                <div class="dashboard-section" id="ad-upload">
+                    <div id="successMessage" class="success-message">
+                        <i class="fas fa-check-circle"></i> Advertisement uploaded successfully!
+                    </div>
+
+                    <div class="upload-section">
+                        <h3 class="section-title"><i class="fas fa-cloud-upload-alt"></i> Upload New Advertisement</h3>
+                        
+                        <form id="adUploadForm">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="adTitle">Advertisement Title *</label>
+                                    <input type="text" id="adTitle" class="form-control" placeholder="Enter ad title" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="adPosition">Ad Position *</label>
+                                    <select id="adPosition" class="form-control" required>
+                                        <option value="">Select position</option>
+                                        <option value="top-banner">Top Banner (728x90)</option>
+                                        <option value="sidebar">Sidebar (300x250)</option>
+                                        <option value="footer">Footer Banner (728x90)</option>
+                                        <option value="in-content">In-Content (336x280)</option>
+                                        <option value="mobile-banner">Mobile Banner (320x50)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="adUrl">Target URL</label>
+                                    <input type="url" id="adUrl" class="form-control" placeholder="https://example.com">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="adSchedule">Schedule *</label>
+                                    <select id="adSchedule" class="form-control" required>
+                                        <option value="immediate">Start Immediately</option>
+                                        <option value="scheduled">Schedule for Later</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Upload Ad Image *</label>
+                                <div class="file-upload-area" id="fileUploadArea" onclick="document.getElementById('fileInput').click()">
+                                    <div class="file-upload-icon">
+                                        <i class="fas fa-cloud-upload-alt"></i>
+                                    </div>
+                                    <h4>Drag & Drop your ad image here</h4>
+                                    <p>or click to browse (JPG, PNG, GIF - Max 5MB)</p>
+                                    <input type="file" id="fileInput" accept="image/*" required>
+                                </div>
+                                <div class="preview-area" id="previewArea">
+                                    <img id="previewImage" class="preview-image" alt="Preview">
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn-primary">
+                                <i class="fas fa-upload"></i> Upload Advertisement
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Ad Management Section -->
+                <div class="dashboard-section" id="ad-management">
+                    <div class="upload-section">
+                        <h3 class="section-title"><i class="fas fa-ad"></i> Manage Advertisements</h3>
+                        
+                        <div class="ads-table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Preview</th>
+                                        <th>Title</th>
+                                        <th>Position</th>
+                                        <th>Status</th>
+                                        <th>Impressions</th>
+                                        <th>Clicks</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="adsTableBody">
+                                    <tr>
+                                        <td colspan="7" style="text-align: center; padding: 40px; color: #6B7280;">
+                                            <i class="fas fa-inbox" style="font-size: 48px; margin-bottom: 16px; display: block; opacity: 0.5;"></i>
+                                            <p style="font-size: 16px; margin: 0;">No advertisements yet. Upload your first ad to get started!</p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Banner Settings Section -->
+                <div class="dashboard-section" id="banner-settings">
+                    <div class="upload-section">
+                        <h3 class="section-title"><i class="fas fa-sliders-h"></i> Banner Position Adjustment</h3>
+                        
+                        <div class="form-group">
+                            <label>Top Banner Settings</label>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                                <div>
+                                    <label style="font-size: 13px;">Height (px)</label>
+                                    <input type="number" class="form-control" value="90" min="50" max="200">
+                                </div>
+                                <div>
+                                    <label style="font-size: 13px;">Position</label>
+                                    <select class="form-control">
+                                        <option>Above Header</option>
+                                        <option>Below Header</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label style="font-size: 13px;">Alignment</label>
+                                    <select class="form-control">
+                                        <option>Center</option>
+                                        <option>Left</option>
+                                        <option>Right</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="margin-top: 30px;">
+                            <label>Sidebar Banner Settings</label>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                                <div>
+                                    <label style="font-size: 13px;">Width (px)</label>
+                                    <input type="number" class="form-control" value="300" min="250" max="400">
+                                </div>
+                                <div>
+                                    <label style="font-size: 13px;">Position</label>
+                                    <select class="form-control">
+                                        <option>Right Sidebar</option>
+                                        <option>Left Sidebar</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label style="font-size: 13px;">Sticky</label>
+                                    <select class="form-control">
+                                        <option>Enabled</option>
+                                        <option>Disabled</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="btn-primary" style="margin-top: 30px;">
+                            <i class="fas fa-save"></i> Save Banner Settings
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Analytics Section -->
+                <div class="dashboard-section" id="analytics">
+                    <div class="upload-section">
+                        <h3 class="section-title"><i class="fas fa-chart-line"></i> Analytics Dashboard</h3>
+                        <p style="color: #6B7280; margin-bottom: 30px;">
+                            View detailed analytics and performance metrics
+                        </p>
+                        <a href="analytics.html" target="_blank" class="btn-primary">
+                            <i class="fas fa-external-link-alt"></i> Open Full Analytics Dashboard
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Reports Section -->
+                <div class="dashboard-section" id="reports">
+                    <div class="upload-section">
+                        <h3 class="section-title"><i class="fas fa-file-chart"></i> Analysis Reports</h3>
+                        
+                        <div class="form-group">
+                            <label>Report Type</label>
+                            <select class="form-control">
+                                <option>Ad Performance Report</option>
+                                <option>Revenue Analysis</option>
+                                <option>Traffic Sources Report</option>
+                                <option>User Engagement Report</option>
+                                <option>Custom Report</option>
+                            </select>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Date Range</label>
+                                <select class="form-control">
+                                    <option>Last 7 Days</option>
+                                    <option>Last 30 Days</option>
+                                    <option>Last 90 Days</option>
+                                    <option>This Year</option>
+                                    <option>Custom Range</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Format</label>
+                                <select class="form-control">
+                                    <option>PDF</option>
+                                    <option>Excel (XLSX)</option>
+                                    <option>CSV</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <button class="btn-primary">
+                            <i class="fas fa-download"></i> Generate & Download Report
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Revenue Section -->
+                <div class="dashboard-section" id="revenue">
+                    <div class="upload-section">
+                        <h3 class="section-title"><i class="fas fa-dollar-sign"></i> Revenue Tracking</h3>
+                        
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <h3>Today's Revenue</h3>
+                                <div class="value">₹0</div>
+                            </div>
+                            <div class="stat-card">
+                                <h3>This Week</h3>
+                                <div class="value">₹0</div>
+                            </div>
+                            <div class="stat-card">
+                                <h3>This Month</h3>
+                                <div class="value">₹0</div>
+                            </div>
+                            <div class="stat-card">
+                                <h3>This Year</h3>
+                                <div class="value">₹0</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Verification Section -->
+                <div class="dashboard-section" id="verification">
+                    <div class="upload-section">
+                        <h3 class="section-title"><i class="fas fa-check-circle"></i> Ad Verification Queue</h3>
+                        
+                        <div class="ads-table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Preview</th>
+                                        <th>Title</th>
+                                        <th>Uploaded By</th>
+                                        <th>Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td colspan="5" style="text-align: center; padding: 40px; color: #6B7280;">
+                                            <i class="fas fa-check-double" style="font-size: 48px; margin-bottom: 16px; display: block; opacity: 0.5;"></i>
+                                            <p style="font-size: 16px; margin: 0;">No pending verifications. All caught up!</p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Approvals Section -->
+                <div class="dashboard-section" id="approvals">
+                    <div class="upload-section">
+                        <h3 class="section-title"><i class="fas fa-clipboard-check"></i> Pending Approvals</h3>
+                        <p style="color: #6B7280;">No pending items. All approvals are up to date.</p>
+                    </div>
+                </div>
+
+                <!-- Settings Section -->
+                <div class="dashboard-section" id="settings">
+                    <div class="upload-section">
+                        <h3 class="section-title"><i class="fas fa-cog"></i> System Settings</h3>
+                        
+                        <div class="form-group">
+                            <label>Ad Approval Mode</label>
+                            <select class="form-control">
+                                <option>Manual Approval Required</option>
+                                <option>Auto-Approve Verified Advertisers</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Max File Size (MB)</label>
+                            <input type="number" class="form-control" value="5" min="1" max="20">
+                        </div>
+
+                        <button class="btn-primary">
+                            <i class="fas fa-save"></i> Save Settings
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Check authentication
+        if (localStorage.getItem('adminSession') !== 'true' && sessionStorage.getItem('adminSession') !== 'true') {
+            window.location.href = 'admin-login.html';
+        }
+
+        // Section switching
+        function switchSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.dashboard-section').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+
+            // Update menu active state
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            document.querySelector(`[data-section="${sectionId}"]`).classList.add('active');
+
+            // Update page title
+            const titles = {
+                'dashboard': 'Dashboard Overview',
+                'ad-upload': 'Upload Advertisement',
+                'ad-management': 'Manage Advertisements',
+                'banner-settings': 'Banner Position Adjustment',
+                'analytics': 'Analytics Dashboard',
+                'reports': 'Analysis Reports',
+                'revenue': 'Revenue Tracking',
+                'verification': 'Ad Verification',
+                'approvals': 'Pending Approvals',
+                'settings': 'System Settings'
+            };
+            document.getElementById('pageTitle').textContent = titles[sectionId];
+        }
+
+        // Menu click handlers
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const section = this.getAttribute('data-section');
+                switchSection(section);
+            });
+        });
+
+        // File upload handling
+        const fileInput = document.getElementById('fileInput');
+        const fileUploadArea = document.getElementById('fileUploadArea');
+        const previewArea = document.getElementById('previewArea');
+        const previewImage = document.getElementById('previewImage');
+
+        fileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImage.src = e.target.result;
+                    previewArea.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Drag and drop
+        fileUploadArea.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.classList.add('dragover');
+        });
+
+        fileUploadArea.addEventListener('dragleave', function() {
+            this.classList.remove('dragover');
+        });
+
+        fileUploadArea.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.classList.remove('dragover');
+            
+            const file = e.dataTransfer.files[0];
+            if (file && file.type.startsWith('image/')) {
+                fileInput.files = e.dataTransfer.files;
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImage.src = e.target.result;
+                    previewArea.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Form submission
+        document.getElementById('adUploadForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Show success message
+            const successMsg = document.getElementById('successMessage');
+            successMsg.classList.add('show');
+            
+            // Reset form
+            this.reset();
+            previewArea.style.display = 'none';
+            
+            // Hide message after 5 seconds
+            setTimeout(() => {
+                successMsg.classList.remove('show');
+            }, 5000);
+        });
+
+        // Logout function
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('adminSession');
+                sessionStorage.removeItem('adminSession');
+                window.location.href = 'admin-login.html';
+            }
+        }
+    </script>
+</body>
+</html>
