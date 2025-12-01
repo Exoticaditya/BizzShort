@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BizzShort - Features Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .demo-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 900px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            color: #0066CC;
+            margin-bottom: 10px;
+            font-size: 32px;
+        }
+
+        .subtitle {
+            color: #6B7280;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+
+        .feature-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f9fafb;
+            border-radius: 12px;
+            border-left: 4px solid #0066CC;
+        }
+
+        .feature-section h2 {
+            color: #374151;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        .demo-button {
+            background: #0066CC;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            margin: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .demo-button:hover {
+            background: #004C99;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+        }
+
+        .result-box {
+            margin-top: 15px;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #E5E7EB;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .result-box pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .status.success {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+
+        .status.error {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+
+        .language-demo {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .lang-btn {
+            padding: 8px 16px;
+            border: 2px solid #E5E7EB;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .lang-btn:hover {
+            border-color: #0066CC;
+            color: #0066CC;
+        }
+
+        .lang-btn.active {
+            background: #0066CC;
+            color: white;
+            border-color: #0066CC;
+        }
+
+        .info-box {
+            background: #EFF6FF;
+            border-left: 4px solid #3B82F6;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .info-box h3 {
+            color: #1E40AF;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .info-box ul {
+            color: #1E3A8A;
+            margin-left: 20px;
+        }
+
+        .info-box li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <h1>🚀 BizzShort Features Demo</h1>
+        <p class="subtitle">Test multi-language support and backend API integration</p>
+
+        <!-- Language Demo -->
+        <div class="feature-section">
+            <h2>🌍 Multi-Language Support</h2>
+            <p>Switch between 6 languages dynamically:</p>
+            <div class="language-demo">
+                <button class="lang-btn active" data-lang="en">🇬🇧 English</button>
+                <button class="lang-btn" data-lang="hi">🇮🇳 हिंदी</button>
+                <button class="lang-btn" data-lang="es">🇪🇸 Español</button>
+                <button class="lang-btn" data-lang="fr">🇫🇷 Français</button>
+                <button class="lang-btn" data-lang="de">🇩🇪 Deutsch</button>
+                <button class="lang-btn" data-lang="zh">🇨🇳 中文</button>
+            </div>
+            <div class="result-box" id="language-result">
+                Current Language: <span id="current-lang">English</span><br>
+                Sample Translation: <span id="sample-text" data-i18n="home.hero.title">Latest Business News & Market Insights</span>
+            </div>
+        </div>
+
+        <!-- API Demo -->
+        <div class="feature-section">
+            <h2>📡 Backend API Integration</h2>
+            <p>Test API endpoints:</p>
+            <div>
+                <button class="demo-button" onclick="testHealthCheck()">Health Check</button>
+                <button class="demo-button" onclick="testGetArticles()">Get Articles</button>
+                <button class="demo-button" onclick="testAnalytics()">Get Analytics</button>
+                <button class="demo-button" onclick="testSearch()">Search</button>
+            </div>
+            <div class="result-box" id="api-result" style="display: none;">
+                <pre id="api-response"></pre>
+            </div>
+        </div>
+
+        <!-- Info Box -->
+        <div class="info-box">
+            <h3>📚 Quick Start</h3>
+            <ul>
+                <li><strong>Backend:</strong> Run <code>npm install && npm start</code></li>
+                <li><strong>Frontend:</strong> Open <code>index.html</code> in browser</li>
+                <li><strong>API Docs:</strong> See <code>API_DOCUMENTATION.md</code></li>
+                <li><strong>Setup Guide:</strong> See <code>SETUP_GUIDE.md</code></li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/language.js"></script>
+    <script>
+        // Language switching demo
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                const lang = this.dataset.lang;
+                const langNames = {
+                    'en': 'English',
+                    'hi': 'हिंदी',
+                    'es': 'Español',
+                    'fr': 'Français',
+                    'de': 'Deutsch',
+                    'zh': '中文'
+                };
+                
+                document.getElementById('current-lang').textContent = langNames[lang];
+                
+                // Simulate translation
+                if (typeof languageManager !== 'undefined') {
+                    languageManager.changeLanguage(lang);
+                }
+            });
+        });
+
+        // API Testing Functions
+        async function testHealthCheck() {
+            showApiResult('Loading...');
+            try {
+                const response = await fetch('http://localhost:3000/api/health');
+                const data = await response.json();
+                showApiResult(JSON.stringify(data, null, 2), true);
+            } catch (error) {
+                showApiResult(`Error: ${error.message}\n\nMake sure backend server is running:\nnpm start`, false);
+            }
+        }
+
+        async function testGetArticles() {
+            showApiResult('Loading...');
+            try {
+                const response = await fetch('http://localhost:3000/api/articles?limit=3');
+                const data = await response.json();
+                showApiResult(JSON.stringify(data, null, 2), true);
+            } catch (error) {
+                showApiResult(`Error: ${error.message}\n\nMake sure backend server is running:\nnpm start`, false);
+            }
+        }
+
+        async function testAnalytics() {
+            showApiResult('Loading...');
+            try {
+                const response = await fetch('http://localhost:3000/api/analytics');
+                const data = await response.json();
+                showApiResult(JSON.stringify(data, null, 2), true);
+            } catch (error) {
+                showApiResult(`Error: ${error.message}\n\nMake sure backend server is running:\nnpm start`, false);
+            }
+        }
+
+        async function testSearch() {
+            showApiResult('Loading...');
+            try {
+                const response = await fetch('http://localhost:3000/api/search?q=startup');
+                const data = await response.json();
+                showApiResult(JSON.stringify(data, null, 2), true);
+            } catch (error) {
+                showApiResult(`Error: ${error.message}\n\nMake sure backend server is running:\nnpm start`, false);
+            }
+        }
+
+        function showApiResult(text, success = true) {
+            const resultBox = document.getElementById('api-result');
+            const responseBox = document.getElementById('api-response');
+            resultBox.style.display = 'block';
+            responseBox.textContent = text;
+            resultBox.style.borderColor = success ? '#10B981' : '#EF4444';
+        }
+    </script>
+</body>
+</html>

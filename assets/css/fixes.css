@@ -1,0 +1,146 @@
+/* BizzShort - CSS Fixes & Overrides */
+/* This file resolves conflicts between style.css and modern-design.css */
+
+/* Header Content Layout Fix */
+.header-content {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    gap: 20px !important;
+    flex-wrap: nowrap !important;
+}
+
+/* Logo Container Fix */
+.logo {
+    flex-shrink: 0 !important;
+}
+
+.logo-container {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+}
+
+.logo-img {
+    flex-shrink: 0 !important;
+    width: 50px !important;
+    height: 50px !important;
+}
+
+.logo-text h1 {
+    font-size: 28px !important;
+    line-height: 1.2 !important;
+    margin: 0 !important;
+}
+
+.logo-text p {
+    font-size: 12px !important;
+    line-height: 1.2 !important;
+    margin: 0 !important;
+}
+
+/* Navigation Fix */
+.main-nav {
+    flex: 1 !important;
+    display: flex !important;
+    justify-content: center !important;
+}
+
+.main-nav ul {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 10px 35px !important;
+    align-items: center !important;
+    list-style: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Language Switcher Positioning */
+.language-switcher {
+    flex-shrink: 0 !important;
+    margin-left: 20px !important;
+}
+
+/* Mobile Menu Toggle */
+.mobile-menu-toggle {
+    flex-shrink: 0 !important;
+    margin-left: 10px !important;
+}
+
+/* Responsive Fixes */
+@media (max-width: 1200px) {
+    .header-content {
+        gap: 15px !important;
+    }
+    
+    .main-nav ul {
+        gap: 8px 25px !important;
+    }
+    
+    .language-switcher {
+        margin-left: 15px !important;
+    }
+}
+
+@media (max-width: 1023px) {
+    .header-content {
+        flex-wrap: wrap !important;
+        justify-content: space-between !important;
+    }
+    
+    .logo {
+        order: 0;
+    }
+    
+    .language-switcher {
+        order: 1;
+        margin-left: auto !important;
+        margin-right: 10px !important;
+    }
+    
+    .mobile-menu-toggle {
+        order: 2;
+        margin-left: 0 !important;
+    }
+    
+    .main-nav {
+        order: 3;
+        width: 100%;
+        display: none !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .header-content {
+        gap: 10px !important;
+    }
+    
+    .logo-text h1 {
+        font-size: 24px !important;
+    }
+    
+    .logo-text p {
+        font-size: 10px !important;
+    }
+    
+    .logo-img {
+        width: 40px !important;
+        height: 40px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo-text h1 {
+        font-size: 20px !important;
+    }
+    
+    .logo-text p {
+        display: none !important;
+    }
+    
+    .logo-img {
+        width: 35px !important;
+        height: 35px !important;
+    }
+}

@@ -240,12 +240,14 @@ class LanguageManager {
             </div>
         `;
 
-        // Add to header
-        const headerTop = document.querySelector('.header-top .container');
-        if (headerTop) {
-            const socialLinks = headerTop.querySelector('.social-links');
-            if (socialLinks) {
-                socialLinks.parentElement.insertBefore(switcher, socialLinks);
+        // Add to header-main after navigation
+        const headerContent = document.querySelector('.header-main .header-content');
+        if (headerContent) {
+            const mobileToggle = headerContent.querySelector('.mobile-menu-toggle');
+            if (mobileToggle) {
+                headerContent.insertBefore(switcher, mobileToggle);
+            } else {
+                headerContent.appendChild(switcher);
             }
         }
 
@@ -260,34 +262,39 @@ class LanguageManager {
         styles.textContent = `
             .language-switcher {
                 position: relative;
-                margin-right: 20px;
+                margin-left: 20px;
+                display: flex;
+                align-items: center;
             }
 
             .language-btn {
                 display: flex;
                 align-items: center;
                 gap: 8px;
-                background: rgba(255, 255, 255, 0.1);
-                border: 1px solid rgba(255, 255, 255, 0.2);
+                background: linear-gradient(135deg, #0066CC 0%, #00A3FF 100%);
+                border: none;
                 color: white;
-                padding: 6px 12px;
+                padding: 8px 16px;
                 border-radius: 8px;
                 cursor: pointer;
                 font-size: 14px;
+                font-weight: 500;
                 transition: all 0.3s ease;
+                box-shadow: 0 2px 8px rgba(0, 102, 204, 0.2);
             }
 
             .language-btn:hover {
-                background: rgba(255, 255, 255, 0.2);
-                border-color: rgba(255, 255, 255, 0.3);
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
             }
 
             .current-lang-flag {
                 font-size: 18px;
+                line-height: 1;
             }
 
             .current-lang-name {
-                font-weight: 500;
+                font-weight: 600;
             }
 
             .language-btn i {
@@ -301,18 +308,19 @@ class LanguageManager {
 
             .language-dropdown {
                 position: absolute;
-                top: calc(100% + 8px);
+                top: calc(100% + 12px);
                 right: 0;
                 background: white;
                 border-radius: 12px;
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
                 padding: 8px;
-                min-width: 180px;
+                min-width: 200px;
                 opacity: 0;
                 visibility: hidden;
                 transform: translateY(-10px);
                 transition: all 0.3s ease;
-                z-index: 1000;
+                z-index: 10000;
+                border: 1px solid rgba(0, 0, 0, 0.1);
             }
 
             .language-switcher:hover .language-dropdown {
@@ -324,9 +332,9 @@ class LanguageManager {
             .language-option {
                 display: flex;
                 align-items: center;
-                gap: 10px;
+                gap: 12px;
                 width: 100%;
-                padding: 10px 12px;
+                padding: 10px 14px;
                 border: none;
                 background: transparent;
                 border-radius: 8px;
@@ -338,25 +346,60 @@ class LanguageManager {
             }
 
             .language-option:hover {
-                background: #f3f4f6;
+                background: #F3F4F6;
+                color: #0066CC;
             }
 
             .language-option.active {
-                background: #e5e7eb;
+                background: #EFF6FF;
+                color: #0066CC;
                 font-weight: 600;
             }
 
             .lang-flag {
-                font-size: 18px;
+                font-size: 20px;
             }
 
             .lang-name {
                 flex: 1;
             }
 
-            @media (max-width: 768px) {
+            /* Responsive Styles */
+            @media (max-width: 1200px) {
+                .language-switcher {
+                    margin-left: 15px;
+                }
+            }
+
+            @media (max-width: 1023px) {
+                .language-switcher {
+                    order: -1;
+                    margin-left: 0;
+                    margin-right: auto;
+                }
+                
+                .language-btn {
+                    padding: 6px 12px;
+                    font-size: 13px;
+                }
+                
                 .current-lang-name {
                     display: none;
+                }
+                
+                .language-dropdown {
+                    right: auto;
+                    left: 0;
+                }
+            }
+
+            @media (max-width: 768px) {
+                .language-btn {
+                    padding: 6px 10px;
+                }
+                
+                .current-lang-flag {
+                    font-size: 16px;
                 }
             }
         `;

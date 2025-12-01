@@ -108,6 +108,21 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 20px;
+}
+
+.logo {
+    flex-shrink: 0;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-img {
+    flex-shrink: 0;
 }
 
 .logo h1 {
@@ -116,6 +131,7 @@ body {
     font-weight: 700;
     color: #1e3c72;
     margin-bottom: 2px;
+    line-height: 1.2;
 }
 
 .logo p {
@@ -124,6 +140,13 @@ body {
     font-weight: 400;
     letter-spacing: 1px;
     text-transform: uppercase;
+    line-height: 1.2;
+}
+
+.main-nav {
+    flex: 1;
+    display: flex;
+    justify-content: center;
 }
 
 .main-nav ul {
@@ -131,10 +154,9 @@ body {
     list-style: none;
     margin: 0;
     padding: 0;
-}
-
-.main-nav li {
-    margin-left: 35px;
+    flex-wrap: wrap;
+    gap: 10px 35px;
+    align-items: center;
 }
 
 .main-nav a {
@@ -175,6 +197,8 @@ body {
     padding: 8px;
     border-radius: 4px;
     transition: all 0.3s ease;
+    margin-left: 10px;
+    flex-shrink: 0;
 }
 
 .mobile-menu-toggle span {
@@ -1389,10 +1413,9 @@ body {
 }
 
 /* Responsive Design */
-@media (max-width: 768px) {
+@media (max-width: 1023px) {
     .header-content {
-        flex-direction: column;
-        gap: 20px;
+        flex-wrap: wrap;
     }
     
     .main-nav {
@@ -1401,6 +1424,12 @@ body {
     
     .mobile-menu-toggle {
         display: flex;
+    }
+}
+
+@media (max-width: 768px) {
+    .header-content {
+        gap: 15px;
     }
     
     .hero-content {
