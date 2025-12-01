@@ -381,11 +381,6 @@
                         <img src="https://via.placeholder.com/300x250/f0f0f0/666?text=Your+Business+Here" alt="Advertisement" loading="lazy">
                     </div>
                 </div>
-                <div class="ads-preferences">
-                    <button class="preferences-btn" onclick="showAdPreferences()" title="Ad preferences">
-                        <i class="fas fa-cog"></i> Ad Settings
-                    </button>
-                </div>
             </aside>
         </div>
     </main>
@@ -1095,5 +1090,26 @@
     <script src="assets/js/search.js"></script>
     <script src="assets/js/enhanced-features.js"></script>
     <script src="assets/js/enhanced.js"></script>
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/language.js"></script>
+    <script>
+        // Override ad preferences functionality - ensure ads are always visible
+        window.showAdPreferences = function() { return false; };
+        window.saveAdPreferences = function() { return false; };
+        
+        // Ensure ads are always visible on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const ads = document.querySelectorAll('.ad-space, .ad-banner, .advertisement');
+            ads.forEach(ad => {
+                ad.style.display = 'block';
+                ad.style.visibility = 'visible';
+                ad.style.opacity = '1';
+            });
+            
+            // Hide any preference buttons
+            const prefBtns = document.querySelectorAll('.preferences-btn, .ad-preferences, .ads-preferences');
+            prefBtns.forEach(btn => btn.style.display = 'none');
+        });
+    </script>
 </body>
 </html>

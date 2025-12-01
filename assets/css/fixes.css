@@ -435,8 +435,350 @@ section {
 }
 
 /* ============================================
-   GENERAL IMPROVEMENTS
+   IMAGE STANDARDIZATION
 ============================================ */
+
+/* Fix all image sizing issues */
+img {
+    max-width: 100% !important;
+    height: auto !important;
+    display: block !important;
+    object-fit: cover !important;
+}
+
+/* Hero section images */
+.hero-image img,
+.hero-main img {
+    width: 100% !important;
+    height: 400px !important;
+    object-fit: cover !important;
+    border-radius: 12px !important;
+}
+
+/* Hero sidebar story images */
+.hero-side-story img {
+    width: 80px !important;
+    height: 60px !important;
+    object-fit: cover !important;
+    border-radius: 8px !important;
+    flex-shrink: 0 !important;
+}
+
+.hero-side-story {
+    display: flex !important;
+    gap: 12px !important;
+    padding: 12px !important;
+    border-radius: 8px !important;
+    transition: all 0.3s ease !important;
+    margin-bottom: 16px !important;
+}
+
+.hero-side-story:hover {
+    background: rgba(0, 102, 204, 0.05) !important;
+}
+
+.story-content h3 {
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    line-height: 1.4 !important;
+    margin-bottom: 4px !important;
+    color: #1f2937 !important;
+}
+
+.story-date {
+    font-size: 12px !important;
+    color: #9ca3af !important;
+}
+
+/* Magazine promo */
+.magazine-promo {
+    background: linear-gradient(135deg, #0066CC, #00A3FF) !important;
+    border-radius: 12px !important;
+    padding: 16px !important;
+    color: white !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+.magazine-promo img {
+    width: 60px !important;
+    height: 60px !important;
+    object-fit: cover !important;
+    border-radius: 8px !important;
+    margin-bottom: 12px !important;
+}
+
+/* Article/News card images */
+.article-card img,
+.news-card img,
+.card img,
+.trending-item img {
+    width: 100% !important;
+    height: 200px !important;
+    object-fit: cover !important;
+    border-radius: 8px !important;
+}
+
+/* Sidebar/aside images */
+.sidebar img,
+aside img,
+.ad-space img {
+    width: 100% !important;
+    height: auto !important;
+    max-height: 250px !important;
+    object-fit: cover !important;
+    border-radius: 8px !important;
+}
+
+/* Feature section images */
+.feature-image img,
+.section-image img {
+    width: 100% !important;
+    height: 250px !important;
+    object-fit: cover !important;
+    border-radius: 12px !important;
+}
+
+/* Small thumbnail images */
+.thumbnail img,
+.small-image img {
+    width: 60px !important;
+    height: 60px !important;
+    object-fit: cover !important;
+    border-radius: 6px !important;
+}
+
+/* Gallery images */
+.gallery img {
+    width: 100% !important;
+    height: 300px !important;
+    object-fit: cover !important;
+    border-radius: 8px !important;
+}
+
+/* ============================================
+   REMOVE AD SETTINGS FEATURE
+============================================ */
+
+/* Hide ad settings/preferences completely */
+.ads-preferences,
+.ad-preferences,
+.preferences-btn,
+button[onclick*="showAdPreferences"],
+.ad-settings,
+.ad-preferences-modal {
+    display: none !important;
+    visibility: hidden !important;
+}
+
+/* Ensure all ads are always visible */
+.ad-space,
+.ad-banner,
+.sidebar-ad,
+.banner-ad,
+.advertisement {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Override any ad hiding functionality */
+.ad-space[style*="display: none"],
+.ad-banner[style*="display: none"],
+.advertisement[style*="display: none"] {
+    display: block !important;
+}
+
+/* ============================================
+   AD STYLING IMPROVEMENTS
+============================================ */
+
+.ad-space {
+    background: #f8f9fa !important;
+    border: 2px dashed #e5e7eb !important;
+    border-radius: 8px !important;
+    padding: 16px !important;
+    text-align: center !important;
+    margin: 16px 0 !important;
+}
+
+.ad-space img {
+    width: 100% !important;
+    max-width: 300px !important;
+    height: auto !important;
+    border-radius: 6px !important;
+}
+
+/* ============================================
+   ENHANCED CSS IMPROVEMENTS
+============================================ */
+
+/* Better card layouts */
+.article-card,
+.news-card,
+.card {
+    border-radius: 12px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+    transition: all 0.3s ease !important;
+    overflow: hidden !important;
+    background: white !important;
+    margin-bottom: 24px !important;
+}
+
+.article-card:hover,
+.news-card:hover,
+.card:hover {
+    transform: translateY(-4px) !important;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12) !important;
+}
+
+/* Content spacing */
+.article-content,
+.card-content {
+    padding: 20px !important;
+}
+
+.article-content h3,
+.card-content h3 {
+    font-size: 18px !important;
+    font-weight: 600 !important;
+    margin-bottom: 12px !important;
+    line-height: 1.4 !important;
+    color: #1f2937 !important;
+}
+
+.article-content p,
+.card-content p {
+    font-size: 14px !important;
+    line-height: 1.6 !important;
+    color: #6b7280 !important;
+    margin-bottom: 16px !important;
+}
+
+/* Category badges */
+.category {
+    display: inline-block !important;
+    padding: 4px 12px !important;
+    background: linear-gradient(135deg, #0066CC, #00A3FF) !important;
+    color: white !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    border-radius: 20px !important;
+    margin-bottom: 12px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+}
+
+/* Meta information */
+.article-meta {
+    display: flex !important;
+    gap: 16px !important;
+    font-size: 12px !important;
+    color: #9ca3af !important;
+    align-items: center !important;
+}
+
+.article-meta i {
+    color: #0066CC !important;
+    margin-right: 4px !important;
+}
+
+/* Grid layouts */
+.content-grid,
+.news-grid,
+.articles-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important;
+    gap: 24px !important;
+    margin-bottom: 40px !important;
+}
+
+/* Section headers */
+.section-header,
+h2.section-title {
+    font-size: 28px !important;
+    font-weight: 700 !important;
+    color: #1f2937 !important;
+    margin-bottom: 24px !important;
+    text-align: center !important;
+}
+
+.section-header::after {
+    content: '' !important;
+    display: block !important;
+    width: 60px !important;
+    height: 3px !important;
+    background: linear-gradient(135deg, #0066CC, #00A3FF) !important;
+    margin: 12px auto 0 !important;
+    border-radius: 2px !important;
+}
+
+/* Button improvements */
+.btn,
+button:not(.preferences-btn) {
+    padding: 12px 24px !important;
+    background: linear-gradient(135deg, #0066CC, #00A3FF) !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    text-decoration: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+}
+
+.btn:hover,
+button:hover:not(.preferences-btn) {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.3) !important;
+}
+
+/* Sidebar improvements */
+.sidebar,
+aside {
+    background: #f9fafb !important;
+    border-radius: 12px !important;
+    padding: 24px !important;
+    margin-left: 24px !important;
+}
+
+.sidebar h3,
+aside h3 {
+    font-size: 20px !important;
+    font-weight: 700 !important;
+    color: #1f2937 !important;
+    margin-bottom: 16px !important;
+}
+
+/* Responsive improvements */
+@media (max-width: 768px) {
+    .content-grid,
+    .news-grid,
+    .articles-grid {
+        grid-template-columns: 1fr !important;
+        gap: 16px !important;
+    }
+    
+    .sidebar,
+    aside {
+        margin-left: 0 !important;
+        margin-top: 24px !important;
+    }
+    
+    .hero-image img,
+    .hero-main img {
+        height: 300px !important;
+    }
+    
+    .article-card img,
+    .news-card img,
+    .card img {
+        height: 180px !important;
+    }
+}
 
 /* Smooth scrolling and fix body issues */
 html {
