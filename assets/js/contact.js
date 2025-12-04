@@ -23,25 +23,39 @@ document.addEventListener('DOMContentLoaded', function() {
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
             submitBtn.disabled = true;
             
-            // Simulate form submission (replace with actual API call)
-            setTimeout(() => {
-                // Success simulation
-                showNotification('Thank you for your message! We\'ll get back to you within 24 hours.', 'success');
-                contactForm.reset();
-                
-                // Reset button
+            // Submit to API
+            fetch('/api/contact', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    showNotification(result.message || 'Thank you! We\'ll get back to you within 24 hours.', 'success');
+                    contactForm.reset();
+                    
+                    // Send to analytics
+                    if (typeof gtag !== 'undefined') {
+                        gtag('event', 'contact_form_submit', {
+                            'event_category': 'engagement',
+                            'event_label': data.subject || 'general'
+                        });
+                    }
+                } else {
+                    showNotification(result.error || 'Failed to send message. Please try again.', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Contact form error:', error);
+                showNotification('Failed to send message. Please try again later.', 'error');
+            })
+            .finally(() => {
                 submitBtn.innerHTML = originalText;
                 submitBtn.disabled = false;
-                
-                // Optional: Send to analytics
-                if (typeof gtag !== 'undefined') {
-                    gtag('event', 'contact_form_submit', {
-                        'event_category': 'engagement',
-                        'event_label': data.subject || 'general'
-                    });
-                }
-                
-            }, 2000);
+            });
         });
     }
     

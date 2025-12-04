@@ -3,24 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BizzShort - Latest Business News & Updates</title>
+    <title>BizzShort - Latest Business News & Market Updates | India's Premier Business Portal</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/logo.jpeg">
+    <link rel="apple-touch-icon" href="assets/images/logo.jpeg">
+    
+    <!-- Preconnect for performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Stylesheets -->
     <link rel="stylesheet" href="assets/css/main-style.css">
     <link rel="stylesheet" href="assets/css/wirecable-grid.css">
     <link rel="stylesheet" href="assets/css/market-sections.css">
-    <meta name="description" content="BizzShort - Your go-to source for latest business news, market updates, and industry insights">
-    <meta name="keywords" content="business news, market updates, startup news, Indian business, stock market, corporate news">
+    
+    <!-- Google Analytics (Replace GA_MEASUREMENT_ID with your actual ID) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'GA_MEASUREMENT_ID');
+    </script>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="BizzShort delivers real-time business news, market updates, startup insights, and industry analysis. Stay informed with India's trusted business news platform covering markets, economy, technology, and more.">
+    <meta name="keywords" content="business news, market updates, stock market, Nifty, Sensex, startup news, Indian business, corporate news, economy, finance, investment, business analysis, market trends">
     <meta name="author" content="BizzShort">
-    <meta property="og:title" content="BizzShort - Business News Simplified">
-    <meta property="og:description" content="Your premier source for business news, market insights, and industry analysis">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://bizzshort.onrender.com/">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:site_name" content="BizzShort">
+    <meta property="og:title" content="BizzShort - Business News Simplified | Latest Market Updates">
+    <meta property="og:description" content="Your premier source for business news, market insights, and industry analysis. Real-time updates on Nifty, Sensex, startups, and economy.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://bizzshort.com">
+    <meta property="og:url" content="https://bizzshort.onrender.com/">
+    <meta property="og:image" content="https://bizzshort.onrender.com/assets/images/logo.jpeg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale" content="en_IN">
+    
+    <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@bizzshort">
+    <meta name="twitter:creator" content="@bizzshort">
     <meta name="twitter:title" content="BizzShort - Business News Simplified">
-    <meta name="twitter:description" content="Latest business news, market updates, and industry insights">
+    <meta name="twitter:description" content="Latest business news, market updates, and industry insights. Stay ahead with BizzShort.">
+    <meta name="twitter:image" content="https://bizzshort.onrender.com/assets/images/logo.jpeg">
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XXXXXXXXXX');
+    </script>
 </head>
 <body>
     <!-- Side Advertisement Wrappers -->
@@ -213,7 +255,7 @@
                 
                 <div class="section-with-sidebar">
                     <div class="latest-news-grid">
-                    <article class="news-card-large" data-category="business">
+                    <article class="news-card-large" data-category="business" onclick="window.location.href='article-detail.html'" style="cursor: pointer;">
                         <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Business News">
                         <div class="card-content">
                             <span class="category-badge business">Business</span>
@@ -225,7 +267,7 @@
                             </div>
                         </div>
                     </article>
-                    <article class="news-card-large" data-category="markets">
+                    <article class="news-card-large" data-category="markets" onclick="window.location.href='article-detail.html'" style="cursor: pointer;">
                         <img src="https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Stock Market">
                         <div class="card-content">
                             <span class="category-badge markets">Markets</span>
@@ -237,7 +279,7 @@
                             </div>
                         </div>
                     </article>
-                    <article class="news-card-large" data-category="technology">
+                    <article class="news-card-large" data-category="technology" onclick="window.location.href='article-detail.html'" style="cursor: pointer;">
                         <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="AI Technology">
                         <div class="card-content">
                             <span class="category-badge technology">Technology</span>
@@ -249,7 +291,7 @@
                             </div>
                         </div>
                     </article>
-                    <article class="news-card-large" data-category="business">
+                    <article class="news-card-large" data-category="business" onclick="window.location.href='article-detail.html'" style="cursor: pointer;">
                         <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Manufacturing">
                         <div class="card-content">
                             <span class="category-badge business">Business</span>
@@ -261,7 +303,7 @@
                             </div>
                         </div>
                     </article>
-                    <article class="news-card-large" data-category="markets">
+                    <article class="news-card-large" data-category="markets" onclick="window.location.href='article-detail.html'" style="cursor: pointer;">
                         <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Investment">
                         <div class="card-content">
                             <span class="category-badge markets">Markets</span>
@@ -273,7 +315,7 @@
                             </div>
                         </div>
                     </article>
-                    <article class="news-card-large" data-category="technology">
+                    <article class="news-card-large" data-category="technology" onclick="window.location.href='article-detail.html'" style="cursor: pointer;">
                         <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Startup">
                         <div class="card-content">
                             <span class="category-badge technology">Technology</span>
@@ -326,7 +368,7 @@
                     <a href="#interviews" class="view-all">View All →</a>
                 </div>
                 <div class="interview-grid">
-                    <article class="interview-card">
+                    <article class="interview-card" onclick="window.location.href='article-detail.html'" style="cursor: pointer;">
                         <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="CEO Interview">
                         <div class="interview-content">
                             <span class="interview-tag">CEO Interview</span>
@@ -338,7 +380,7 @@
                             </div>
                         </div>
                     </article>
-                    <article class="interview-card">
+                    <article class="interview-card" onclick="window.location.href='article-detail.html'" style="cursor: pointer;">
                         <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Entrepreneur Interview">
                         <div class="interview-content">
                             <span class="interview-tag">Entrepreneur</span>
@@ -362,7 +404,7 @@
                     <a href="events.html" class="view-all">View All →</a>
                 </div>
                 <div class="events-grid">
-                    <article class="event-card">
+                    <article class="event-card" onclick="window.location.href='article-detail.html'" style="cursor: pointer;">
                         <div class="event-date">
                             <span class="date-day">15</span>
                             <span class="date-month">DEC</span>
@@ -374,7 +416,7 @@
                             <button class="event-btn">Register Now</button>
                         </div>
                     </article>
-                    <article class="event-card">
+                    <article class="event-card" onclick="window.location.href='article-detail.html'" style="cursor: pointer;">
                         <div class="event-date">
                             <span class="date-day">20</span>
                             <span class="date-month">DEC</span>
@@ -386,7 +428,7 @@
                             <button class="event-btn">Join Online</button>
                         </div>
                     </article>
-                    <article class="event-card">
+                    <article class="event-card" onclick="window.location.href='article-detail.html'" style="cursor: pointer;">
                         <div class="event-date">
                             <span class="date-day">28</span>
                             <span class="date-month">DEC</span>
@@ -879,11 +921,11 @@
                         </div>
                         <p class="footer-description">Your trusted source for real-time business news, market insights, and financial analysis. Stay ahead with BizzShort.</p>
                         <div class="footer-social">
-                            <a href="https://facebook.com/bizzshort" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                            <a href="https://www.facebook.com/bizzshort" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
                             <a href="https://twitter.com/bizzshort" target="_blank" rel="noopener noreferrer" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                            <a href="https://linkedin.com/company/bizzshort" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                            <a href="https://instagram.com/bizzshort" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                            <a href="https://youtube.com/@bizzshort" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                            <a href="https://www.linkedin.com/company/bizzshort" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="https://www.instagram.com/bizz_short?igsh=NDVwdHJza2R3dnF0" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                            <a href="https://www.youtube.com/@bizzshort" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
                         </div>
                     </div>
 

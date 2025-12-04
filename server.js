@@ -503,6 +503,93 @@ app.delete('/api/admin/events/:id', requireAuth, (req, res) => {
 
 console.log('✅ Admin endpoints added successfully');
 
+// ============ Contact Form API ============
+app.post('/api/contact', async (req, res) => {
+    try {
+        const { name, email, phone, subject, message } = req.body;
+        
+        // Validation
+        if (!name || !email || !message) {
+            return res.status(400).json({
+                success: false,
+                error: 'Name, email, and message are required'
+            });
+        }
+        
+        // Email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            return res.status(400).json({
+                success: false,
+                error: 'Invalid email format'
+            });
+        }
+        
+        // In production, send email using nodemailer or email service
+        console.log('📧 Contact Form Submission:', {
+            name,
+            email,
+            phone,
+            subject,
+            message,
+            timestamp: new Date().toISOString()
+        });
+        
+        // Simulate email sending
+        res.json({
+            success: true,
+            message: 'Thank you for contacting us! We will get back to you soon.',
+            data: {
+                name,
+                email,
+                submittedAt: new Date().toISOString()
+            }
+        });
+    } catch (error) {
+        console.error('Contact form error:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Failed to submit contact form'
+        });
+    }
+});
+
+// ============ Newsletter Subscription API ============
+app.post('/api/newsletter', async (req, res) => {
+    try {
+        const { email } = req.body;
+        
+        if (!email) {
+            return res.status(400).json({
+                success: false,
+                error: 'Email is required'
+            });
+        }
+        
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            return res.status(400).json({
+                success: false,
+                error: 'Invalid email format'
+            });
+        }
+        
+        console.log('📬 Newsletter Subscription:', email);
+        
+        res.json({
+            success: true,
+            message: 'Successfully subscribed to newsletter!',
+            data: { email }
+        });
+    } catch (error) {
+        console.error('Newsletter subscription error:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Failed to subscribe'
+        });
+    }
+});
+
 // Error handling middleware
 app.use((err, req, res, next) => {
     console.error(err.stack);
@@ -512,12 +599,18 @@ app.use((err, req, res, next) => {
     });
 });
 
-// 404 handler
-app.use((req, res) => {
+// 404 handler for API endpoints
+app.use('/api/*', (req, res) => {
     res.status(404).json({ 
         success: false, 
-        error: 'Endpoint not found' 
+        error: 'API endpoint not found',
+        endpoint: req.originalUrl
     });
+});
+
+// 404 handler for HTML pages - serve 404.html
+app.use((req, res) => {
+    res.status(404).sendFile(path.join(__dirname, '404.html'));
 });
 
 // Start server
@@ -525,6 +618,8 @@ app.listen(PORT, () => {
     console.log(`🚀 BizzShort API Server running on http://localhost:${PORT}`);
     console.log(`📊 Health check: http://localhost:${PORT}/api/health`);
     console.log(`📰 Articles: http://localhost:${PORT}/api/articles`);
+    console.log(`🌐 Website: http://localhost:${PORT}`);
+    console.log(`🔐 Admin: http://localhost:${PORT}/admin-login.html`);
 });
 
 module.exports = app;
