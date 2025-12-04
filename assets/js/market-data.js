@@ -26,19 +26,56 @@ class MarketDataManager {
         setInterval(() => this.fetchMarketData(), this.updateInterval);
     }
 
+    // Show loading state
+    showLoading() {
+        if (this.niftyElement) this.niftyElement.textContent = 'Loading...';
+        if (this.sensexElement) this.sensexElement.textContent = 'Loading...';
+        if (this.fiiElement) this.fiiElement.textContent = 'Loading...';
+    }
+
     // Fetch realistic market data with real-world values
     async fetchMarketData() {
         try {
+            // Show loading state briefly
+            // this.showLoading(); // Commented to avoid flicker
+            
             // Using real market values for December 2025
             this.updateNiftyDisplay(24350.75, 2.15, 523.40);
             this.updateSensexDisplay(80245.30, 1.85, 1458.25);
             this.updateFIIDisplay(12450, 14.5);
             
-            console.log('Market data updated with current values');
+            console.log('✅ Market data updated successfully');
         } catch (error) {
-            console.error('Error updating market data:', error);
+            console.error('❌ Error updating market data:', error);
             this.showFallbackData();
+            this.showError('Unable to fetch live data. Showing cached values.');
         }
+    }
+
+    // Show error notification
+    showError(message) {
+        const notification = document.createElement('div');
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #ff6b6b;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 10000;
+            font-size: 14px;
+            max-width: 300px;
+            animation: slideInRight 0.3s ease;
+        `;
+        notification.textContent = message;
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            notification.style.animation = 'slideOutRight 0.3s ease';
+            setTimeout(() => notification.remove(), 300);
+        }, 4000);
     }
 
     // Fetch Nifty 50 data
