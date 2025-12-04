@@ -16,6 +16,10 @@ app.use(cors());
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// Serve static files (HTML, CSS, JS, images)
+app.use(express.static(path.join(__dirname)));
+app.use('/assets', express.static(path.join(__dirname, 'assets')));
 app.use('/uploads', express.static('uploads'));
 
 // File upload configuration
@@ -397,6 +401,107 @@ app.get('/api/search', (req, res) => {
         }
     });
 });
+
+// ============ Admin Authentication Middleware ============
+function requireAuth(req, res, next) {
+    // For development, skip auth check
+    next();
+}
+
+// ============ Admin Articles Endpoints ============
+app.post('/api/admin/articles', requireAuth, (req, res) => {
+    const { title, category, content, author, image, excerpt, slug, publishedAt, views, likes, readTime, tags } = req.body;
+    
+    if (!title || !content || !author) {
+        return res.status(400).json({ success: false, error: 'Title, content, and author are required' });
+    }
+    
+    const newArticle = {
+        id: articlesDB.length > 0 ? Math.max(...articlesDB.map(a => a.id)) + 1 : 1,
+        title,
+        slug: slug || title.toLowerCase().replace(/\s+/g, '-'),
+        category: category || 'Uncategorized',
+        excerpt: excerpt || content.substring(0, 200) + '...',
+        content,
+        image: image || 'https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=1200',
+        author: typeof author === 'string' ? { name: author, avatar: '/avatars/default.jpg' } : author,
+        publishedAt: publishedAt || new Date().toISOString(),
+        views: views || 0,
+        likes: likes || 0,
+        readTime: readTime || Math.ceil(content.split(' ').length / 200),
+        tags: tags || []
+    };
+    
+    articlesDB.push(newArticle);
+    res.json({ success: true, data: newArticle, message: 'Article created successfully' });
+});
+
+app.put('/api/admin/articles/:id', requireAuth, (req, res) => {
+    const article = articlesDB.find(a => a.id == req.params.id);
+    if (!article) return res.status(404).json({ success: false, error: 'Article not found' });
+    
+    Object.keys(req.body).forEach(key => {
+        if (req.body[key] !== undefined) article[key] = req.body[key];
+    });
+    res.json({ success: true, data: article, message: 'Article updated successfully' });
+});
+
+app.delete('/api/admin/articles/:id', requireAuth, (req, res) => {
+    const index = articlesDB.findIndex(a => a.id == req.params.id);
+    if (index === -1) return res.status(404).json({ success: false, error: 'Article not found' });
+    
+    const deleted = articlesDB.splice(index, 1)[0];
+    res.json({ success: true, data: deleted, message: 'Article deleted successfully' });
+});
+
+// ============ Admin Events Endpoints ============
+app.post('/api/admin/events', requireAuth, (req, res) => {
+    const { title, date, endDate, location, city, description, maxAttendees, category, image, price, currency } = req.body;
+    
+    if (!title || !date || !location) {
+        return res.status(400).json({ success: false, error: 'Title, date, and location are required' });
+    }
+    
+    const newEvent = {
+        id: eventsDB.length > 0 ? Math.max(...eventsDB.map(e => e.id)) + 1 : 1,
+        title,
+        slug: title.toLowerCase().replace(/\s+/g, '-'),
+        description: description || '',
+        date,
+        endDate: endDate || date,
+        location,
+        city: city || '',
+        category: category || 'Conference',
+        image: image || 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200',
+        attendees: 0,
+        maxAttendees: maxAttendees || 100,
+        price: price || 0,
+        currency: currency || 'INR'
+    };
+    
+    eventsDB.push(newEvent);
+    res.json({ success: true, data: newEvent, message: 'Event created successfully' });
+});
+
+app.put('/api/admin/events/:id', requireAuth, (req, res) => {
+    const event = eventsDB.find(e => e.id == req.params.id);
+    if (!event) return res.status(404).json({ success: false, error: 'Event not found' });
+    
+    Object.keys(req.body).forEach(key => {
+        if (req.body[key] !== undefined) event[key] = req.body[key];
+    });
+    res.json({ success: true, data: event, message: 'Event updated successfully' });
+});
+
+app.delete('/api/admin/events/:id', requireAuth, (req, res) => {
+    const index = eventsDB.findIndex(e => e.id == req.params.id);
+    if (index === -1) return res.status(404).json({ success: false, error: 'Event not found' });
+    
+    const deleted = eventsDB.splice(index, 1)[0];
+    res.json({ success: true, data: deleted, message: 'Event deleted successfully' });
+});
+
+console.log('✅ Admin endpoints added successfully');
 
 // Error handling middleware
 app.use((err, req, res, next) => {

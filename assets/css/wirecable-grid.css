@@ -1,0 +1,747 @@
+/* ============================================
+   WIRECABLE-INSPIRED GRID LAYOUT SYSTEM
+   Exact grid matching for professional news design
+============================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-red: #e74c3c;
+    --primary-orange: #f39c12;
+    --dark-blue: #2c3e50;
+    --darker-blue: #34495e;
+    --light-gray: #f8f9fa;
+    --medium-gray: #95a5a6;
+    --white: #ffffff;
+    --border-color: #e0e0e0;
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+body {
+    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: var(--dark-blue);
+    background: var(--white);
+}
+
+.container {
+    max-width: 1800px;
+    margin: 0 auto;
+    padding: 0 40px;
+}
+
+/* ============================================
+   TOP COMPANIES GRID - 4 COLUMN LAYOUT
+============================================ */
+.top-companies-section {
+    background: var(--light-gray);
+    padding: 60px 0;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 35px;
+    padding-bottom: 20px;
+    border-bottom: 3px solid var(--primary-red);
+}
+
+.section-title {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--dark-blue);
+    letter-spacing: -0.5px;
+    position: relative;
+}
+
+.market-filter {
+    display: flex;
+    gap: 10px;
+    background: var(--white);
+    padding: 6px;
+    border-radius: 30px;
+    box-shadow: var(--shadow-sm);
+}
+
+.filter-btn {
+    padding: 10px 24px;
+    background: transparent;
+    border: none;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: var(--dark-blue);
+}
+
+.filter-btn:hover {
+    background: var(--light-gray);
+}
+
+.filter-btn.active {
+    background: var(--primary-red);
+    color: var(--white);
+}
+
+.companies-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.company-card {
+    background: var(--white);
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: 1px solid transparent;
+}
+
+.company-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary-red);
+}
+
+.company-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--light-gray);
+}
+
+.company-logo {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 16px;
+    color: var(--white);
+    flex-shrink: 0;
+}
+
+.company-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.company-info h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--dark-blue);
+    margin: 0 0 4px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.company-symbol {
+    font-size: 12px;
+    color: var(--medium-gray);
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.company-price {
+    margin-bottom: 16px;
+}
+
+.price {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--dark-blue);
+    display: block;
+    margin-bottom: 6px;
+}
+
+.price-change {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.price-change.positive {
+    background: #e8f5e9;
+    color: #27ae60;
+}
+
+.price-change.negative {
+    background: #ffebee;
+    color: #e74c3c;
+}
+
+.company-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.stat-label {
+    font-size: 10px;
+    color: var(--medium-gray);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.stat-value {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--dark-blue);
+}
+
+/* ============================================
+   SECTOR PERFORMANCE - 3 COLUMN CARDS
+============================================ */
+.sectors-section {
+    background: var(--white);
+    padding: 60px 0;
+}
+
+.sectors-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.sector-card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 28px;
+    border: 2px solid var(--light-gray);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.sector-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-red) 0%, var(--primary-orange) 100%);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+}
+
+.sector-card:hover::before {
+    transform: scaleX(1);
+}
+
+.sector-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary-red);
+}
+
+.sector-card.tech { background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%); }
+.sector-card.finance { background: linear-gradient(135deg, rgba(240, 147, 251, 0.08) 0%, rgba(245, 87, 108, 0.08) 100%); }
+.sector-card.healthcare { background: linear-gradient(135deg, rgba(79, 172, 254, 0.08) 0%, rgba(0, 242, 254, 0.08) 100%); }
+.sector-card.energy { background: linear-gradient(135deg, rgba(67, 233, 123, 0.08) 0%, rgba(56, 249, 215, 0.08) 100%); }
+.sector-card.consumer { background: linear-gradient(135deg, rgba(250, 112, 154, 0.08) 0%, rgba(254, 225, 64, 0.08) 100%); }
+.sector-card.industrial { background: linear-gradient(135deg, rgba(48, 207, 208, 0.08) 0%, rgba(51, 8, 103, 0.08) 100%); }
+
+.sector-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 18px;
+}
+
+.sector-icon {
+    width: 56px;
+    height: 56px;
+    background: var(--white);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    box-shadow: var(--shadow-sm);
+}
+
+.sector-change {
+    font-size: 20px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.sector-name {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--dark-blue);
+}
+
+.sector-description {
+    font-size: 13px;
+    color: var(--medium-gray);
+    margin-bottom: 18px;
+    line-height: 1.5;
+}
+
+.sector-stats {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 18px;
+    border-top: 1px solid var(--border-color);
+}
+
+.sector-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.sector-stat-label {
+    font-size: 10px;
+    color: var(--medium-gray);
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.sector-stat-value {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--dark-blue);
+}
+
+/* ============================================
+   GLOBAL INDICES - 4 COLUMN DARK CARDS
+============================================ */
+.indices-section {
+    background: var(--dark-blue);
+    padding: 60px 0;
+}
+
+.indices-section .section-header {
+    border-bottom-color: var(--primary-red);
+}
+
+.indices-section .section-title {
+    color: var(--white);
+}
+
+.indices-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.index-card {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    padding: 24px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.index-card:hover {
+    background: rgba(255, 255, 255, 0.12);
+    transform: translateY(-4px);
+    border-color: var(--primary-red);
+}
+
+.index-flag {
+    font-size: 32px;
+    margin-bottom: 12px;
+    display: block;
+}
+
+.index-market {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.6);
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+}
+
+.index-name {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 16px;
+}
+
+.index-value {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--white);
+    margin-bottom: 10px;
+}
+
+.index-change {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.index-change.positive {
+    background: rgba(39, 174, 96, 0.2);
+    color: #2ecc71;
+}
+
+.index-change.negative {
+    background: rgba(231, 76, 60, 0.2);
+    color: #ff6b6b;
+}
+
+/* ============================================
+   INTERVIEWS SECTION - 2 COLUMN LAYOUT
+============================================ */
+.interview-section {
+    background: var(--light-gray);
+    padding: 60px 0;
+}
+
+.interview-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+}
+
+.interview-card {
+    background: var(--white);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s ease;
+    display: flex;
+    border: 1px solid transparent;
+}
+
+.interview-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary-red);
+}
+
+.interview-card img {
+    width: 280px;
+    height: 100%;
+    object-fit: cover;
+}
+
+.interview-content {
+    padding: 24px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.interview-tag {
+    display: inline-block;
+    background: var(--primary-red);
+    color: var(--white);
+    padding: 5px 12px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+    width: fit-content;
+}
+
+.interview-card h3 {
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--dark-blue);
+    margin: 0 0 12px 0;
+    line-height: 1.4;
+}
+
+.interview-card p {
+    color: var(--medium-gray);
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: auto;
+}
+
+.interview-meta {
+    display: flex;
+    gap: 16px;
+    font-size: 12px;
+    color: var(--medium-gray);
+    padding-top: 12px;
+    border-top: 1px solid var(--light-gray);
+    margin-top: 12px;
+}
+
+/* ============================================
+   EVENTS SECTION - 3 COLUMN CARDS
+============================================ */
+.events-section {
+    background: var(--white);
+    padding: 60px 0;
+}
+
+.events-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.event-card {
+    background: var(--white);
+    border-radius: 8px;
+    padding: 24px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+    display: flex;
+    gap: 18px;
+}
+
+.event-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary-red);
+}
+
+.event-date {
+    background: linear-gradient(135deg, var(--primary-red) 0%, #c0392b 100%);
+    color: var(--white);
+    border-radius: 8px;
+    padding: 14px;
+    text-align: center;
+    min-width: 70px;
+    height: fit-content;
+}
+
+.date-day {
+    display: block;
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.date-month {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-top: 4px;
+    letter-spacing: 0.5px;
+}
+
+.event-content {
+    flex: 1;
+}
+
+.event-content h3 {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--dark-blue);
+    margin-bottom: 12px;
+    line-height: 1.3;
+}
+
+.event-location,
+.event-time {
+    font-size: 13px;
+    color: var(--medium-gray);
+    margin: 6px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.event-location i,
+.event-time i {
+    color: var(--primary-red);
+    width: 16px;
+}
+
+.event-btn {
+    margin-top: 12px;
+    padding: 8px 20px;
+    background: var(--primary-red);
+    color: var(--white);
+    border: none;
+    border-radius: 5px;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.event-btn:hover {
+    background: #c0392b;
+    transform: translateY(-2px);
+}
+
+/* ============================================
+   NEWS SECTION - 4 COLUMN CARDS
+============================================ */
+.news-section {
+    background: var(--light-gray);
+    padding: 60px 0;
+}
+
+.news-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.news-item {
+    background: var(--white);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+}
+
+.news-item:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary-red);
+}
+
+.news-item img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+}
+
+.news-item-content {
+    padding: 18px;
+}
+
+.news-badge {
+    display: inline-block;
+    background: #27ae60;
+    color: var(--white);
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+}
+
+.news-item h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--dark-blue);
+    margin: 0 0 10px 0;
+    line-height: 1.4;
+}
+
+.news-item p {
+    color: var(--medium-gray);
+    font-size: 13px;
+    line-height: 1.5;
+    margin-bottom: 12px;
+}
+
+.news-item-meta {
+    display: flex;
+    gap: 12px;
+    font-size: 11px;
+    color: var(--medium-gray);
+    padding-top: 10px;
+    border-top: 1px solid var(--light-gray);
+}
+
+/* ============================================
+   RESPONSIVE GRID BREAKPOINTS
+============================================ */
+@media (max-width: 1400px) {
+    .container {
+        padding: 0 30px;
+    }
+    
+    .companies-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .indices-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 1200px) {
+    .companies-grid,
+    .news-grid,
+    .indices-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .sectors-grid,
+    .events-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 0 20px;
+    }
+    
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+    
+    .companies-grid,
+    .sectors-grid,
+    .events-grid,
+    .news-grid,
+    .indices-grid,
+    .interview-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .interview-card {
+        flex-direction: column;
+    }
+    
+    .interview-card img {
+        width: 100%;
+        height: 200px;
+    }
+}

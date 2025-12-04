@@ -4,325 +4,544 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Us - BizzShort</title>
-    <link rel="stylesheet" href="assets/css/modern-design.css">
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="assets/css/responsive.css">
-    <link rel="stylesheet" href="assets/css/additional.css">
-    <link rel="stylesheet" href="assets/css/enhanced-features.css">
-    <link rel="stylesheet" href="assets/css/animations.css">`n    <link rel="stylesheet" href="assets/css/fixes.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/landing-redesign.css">
+    <link rel="stylesheet" href="assets/css/sections.css">
+    <link rel="stylesheet" href="assets/css/enhanced-wider.css">
+    <link rel="stylesheet" href="assets/css/final-polish.css">
+    <link rel="stylesheet" href="assets/css/extended-sections.css">
+    <link rel="stylesheet" href="assets/css/side-ads.css">
+    <style>
+        /* Additional styles for About Us page */
+        .page-hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 80px 0;
+            text-align: center;
+            color: white;
+        }
+        
+        .page-hero h1 {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+        
+        .page-hero p {
+            font-size: 20px;
+            opacity: 0.95;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .content-section-page {
+            padding: 80px 0;
+        }
+        
+        .content-section-page.alt-bg {
+            background: #f8f9fa;
+        }
+        
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            margin-bottom: 60px;
+        }
+        
+        .about-text h2 {
+            font-size: 36px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 25px;
+        }
+        
+        .about-text p {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #7f8c8d;
+            margin-bottom: 15px;
+        }
+        
+        .about-image img {
+            width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            margin-top: 60px;
+        }
+        
+        .stat-card {
+            text-align: center;
+            padding: 40px 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-number {
+            font-size: 42px;
+            font-weight: 800;
+            color: #e74c3c;
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            font-size: 16px;
+            color: #7f8c8d;
+            font-weight: 600;
+        }
+        
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .team-member {
+            text-align: center;
+            padding: 30px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+        
+        .team-member:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .team-member img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin-bottom: 20px;
+            border: 4px solid #e74c3c;
+        }
+        
+        .team-member h4 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+        
+        .team-member p {
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-bottom: 15px;
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        
+        .social-icons a {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: #ecf0f1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #7f8c8d;
+            transition: all 0.3s ease;
+        }
+        
+        .social-icons a:hover {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .value-card {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            text-align: center;
+        }
+        
+        .value-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin: 0 auto 25px;
+        }
+        
+        .value-card h3 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        
+        .value-card p {
+            font-size: 15px;
+            line-height: 1.7;
+            color: #7f8c8d;
+        }
+        
+        @media (max-width: 1200px) {
+            .stats-grid,
+            .team-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid,
+            .team-grid,
+            .values-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .page-hero h1 {
+                font-size: 32px;
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- Header -->
-    <header class="header">
-        <div class="header-top">
+    <header class="site-header">
+        <div class="header-wrapper">
             <div class="container">
-                <div class="header-top-content">
-                    <div class="contact-info">
-                        <span><i class="fas fa-phone"></i> +91 9876543210</span>
-                        <span><i class="fas fa-envelope"></i> info@bizzshort.com</span>
-                        <span><i class="fas fa-map-marker-alt"></i> B-64, Sector 65, Noida</span>
-                    </div>
-                    <div class="social-links">
-                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                        <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                <!-- Logo and Ad Section -->
+                <div class="header-top-section">
+                    <a href="index.html" class="logo">
+                        <div class="logo-icon"><i class="fas fa-bolt"></i></div>
+                        <div class="logo-text">
+                            <div class="logo-brand">BizzShort</div>
+                            <div class="logo-tagline">In Seconds, Say What Matters</div>
+                        </div>
+                    </a>
+                    
+                    <!-- Advertisement Banner -->
+                    <div class="ad-banner-container">
+                        <img src="https://via.placeholder.com/970x90/34495e/ffffff?text=Advertisement+970x90" alt="Advertisement" class="top-ad-banner">
                     </div>
                 </div>
             </div>
         </div>
         
-        <div class="header-main">
+        <!-- Navigation Bar -->
+        <div class="navbar-section">
             <div class="container">
-                <div class="header-content">
-                    <a href="index.html" class="logo"><div class="logo-container"><img src="assets/images/logo.svg" alt="BizzShort Logo" class="logo-img"><div class="logo-text"><h1>BizzShort</h1><p>Business News & Market Insights</p></div></div></a>
-                    <nav class="main-nav">
-                        <ul>
-                            <li><a href="index.html">Home</a></li>
-                            <li><a href="index.html#trending">Trending</a></li>
-                            <li><a href="index.html#business-news">Business News</a></li>
-                            <li><a href="index.html#market-updates">Market Updates</a></li>
-                            <li><a href="index.html#interviews">Interviews</a></li>
-                            <li><a href="index.html#tech-news">Tech News</a></li>
-                            <li><a href="blog.html">Blog</a></li>
-                            <li><a href="about.html" class="active">About</a></li>
-                            <li><a href="contact.html">Contact</a></li>
-                            <li><a href="analytics.html">Analytics</a></li>
-                        </ul>
-                    </nav>
-                </div>
+                <nav class="main-nav">
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="index.html#interviews">Interview</a></li>
+                        <li><a href="index.html#events">Events</a></li>
+                        <li><a href="index.html#news">News</a></li>
+                        <li><a href="index.html#industry">Industry Updates</a></li>
+                        <li><a href="index.html#client">Client Feature</a></li>
+                        <li><a href="about.html" class="active">About Us</a></li>
+                        <li><a href="about.html#advertise">Advertise</a></li>
+                        <li><a href="about.html#policy">Company Policy</a></li>
+                    </ul>
+                </nav>
             </div>
         </div>
     </header>
 
-    <!-- About Hero Section -->
+    <!-- Page Hero -->
     <section class="page-hero">
         <div class="container">
-            <div class="hero-content">
-                <h1>About BizzShort</h1>
-                <p>Your Premier Source for Business News and Market Intelligence</p>
-            </div>
+            <h1>About BizzShort</h1>
+            <p>Your trusted partner for business news, market insights, and industry analysis since 2020</p>
         </div>
     </section>
 
-    <!-- Main Content -->
-    <main class="about-main">
-        <div class="container">
-            
-            <!-- Company Overview -->
-            <section class="about-section">
-                <div class="about-grid">
-                    <div class="about-content">
-                        <h2>Leading Business News from Noida</h2>
-                        <p>Based in the dynamic business district of Sector 65, Noida, BizzShort is at the forefront of business journalism in India. Our strategic location in one of the country's premier business hubs enables us to deliver real-time news, market insights, and business intelligence that matters to professionals, entrepreneurs, and investors.</p>
-                        
-                        <p>From our modern newsroom in Noida, we provide comprehensive business coverage spanning stock markets, corporate developments, startup ecosystem, policy changes, and economic trends that shape India's business landscape.</p>
-                        
-                        <p>Our expertise covers financial markets, technology sector, startup funding, government policies, international business, and emerging market opportunities. We also feature our Instagram news account to reach younger audiences and provide quick business updates across social media platforms.</p>
+    <!-- About Content -->
+    <main>
+        <section class="content-section-page">
+            <div class="container">
+                <div class="about-content">
+                    <div class="about-text">
+                        <h2>Who We Are</h2>
+                        <p>BizzShort is India's leading digital business news platform, delivering comprehensive coverage of markets, startups, technology, and industry trends. Founded in 2020, we've grown to become a trusted source for over 5 million monthly readers.</p>
+                        <p>Our mission is simple: to deliver accurate, timely, and actionable business intelligence that empowers entrepreneurs, investors, and business leaders to make informed decisions.</p>
+                        <p>With a team of experienced journalists, analysts, and industry experts, we bring you in-depth reporting, exclusive interviews, and real-time market updates that matter most to your business.</p>
                     </div>
                     <div class="about-image">
-                        <img src="https://images.unsplash.com/photo-1611224923853-80b023f02d71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="BizzShort Team">
+                        <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Team Meeting">
                     </div>
                 </div>
-            </section>
-
-            <!-- Mission & Vision -->
-            <section class="mission-vision">
-                <div class="mv-grid">
-                    <div class="mv-item">
-                        <div class="mv-icon">
-                            <i class="fas fa-bullseye"></i>
-                        </div>
-                        <h3>Our Mission</h3>
-                        <p>To empower business professionals and investors with timely, accurate, and actionable business news that drives informed decision-making and supports India's economic growth across all sectors.</p>
+                
+                <!-- Stats -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">5M+</div>
+                        <div class="stat-label">Monthly Readers</div>
                     </div>
-                    <div class="mv-item">
-                        <div class="mv-icon">
-                            <i class="fas fa-eye"></i>
-                        </div>
-                        <h3>Our Vision</h3>
-                        <p>To be India's most trusted and comprehensive business news platform, setting the standard for quality financial journalism and becoming the go-to source for market intelligence.</p>
+                    <div class="stat-card">
+                        <div class="stat-number">10K+</div>
+                        <div class="stat-label">Articles Published</div>
                     </div>
-                    <div class="mv-item">
-                        <div class="mv-icon">
-                            <i class="fas fa-heart"></i>
-                        </div>
-                        <h3>Our Values</h3>
-                        <p>Accuracy, Speed, Integrity, and Innovation guide our newsroom. We are committed to ethical journalism, real-time reporting, and creating value for our business community.</p>
+                    <div class="stat-card">
+                        <div class="stat-number">500+</div>
+                        <div class="stat-label">Expert Contributors</div>
                     </div>
-                </div>
-            </section>
-
-            <!-- What We Do -->
-            <section class="services-section">
-                <div class="section-header">
-                    <h2>What We Do</h2>
-                    <div class="section-line"></div>
-                </div>
-                <div class="services-grid">
-                    <div class="service-item">
-                        <div class="service-icon">
-                            <i class="fas fa-newspaper"></i>
-                        </div>
-                        <h3>Breaking Business News</h3>
-                        <p>Real-time coverage of market movements, corporate announcements, policy changes, and economic developments that impact Indian businesses and markets.</p>
-                    </div>
-                    <div class="service-item">
-                        <div class="service-icon">
-                            <i class="fas fa-microphone"></i>
-                        </div>
-                        <h3>CEO Interviews</h3>
-                        <p>Exclusive conversations with business leaders, entrepreneurs, and industry experts, providing insights into strategies, market outlook, and future trends.</p>
-                    </div>
-                    <div class="service-item">
-                        <div class="service-icon">
-                            <i class="fas fa-chart-bar"></i>
-                        </div>
-                        <h3>Market Analysis</h3>
-                        <p>In-depth analysis of stock market trends, sector performance, investment opportunities, and economic indicators that matter to investors and businesses.</p>
-                    </div>
-                    <div class="service-item">
-                        <div class="service-icon">
-                            <i class="fas fa-rocket"></i>
-                        </div>
-                        <h3>Startup Coverage</h3>
-                        <p>Comprehensive coverage of India's startup ecosystem, funding rounds, unicorn developments, and emerging business opportunities.</p>
-                    </div>
-                    <div class="service-item">
-                        <div class="service-icon">
-                            <i class="fas fa-calendar-alt"></i>
-                        </div>
-                        <h3>Policy Updates</h3>
-                        <p>Latest government policies, regulatory changes, and their impact on businesses, markets, and investment climate in India.</p>
-                    </div>
-                    <div class="service-item">
-                        <div class="service-icon">
-                            <i class="fas fa-lightbulb"></i>
-                        </div>
-                        <h3>Social Media News</h3>
-                        <p>Quick business updates through our Instagram news account, reaching younger audiences with bite-sized market information and trends.</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Our Expertise -->
-            <section class="expertise-section">
-                <div class="section-header">
-                    <h2>Our Expertise</h2>
-                    <div class="section-line"></div>
-                </div>
-                <div class="expertise-content">
-                    <div class="expertise-text">
-                        <h3>Business Sectors We Cover</h3>
-                        <p>Our comprehensive coverage spans across multiple business sectors, ensuring that professionals, investors, and entrepreneurs find relevant and valuable insights:</p>
-                        <ul class="expertise-list">
-                            <li><i class="fas fa-check"></i> Banking & Financial Services</li>
-                            <li><i class="fas fa-check"></i> Technology & IT</li>
-                            <li><i class="fas fa-check"></i> E-commerce & Retail</li>
-                            <li><i class="fas fa-check"></i> Automotive & Manufacturing</li>
-                            <li><i class="fas fa-check"></i> Healthcare & Pharmaceuticals</li>
-                            <li><i class="fas fa-check"></i> Real Estate & Infrastructure</li>
-                            <li><i class="fas fa-check"></i> Telecommunications</li>
-                            <li><i class="fas fa-check"></i> Energy & Renewable</li>
-                            <li><i class="fas fa-check"></i> Startups & Funding</li>
-                            <li><i class="fas fa-check"></i> Government & Policy</li>
-                        </ul>
-                    </div>
-                    <div class="expertise-stats">
-                        <div class="stat-item">
-                            <div class="stat-number">1000+</div>
-                            <div class="stat-label">News Articles</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-number">250+</div>
-                            <div class="stat-label">CEO Interviews</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-number">100K+</div>
-                            <div class="stat-label">Monthly Readers</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-number">50K+</div>
-                            <div class="stat-label">Instagram Followers</div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Team Section -->
-            <section class="team-section">
-                <div class="section-header">
-                    <h2>Our Team</h2>
-                    <div class="section-line"></div>
-                    <p>Meet the professionals behind BizzShort's editorial excellence</p>
-                </div>
-                <div class="team-grid">
-                    <div class="team-member">
-                        <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Editor-in-Chief">
-                        <h3>Arjun Mehta</h3>
-                        <p class="position">Editor-in-Chief</p>
-                        <p class="bio">With over 15 years of experience in financial journalism and business reporting, Arjun leads BizzShort's editorial strategy and newsroom operations.</p>
-                        <div class="social-links">
-                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                            <a href="#"><i class="fab fa-twitter"></i></a>
-                        </div>
-                    </div>
-                    <div class="team-member">
-                        <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Market Analyst">
-                        <h3>Sneha Gupta</h3>
-                        <p class="position">Senior Market Analyst</p>
-                        <p class="bio">A financial expert with deep knowledge of Indian markets, Sneha provides in-depth analysis of stock market trends and investment opportunities.</p>
-                        <div class="social-links">
-                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                            <a href="#"><i class="fab fa-twitter"></i></a>
-                        </div>
-                    </div>
-                    <div class="team-member">
-                        <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Digital Editor">
-                        <h3>Rohit Singh</h3>
-                        <p class="position">Digital Content Head</p>
-                        <p class="bio">Leading our digital strategy including our popular Instagram news account, Rohit ensures our content reaches audiences across all platforms.</p>
-                        <div class="social-links">
-                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                            <a href="#"><i class="fab fa-instagram"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Contact CTA -->
-            <section class="contact-cta">
-                <div class="cta-content">
-                    <h2>Partner With BizzShort</h2>
-                    <p>Join hands with BizzShort to share your business story, market insights, and industry expertise with India's business community. Whether you're looking to feature your company, share thought leadership, or advertise your services, we're here to help amplify your brand.</p>
-                    <div class="cta-buttons">
-                        <a href="contact.html" class="cta-button primary">Get In Touch</a>
-                        <a href="analytics.html" class="cta-button secondary">View Analytics</a>
-                    </div>
-                </div>
-            </section>
-
-        </div>
-    </main>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>BizzShort</h3>
-                    <p>Your premier source for business news, market updates, and industry insights. Stay ahead with the latest developments in the Indian business landscape.</p>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-whatsapp"></i></a>
-                    </div>
-                </div>
-                <div class="footer-section">
-                    <h3>Quick Links</h3>
-                    <ul>
-                        <li><a href="about.html">About Us</a></li>
-                        <li><a href="contact.html">Contact Us</a></li>
-                        <li><a href="analytics.html">Analytics</a></li>
-                        <li><a href="mailto:advertising@bizzshort.com">Advertise With Us</a></li>
-                        <li><a href="#" onclick="showPrivacyPolicy()">Privacy Policy</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h3>Categories</h3>
-                    <ul>
-                        <li><a href="#trending">Trending News</a></li>
-                        <li><a href="#business-news">Business News</a></li>
-                        <li><a href="#market-updates">Market Updates</a></li>
-                        <li><a href="#interviews">Interviews</a></li>
-                        <li><a href="blog.html">Blog</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h3>Contact Info</h3>
-                    <div class="contact-info">
-                        <p><i class="fas fa-phone"></i> +91 9876543210</p>
-                        <p><i class="fas fa-envelope"></i> info@bizzshort.com</p>
-                        <p><i class="fas fa-map-marker-alt"></i> B-64, Sector 65, Noida, Uttar Pradesh</p>
+                    <div class="stat-card">
+                        <div class="stat-number">150+</div>
+                        <div class="stat-label">Industry Awards</div>
                     </div>
                 </div>
             </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 BizzShort. All rights reserved. | Your Business News Partner</p>
+        </section>
+
+        <!-- Our Values -->
+        <section class="content-section-page alt-bg">
+            <div class="container">
+                <div class="section-header" style="text-align: center;">
+                    <h2 class="section-title">Our Core Values</h2>
+                </div>
+                <div class="values-grid">
+                    <div class="value-card">
+                        <div class="value-icon"><i class="fas fa-bullseye"></i></div>
+                        <h3>Accuracy First</h3>
+                        <p>We verify every fact, cross-check every source, and maintain the highest standards of journalistic integrity in all our reporting.</p>
+                    </div>
+                    <div class="value-card">
+                        <div class="value-icon"><i class="fas fa-bolt"></i></div>
+                        <h3>Speed & Timeliness</h3>
+                        <p>In business, timing is everything. We deliver breaking news and market updates in real-time, keeping you ahead of the curve.</p>
+                    </div>
+                    <div class="value-card">
+                        <div class="value-icon"><i class="fas fa-users"></i></div>
+                        <h3>Reader-Centric</h3>
+                        <p>Your needs drive our content. We focus on stories that impact your business decisions and professional growth.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Our Team -->
+        <section class="content-section-page">
+            <div class="container">
+                <div class="section-header" style="text-align: center;">
+                    <h2 class="section-title">Meet Our Leadership Team</h2>
+                </div>
+                <div class="team-grid">
+                    <div class="team-member">
+                        <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="CEO">
+                        <h4>Rajesh Kumar</h4>
+                        <p>Founder & CEO</p>
+                        <div class="social-icons">
+                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+                    <div class="team-member">
+                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Editor">
+                        <h4>Priya Sharma</h4>
+                        <p>Chief Editor</p>
+                        <div class="social-icons">
+                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+                    <div class="team-member">
+                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="CTO">
+                        <h4>Amit Patel</h4>
+                        <p>Chief Technology Officer</p>
+                        <div class="social-icons">
+                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+                    <div class="team-member">
+                        <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="CMO">
+                        <h4>Sneha Reddy</h4>
+                        <p>Chief Marketing Officer</p>
+                        <div class="social-icons">
+                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Advertise Section -->
+        <section id="advertise" class="content-section-page alt-bg">
+            <div class="container">
+                <div class="about-content">
+                    <div class="about-text">
+                        <h2>Advertise With Us</h2>
+                        <p><strong>Reach 5 Million+ Business Professionals</strong></p>
+                        <p>BizzShort offers unparalleled access to decision-makers, entrepreneurs, investors, and business leaders across India. Our audience includes C-suite executives, startup founders, and industry professionals who are actively seeking business solutions.</p>
+                        
+                        <h3 style="font-size: 24px; margin-top: 30px; margin-bottom: 15px; color: #2c3e50;">Advertising Options</h3>
+                        <ul style="list-style: none; padding: 0; margin: 0;">
+                            <li style="padding: 12px 0; border-bottom: 1px solid #ecf0f1; font-size: 16px;">
+                                <i class="fas fa-check-circle" style="color: #27ae60; margin-right: 10px;"></i>
+                                <strong>Display Advertising</strong> - Banner ads, native ads, sponsored content
+                            </li>
+                            <li style="padding: 12px 0; border-bottom: 1px solid #ecf0f1; font-size: 16px;">
+                                <i class="fas fa-check-circle" style="color: #27ae60; margin-right: 10px;"></i>
+                                <strong>Video Advertising</strong> - Pre-roll, mid-roll, and branded video content
+                            </li>
+                            <li style="padding: 12px 0; border-bottom: 1px solid #ecf0f1; font-size: 16px;">
+                                <i class="fas fa-check-circle" style="color: #27ae60; margin-right: 10px;"></i>
+                                <strong>Sponsored Features</strong> - Branded articles, case studies, whitepapers
+                            </li>
+                            <li style="padding: 12px 0; border-bottom: 1px solid #ecf0f1; font-size: 16px;">
+                                <i class="fas fa-check-circle" style="color: #27ae60; margin-right: 10px;"></i>
+                                <strong>Newsletter Sponsorship</strong> - Reach 2M+ email subscribers
+                            </li>
+                            <li style="padding: 12px 0; font-size: 16px;">
+                                <i class="fas fa-check-circle" style="color: #27ae60; margin-right: 10px;"></i>
+                                <strong>Event Sponsorship</strong> - Exclusive branding at our business summits
+                            </li>
+                        </ul>
+                        
+                        <div style="margin-top: 30px;">
+                            <a href="contact.html" style="display: inline-block; background: #e74c3c; color: white; padding: 15px 40px; border-radius: 8px; font-weight: 600; text-decoration: none; transition: all 0.3s ease;">
+                                <i class="fas fa-envelope"></i> Contact Sales Team
+                            </a>
+                            <p style="margin-top: 15px; font-size: 14px;">Email: <a href="mailto:advertising@bizzshort.com" style="color: #e74c3c;">advertising@bizzshort.com</a> | Phone: +91 9876543210</p>
+                        </div>
+                    </div>
+                    <div class="about-image">
+                        <img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Advertising">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Company Policy Section -->
+        <section id="policy" class="content-section-page">
+            <div class="container">
+                <div class="section-header" style="text-align: center; margin-bottom: 50px;">
+                    <h2 class="section-title">Company Policies</h2>
+                </div>
+                
+                <div style="max-width: 900px; margin: 0 auto;">
+                    <div style="background: white; padding: 40px; border-radius: 12px; box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08); margin-bottom: 30px;">
+                        <h3 style="font-size: 26px; font-weight: 700; color: #2c3e50; margin-bottom: 20px;">
+                            <i class="fas fa-shield-alt" style="color: #e74c3c; margin-right: 10px;"></i>
+                            Privacy Policy
+                        </h3>
+                        <p style="font-size: 15px; line-height: 1.8; color: #7f8c8d; margin-bottom: 15px;">
+                            At BizzShort, we take your privacy seriously. We collect and use personal information only to provide better services, personalized content, and improve user experience. We never sell your data to third parties.
+                        </p>
+                        <p style="font-size: 15px; line-height: 1.8; color: #7f8c8d; margin-bottom: 15px;">
+                            <strong>Data Collection:</strong> We collect basic information such as name, email, browsing behavior, and preferences to deliver relevant content and advertisements.
+                        </p>
+                        <p style="font-size: 15px; line-height: 1.8; color: #7f8c8d;">
+                            <strong>Data Protection:</strong> All data is encrypted and stored securely. We comply with GDPR and Indian data protection regulations.
+                        </p>
+                    </div>
+                    
+                    <div style="background: white; padding: 40px; border-radius: 12px; box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08); margin-bottom: 30px;">
+                        <h3 style="font-size: 26px; font-weight: 700; color: #2c3e50; margin-bottom: 20px;">
+                            <i class="fas fa-file-contract" style="color: #e74c3c; margin-right: 10px;"></i>
+                            Terms of Service
+                        </h3>
+                        <p style="font-size: 15px; line-height: 1.8; color: #7f8c8d; margin-bottom: 15px;">
+                            By accessing BizzShort, you agree to our terms of service. All content is provided for informational purposes only and should not be considered financial or investment advice.
+                        </p>
+                        <p style="font-size: 15px; line-height: 1.8; color: #7f8c8d; margin-bottom: 15px;">
+                            <strong>Content Usage:</strong> All articles, images, and multimedia content are copyrighted. Reproduction without permission is prohibited.
+                        </p>
+                        <p style="font-size: 15px; line-height: 1.8; color: #7f8c8d;">
+                            <strong>User Conduct:</strong> Users must not post spam, offensive content, or engage in activities that violate our community guidelines.
+                        </p>
+                    </div>
+                    
+                    <div style="background: white; padding: 40px; border-radius: 12px; box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08); margin-bottom: 30px;">
+                        <h3 style="font-size: 26px; font-weight: 700; color: #2c3e50; margin-bottom: 20px;">
+                            <i class="fas fa-pen-fancy" style="color: #e74c3c; margin-right: 10px;"></i>
+                            Editorial Policy
+                        </h3>
+                        <p style="font-size: 15px; line-height: 1.8; color: #7f8c8d; margin-bottom: 15px;">
+                            BizzShort maintains strict editorial independence. Our journalists and editors follow rigorous fact-checking procedures and ethical guidelines.
+                        </p>
+                        <p style="font-size: 15px; line-height: 1.8; color: #7f8c8d; margin-bottom: 15px;">
+                            <strong>Accuracy:</strong> We verify all facts through multiple sources and make corrections promptly when errors are identified.
+                        </p>
+                        <p style="font-size: 15px; line-height: 1.8; color: #7f8c8d;">
+                            <strong>Transparency:</strong> Sponsored content and advertisements are clearly labeled. Our editorial content is never influenced by advertisers.
+                        </p>
+                    </div>
+                    
+                    <div style="background: white; padding: 40px; border-radius: 12px; box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);">
+                        <h3 style="font-size: 26px; font-weight: 700; color: #2c3e50; margin-bottom: 20px;">
+                            <i class="fas fa-cookie-bite" style="color: #e74c3c; margin-right: 10px;"></i>
+                            Cookie Policy
+                        </h3>
+                        <p style="font-size: 15px; line-height: 1.8; color: #7f8c8d; margin-bottom: 15px;">
+                            We use cookies to enhance your browsing experience, analyze site traffic, and deliver personalized content.
+                        </p>
+                        <p style="font-size: 15px; line-height: 1.8; color: #7f8c8d; margin-bottom: 15px;">
+                            <strong>Types of Cookies:</strong> Essential cookies (required for site functionality), analytics cookies (track usage patterns), and advertising cookies (deliver relevant ads).
+                        </p>
+                        <p style="font-size: 15px; line-height: 1.8; color: #7f8c8d;">
+                            <strong>Managing Cookies:</strong> You can control cookie preferences through your browser settings. Disabling cookies may affect site functionality.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <p class="footer-copyright">&copy; 2025 BizzShort. All rights reserved.</p>
+                <p class="footer-tagline">Your trusted source for business news and market insights</p>
+                <div class="footer-admin-link">
+                    <a href="admin-login.html" style="color: #e74c3c; font-weight: 600; text-decoration: none; font-size: 14px; display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; background: rgba(231, 76, 60, 0.1); border-radius: 5px; transition: all 0.3s ease;">
+                        <i class="fas fa-lock"></i> Admin Access
+                    </a>
+                </div>
+            </div>
+            <div class="footer-links" style="margin-top: 20px; text-align: center;">
+                <a href="index.html" style="color: #7f8c8d; margin: 0 15px; text-decoration: none; transition: color 0.3s;">Home</a>
+                <a href="about.html" style="color: #7f8c8d; margin: 0 15px; text-decoration: none; transition: color 0.3s;">About Us</a>
+                <a href="about.html#advertise" style="color: #7f8c8d; margin: 0 15px; text-decoration: none; transition: color 0.3s;">Advertise</a>
+                <a href="about.html#policy" style="color: #7f8c8d; margin: 0 15px; text-decoration: none; transition: color 0.3s;">Privacy Policy</a>
+                <a href="contact.html" style="color: #7f8c8d; margin: 0 15px; text-decoration: none; transition: color 0.3s;">Contact</a>
             </div>
         </div>
     </footer>
 
-    <script src="assets/js/api.js"></script>
-    <script src="assets/js/language.js"></script>
-    <script src="assets/js/script.js"></script>
-    <script src="assets/js/search.js"></script>
-    <script src="assets/js/enhanced-features.js"></script>
-    <script src="assets/js/enhanced.js"></script>
+    <script src="assets/js/market-data.js"></script>
 </body>
 </html>

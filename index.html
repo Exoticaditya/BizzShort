@@ -1,19 +1,16 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BizzShort - Latest Business News & Updates</title>
-    <link rel="stylesheet" href="assets/css/modern-design.css">
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="assets/css/additional.css">
-    <link rel="stylesheet" href="assets/css/responsive.css">
-    <link rel="stylesheet" href="assets/css/ad-controls.css">
-    <link rel="stylesheet" href="assets/css/enhanced-features.css">
-    <link rel="stylesheet" href="assets/css/animations.css">
-    <link rel="stylesheet" href="assets/css/fixes.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/main-style.css">
+    <link rel="stylesheet" href="assets/css/wirecable-grid.css">
+    <link rel="stylesheet" href="assets/css/market-sections.css">
     <meta name="description" content="BizzShort - Your go-to source for latest business news, market updates, and industry insights">
     <meta name="keywords" content="business news, market updates, startup news, Indian business, stock market, corporate news">
     <meta name="author" content="BizzShort">
@@ -26,1090 +23,983 @@
     <meta name="twitter:description" content="Latest business news, market updates, and industry insights">
 </head>
 <body>
+    <!-- Side Advertisement Wrappers -->
+    <div class="page-wrapper-with-ads">
+        <!-- Left Side Advertisement -->
+        <aside class="side-ad left-ad">
+            <div class="ad-sticky">
+                <div class="ad-label">Advertisement</div>
+                <img src="https://via.placeholder.com/300x600/2c3e50/ffffff?text=Ad+Space+300x600" alt="Advertisement">
+                <div class="ad-space" style="margin-top: 20px;">
+                    <img src="https://via.placeholder.com/300x250/34495e/ffffff?text=Ad+Space+300x250" alt="Advertisement">
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Wrapper -->
+        <div class="main-content-wrapper">
     <!-- Header -->
     <header class="header">
-        <div class="header-top">
+        <!-- Top Section: Logo & Advertisement Banner -->
+        <div class="header-top-section">
             <div class="container">
-                <div class="header-top-content">
-                    <div class="contact-info">
-                        <span><i class="fas fa-phone"></i> <a href="tel:+919876543210">+91 9876543210</a></span>
-                        <span><i class="fas fa-envelope"></i> <a href="mailto:info@bizzshort.com">info@bizzshort.com</a></span>
-                        <span><i class="fas fa-map-marker-alt"></i> B-64, Sector 65, Noida</span>
-                    </div>
-                    <div class="social-links">
-                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                        <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                <div class="logo-ad-wrapper">
+                    <!-- Logo on Left -->
+                    <a href="index.html" class="logo">
+                        <img src="assets/images/logo.jpeg" alt="BizzShort Logo" class="logo-img">
+                        <div class="logo-text">
+                            <h1>BizzShort</h1>
+                            <p>IN SECONDS, SAY WHAT MATTERS</p>
+                        </div>
+                    </a>
+                    
+                    <!-- Advertisement Banner on Right -->
+                    <div class="ad-banner-container">
+                        <img src="https://via.placeholder.com/970x90/34495e/ffffff?text=Advertisement+970x90" alt="Advertisement" class="top-ad-banner">
                     </div>
                 </div>
             </div>
         </div>
         
-        <div class="header-main">
+        <!-- Thick Navigation Bar -->
+        <div class="navbar-section">
             <div class="container">
-                <div class="header-content">
-                    <a href="index.html" class="logo">
-                        <div class="logo-container">
-                            <img src="assets/images/logo.svg" alt="BizzShort Logo" class="logo-img">
-                            <div class="logo-text">
-                                <h1>BizzShort</h1>
-                                <p>Business News & Market Insights</p>
-                            </div>
-                        </div>
-                    </a>
-                    <nav class="main-nav">
-                        <ul>
-                            <li><a href="index.html" class="active" data-i18n="nav.home">Home</a></li>
-                            <li><a href="#trending" data-i18n="home.trending">Trending Now</a></li>
-                            <li><a href="#business-news">Business</a></li>
-                            <li><a href="#market-updates">Markets</a></li>
-                            <li><a href="#tech-news">Tech</a></li>
-                            <li><a href="blog.html" data-i18n="nav.blog">Blog</a></li>
-                            <li><a href="analytics.html" data-i18n="nav.analytics">Analytics</a></li>
-                            <li><a href="contact.html" data-i18n="nav.contact">Contact</a></li>
-                        </ul>
-                    </nav>
-                    <div class="mobile-menu-toggle">
+                <nav class="main-nav">
+                    <ul>
+                        <li><a href="index.html" class="active">Home</a></li>
+                        <li><a href="#latest-news">Latest News</a></li>
+                        <li><a href="#top-companies">Top Companies</a></li>
+                        <li><a href="#sectors">Sectors</a></li>
+                        <li><a href="#interviews">Interviews</a></li>
+                        <li><a href="#events">Events</a></li>
+                        <li><a href="#analysis">Analysis</a></li>
+                        <li><a href="#videos">Videos</a></li>
+                        <li><a href="#advertise">Advertise</a></li>
+                        <li><a href="about.html">About</a></li>
+                    </ul>
+                    <div class="mobile-menu-toggle" onclick="toggleMobileMenu()">
                         <span></span>
                         <span></span>
                         <span></span>
                     </div>
-                </div>
+                </nav>
             </div>
         </div>
     </header>
 
-    <!-- Hero Section with Featured Stories -->
-    <section class="hero-section">
+    <!-- Main Content -->
+    <main class="main-content">
         <div class="container">
-            <div class="hero-grid">
-                <!-- Main Featured Story -->
-                <div class="hero-main">
-                    <div class="hero-image">
-                        <img src="https://images.unsplash.com/photo-1611224923853-80b023f02d71?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Stock Market Growth">
-                        <div class="hero-overlay">
-                            <span class="category-badge">BREAKING NEWS</span>
-                            <h2>Indian Stock Market Hits New All-Time High as IT Sector Surges</h2>
-                            <p>Sensex crosses 85,000 mark for the first time driven by strong quarterly earnings from major tech companies and positive global sentiment.</p>
-                            <div class="hero-meta">
-                                <span><i class="far fa-calendar"></i> November 30, 2025</span>
+            <!-- Breaking News with Market Sidebar Layout -->
+            <div class="content-with-sidebar">
+                <!-- Main Content Area -->
+                <section class="breaking-news-section">
+                    <div class="breaking-header">
+                        <div class="breaking-icon"></div>
+                        <h2>Breaking News</h2>
+                    </div>
+                    
+                    <!-- Main Breaking Story -->
+                    <article class="main-breaking-story">
+                        <img src="https://images.unsplash.com/photo-1611224923853-80b023f02d71?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Indian Stock Market Reaches All-Time High">
+                        <div class="story-overlay">
+                            <span class="story-category">Markets</span>
+                            <h3>Indian Stock Market Hits New All-Time High as IT Sector Surges</h3>
+                            <div class="story-meta">
+                                <span><i class="far fa-calendar"></i> December 2, 2025</span>
                                 <span><i class="far fa-clock"></i> 5 min read</span>
                             </div>
                         </div>
+                    </article>
+                    
+                    <!-- News Cards (replacing market cards) -->
+                    <div class="news-cards-grid">
+                        <article class="news-card">
+                            <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Tech Innovation">
+                            <div class="news-card-content">
+                                <span class="news-category">Technology</span>
+                                <h4>AI Revolution Transforms Indian Startups</h4>
+                                <p>Leading startups embrace artificial intelligence to scale operations and improve customer experience.</p>
+                                <div class="news-meta">
+                                    <span><i class="far fa-clock"></i> 3 min read</span>
+                                </div>
+                            </div>
+                        </article>
+                        
+                        <article class="news-card">
+                            <img src="https://images.unsplash.com/photo-1579532537598-459ecdaf39cc?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Business Growth">
+                            <div class="news-card-content">
+                                <span class="news-category">Business</span>
+                                <h4>Indian Economy Shows Strong Recovery</h4>
+                                <p>GDP growth exceeds expectations with manufacturing sector leading the charge in Q4 2025.</p>
+                                <div class="news-meta">
+                                    <span><i class="far fa-clock"></i> 4 min read</span>
+                                </div>
+                            </div>
+                        </article>
+                        
+                        <article class="news-card">
+                            <img src="https://images.unsplash.com/photo-1559526324-4b87b5e36e44?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Investment Trends">
+                            <div class="news-card-content">
+                                <span class="news-category">Investment</span>
+                                <h4>Green Energy Investments Soar in India</h4>
+                                <p>Renewable energy sector attracts record foreign investments as sustainability becomes priority.</p>
+                                <div class="news-meta">
+                                    <span><i class="far fa-clock"></i> 5 min read</span>
+                                </div>
+                            </div>
+                        </article>
                     </div>
-                </div>
+                </section>
                 
-                <!-- Side Stories -->
-                <div class="hero-sidebar">
-                    <div class="trending-badge">
-                        <span>TRENDING</span>
+                <!-- Market Today Sidebar -->
+                <aside class="market-sidebar">
+                    <div class="sidebar-header">
+                        <h3>Market Today</h3>
                     </div>
-                    
-                    <article class="hero-side-story">
-                        <img src="https://images.unsplash.com/photo-1590479773265-7464e5d48118?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Startup Funding">
-                        <div class="story-content">
-                            <h3>Indian Startups Raise Record $12B in Funding This Quarter</h3>
-                            <span class="story-date">November 29, 2025</span>
-                        </div>
-                    </article>
-                    
-                    <article class="hero-side-story">
-                        <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Digital Banking">
-                        <div class="story-content">
-                            <h3>RBI Announces New Digital Banking Guidelines for 2026</h3>
-                            <span class="story-date">November 28, 2025</span>
-                        </div>
-                    </article>
-                    
-                    <article class="hero-side-story">
-                        <img src="https://images.unsplash.com/photo-1518186285589-2f7649de83e0?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Export Growth">
-                        <div class="story-content">
-                            <h3>India's Merchandise Exports Cross $450B Mark in FY25</h3>
-                            <span class="story-date">November 27, 2025</span>
-                        </div>
-                    </article>
-                    
-                    <div class="magazine-promo">
-                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="BizzShort E-Magazine">
-                        <div class="promo-content">
-                            <h4>BizzShort Weekly</h4>
-                            <p>Download our latest digital magazine featuring market analysis and business insights</p>
-                            <button class="download-btn">Download Now</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Content Sections -->
-    <main class="main-content">
-        <div class="container">
-            <!-- Most Viewed Section -->
-            <section class="content-section most-viewed">
-                <div class="section-header-bar">
-                    <h2>MOST VIEWED</h2>
-                </div>
-                <div class="content-grid-horizontal">
-                    <article class="featured-article">
-                        <img src="https://images.unsplash.com/photo-1590479773265-7464e5d48118?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Reliance Jio Business News">
-                        <div class="article-overlay">
-                            <h3>Reliance Jio Reports 35% Growth in Enterprise Revenue</h3>
-                            <span class="article-date">November 30, 2025</span>
-                        </div>
-                    </article>
-                    
-                    <article class="grid-article">
-                        <img src="https://images.unsplash.com/photo-1611224923853-80b023f02d71?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Stock Market Analysis">
-                        <div class="article-overlay">
-                            <h3>Indian Markets Outperform Global Peers with 28% YTD Returns</h3>
-                            <span class="article-date">November 29, 2025</span>
-                        </div>
-                    </article>
-                    
-                    <article class="grid-article">
-                        <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Fintech Innovation">
-                        <div class="article-overlay">
-                            <h3>PayTM Partners with 5 Major Banks for UPI Credit Services</h3>
-                            <span class="article-date">November 28, 2025</span>
-                        </div>
-                    </article>
-                    
-                    <article class="grid-article">
-                        <img src="https://images.unsplash.com/photo-1518186285589-2f7649de83e0?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="E-commerce Growth">
-                        <div class="article-overlay">
-                            <h3>Flipkart Plans $2B Investment in Supply Chain Infrastructure</h3>
-                            <span class="article-date">November 27, 2025</span>
-                        </div>
-                    </article>
-                    
-                    <article class="grid-article">
-                        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Tech IPO News">
-                        <div class="article-overlay">
-                            <h3>Zerodha Files for IPO, Valued at $8 Billion</h3>
-                            <span class="article-date">November 26, 2025</span>
-                        </div>
-                    </article>
-                </div>
-            </section>
-
-            <!-- Interviews Section -->
-            <section class="content-section interviews">
-                <div class="section-header-bar">
-                    <h2>INTERVIEWS</h2>
-                    <div class="nav-arrows">
-                        <button class="nav-prev">&lt;</button>
-                        <button class="nav-next">&gt;</button>
-                    </div>
-                </div>
-                <div class="interviews-slider">
-                    <article class="interview-card">
-                        <div class="video-thumbnail">
-                            <img src="https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg" alt="CEO Interview">
-                            <div class="play-button">
-                                <i class="fas fa-play"></i>
+                    <div class="market-cards-stack">
+                        <article class="market-card">
+                            <div class="market-card-header">
+                                <span class="market-icon">📈</span>
+                                <h4>Nifty 50</h4>
                             </div>
-                        </div>
-                        <div class="interview-content">
-                            <h3>Industry Leaders Discuss Digital Transformation Strategies</h3>
-                            <p>CEO of leading manufacturing company shares insights on implementing Industry 4.0 solutions and achieving operational excellence.</p>
-                            <span class="interview-date">November 27, 2025</span>
-                        </div>
-                    </article>
-                    
-                    <article class="interview-card">
-                        <div class="video-thumbnail">
-                            <img src="https://img.youtube.com/vi/ScMzIvxBSi4/maxresdefault.jpg" alt="Technology Expert Interview">
-                            <div class="play-button">
-                                <i class="fas fa-play"></i>
-                            </div>
-                        </div>
-                        <div class="interview-content">
-                            <h3>Future of Smart Manufacturing: Expert Insights</h3>
-                            <p>Technology experts discuss emerging trends in automation, AI integration, and sustainable manufacturing practices.</p>
-                            <span class="interview-date">November 26, 2025</span>
-                        </div>
-                    </article>
-                    
-                    <article class="interview-card">
-                        <div class="video-thumbnail">
-                            <img src="https://img.youtube.com/vi/9bZkp7q19f0/maxresdefault.jpg" alt="Innovation Discussion">
-                            <div class="play-button">
-                                <i class="fas fa-play"></i>
-                            </div>
-                        </div>
-                        <div class="interview-content">
-                            <h3>Innovation in Manufacturing: Success Stories</h3>
-                            <p>Successful manufacturers share their journey of innovation and how technology helped them achieve market leadership.</p>
-                            <span class="interview-date">November 25, 2025</span>
-                        </div>
-                    </article>
-                </div>
-            </section>
-
-            <!-- Latest News Section -->
-            <section class="content-section latest-news">
-                <div class="section-header-bar">
-                    <h2>LATEST NEWS</h2>
-                </div>
-                <div class="news-grid">
-                    <article class="news-item featured-news">
-                        <img src="https://images.unsplash.com/photo-1611224923853-80b023f02d71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Market Rally">
-                        <div class="news-content">
-                            <span class="news-category">MARKET NEWS</span>
-                            <h3>Sensex Surges 800 Points as Banking Stocks Lead Rally</h3>
-                            <p>Indian equity markets witnessed a strong rally driven by banking and financial services stocks. RBI's dovish stance on interest rates and positive global cues boosted investor sentiment across sectors.</p>
-                            <div class="news-meta">
-                                <span><i class="far fa-calendar"></i> November 30, 2025</span>
-                                <span><i class="far fa-eye"></i> 25.8k views</span>
-                            </div>
-                        </div>
-                    </article>
-                    
-                    <div class="news-sidebar">
-                        <article class="news-item-small">
-                            <img src="https://images.unsplash.com/photo-1590479773265-7464e5d48118?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Startup Funding">
-                            <div class="news-content-small">
-                                <h4>Indian Startups Secure $12B Funding in Q4 2025</h4>
-                                <span class="news-date">November 29, 2025</span>
+                            <div class="market-card-content">
+                                <div class="market-value" id="nifty-value">₹24,350</div>
+                                <div class="market-change positive" id="nifty-change">+2.5%</div>
+                                <p id="nifty-note">Record High of 24,350</p>
                             </div>
                         </article>
                         
-                        <article class="news-item-small">
-                            <img src="https://images.unsplash.com/photo-1518186285589-2f7649de83e0?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Export Growth">
-                            <div class="news-content-small">
-                                <h4>India's Service Exports Cross $350B Mark</h4>
-                                <span class="news-date">November 28, 2025</span>
+                        <article class="market-card">
+                            <div class="market-card-header">
+                                <span class="market-icon">📊</span>
+                                <h4>Sensex</h4>
+                            </div>
+                            <div class="market-card-content">
+                                <div class="market-value" id="sensex-value">₹85,200</div>
+                                <div class="market-change positive" id="sensex-change">+1.8%</div>
+                                <p id="sensex-note">Strong IT Earnings Boost</p>
                             </div>
                         </article>
                         
-                        <article class="news-item-small">
-                            <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Digital Banking">
-                            <div class="news-content-small">
-                                <h4>RBI Launches Central Bank Digital Currency Pilot</h4>
-                                <span class="news-date">November 27, 2025</span>
+                        <article class="market-card">
+                            <div class="market-card-header">
+                                <span class="market-icon">💰</span>
+                                <h4>FII Inflow</h4>
+                            </div>
+                            <div class="market-card-content">
+                                <div class="market-value" id="fii-value">₹12K Cr</div>
+                                <div class="market-change positive" id="fii-change">+15%</div>
+                                <p id="fii-note">Foreign Investment Surge</p>
                             </div>
                         </article>
-                        
-                        <article class="news-item-small">
-                            <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Tech IPO">
-                            <div class="news-content-small">
-                                <h4>5 Major Tech IPOs Expected in Early 2026</h4>
-                                <span class="news-date">November 26, 2025</span>
-                            </div>
-                        </article>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Advertisement Banner -->
-            <section class="ad-banner-section" id="mainAdBanner">
-                <div class="container">
-                    <div class="ad-banner">
-                        <button class="ad-hide-btn" onclick="hideAd('mainAdBanner')" aria-label="Hide advertisement" title="Hide this ad">
-                            <i class="fas fa-times"></i>
-                        </button>
-                        <div class="ad-placeholder">
-                            <span>Advertisement</span>
-                            <p>Your business ad here - Contact us for advertising opportunities</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Business News Categories -->
-            <section class="content-section news-categories">
-                <div class="section-header-bar">
-                    <h2>BUSINESS NEWS</h2>
-                </div>
-                <div class="category-tabs">
-                    <button class="tab-btn active" data-tab="markets">Markets</button>
-                    <button class="tab-btn" data-tab="startups">Startups</button>
-                    <button class="tab-btn" data-tab="economy">Economy</button>
-                    <button class="tab-btn" data-tab="policy">Policy</button>
-                </div>
-                <div class="tab-content">
-                    <div id="markets" class="tab-panel active">
-                        <div class="news-grid-small">
-                            <article class="news-card">
-                                <img src="https://images.unsplash.com/photo-1611224923853-80b023f02d71?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Market Update">
-                                <div class="card-content">
-                                    <h4>Nifty 50 Touches 24,000 Mark, Banking Stocks Surge</h4>
-                                    <p class="excerpt">Banking sector leads the rally as investors bet on interest rate cuts...</p>
-                                    <span class="date">Nov 30, 2025</span>
-                                </div>
-                            </article>
-                            <article class="news-card">
-                                <img src="https://images.unsplash.com/photo-1590479773265-7464e5d48118?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="IPO News">
-                                <div class="card-content">
-                                    <h4>Swiggy IPO Subscribed 3.5x on Day 2</h4>
-                                    <p class="excerpt">Food delivery giant's public offering sees strong investor response...</p>
-                                    <span class="date">Nov 29, 2025</span>
-                                </div>
-                            </article>
-                            <article class="news-card">
-                                <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Crypto News">
-                                <div class="card-content">
-                                    <h4>Bitcoin Crosses $95,000 Amid ETF Approvals</h4>
-                                    <p class="excerpt">Cryptocurrency markets rally following regulatory clarity...</p>
-                                    <span class="date">Nov 28, 2025</span>
-                                </div>
-                            </article>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Sidebar with Ads -->
-            <aside class="sidebar-ads" id="sidebarAds">
-                <div class="ad-widget" id="sidebarAd1">
-                    <button class="ad-hide-btn sidebar-hide" onclick="hideAd('sidebarAd1')" aria-label="Hide advertisement" title="Hide this ad">
-                        <i class="fas fa-times"></i>
-                    </button>
-                    <h4>Sponsored</h4>
-                    <div class="ad-space">
-                        <img src="https://via.placeholder.com/300x250/f0f0f0/666?text=Ad+Space+Available" alt="Advertisement" loading="lazy">
-                    </div>
-                </div>
-                <div class="ad-widget" id="sidebarAd2">
-                    <button class="ad-hide-btn sidebar-hide" onclick="hideAd('sidebarAd2')" aria-label="Hide advertisement" title="Hide this ad">
-                        <i class="fas fa-times"></i>
-                    </button>
-                    <div class="ad-space">
-                        <img src="https://via.placeholder.com/300x250/f0f0f0/666?text=Your+Business+Here" alt="Advertisement" loading="lazy">
-                    </div>
-                </div>
-            </aside>
-        </div>
-    </main>
-                                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="CEO Client Interview">
-                                </a>
-                                <div class="article-content">
-                                    <span class="category">Leadership</span>
-                                    <h3><a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" rel="noopener noreferrer">CEO Rajesh Sharma on Digital Transformation Success</a></h3>
-                                    <p>Rajesh Sharma, CEO of TechManufacturing Ltd, shares insights on digital transformation success: "Our latest Industry 4.0 implementation has improved production efficiency by 45% and significantly reduced operational costs through smart manufacturing solutions..."</p>
-                                    <div class="article-meta">
-                                        <span><i class="far fa-calendar"></i> November 20, 2025</span>
-                                        <span><i class="fab fa-youtube"></i> YouTube Interview</span>
-                                        <div class="social-share">
-                                            <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                            <a href="#"><i class="fab fa-twitter"></i></a>
-                                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </article>
-
-                            <article class="article-card">
-                                <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" rel="noopener noreferrer">
-                                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Technology Director Interview">
-                                </a>
-                                <div class="article-content">
-                                    <span class="category">Innovation</span>
-                                    <h3><a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" rel="noopener noreferrer">Tech Director Priya Mehta: AI Implementation Journey</a></h3>
-                                    <p>Priya Mehta, Technology Director at AutoParts Solutions, discusses AI-powered quality control systems: "Our new AI implementation has improved defect detection by 60% and enhanced customer satisfaction through predictive quality management..."</p>
-                                    <div class="article-meta">
-                                        <span><i class="far fa-calendar"></i> November 18, 2025</span>
-                                        <span><i class="fab fa-youtube"></i> YouTube Interview</span>
-                                        <div class="social-share">
-                                            <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                            <a href="#"><i class="fab fa-twitter"></i></a>
-                                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </article>
-
-                            <article class="article-card">
-                                <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" rel="noopener noreferrer">
-                                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Manufacturing Head Interview">
-                                </a>
-                                <div class="article-content">
-                                    <span class="category">Success Story</span>
-                                    <h3><a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" rel="noopener noreferrer">Sunita Patel: Sustainable Manufacturing Success</a></h3>
-                                    <p>Sunita Patel, Head of Manufacturing at GreenTech Industries, shares sustainable manufacturing insights: "Our transformative journey in sustainable manufacturing reduced waste by 50% while maintaining production quality and exceeding environmental standards..."</p>
-                                    <div class="article-meta">
-                                        <span><i class="far fa-calendar"></i> November 16, 2025</span>
-                                        <span><i class="fab fa-youtube"></i> YouTube Interview</span>
-                                        <div class="social-share">
-                                            <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                            <a href="#"><i class="fab fa-twitter"></i></a>
-                                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </article>
-
-                            <article class="article-card">
-                                <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" rel="noopener noreferrer">
-                                    <img src="https://images.unsplash.com/photo-1556157382-97eda2d62296?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Operations Manager Interview">
-                                </a>
-                                <div class="article-content">
-                                    <span class="category">Operational Excellence</span>
-                                    <h3><a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" rel="noopener noreferrer">Amit Kumar: IoT Integration and Smart Factory</a></h3>
-                                    <p>Amit Kumar, Operations Manager at SmartFab Solutions, explains IoT transformation: "Our traditional factory's transformation into a smart manufacturing facility achieved real-time monitoring and predictive maintenance capabilities through advanced IoT integration..."</p>
-                                    <div class="article-meta">
-                                        <span><i class="far fa-calendar"></i> November 14, 2025</span>
-                                        <span><i class="fab fa-youtube"></i> YouTube Interview</span>
-                                        <div class="social-share">
-                                            <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                            <a href="#"><i class="fab fa-twitter"></i></a>
-                                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </article>
-                        </div>
-                    </section>
-
-                    <!-- Tech Articles Section -->
-                    <section class="content-section" id="tech-articles">
-                        <div class="section-header">
-                            <h2>Technical Articles</h2>
-                            <div class="section-line"></div>
-                        </div>
-                        <div class="articles-grid">
-                            <article class="article-card">
-                                <img src="https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Advanced Manufacturing">
-                                <div class="article-content">
-                                    <span class="category">Technology</span>
-                                    <h3>Advanced Manufacturing Processes: Industry 4.0 Implementation</h3>
-                                    <p>Deep dive into modern manufacturing technologies including AI, IoT, and automation systems transforming production lines. Learn how smart factories are revolutionizing efficiency, quality control, and predictive maintenance across industries.</p>
-                                    <div class="article-meta">
-                                        <span><i class="far fa-calendar"></i> November 15, 2025</span>
-                                        <span><i class="far fa-eye"></i> 3.2k views</span>
-                                        <div class="social-share">
-                                            <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                            <a href="#"><i class="fab fa-twitter"></i></a>
-                                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </article>
-
-                            <article class="article-card">
-                                <img src="https://images.unsplash.com/photo-1587560699334-cc4ff634909a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Quality Control">
-                                <div class="article-content">
-                                    <span class="category">Quality</span>
-                                    <h3>AI-Powered Quality Control Systems: The Future of Manufacturing</h3>
-                                    <p>Comprehensive guide to implementing AI-driven quality control systems using machine learning algorithms, computer vision, and real-time data analysis for zero-defect manufacturing and enhanced customer satisfaction.</p>
-                                    <div class="article-meta">
-                                        <span><i class="far fa-calendar"></i> November 12, 2025</span>
-                                        <span><i class="far fa-eye"></i> 2.8k views</span>
-                                        <div class="social-share">
-                                            <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                            <a href="#"><i class="fab fa-twitter"></i></a>
-                                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </article>
-
-                            <article class="article-card">
-                                <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Green Technology">
-                                <div class="article-content">
-                                    <span class="category">Sustainability</span>
-                                    <h3>Green Manufacturing: Sustainable Technology Solutions</h3>
-                                    <p>Exploring eco-friendly manufacturing processes, renewable energy integration, waste reduction technologies, and circular economy principles that help manufacturers achieve environmental compliance while maintaining profitability.</p>
-                                    <div class="article-meta">
-                                        <span><i class="far fa-calendar"></i> November 10, 2025</span>
-                                        <span><i class="far fa-eye"></i> 2.1k views</span>
-                                        <div class="social-share">
-                                            <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                            <a href="#"><i class="fab fa-twitter"></i></a>
-                                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </article>
-
-                            <article class="article-card">
-                                <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Robotics">
-                                <div class="article-content">
-                                    <span class="category">Robotics</span>
-                                    <h3>Industrial Robotics: Automation Revolution in Manufacturing</h3>
-                                    <p>How robotic systems are enhancing precision, speed, and safety in manufacturing operations. Detailed analysis of collaborative robots (cobots), autonomous systems, and human-robot interaction in modern factories.</p>
-                                    <div class="article-meta">
-                                        <span><i class="far fa-calendar"></i> November 8, 2025</span>
-                                        <span><i class="far fa-eye"></i> 1.9k views</span>
-                                        <div class="social-share">
-                                            <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                            <a href="#"><i class="fab fa-twitter"></i></a>
-                                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </article>
-
-                            <article class="article-card">
-                                <img src="https://images.unsplash.com/photo-1559028006-448665bd7c7f?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Data Analytics">
-                                <div class="article-content">
-                                    <span class="category">Analytics</span>
-                                    <h3>Big Data Analytics in Manufacturing: Driving Operational Excellence</h3>
-                                    <p>Leveraging big data, machine learning, and predictive analytics to optimize production processes, reduce downtime, improve supply chain efficiency, and enable data-driven decision making in manufacturing operations.</p>
-                                    <div class="article-meta">
-                                        <span><i class="far fa-calendar"></i> November 6, 2025</span>
-                                        <span><i class="far fa-eye"></i> 2.4k views</span>
-                                        <div class="social-share">
-                                            <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                            <a href="#"><i class="fab fa-twitter"></i></a>
-                                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </article>
-
-                            <article class="article-card">
-                                <img src="https://images.unsplash.com/photo-1581092921461-eab62e97a780?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="3D Printing">
-                                <div class="article-content">
-                                    <span class="category">3D Printing</span>
-                                    <h3>Additive Manufacturing: The Future of Custom Production</h3>
-                                    <p>Exploring 3D printing technologies, advanced materials innovation, and applications in rapid prototyping, custom manufacturing, and on-demand production. Case studies from aerospace, automotive, and medical device industries.</p>
-                                    <div class="article-meta">
-                                        <span><i class="far fa-calendar"></i> November 4, 2025</span>
-                                        <span><i class="far fa-eye"></i> 1.7k views</span>
-                                        <div class="social-share">
-                                            <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                            <a href="#"><i class="fab fa-twitter"></i></a>
-                                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </article>
-
-                            <article class="article-card">
-                                <img src="https://images.unsplash.com/photo-1504384764586-bb4cdc1707b0?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Cybersecurity Manufacturing">
-                                <div class="article-content">
-                                    <span class="category">Cybersecurity</span>
-                                    <h3>Industrial Cybersecurity: Protecting Smart Manufacturing</h3>
-                                    <p>Essential cybersecurity strategies for protecting connected manufacturing systems, securing IoT devices, and preventing industrial cyber attacks. Learn about OT security frameworks and incident response protocols.</p>
-                                    <div class="article-meta">
-                                        <span><i class="far fa-calendar"></i> November 2, 2025</span>
-                                        <span><i class="far fa-eye"></i> 2.9k views</span>
-                                        <div class="social-share">
-                                            <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                            <a href="#"><i class="fab fa-twitter"></i></a>
-                                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </article>
-
-                            <article class="article-card">
-                                <img src="https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Supply Chain Technology">
-                                <div class="article-content">
-                                    <span class="category">Supply Chain</span>
-                                    <h3>Digital Supply Chain Transformation: End-to-End Visibility</h3>
-                                    <p>Revolutionary approaches to supply chain management using blockchain, AI-powered forecasting, and real-time tracking systems. Discover how digital transformation creates resilient and transparent supply networks.</p>
-                                    <div class="article-meta">
-                                        <span><i class="far fa-calendar"></i> October 31, 2025</span>
-                                        <span><i class="far fa-eye"></i> 3.5k views</span>
-                                        <div class="social-share">
-                                            <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                            <a href="#"><i class="fab fa-twitter"></i></a>
-                                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </article>
-
-                            <article class="article-card">
-                                <img src="https://images.unsplash.com/photo-1559028006-448665bd7c7f?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Sustainability Technology">
-                                <div class="article-content">
-                                    <span class="category">Sustainability</span>
-                                    <h3>Circular Economy in Manufacturing: Zero Waste Goals</h3>
-                                    <p>Implementing circular economy principles to achieve zero waste manufacturing. Learn about resource optimization, material recycling, and sustainable production techniques that reduce environmental impact while increasing profitability.</p>
-                                    <div class="article-meta">
-                                        <span><i class="far fa-calendar"></i> October 29, 2025</span>
-                                        <span><i class="far fa-eye"></i> 2.8k views</span>
-                                        <div class="social-share">
-                                            <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                            <a href="#"><i class="fab fa-twitter"></i></a>
-                                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </article>
-                        </div>
-                    </section>
-
-                    <!-- Industry Watch Section -->
-                    <section class="content-section" id="news">
-                        <div class="section-header">
-                            <h2>Latest News</h2>
-                            <div class="section-line"></div>
-                        </div>
-                        <div class="articles-grid">
-                            <article class="article-card">
-                                <img src="https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Digital Transformation News">
-                                <div class="article-content">
-                                    <span class="category">Breaking News</span>
-                                    <h3>Digital Transformation Accelerates in Indian Manufacturing Sector</h3>
-                                    <p>Industry leaders across India are embracing AI, IoT, and cloud-based solutions to enhance operational efficiency and sustainability. Major manufacturers report 30-40% improvement in productivity following digital transformation initiatives. The government's PLI schemes are driving adoption of smart manufacturing technologies across automotive, electronics, and pharmaceutical sectors.</p>
-                                    <div class="article-meta">
-                                        <span><i class="far fa-calendar"></i> November 26, 2025</span>
-                                        <span><i class="far fa-clock"></i> 3 min read</span>
-                                        <span><i class="far fa-eye"></i> 4.2k views</span>
-                                    </div>
-                                </div>
-                            </article>
-                            
-                            <article class="article-card">
-                                <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Market Growth News">
-                                <div class="article-content">
-                                    <span class="category">Market Update</span>
-                                    <h3>India's Technology Sector Shows Record-Breaking Q4 Growth</h3>
-                                    <p>The Indian technology and manufacturing sector continues to outperform global markets with record-breaking revenue figures of ₹2.8 trillion in Q4 2025. Government initiatives and private sector innovation drive expansion across tier-2 and tier-3 cities, creating new opportunities for tech consultancies.</p>
-                                    <div class="article-meta">
-                                        <span><i class="far fa-calendar"></i> November 25, 2025</span>
-                                        <span><i class="far fa-clock"></i> 4 min read</span>
-                                        <span><i class="far fa-eye"></i> 3.8k views</span>
-                                    </div>
-                                </div>
-                            </article>
-                            
-                            <article class="article-card">
-                                <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Investment News">
-                                <div class="article-content">
-                                    <span class="category">Investment</span>
-                                    <h3>₹500 Crore Investment Boost for Manufacturing Technology Startups</h3>
-                                    <p>Government announces major funding initiative to support manufacturing technology startups and Industry 4.0 adoption. The program aims to create 100,000 new jobs and establish India as a global leader in smart manufacturing by 2030. Applications open for tech consulting firms and solution providers.</p>
-                                    <div class="article-meta">
-                                        <span><i class="far fa-calendar"></i> November 24, 2025</span>
-                                        <span><i class="far fa-clock"></i> 5 min read</span>
-                                        <span><i class="far fa-eye"></i> 5.1k views</span>
-                                    </div>
-                                </div>
-                            </article>
-                            
-                            <article class="article-card">
-                                <img src="https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Innovation News">
-                                <div class="article-content">
-                                    <span class="category">Innovation</span>
-                                    <h3>World's First AI-Powered Zero-Waste Factory Opens in Noida</h3>
-                                    <p>Revolutionary manufacturing facility in Noida achieves 100% waste recycling using AI-driven optimization and circular economy principles. The facility, designed with consulting support from leading firms, sets new global standards for sustainable manufacturing and becomes a model for future industrial developments.</p>
-                                    <div class="article-meta">
-                                        <span><i class="far fa-calendar"></i> November 23, 2025</span>
-                                        <span><i class="far fa-clock"></i> 6 min read</span>
-                                        <span><i class="far fa-eye"></i> 6.5k views</span>
-                                    </div>
-                                </div>
-                            </article>
-                        </div>
-                    </section>
-
-                    <section class="content-section" id="industry-watch">
-                        <div class="section-header">
-                            <h2>Industry Watch</h2>
-                            <div class="section-line"></div>
-                        </div>
-                        <div class="industry-grid">
-                            <article class="industry-card">
-                                <div class="card-image">
-                                    <img src="https://images.unsplash.com/photo-1586953208448-b95a79798f07?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Manufacturing Growth" loading="lazy">
-                                </div>
-                                <div class="card-content">
-                                    <span class="category market-analysis">Market Analysis</span>
-                                    <h3>Manufacturing Sector Growth: 15% YoY Increase</h3>
-                                    <p>The Indian manufacturing sector shows robust growth with technology adoption driving efficiency improvements across automotive, electronics, and textile industries.</p>
-                                    <div class="card-meta">
-                                        <span><i class="far fa-calendar"></i> November 26, 2025</span>
-                                        <span><i class="far fa-eye"></i> 8.2k views</span>
-                                    </div>
-                                </div>
-                            </article>
-
-                            <article class="industry-card">
-                                <div class="card-image">
-                                    <img src="https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Digital Transformation" loading="lazy">
-                                </div>
-                                <div class="card-content">
-                                    <span class="category digital-trend">Digital Trends</span>
-                                    <h3>Industry 4.0 Adoption Accelerates in SMEs</h3>
-                                    <p>Small and medium enterprises embrace IoT and AI technologies, with 65% reporting improved operational efficiency and reduced production costs.</p>
-                                    <div class="card-meta">
-                                        <span><i class="far fa-calendar"></i> November 25, 2025</span>
-                                        <span><i class="far fa-eye"></i> 6.7k views</span>
-                                    </div>
-                                </div>
-                            </article>
-
-                            <article class="industry-card">
-                                <div class="card-image">
-                                    <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Sustainability Focus" loading="lazy">
-                                </div>
-                                <div class="card-content">
-                                    <span class="category sustainability">Sustainability</span>
-                                    <h3>Green Manufacturing: Carbon Neutral Goals by 2030</h3>
-                                    <p>Leading manufacturers commit to sustainable practices with renewable energy adoption reaching 40% and waste reduction programs showing significant results.</p>
-                                    <div class="card-meta">
-                                        <span><i class="far fa-calendar"></i> November 24, 2025</span>
-                                        <span><i class="far fa-eye"></i> 9.1k views</span>
-                                    </div>
-                                </div>
-                            </article>
-
-                            <article class="industry-card">
-                                <div class="card-image">
-                                    <img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Supply Chain Innovation" loading="lazy">
-                                </div>
-                                <div class="card-content">
-                                    <span class="category supply-chain">Supply Chain</span>
-                                    <h3>AI-Powered Supply Chain Optimization</h3>
-                                    <p>Machine learning algorithms revolutionize inventory management and logistics, reducing costs by 25% while improving delivery times across major manufacturing hubs.</p>
-                                    <div class="card-meta">
-                                        <span><i class="far fa-calendar"></i> November 23, 2025</span>
-                                        <span><i class="far fa-eye"></i> 7.3k views</span>
-                                    </div>
-                                </div>
-                            </article>
-
-                            <article class="industry-card">
-                                <div class="card-image">
-                                    <img src="https://images.unsplash.com/photo-1574691250077-03a929faece5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Export Growth" loading="lazy">
-                                </div>
-                                <div class="card-content">
-                                    <span class="category export-growth">Export Growth</span>
-                                    <h3>Indian Exports Surge 22% in Manufacturing Sector</h3>
-                                    <p>Strong global demand drives manufacturing exports to record highs, with pharmaceuticals, automotive components, and textiles leading the growth trajectory.</p>
-                                    <div class="card-meta">
-                                        <span><i class="far fa-calendar"></i> November 22, 2025</span>
-                                        <span><i class="far fa-eye"></i> 8.9k views</span>
-                                    </div>
-                                </div>
-                            </article>
-
-                            <article class="industry-card">
-                                <div class="card-image">
-                                    <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Workforce Development" loading="lazy">
-                                </div>
-                                <div class="card-content">
-                                    <span class="category workforce">Workforce</span>
-                                    <h3>Skill Development Programs Show 85% Success Rate</h3>
-                                    <p>Industry-academia partnerships create skilled workforce with advanced manufacturing capabilities, addressing the growing demand for technical expertise in modern factories.</p>
-                                    <div class="card-meta">
-                                        <span><i class="far fa-calendar"></i> November 21, 2025</span>
-                                        <span><i class="far fa-eye"></i> 5.8k views</span>
-                                    </div>
-                                </div>
-                            </article>
-                        </div>
-                    </section>
-                </div>
-
-                <!-- Right Sidebar -->
-                <aside class="right-sidebar">
-                    <!-- Latest News -->
-                    <!-- About BizzShort -->
-                    <div class="sidebar-widget blog-info-widget">
-                        <h3>About BizzShort</h3>
-                        <div class="blog-info">
-                            <div class="company-logo">
-                                <h4 style="color: #667eea; font-size: 24px; margin-bottom: 10px;">📊 BizzShort</h4>
-                            </div>
-                            <p><strong>Your Premier Business News Platform</strong></p>
-                            <p>Welcome to BizzShort - your comprehensive resource for business news, market insights, and industry analysis. Based in <strong>B-64, Sector 65, Noida</strong>, we are India's leading business news platform delivering simplified market updates and corporate intelligence.</p>
-                            
-                            <h4>🎯 What We Cover:</h4>
-                            <ul class="blog-topics">
-                                <li><i class="fas fa-chart-line"></i> <strong>Market Analysis</strong> - Real-time stock market & business trends</li>
-                                <li><i class="fas fa-rocket"></i> <strong>Startup Ecosystem</strong> - Funding news & entrepreneurship stories</li>
-                                <li><i class="fas fa-briefcase"></i> <strong>Corporate Updates</strong> - Mergers, acquisitions & strategy insights</li>
-                                <li><i class="fas fa-coins"></i> <strong>Financial Markets</strong> - Banking, investments & economic policies</li>
-                                <li><i class="fas fa-chart-line"></i> <strong>Quality Control Systems</strong> - Zero-defect manufacturing</li>
-                                <li><i class="fas fa-cogs"></i> <strong>Technology Trends</strong> - Latest manufacturing innovations</li>
-                            </ul>
-                            
-                            <h4>📊 Our Impact:</h4>
-                            <div class="stats">
-                                <div class="stat-item">
-                                    <span class="stat-number">500+</span>
-                                    <span class="stat-label">Successful Projects</span>
-                                </div>
-                                <div class="stat-item">
-                                    <span class="stat-number">45%</span>
-                                    <span class="stat-label">Average Efficiency Improvement</span>
-                                </div>
-                                <div class="stat-item">
-                                    <span class="stat-number">200+</span>
-                                    <span class="stat-label">Manufacturing Partners</span>
-                                </div>
-                            </div>
-                            
-                            <p><strong>Our Mission:</strong> To empower Indian manufacturers with cutting-edge technology solutions that drive operational excellence, sustainability, and competitive advantage in the global market.</p>
-                            
-                            <div class="contact-info">
-                                <h4>📞 Connect With Us:</h4>
-                                <p><i class="fas fa-phone"></i> +91 9999935011</p>
-                                <p><i class="fas fa-envelope"></i> info@bizzshort.com</p>
-                                <p><i class="fas fa-map-marker-alt"></i> B-64, Sector 65, Noida, UP</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="sidebar-widget">
-                        <h3>Latest News</h3>
-                        <div class="news-list">
-                            <div class="news-item">
-                                <h4>BizzShort Launches Advanced Analytics Dashboard</h4>
-                                <p>New real-time business analytics platform with Chart.js visualizations</p>
-                                <span class="date">November 27, 2025</span>
-                            </div>
-                            <div class="news-item">
-                                <h4>Indian Startups Raise Record $15B in Q4 2025</h4>
-                                <p>Tech sector leads funding surge with AI and fintech dominating investments</p>
-                                <span class="date">November 26, 2025</span>
-                            </div>
-                            <div class="news-item">
-                                <h4>Sensex Crosses 86,000 Mark - New All-Time High</h4>
-                                <p>Strong corporate earnings and positive global sentiment drive market rally</p>
-                                <span class="date">November 25, 2025</span>
-                            </div>
-                            <div class="news-item">
-                                <h4>BizzShort Named Best Business News Platform 2025</h4>
-                                <p>Recognition for innovative approach to business journalism and market analysis</p>
-                                <span class="date">November 24, 2025</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Most Viewed -->
-                    <div class="sidebar-widget">
-                        <h3>Most Viewed</h3>
-                        <div class="popular-list">
-                            <div class="popular-item">
-                                <h4>Top Manufacturing Companies in India</h4>
-                                <span class="views"><i class="far fa-eye"></i> 15,432 views</span>
-                            </div>
-                            <div class="popular-item">
-                                <h4>Industrial Growth Strategies</h4>
-                                <span class="views"><i class="far fa-eye"></i> 12,891 views</span>
-                            </div>
-                            <div class="popular-item">
-                                <h4>Sustainable Manufacturing Practices</h4>
-                                <span class="views"><i class="far fa-eye"></i> 10,567 views</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Services & Achievements -->
-                    <div class="sidebar-widget services-widget">
-                        <h3>Our Core Services</h3>
-                        <div class="services-list">
-                            <div class="service-item">
-                                <i class="fas fa-industry"></i>
-                                <div>
-                                    <h5>Digital Transformation</h5>
-                                    <p>Complete Industry 4.0 implementation and smart factory solutions</p>
-                                </div>
-                            </div>
-                            <div class="service-item">
-                                <i class="fas fa-robot"></i>
-                                <div>
-                                    <h5>AI & Automation</h5>
-                                    <p>Intelligent manufacturing systems and robotic process automation</p>
-                                </div>
-                            </div>
-                            <div class="service-item">
-                                <i class="fas fa-chart-line"></i>
-                                <div>
-                                    <h5>Quality Optimization</h5>
-                                    <p>Advanced quality control systems and predictive maintenance</p>
-                                </div>
-                            </div>
-                            <div class="service-item">
-                                <i class="fas fa-leaf"></i>
-                                <div>
-                                    <h5>Sustainable Manufacturing</h5>
-                                    <p>Eco-friendly processes and green technology implementation</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Newsletter -->
-                    <div class="sidebar-widget newsletter-widget">
-                        <h3>Subscribe to Updates</h3>
-                        <p>Get the latest industry insights delivered to your inbox</p>
-                        <form class="newsletter-form">
-                            <input type="email" placeholder="Enter your email" required>
-                            <button type="submit">Subscribe</button>
-                        </form>
-                    </div>
-
-                    <!-- Events Calendar -->
-                    <div class="sidebar-widget">
-                        <h3>Upcoming Events</h3>
-                        <div class="events-list">
-                            <div class="event-item">
-                                <div class="event-date">
-                                    <span class="day">15</span>
-                                    <span class="month">Dec</span>
-                                </div>
-                                <div class="event-content">
-                                    <h4>Industrial Excellence Summit</h4>
-                                    <p>Mumbai, India</p>
-                                </div>
-                            </div>
-                            <div class="event-item">
-                                <div class="event-date">
-                                    <span class="day">20</span>
-                                    <span class="month">Jan</span>
-                                </div>
-                                <div class="event-content">
-                                    <h4>Manufacturing Technology Expo</h4>
-                                    <p>New Delhi, India</p>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </aside>
             </div>
         </div>
-    </main>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>BizzShort</h3>
-                    <p>Your premier source for business news, market updates, and industry insights. Stay ahead with the latest developments in the Indian business landscape.</p>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+        
+        <!-- Latest News Grid Section with Right Ad -->
+        <section id="latest-news" class="content-section latest-news-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Latest Updates</h2>
+                    <div class="section-tabs">
+                        <button class="tab-btn active" onclick="filterNews('all')">All</button>
+                        <button class="tab-btn" onclick="filterNews('business')">Business</button>
+                        <button class="tab-btn" onclick="filterNews('markets')">Markets</button>
+                        <button class="tab-btn" onclick="filterNews('technology')">Technology</button>
                     </div>
                 </div>
-                <div class="footer-section">
-                    <h3>Quick Links</h3>
-                    <ul>
-                        <li><a href="about.html">About Us</a></li>
-                        <li><a href="contact.html">Contact Us</a></li>
-                        <li><a href="#newsletter-widget">Subscribe</a></li>
-                        <li><a href="mailto:info@bizzshort.com?subject=Advertising Inquiry">Advertise With Us</a></li>
-                        <li><a href="#" onclick="showPrivacyPolicy()">Privacy Policy</a></li>
-                    </ul>
+                
+                <div class="section-with-sidebar">
+                    <div class="latest-news-grid">
+                    <article class="news-card-large" data-category="business">
+                        <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Business News">
+                        <div class="card-content">
+                            <span class="category-badge business">Business</span>
+                            <h3>Indian Startups Raise $12B in 2025, Surpassing Last Year's Record</h3>
+                            <p>The Indian startup ecosystem continues its growth trajectory with record-breaking funding across sectors including fintech, e-commerce, and healthtech.</p>
+                            <div class="card-footer">
+                                <span class="author"><i class="fas fa-user"></i> Rahul Verma</span>
+                                <span class="time"><i class="far fa-clock"></i> 2 hours ago</span>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="news-card-large" data-category="markets">
+                        <img src="https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Stock Market">
+                        <div class="card-content">
+                            <span class="category-badge markets">Markets</span>
+                            <h3>Nifty 50 Crosses 24,500 Mark on Strong IT Sector Performance</h3>
+                            <p>Indian equity markets hit fresh highs as technology stocks rally on strong quarterly earnings and positive global cues.</p>
+                            <div class="card-footer">
+                                <span class="author"><i class="fas fa-user"></i> Sneha Kapoor</span>
+                                <span class="time"><i class="far fa-clock"></i> 4 hours ago</span>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="news-card-large" data-category="technology">
+                        <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="AI Technology">
+                        <div class="card-content">
+                            <span class="category-badge technology">Technology</span>
+                            <h3>AI Adoption Accelerates: 70% of Indian Enterprises Deploy AI Solutions</h3>
+                            <p>New survey reveals rapid adoption of artificial intelligence across Indian businesses, with automation and customer service leading use cases.</p>
+                            <div class="card-footer">
+                                <span class="author"><i class="fas fa-user"></i> Amit Patel</span>
+                                <span class="time"><i class="far fa-clock"></i> 5 hours ago</span>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="news-card-large" data-category="business">
+                        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Manufacturing">
+                        <div class="card-content">
+                            <span class="category-badge business">Business</span>
+                            <h3>PLI Scheme Drives 45% Growth in Electronics Manufacturing</h3>
+                            <p>India's Production-Linked Incentive scheme continues to boost domestic manufacturing with significant investments in electronics sector.</p>
+                            <div class="card-footer">
+                                <span class="author"><i class="fas fa-user"></i> Priya Singh</span>
+                                <span class="time"><i class="far fa-clock"></i> 6 hours ago</span>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="news-card-large" data-category="markets">
+                        <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Investment">
+                        <div class="card-content">
+                            <span class="category-badge markets">Markets</span>
+                            <h3>FII Inflows Hit ₹45,000 Crore in November, Highest This Year</h3>
+                            <p>Foreign institutional investors show strong confidence in Indian markets with record inflows driven by strong macroeconomic fundamentals.</p>
+                            <div class="card-footer">
+                                <span class="author"><i class="fas fa-user"></i> Vikram Mehta</span>
+                                <span class="time"><i class="far fa-clock"></i> 7 hours ago</span>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="news-card-large" data-category="technology">
+                        <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Startup">
+                        <div class="card-content">
+                            <span class="category-badge technology">Technology</span>
+                            <h3>Indian SaaS Companies Eye $50B Revenue Target by 2030</h3>
+                            <p>Software-as-a-Service sector shows remarkable growth with Indian companies expanding global footprint and customer base.</p>
+                            <div class="card-footer">
+                                <span class="author"><i class="fas fa-user"></i> Anjali Desai</span>
+                                <span class="time"><i class="far fa-clock"></i> 8 hours ago</span>
+                            </div>
+                        </div>
+                    </article>
                 </div>
-                <div class="footer-section">
-                    <h3>Categories</h3>
-                    <ul>
-                        <li><a href="#trending">Trending News</a></li>
-                        <li><a href="#business-news">Business News</a></li>
-                        <li><a href="#market-updates">Market Updates</a></li>
-                        <li><a href="#interviews">Interviews</a></li>
-                        <li><a href="blog.html">Blog</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h3>Contact Info</h3>
-                    <div class="contact-info">
-                        <p><i class="fas fa-phone"></i> +91 9876543210</p>
-                        <p><i class="fas fa-envelope"></i> info@bizzshort.com</p>
-                        <p><i class="fas fa-map-marker-alt"></i> B-64, Sector 65, Noida, Uttar Pradesh</p>
+                
+                <!-- Right Side Advertisement -->
+                <aside class="right-sidebar-ad">
+                    <div class="sidebar-ad-sticky">
+                        <div class="ad-label">Advertisement</div>
+                        <div class="sidebar-ad-space">
+                            <img src="https://via.placeholder.com/300x600/667eea/ffffff?text=Premium+Ad+Space+300x600" alt="Advertisement">
+                        </div>
+                        <div class="sidebar-ad-space" style="margin-top: 20px;">
+                            <img src="https://via.placeholder.com/300x250/764ba2/ffffff?text=Ad+Space+300x250" alt="Advertisement">
+                        </div>
+                        <div class="sidebar-ad-space" style="margin-top: 20px;">
+                            <img src="https://via.placeholder.com/300x250/e74c3c/ffffff?text=Sponsored+300x250" alt="Advertisement">
+                        </div>
+                    </div>
+                </aside>
+            </div>
+            </div>
+        </section>
+
+        <!-- Advertisement Banner Template -->
+        <section class="ad-banner-section">
+            <div class="container">
+                <div class="ad-banner-wrapper">
+                    <span class="ad-label-top">Advertisement</span>
+                    <div class="horizontal-ad-space">
+                        <img src="https://via.placeholder.com/1200x200/34495e/ffffff?text=Advertisement+Space+1200x200" alt="Advertisement Banner">
                     </div>
                 </div>
             </div>
+        </section>
+
+        <!-- Interview Section -->
+        <section id="interviews" class="content-section interview-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Exclusive Interviews</h2>
+                    <a href="#interviews" class="view-all">View All →</a>
+                </div>
+                <div class="interview-grid">
+                    <article class="interview-card">
+                        <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="CEO Interview">
+                        <div class="interview-content">
+                            <span class="interview-tag">CEO Interview</span>
+                            <h3>Leading Tech Transformation: Interview with Vishal Mehta, CEO of TechCorp India</h3>
+                            <p>Exclusive insights on digital innovation, startup culture, and the future of Indian technology sector.</p>
+                            <div class="interview-meta">
+                                <span>ðŸ“… Nov 28, 2025</span>
+                                <span>â±ï¸ 12 min read</span>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="interview-card">
+                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Entrepreneur Interview">
+                        <div class="interview-content">
+                            <span class="interview-tag">Entrepreneur</span>
+                            <h3>Building a Unicorn: Priya Sharma on Her Fintech Journey</h3>
+                            <p>From startup to unicorn - lessons learned, challenges faced, and advice for aspiring entrepreneurs.</p>
+                            <div class="interview-meta">
+                                <span>ðŸ“… Nov 25, 2025</span>
+                                <span>â±ï¸ 10 min read</span>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Events Section -->
+        <section id="events" class="content-section events-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Upcoming Events</h2>
+                    <a href="events.html" class="view-all">View All →</a>
+                </div>
+                <div class="events-grid">
+                    <article class="event-card">
+                        <div class="event-date">
+                            <span class="date-day">15</span>
+                            <span class="date-month">DEC</span>
+                        </div>
+                        <div class="event-content">
+                            <h3>India Business Summit 2025</h3>
+                            <p class="event-location"><i class="fas fa-map-marker-alt"></i> Mumbai Convention Center</p>
+                            <p class="event-time"><i class="fas fa-clock"></i> 9:00 AM - 6:00 PM</p>
+                            <button class="event-btn">Register Now</button>
+                        </div>
+                    </article>
+                    <article class="event-card">
+                        <div class="event-date">
+                            <span class="date-day">20</span>
+                            <span class="date-month">DEC</span>
+                        </div>
+                        <div class="event-content">
+                            <h3>Digital Marketing Masterclass</h3>
+                            <p class="event-location"><i class="fas fa-map-marker-alt"></i> Virtual Event</p>
+                            <p class="event-time"><i class="fas fa-clock"></i> 2:00 PM - 5:00 PM</p>
+                            <button class="event-btn">Join Online</button>
+                        </div>
+                    </article>
+                    <article class="event-card">
+                        <div class="event-date">
+                            <span class="date-day">28</span>
+                            <span class="date-month">DEC</span>
+                        </div>
+                        <div class="event-content">
+                            <h3>Startup Founders Meetup</h3>
+                            <p class="event-location"><i class="fas fa-map-marker-alt"></i> Bengaluru Tech Park</p>
+                            <p class="event-time"><i class="fas fa-clock"></i> 6:00 PM - 9:00 PM</p>
+                            <button class="event-btn">RSVP</button>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- News Section -->
+        <section id="news" class="content-section news-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Latest News</h2>
+                    <a href="news.html" class="view-all">View All →</a>
+                </div>
+                <div class="news-grid">
+                    <article class="news-item">
+                        <img src="https://images.unsplash.com/photo-1579532537598-459ecdaf39cc?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Business News">
+                        <div class="news-item-content">
+                            <span class="news-badge">Economy</span>
+                            <h3>India's GDP Growth Surpasses Expectations in Q4</h3>
+                            <p>Strong manufacturing and services sectors drive economic expansion beyond analyst predictions.</p>
+                            <div class="news-item-meta">
+                                <span><i class="far fa-clock"></i> 2 hours ago</span>
+                                <span><i class="far fa-user"></i> By Rahul Kumar</span>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="news-item">
+                        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Tech News">
+                        <div class="news-item-content">
+                            <span class="news-badge">Technology</span>
+                            <h3>Indian Tech Giants Invest $5B in AI Research</h3>
+                            <p>Major technology companies announce massive investments in artificial intelligence and machine learning.</p>
+                            <div class="news-item-meta">
+                                <span><i class="far fa-clock"></i> 4 hours ago</span>
+                                <span><i class="far fa-user"></i> By Priya Singh</span>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="news-item">
+                        <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Startup News">
+                        <div class="news-item-content">
+                            <span class="news-badge">Startups</span>
+                            <h3>Indian Unicorns Raise Record $12B in 2025</h3>
+                            <p>Startup ecosystem flourishes with record funding across fintech, e-commerce, and SaaS sectors.</p>
+                            <div class="news-item-meta">
+                                <span><i class="far fa-clock"></i> 6 hours ago</span>
+                                <span><i class="far fa-user"></i> By Amit Patel</span>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="news-item">
+                        <img src="https://images.unsplash.com/photo-1559526324-4b87b5e36e44?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Market News">
+                        <div class="news-item-content">
+                            <span class="news-badge">Markets</span>
+                            <h3>Foreign Investors Pour $15B into Indian Markets</h3>
+                            <p>Strong fundamentals and growth prospects attract massive foreign institutional investments.</p>
+                            <div class="news-item-meta">
+                                <span><i class="far fa-clock"></i> 8 hours ago</span>
+                                <span><i class="far fa-user"></i> By Sneha Verma</span>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Industry Updates Section -->
+        <section id="industry" class="content-section industry-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Industry Updates</h2>
+                    <a href="industry.html" class="view-all">View All →</a>
+                </div>
+                <div class="industry-grid">
+                    <article class="industry-card">
+                        <div class="industry-icon"><i class="fas fa-microchip"></i></div>
+                        <h3>Technology Sector</h3>
+                        <p>AI adoption in enterprises grows 45% YoY with cloud-native solutions leading transformation.</p>
+                        <a href="#" class="read-more">Read More →</a>
+                    </article>
+                    <article class="industry-card">
+                        <div class="industry-icon"><i class="fas fa-industry"></i></div>
+                        <h3>Manufacturing</h3>
+                        <p>Electronics output surges 30% as PLI schemes boost domestic production capabilities.</p>
+                        <a href="#" class="read-more">Read More →</a>
+                    </article>
+                    <article class="industry-card">
+                        <div class="industry-icon"><i class="fas fa-heartbeat"></i></div>
+                        <h3>Healthcare</h3>
+                        <p>Telemedicine market projected to reach $5B by 2026 with widespread adoption.</p>
+                        <a href="#" class="read-more">Read More →</a>
+                    </article>
+                    <article class="industry-card">
+                        <div class="industry-icon"><i class="fas fa-car"></i></div>
+                        <h3>Automotive</h3>
+                        <p>EV sales jump 150% across metros as charging infrastructure expands rapidly.</p>
+                        <a href="#" class="read-more">Read More →</a>
+                    </article>
+                </div>
+            </section>
+
+            <!-- Client Feature Section -->
+            <section id="client" class="content-section client-section">
+                <div class="section-header">
+                    <h2 class="section-title">Featured Partners</h2>
+                    <a href="client.html" class="view-all">View All →</a>
+                </div>
+                <div class="client-grid">
+                    <article class="client-card">
+                        <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Tech Company">
+                        <div class="client-overlay">
+                            <span class="client-badge">Technology Partner</span>
+                            <h3>TechVision Solutions</h3>
+                            <p>Delivering enterprise cloud infrastructure with 99.98% uptime guarantee to 400+ companies.</p>
+                            <a href="#" class="client-link">Learn More →</a>
+                        </div>
+                    </article>
+                    <article class="client-card">
+                        <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Green Energy">
+                        <div class="client-overlay">
+                            <span class="client-badge">Sustainability Partner</span>
+                            <h3>GreenEnergy Corporation</h3>
+                            <p>Scaling renewable energy from 50MW to 500MW with innovative solar park solutions.</p>
+                            <a href="#" class="client-link">Learn More →</a>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Analysis & Reports Section -->
+        <section id="analysis" class="content-section analysis-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">In-Depth Analysis</h2>
+                    <a href="#" class="view-all">View All →</a>
+                </div>
+                <div class="analysis-grid">
+                    <article class="analysis-card">
+                        <div class="analysis-badge">Market Analysis</div>
+                        <h3>Q4 2024 Market Performance: Key Trends and Outlook</h3>
+                        <p>Comprehensive analysis of market performance across sectors, highlighting winners, losers, and emerging opportunities for 2025.</p>
+                        <div class="analysis-meta">
+                            <span><i class="fas fa-user"></i> Rajesh Kumar, Chief Analyst</span>
+                            <span><i class="fas fa-chart-line"></i> 25 Data Points</span>
+                        </div>
+                    </article>
+                    <article class="analysis-card">
+                        <div class="analysis-badge">Industry Report</div>
+                        <h3>India's Manufacturing Renaissance: A Deep Dive</h3>
+                        <p>Examining the transformation of India's manufacturing sector with PLI schemes, export growth, and investment trends.</p>
+                        <div class="analysis-meta">
+                            <span><i class="fas fa-user"></i> Anita Desai, Industry Expert</span>
+                            <span><i class="fas fa-chart-line"></i> 18 Data Points</span>
+                        </div>
+                    </article>
+                    <article class="analysis-card">
+                        <div class="analysis-badge">Economic Outlook</div>
+                        <h3>2025 Economic Forecast: Growth Drivers and Risks</h3>
+                        <p>Expert predictions on GDP growth, inflation trends, policy impacts, and global economic factors affecting India.</p>
+                        <div class="analysis-meta">
+                            <span><i class="fas fa-user"></i> Dr. Vikram Mehta, Economist</span>
+                            <span><i class="fas fa-chart-line"></i> 32 Data Points</span>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Opinion & Editorials Section -->
+        <section id="opinion" class="content-section opinion-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Opinion & Editorials</h2>
+                    <a href="#" class="view-all">View All →</a>
+                </div>
+                <div class="opinion-grid">
+                    <article class="opinion-card featured">
+                        <div class="opinion-author">
+                            <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Author">
+                            <div class="author-info">
+                                <h4>Suresh Prabhu</h4>
+                                <span>Editor-in-Chief</span>
+                            </div>
+                        </div>
+                        <h3>Why India's Digital Economy Will Define the Next Decade</h3>
+                        <p>The digital transformation sweeping across India isn't just about technology—it's about fundamentally reshaping how we do business, govern, and live our daily lives.</p>
+                        <div class="opinion-tags">
+                            <span>#DigitalIndia</span>
+                            <span>#Technology</span>
+                            <span>#Economy</span>
+                        </div>
+                    </article>
+                    <article class="opinion-card">
+                        <div class="opinion-author">
+                            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Author">
+                            <div class="author-info">
+                                <h4>Meera Nair</h4>
+                                <span>Economic Columnist</span>
+                            </div>
+                        </div>
+                        <h3>The Hidden Cost of Rapid Urbanization</h3>
+                        <p>As cities grow at breakneck speed, we must address infrastructure gaps and environmental challenges before they become insurmountable.</p>
+                        <div class="opinion-tags">
+                            <span>#Urbanization</span>
+                            <span>#Infrastructure</span>
+                        </div>
+                    </article>
+                    <article class="opinion-card">
+                        <div class="opinion-author">
+                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Author">
+                            <div class="author-info">
+                                <h4>Arun Sharma</h4>
+                                <span>Business Strategist</span>
+                            </div>
+                        </div>
+                        <h3>Why Startups Need to Focus on Profitability, Not Just Growth</h3>
+                        <p>The era of growth-at-any-cost is over. Sustainable business models and path to profitability are now non-negotiable.</p>
+                        <div class="opinion-tags">
+                            <span>#Startups</span>
+                            <span>#Business</span>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Video Section -->
+        <section id="videos" class="content-section video-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Video Coverage</h2>
+                    <a href="#" class="view-all">View All →</a>
+                </div>
+                <div class="video-grid">
+                    <article class="video-card">
+                        <div class="video-thumbnail">
+                            <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Market Analysis">
+                            <div class="play-button"><i class="fas fa-play"></i></div>
+                            <span class="video-duration">12:45</span>
+                        </div>
+                        <h3>Market Outlook 2025: Expert Panel Discussion</h3>
+                        <p>Leading market analysts discuss key trends, opportunities, and risks for the coming year.</p>
+                    </article>
+                    <article class="video-card">
+                        <div class="video-thumbnail">
+                            <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Startup Story">
+                            <div class="play-button"><i class="fas fa-play"></i></div>
+                            <span class="video-duration">8:30</span>
+                        </div>
+                        <h3>From Garage to Unicorn: The Complete Story</h3>
+                        <p>How three IIT graduates built a billion-dollar company in just four years.</p>
+                    </article>
+                    <article class="video-card">
+                        <div class="video-thumbnail">
+                            <img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Economic News">
+                            <div class="play-button"><i class="fas fa-play"></i></div>
+                            <span class="video-duration">6:15</span>
+                        </div>
+                        <h3>Budget 2025: Key Highlights and Impact</h3>
+                        <p>Breaking down the budget announcements and what they mean for businesses and consumers.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Top Market Cap Companies Section -->
+        <section id="top-companies" class="top-companies-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Top Market Cap Companies</h2>
+                    <div class="market-filter">
+                        <button class="filter-btn active" onclick="filterMarket('all')">All</button>
+                        <button class="filter-btn" onclick="filterMarket('gainers')">Top Gainers</button>
+                        <button class="filter-btn" onclick="filterMarket('losers')">Top Losers</button>
+                    </div>
+                </div>
+                <div id="top-companies-grid" class="companies-grid">
+                    <!-- Companies will be loaded dynamically -->
+                    <div class="loading-placeholder">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Loading market data...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sector Performance Section -->
+        <section id="sectors" class="sectors-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Sector Performance</h2>
+                    <a href="#" class="view-all">View All Sectors <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div id="sectors-grid" class="sectors-grid">
+                    <!-- Sectors will be loaded dynamically -->
+                    <div class="loading-placeholder">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Loading sector data...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Market Indices Section -->
+        <section id="indices" class="indices-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Global Market Indices</h2>
+                </div>
+                <div id="indices-grid" class="indices-grid">
+                    <!-- Indices will be loaded dynamically -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Advertise With Us Section - MOVED TO END -->
+        <section id="advertise" class="content-section advertise-section">
+            <div class="container">
+                <div class="section-header" style="text-align: center;">
+                    <h2 class="section-title">Advertise With Us</h2>
+                    <p class="section-subtitle">Reach 5 Million+ Business Professionals Every Month</p>
+                </div>
+                <div class="advertise-content">
+                    <div class="advertise-stats">
+                        <div class="stat-box">
+                            <div class="stat-icon"><i class="fas fa-users"></i></div>
+                            <div class="stat-number">5M+</div>
+                            <div class="stat-label">Monthly Readers</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-icon"><i class="fas fa-eye"></i></div>
+                            <div class="stat-number">15M+</div>
+                            <div class="stat-label">Page Views</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-icon"><i class="fas fa-chart-line"></i></div>
+                            <div class="stat-number">85%</div>
+                            <div class="stat-label">Engagement Rate</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-icon"><i class="fas fa-globe"></i></div>
+                            <div class="stat-number">50+</div>
+                            <div class="stat-label">Countries</div>
+                        </div>
+                    </div>
+                    <div class="advertise-solutions">
+                        <h3 style="text-align: center; color: white; margin: 40px 0 30px; font-size: 28px;">Advertising Solutions</h3>
+                        <div class="solutions-grid">
+                            <div class="solution-card">
+                                <i class="fas fa-ad"></i>
+                                <h4>Display Ads</h4>
+                                <p>Banner advertisements across homepage, article pages, and category sections</p>
+                            </div>
+                            <div class="solution-card">
+                                <i class="fas fa-newspaper"></i>
+                                <h4>Sponsored Content</h4>
+                                <p>Native articles and branded content that engages your target audience</p>
+                            </div>
+                            <div class="solution-card">
+                                <i class="fas fa-envelope"></i>
+                                <h4>Newsletter Sponsorship</h4>
+                                <p>Reach our 2M+ email subscribers with dedicated newsletter placements</p>
+                            </div>
+                            <div class="solution-card">
+                                <i class="fas fa-video"></i>
+                                <h4>Video Advertising</h4>
+                                <p>Pre-roll, mid-roll, and branded video content opportunities</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="advertise-cta">
+                        <h3>Ready to Grow Your Business?</h3>
+                        <p>Contact our advertising team to discuss custom solutions for your brand</p>
+                        <div class="cta-buttons">
+                            <a href="contact.html" class="btn-primary"><i class="fas fa-envelope"></i> Get in Touch</a>
+                            <a href="mailto:advertising@bizzshort.com" class="btn-secondary"><i class="fas fa-phone"></i> +91 98765 43210</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Company Policies Section - MOVED TO END -->
+        <section id="policy" class="content-section policy-section">
+            <div class="container">
+                <div class="section-header" style="text-align: center;">
+                    <h2 class="section-title">Company Policies</h2>
+                    <p class="section-subtitle">Transparency, Trust, and Integrity in Everything We Do</p>
+                </div>
+                <div class="policy-grid">
+                    <div class="policy-card">
+                        <div class="policy-icon"><i class="fas fa-shield-alt"></i></div>
+                        <h3>Privacy Policy</h3>
+                        <p>We respect your privacy and protect your personal information. Learn how we collect, use, and safeguard your data.</p>
+                        <ul class="policy-list">
+                            <li><i class="fas fa-check"></i> Data encryption and secure storage</li>
+                            <li><i class="fas fa-check"></i> No sharing with third parties</li>
+                            <li><i class="fas fa-check"></i> GDPR compliant practices</li>
+                            <li><i class="fas fa-check"></i> User control over data</li>
+                        </ul>
+                        <a href="about.html#policy" class="policy-link">Read Full Policy →</a>
+                    </div>
+                    <div class="policy-card">
+                        <div class="policy-icon"><i class="fas fa-file-contract"></i></div>
+                        <h3>Terms of Service</h3>
+                        <p>Understand your rights and responsibilities when using BizzShort platform and services.</p>
+                        <ul class="policy-list">
+                            <li><i class="fas fa-check"></i> User content guidelines</li>
+                            <li><i class="fas fa-check"></i> Intellectual property rights</li>
+                            <li><i class="fas fa-check"></i> Account usage terms</li>
+                            <li><i class="fas fa-check"></i> Liability limitations</li>
+                        </ul>
+                        <a href="about.html#policy" class="policy-link">Read Full Terms →</a>
+                    </div>
+                    <div class="policy-card">
+                        <div class="policy-icon"><i class="fas fa-pen-fancy"></i></div>
+                        <h3>Editorial Policy</h3>
+                        <p>Our commitment to accurate, unbiased, and ethical journalism that serves the public interest.</p>
+                        <ul class="policy-list">
+                            <li><i class="fas fa-check"></i> Fact-checking standards</li>
+                            <li><i class="fas fa-check"></i> Editorial independence</li>
+                            <li><i class="fas fa-check"></i> Source verification</li>
+                            <li><i class="fas fa-check"></i> Corrections policy</li>
+                        </ul>
+                        <a href="about.html#policy" class="policy-link">Read Full Policy →</a>
+                    </div>
+                    <div class="policy-card">
+                        <div class="policy-icon"><i class="fas fa-cookie-bite"></i></div>
+                        <h3>Cookie Policy</h3>
+                        <p>Information about how we use cookies to enhance your browsing experience and analyze site usage.</p>
+                        <ul class="policy-list">
+                            <li><i class="fas fa-check"></i> Essential cookies only</li>
+                            <li><i class="fas fa-check"></i> Analytics for improvement</li>
+                            <li><i class="fas fa-check"></i> User preference controls</li>
+                            <li><i class="fas fa-check"></i> Third-party cookies disclosure</li>
+                        </ul>
+                        <a href="about.html#policy" class="policy-link">Read Full Policy →</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Chart Modal -->
+    <div id="chart-modal" class="chart-modal">
+        <div class="chart-modal-content">
+            <div class="chart-modal-header">
+                <h3 id="chart-title">Stock Chart</h3>
+                <button class="close-modal" onclick="closeChartModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="chart-timeframe">
+                <button class="timeframe-btn active" onclick="changeTimeframe('1D')">1D</button>
+                <button class="timeframe-btn" onclick="changeTimeframe('1W')">1W</button>
+                <button class="timeframe-btn" onclick="changeTimeframe('1M')">1M</button>
+                <button class="timeframe-btn" onclick="changeTimeframe('3M')">3M</button>
+                <button class="timeframe-btn" onclick="changeTimeframe('1Y')">1Y</button>
+                <button class="timeframe-btn" onclick="changeTimeframe('5Y')">5Y</button>
+            </div>
+            <div id="chart-container" class="chart-container">
+                <canvas id="stock-chart"></canvas>
+            </div>
+            <div id="chart-info" class="chart-info">
+                <!-- Stock details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-top">
+                <div class="footer-grid">
+                    <!-- About Column -->
+                    <div class="footer-col">
+                        <div class="footer-logo">
+                            <img src="assets/images/logo.jpeg" alt="BizzShort Logo">
+                            <h3>BizzShort</h3>
+                        </div>
+                        <p class="footer-description">Your trusted source for real-time business news, market insights, and financial analysis. Stay ahead with BizzShort.</p>
+                        <div class="footer-social">
+                            <a href="https://facebook.com/bizzshort" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                            <a href="https://twitter.com/bizzshort" target="_blank" rel="noopener noreferrer" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                            <a href="https://linkedin.com/company/bizzshort" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="https://instagram.com/bizzshort" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                            <a href="https://youtube.com/@bizzshort" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                        </div>
+                    </div>
+
+                    <!-- Quick Links -->
+                    <div class="footer-col">
+                        <h4>Quick Links</h4>
+                        <ul class="footer-links">
+                            <li><a href="#home"><i class="fas fa-chevron-right"></i> Home</a></li>
+                            <li><a href="#latest-news"><i class="fas fa-chevron-right"></i> Latest News</a></li>
+                            <li><a href="#interviews"><i class="fas fa-chevron-right"></i> Interviews</a></li>
+                            <li><a href="#events"><i class="fas fa-chevron-right"></i> Events</a></li>
+                            <li><a href="#top-companies"><i class="fas fa-chevron-right"></i> Top Companies</a></li>
+                            <li><a href="#sectors"><i class="fas fa-chevron-right"></i> Sectors</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Categories -->
+                    <div class="footer-col">
+                        <h4>Categories</h4>
+                        <ul class="footer-links">
+                            <li><a href="#news"><i class="fas fa-chevron-right"></i> Business News</a></li>
+                            <li><a href="#industry"><i class="fas fa-chevron-right"></i> Industry Updates</a></li>
+                            <li><a href="#analysis"><i class="fas fa-chevron-right"></i> Market Analysis</a></li>
+                            <li><a href="#opinion"><i class="fas fa-chevron-right"></i> Opinion & Editorials</a></li>
+                            <li><a href="#videos"><i class="fas fa-chevron-right"></i> Video Coverage</a></li>
+                            <li><a href="#client"><i class="fas fa-chevron-right"></i> Client Features</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Company -->
+                    <div class="footer-col">
+                        <h4>Company</h4>
+                        <ul class="footer-links">
+                            <li><a href="#about"><i class="fas fa-chevron-right"></i> About Us</a></li>
+                            <li><a href="#advertise"><i class="fas fa-chevron-right"></i> Advertise</a></li>
+                            <li><a href="#policy"><i class="fas fa-chevron-right"></i> Company Policy</a></li>
+                            <li><a href="contact.html"><i class="fas fa-chevron-right"></i> Contact Us</a></li>
+                            <li><a href="#"><i class="fas fa-chevron-right"></i> Careers</a></li>
+                            <li><a href="#"><i class="fas fa-chevron-right"></i> Media Kit</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Newsletter -->
+                    <div class="footer-col">
+                        <h4>Newsletter</h4>
+                        <p class="newsletter-text">Subscribe to get the latest news and updates delivered to your inbox.</p>
+                        <form class="newsletter-form" onsubmit="subscribeNewsletter(event)">
+                            <input type="email" placeholder="Enter your email" required>
+                            <button type="submit"><i class="fas fa-paper-plane"></i></button>
+                        </form>
+                        <div class="footer-contact">
+                            <p><i class="fas fa-envelope"></i> info@bizzshort.com</p>
+                            <p><i class="fas fa-phone"></i> +91 1234567890</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="footer-bottom">
-                <p>&copy; 2025 BizzShort. All rights reserved. | Your Business News Partner</p>
+                <div class="footer-bottom-content">
+                    <p class="footer-copyright">&copy; 2025 BizzShort. All rights reserved.</p>
+                    <div class="footer-bottom-links">
+                        <a href="#">Privacy Policy</a>
+                        <a href="#">Terms of Service</a>
+                        <a href="#">Cookie Policy</a>
+                        <a href="admin-login.html" class="admin-link">
+                            <i class="fas fa-lock"></i> Admin Access
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </footer>
-
-    <script src="assets/js/script.js"></script>
-    <script src="assets/js/ad-manager.js"></script>
+    
     <script>
-        // Privacy Policy Modal Function - Fixed BizzShort branding
-        function showPrivacyPolicy() {
-            const modal = document.createElement('div');
-            modal.className = 'privacy-modal';
-            modal.innerHTML = `
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h3>Privacy Policy - BizzShort</h3>
-                        <button class="close-modal" onclick="this.closest('.privacy-modal').remove()">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <p><strong>BizzShort</strong> is committed to protecting your privacy and ensuring the security of your personal information.</p>
-                        <h4>Information We Collect:</h4>
-                        <ul>
-                            <li>Contact information for newsletter subscriptions</li>
-                            <li>Analytics data for website improvement</li>
-                            <li>Advertising preferences and interactions</li>
-                        </ul>
-                        <h4>How We Use Your Information:</h4>
-                        <ul>
-                            <li>To provide business news and market updates</li>
-                            <li>To improve our services and user experience</li>
-                            <li>To send relevant newsletters (with consent)</li>
-                        </ul>
-                        <p><strong>Data Security:</strong> We implement industry-standard security measures to protect your data.</p>
-                        <p><strong>Contact:</strong> For questions, contact us at <a href="mailto:privacy@bizzshort.com">privacy@bizzshort.com</a></p>
-                    </div>
-                </div>
-            `;
-            document.body.appendChild(modal);
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) modal.remove();
-            });
+        function toggleMobileMenu() {
+            const navMenu = document.querySelector('.main-nav ul');
+            navMenu.classList.toggle('active');
         }
         
-        // Smooth scrolling for anchor links with security check
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
-                const href = this.getAttribute('href');
-                // Security: Validate href format
-                if (href && href.match(/^#[a-zA-Z][a-zA-Z0-9_-]*$/)) {
-                    const target = document.querySelector(href);
-                    if (target) {
-                        target.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start'
-                        });
-                    }
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+                const navMenu = document.querySelector('.main-nav ul');
+                if(navMenu.classList.contains('active')) {
+                    navMenu.classList.remove('active');
                 }
             });
         });
+    </script>
+    
+    <!-- Chart.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    
+    <!-- Real-time Market Data -->
+    <script src="assets/js/market-data.js"></script>
+    <script src="assets/js/main-functionality.js"></script>
+    <script src="assets/js/advanced-market.js"></script>
+        </div>
+        <!-- End Main Content Wrapper -->
 
-        // Security: Content Security Policy compliance
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize ad management
-            initAdManager();
-            
-            // Sanitize any user-generated content
-            sanitizeContent();
-        });
-    </script>
-    <script src="assets/js/api.js"></script>
-    <script src="assets/js/language.js"></script>
-    <script src="assets/js/search.js"></script>
-    <script src="assets/js/enhanced-features.js"></script>
-    <script src="assets/js/enhanced.js"></script>
-    <script src="assets/js/api.js"></script>
-    <script src="assets/js/language.js"></script>
-    <script>
-        // Override ad preferences functionality - ensure ads are always visible
-        window.showAdPreferences = function() { return false; };
-        window.saveAdPreferences = function() { return false; };
-        
-        // Ensure ads are always visible on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            const ads = document.querySelectorAll('.ad-space, .ad-banner, .advertisement');
-            ads.forEach(ad => {
-                ad.style.display = 'block';
-                ad.style.visibility = 'visible';
-                ad.style.opacity = '1';
-            });
-            
-            // Hide any preference buttons
-            const prefBtns = document.querySelectorAll('.preferences-btn, .ad-preferences, .ads-preferences');
-            prefBtns.forEach(btn => btn.style.display = 'none');
-        });
-    </script>
+        <!-- Right Side Advertisement -->
+        <aside class="side-ad right-ad">
+            <div class="ad-sticky">
+                <div class="ad-label">Advertisement</div>
+                <img src="https://via.placeholder.com/300x600/2c3e50/ffffff?text=Ad+Space+300x600" alt="Advertisement">
+                <div class="ad-space" style="margin-top: 20px;">
+                    <img src="https://via.placeholder.com/300x250/34495e/ffffff?text=Ad+Space+300x250" alt="Advertisement">
+                </div>
+            </div>
+        </aside>
+    </div>
+    <!-- End Page Wrapper -->
 </body>
 </html>

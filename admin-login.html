@@ -378,7 +378,7 @@
                 
                 // Redirect to admin panel
                 setTimeout(() => {
-                    window.location.href = 'admin-panel.html';
+                    window.location.href = 'admin.html';
                 }, 1500);
             } else {
                 showAlert('Invalid username or password. Please try again.', 'error');
@@ -387,7 +387,7 @@
 
         // Check if already logged in
         if (localStorage.getItem('adminSession') === 'true' || sessionStorage.getItem('adminSession') === 'true') {
-            window.location.href = 'admin-panel.html';
+            window.location.href = 'admin.html';
         }
     </script>
 </body>
