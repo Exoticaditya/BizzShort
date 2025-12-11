@@ -963,8 +963,10 @@ function createVideoCard(video) {
     const featuredBadge = video.featured ? '<span class="featured-badge">Featured</span>' : '';
     const sourceBadge = \`<span class="source-badge source-\${video.source}">\${video.source === 'youtube' ? 'YouTube' : 'Instagram'}</span>\`;
     
+    const videoUrl = video.source === 'youtube' ? \`https://www.youtube.com/watch?v=\${video.videoId}\` : \`https://www.instagram.com/p/\${video.videoId}/\`;
+    
     return \`
-        <div class="video-card" onclick="window.location.href='video-detail.html?id=\${video.id}'">
+        <div class="video-card" onclick="window.location.href='article-detail.html?title=\${encodeURIComponent(video.title)}&thumb=\${encodeURIComponent(video.thumbnail)}&url=\${encodeURIComponent(videoUrl)}&source=\${video.source}&category=\${video.category}&published=\${video.date}&excerpt=\${encodeURIComponent(video.description)}&type=video'">
             <div class="video-thumbnail">
                 <img src="\${video.thumbnail}" alt="\${video.title}" onerror="this.src='https://via.placeholder.com/800x450?text=Video+Thumbnail'">
                 <div class="video-duration">\${video.duration}</div>
