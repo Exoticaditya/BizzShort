@@ -56,6 +56,9 @@
                 <a href="#clients" class="nav-item" onclick="showSection('clients')">
                     <i class="fas fa-handshake"></i> Clients
                 </a>
+                <a href="#videos" class="nav-item" onclick="showSection('videos')">
+                    <i class="fas fa-video"></i> Video Manager
+                </a>
                 <a href="#users" class="nav-item" onclick="showSection('users')">
                     <i class="fas fa-users"></i> Users
                 </a>
@@ -380,6 +383,31 @@
                         </tr>
                     </tbody>
                 </table>
+            </section>
+
+            <!-- Video Manager Section -->
+            <section id="videos" class="admin-section">
+                <div class="section-header">
+                    <h2>🎬 Video Manager</h2>
+                    <p style="margin: 10px 0; color: #666;">Manage YouTube videos - Add up to 100+ videos at once!</p>
+                </div>
+
+                <iframe src="AUTO_ADD_VIDEOS.html" 
+                        style="width: 100%; height: calc(100vh - 150px); border: none; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+                </iframe>
+
+                <div style="margin-top: 20px; padding: 20px; background: #e3f2fd; border-radius: 8px; border-left: 5px solid #2196f3;">
+                    <h3 style="color: #1565c0; margin-bottom: 10px;">📘 Quick Instructions:</h3>
+                    <ol style="color: #1565c0; line-height: 1.8;">
+                        <li><strong>Paste YouTube URLs</strong> in the tool above (supports 100+ links)</li>
+                        <li><strong>Choose mode:</strong> ADD (keeps old videos) or REPLACE (new only)</li>
+                        <li><strong>Click "Generate Code"</strong> - Processes all links automatically</li>
+                        <li><strong>Click "Download Updated video-manager.js"</strong> - Downloads complete file</li>
+                        <li><strong>Replace file:</strong> Go to <code>assets/js/</code> and replace <code>video-manager.js</code></li>
+                        <li><strong>Refresh website:</strong> Press Ctrl+Shift+R to see changes</li>
+                    </ol>
+                    <p style="margin-top: 15px; color: #0d47a1;"><strong>💡 Tip:</strong> Use ADD mode for weekly updates to keep all existing videos. Use REPLACE mode only for complete website refresh.</p>
+                </div>
             </section>
 
             <!-- Settings Section -->

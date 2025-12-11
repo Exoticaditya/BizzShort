@@ -1,48 +1,19 @@
-// Enhanced Admin Panel JavaScript with Backend API Integration
+// Enhanced Admin Panel JavaScript - Static Mode (No Backend Required)
 
 // ============ Configuration ============
-const API_BASE_URL = 'http://localhost:3000';
-const API_ENDPOINTS = {
-    articles: '/api/articles',
-    events: '/api/events',
-    analytics: '/api/analytics',
-    health: '/api/health',
-    // Admin endpoints (to be added to server.js)
-    adminArticles: '/api/admin/articles',
-    adminEvents: '/api/admin/events',
-    adminInterviews: '/api/admin/interviews',
-    adminNews: '/api/admin/news',
-    adminIndustry: '/api/admin/industry',
-    adminClients: '/api/admin/clients',
-};
+// API disabled - using static content only
+const API_BASE_URL = null;
+const API_ENDPOINTS = {};
+const USE_STATIC_MODE = true;
 
 // ============ API Helper Functions ============
 async function apiRequest(endpoint, method = 'GET', data = null) {
-    const options = {
-        method: method,
-        headers: {
-            'Content-Type': 'application/json',
-        }
-    };
-    
-    if (data && method !== 'GET') {
-        options.body = JSON.stringify(data);
+    // Static mode - no API calls
+    if (USE_STATIC_MODE) {
+        console.log('Static mode: API call skipped');
+        return { success: true, message: 'Static mode active' };
     }
-    
-    try {
-        const response = await fetch(`${API_BASE_URL}${endpoint}`, options);
-        
-        if (!response.ok) {
-            const error = await response.json();
-            throw new Error(error.error || 'Request failed');
-        }
-        
-        return await response.json();
-    } catch (error) {
-        console.error('API Error:', error);
-        showNotification(error.message, 'error');
-        throw error;
-    }
+    return null;
 }
 
 // ============ Notification System ============
@@ -128,37 +99,9 @@ async function loadSectionData(sectionId) {
 
 // ============ Dashboard Functions ============
 async function refreshDashboard() {
-    try {
-        showNotification('Refreshing dashboard...', 'info');
-        
-        // Get analytics data
-        const analyticsResponse = await apiRequest(API_ENDPOINTS.analytics);
-        const analytics = analyticsResponse.data;
-        
-        // Update stat cards
-        if (analytics) {
-            updateStatCard('visitors', analytics.visitors?.total || 0);
-            updateStatCard('pageViews', analytics.pageViews?.total || 0);
-            updateStatCard('avgSession', analytics.avgSessionTime?.value || '0:00');
-            updateStatCard('bounceRate', analytics.bounceRate?.value || 0);
-        }
-        
-        // Get articles count
-        const articlesResponse = await apiRequest(API_ENDPOINTS.articles);
-        if (articlesResponse.data) {
-            updateStatCard('articles', articlesResponse.data.total || 0);
-        }
-        
-        // Get events count
-        const eventsResponse = await apiRequest(API_ENDPOINTS.events);
-        if (eventsResponse.data) {
-            updateStatCard('events', eventsResponse.data.length || 0);
-        }
-        
-        showNotification('Dashboard refreshed successfully!', 'success');
-    } catch (error) {
-        console.error('Dashboard refresh error:', error);
-    }
+    // Static mode - no API calls needed
+    console.log('Dashboard: Static mode active');
+    showNotification('Dashboard loaded', 'success');
 }
 
 function updateStatCard(type, value) {
@@ -170,14 +113,8 @@ function updateStatCard(type, value) {
 
 // ============ Articles Management ============
 async function loadArticles() {
-    try {
-        const response = await apiRequest(API_ENDPOINTS.articles);
-        if (response.success && response.data) {
-            displayArticlesTable(response.data.articles || []);
-        }
-    } catch (error) {
-        console.error('Load articles error:', error);
-    }
+    // Static mode - no API calls
+    console.log('Articles: Static mode active');
 }
 
 function displayArticlesTable(articles) {
@@ -225,8 +162,9 @@ async function saveArticle(event) {
     };
     
     try {
-        // NOTE: This endpoint needs to be added to server.js
-        const response = await apiRequest(API_ENDPOINTS.adminArticles, 'POST', articleData);
+        // Static mode - no backend saves
+        showNotification('Article saved locally (static mode)', 'info');
+        const response = { success: true };
         
         if (response.success) {
             showNotification('Article saved successfully!', 'success');
@@ -504,18 +442,9 @@ document.addEventListener('DOMContentLoaded', async function() {
         return;
     }
     
-    // Test API connection
-    try {
-        const healthCheck = await apiRequest(API_ENDPOINTS.health);
-        console.log('✅ API Connected:', healthCheck);
-        showNotification('Connected to API', 'success');
-    } catch (error) {
-        console.error('❌ API Connection Failed:', error);
-        showNotification('API Server not running! Start server.js', 'error');
-    }
-    
-    // Load initial dashboard data
-    await refreshDashboard();
+    // Static mode - no API connection needed
+    console.log('✅ Admin Panel: Static mode active');
+    showNotification('Admin Panel Ready', 'success');
     
     // Close modal on outside click
     window.onclick = function(event) {

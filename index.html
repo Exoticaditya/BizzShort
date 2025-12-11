@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -16,20 +16,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="assets/css/main-style.css">
-    <link rel="stylesheet" href="assets/css/wirecable-grid.css">
-    <link rel="stylesheet" href="assets/css/market-sections.css">
+    <link rel="stylesheet" href="assets/css/main-style.css?v=3.0">
+    <link rel="stylesheet" href="assets/css/wirecable-grid.css?v=3.0">
+    <link rel="stylesheet" href="assets/css/market-sections.css?v=3.0">
+    <link rel="stylesheet" href="assets/css/video-cards.css?v=3.0">
     
-    <!-- Google Analytics (Replace GA_MEASUREMENT_ID with your actual ID) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'GA_MEASUREMENT_ID');
-    </script>
-    
-    <!-- Google AdSense (Replace with your AdSense publisher ID) -->
+    <!-- Google AdSense (Replace ca-pub-XXXXXXXXXXXXXXXX with your actual AdSense publisher ID) -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX"
          crossorigin="anonymous"></script>
     
@@ -59,7 +51,7 @@
     <meta name="twitter:description" content="Latest business news, market updates, and industry insights. Stay ahead with BizzShort.">
     <meta name="twitter:image" content="https://bizzshort.onrender.com/assets/images/logo.jpeg">
     
-    <!-- Google Analytics -->
+    <!-- Google Analytics (Replace G-XXXXXXXXXX with your actual GA4 Measurement ID) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -68,7 +60,7 @@
         gtag('config', 'G-XXXXXXXXXX');
     </script>
 </head>
-<body>
+<body data-youtube-handle="https://youtube.com/@bizz_short?si=FZvH5iMI2v_J4vGE" data-instagram-username="https://www.instagram.com/bizz_short?igsh=NDVwdHJza2R3dnF0">
     <!-- Side Advertisement Wrappers -->
     <div class="page-wrapper-with-ads">
         <!-- Left Side Advertisement -->
@@ -114,12 +106,12 @@
                     <ul>
                         <li><a href="index.html" class="active">Home</a></li>
                         <li><a href="#latest-news">Latest News</a></li>
+                        <li><a href="videos.html">Videos</a></li>
                         <li><a href="#top-companies">Top Companies</a></li>
                         <li><a href="#sectors">Sectors</a></li>
                         <li><a href="#interviews">Interviews</a></li>
                         <li><a href="#events">Events</a></li>
-                        <li><a href="#analysis">Analysis</a></li>
-                        <li><a href="#videos">Videos</a></li>
+                        <li><a href="blog.html">Blog</a></li>
                         <li><a href="#advertise">Advertise</a></li>
                         <li><a href="about.html">About</a></li>
                     </ul>
@@ -694,44 +686,7 @@
             </div>
         </section>
 
-        <!-- Video Section -->
-        <section id="videos" class="content-section video-section">
-            <div class="container">
-                <div class="section-header">
-                    <h2 class="section-title">Video Coverage</h2>
-                    <a href="#" class="view-all">View All →</a>
-                </div>
-                <div class="video-grid">
-                    <article class="video-card">
-                        <div class="video-thumbnail">
-                            <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Market Analysis">
-                            <div class="play-button"><i class="fas fa-play"></i></div>
-                            <span class="video-duration">12:45</span>
-                        </div>
-                        <h3>Market Outlook 2025: Expert Panel Discussion</h3>
-                        <p>Leading market analysts discuss key trends, opportunities, and risks for the coming year.</p>
-                    </article>
-                    <article class="video-card">
-                        <div class="video-thumbnail">
-                            <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Startup Story">
-                            <div class="play-button"><i class="fas fa-play"></i></div>
-                            <span class="video-duration">8:30</span>
-                        </div>
-                        <h3>From Garage to Unicorn: The Complete Story</h3>
-                        <p>How three IIT graduates built a billion-dollar company in just four years.</p>
-                    </article>
-                    <article class="video-card">
-                        <div class="video-thumbnail">
-                            <img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Economic News">
-                            <div class="play-button"><i class="fas fa-play"></i></div>
-                            <span class="video-duration">6:15</span>
-                        </div>
-                        <h3>Budget 2025: Key Highlights and Impact</h3>
-                        <p>Breaking down the budget announcements and what they mean for businesses and consumers.</p>
-                    </article>
-                </div>
-            </div>
-        </section>
+        <!-- Videos integrated into news sections above -->
 
         <!-- Top Market Cap Companies Section -->
         <section id="top-companies" class="top-companies-section">
@@ -962,12 +917,12 @@
                     <div class="footer-col">
                         <h4>Quick Links</h4>
                         <ul class="footer-links">
-                            <li><a href="#home"><i class="fas fa-chevron-right"></i> Home</a></li>
-                            <li><a href="#latest-news"><i class="fas fa-chevron-right"></i> Latest News</a></li>
-                            <li><a href="#interviews"><i class="fas fa-chevron-right"></i> Interviews</a></li>
-                            <li><a href="#events"><i class="fas fa-chevron-right"></i> Events</a></li>
-                            <li><a href="#top-companies"><i class="fas fa-chevron-right"></i> Top Companies</a></li>
-                            <li><a href="#sectors"><i class="fas fa-chevron-right"></i> Sectors</a></li>
+                            <li><a href="index.html"><i class="fas fa-chevron-right"></i> Home</a></li>
+                            <li><a href="index.html#latest-news"><i class="fas fa-chevron-right"></i> Latest News</a></li>
+                            <li><a href="index.html#interviews"><i class="fas fa-chevron-right"></i> Interviews</a></li>
+                            <li><a href="events.html"><i class="fas fa-chevron-right"></i> Events</a></li>
+                            <li><a href="index.html#top-companies"><i class="fas fa-chevron-right"></i> Top Companies</a></li>
+                            <li><a href="index.html#sectors"><i class="fas fa-chevron-right"></i> Sectors</a></li>
                         </ul>
                     </div>
 
@@ -975,12 +930,12 @@
                     <div class="footer-col">
                         <h4>Categories</h4>
                         <ul class="footer-links">
-                            <li><a href="#news"><i class="fas fa-chevron-right"></i> Business News</a></li>
-                            <li><a href="#industry"><i class="fas fa-chevron-right"></i> Industry Updates</a></li>
-                            <li><a href="#analysis"><i class="fas fa-chevron-right"></i> Market Analysis</a></li>
-                            <li><a href="#opinion"><i class="fas fa-chevron-right"></i> Opinion & Editorials</a></li>
-                            <li><a href="#videos"><i class="fas fa-chevron-right"></i> Video Coverage</a></li>
-                            <li><a href="#client"><i class="fas fa-chevron-right"></i> Client Features</a></li>
+                            <li><a href="blog.html"><i class="fas fa-chevron-right"></i> Business News</a></li>
+                            <li><a href="index.html#industry"><i class="fas fa-chevron-right"></i> Industry Updates</a></li>
+                            <li><a href="index.html#analysis"><i class="fas fa-chevron-right"></i> Market Analysis</a></li>
+                            <li><a href="index.html#opinion"><i class="fas fa-chevron-right"></i> Opinion & Editorials</a></li>
+                            <li><a href="videos.html"><i class="fas fa-chevron-right"></i> Video Coverage</a></li>
+                            <li><a href="index.html#client"><i class="fas fa-chevron-right"></i> Client Features</a></li>
                         </ul>
                     </div>
 
@@ -988,12 +943,12 @@
                     <div class="footer-col">
                         <h4>Company</h4>
                         <ul class="footer-links">
-                            <li><a href="#about"><i class="fas fa-chevron-right"></i> About Us</a></li>
-                            <li><a href="#advertise"><i class="fas fa-chevron-right"></i> Advertise</a></li>
-                            <li><a href="#policy"><i class="fas fa-chevron-right"></i> Company Policy</a></li>
+                            <li><a href="about.html"><i class="fas fa-chevron-right"></i> About Us</a></li>
+                            <li><a href="advertise.html"><i class="fas fa-chevron-right"></i> Advertise</a></li>
+                            <li><a href="about.html#policy"><i class="fas fa-chevron-right"></i> Company Policy</a></li>
                             <li><a href="contact.html"><i class="fas fa-chevron-right"></i> Contact Us</a></li>
-                            <li><a href="#"><i class="fas fa-chevron-right"></i> Careers</a></li>
-                            <li><a href="#"><i class="fas fa-chevron-right"></i> Media Kit</a></li>
+                            <li><a href="contact.html"><i class="fas fa-chevron-right"></i> Careers</a></li>
+                            <li><a href="contact.html"><i class="fas fa-chevron-right"></i> Media Kit</a></li>
                         </ul>
                     </div>
 
@@ -1013,14 +968,15 @@
                 </div>
             </div>
 
-            <div class="footer-bottom">
-                <div class="footer-bottom-content">
-                    <p class="footer-copyright">&copy; 2025 BizzShort. All rights reserved.</p>
-                    <div class="footer-bottom-links">
-                        <a href="#">Privacy Policy</a>
-                        <a href="#">Terms of Service</a>
-                        <a href="#">Cookie Policy</a>
-                        <a href="admin-login.html" class="admin-link">
+        <div class="footer-bottom">
+            <div class="footer-bottom-content">
+                <p class="footer-copyright">&copy; 2025 BizzShort. All rights reserved.</p>
+                <p class="footer-developed">(Developd by Garvik India)</p>
+                <div class="footer-bottom-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Cookie Policy</a>
+                    <a href="admin-login.html" class="admin-link">
                             <i class="fas fa-lock"></i> Admin Access
                         </a>
                     </div>
@@ -1054,9 +1010,10 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     
     <!-- Real-time Market Data -->
-    <script src="assets/js/market-data.js"></script>
-    <script src="assets/js/main-functionality.js"></script>
-    <script src="assets/js/advanced-market.js"></script>
+    <script src="assets/js/market-data.js?v=3.0"></script>
+    <script src="assets/js/main-functionality.js?v=3.0"></script>
+    <script src="assets/js/advanced-market.js?v=3.0"></script>
+    <script src="assets/js/video-manager.js?v=3.0"></script>
         </div>
         <!-- End Main Content Wrapper -->
 

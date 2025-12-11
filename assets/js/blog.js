@@ -294,6 +294,59 @@ document.addEventListener('DOMContentLoaded', function() {
     
 });
 
+document.addEventListener('DOMContentLoaded', async function() {
+    const grid = document.getElementById('articlesGrid');
+    if (!grid) return;
+    const body = document.body;
+    function normalizeYouTubeHandle(v) {
+        const s = (v || '').trim();
+        if (s.includes('youtube.com/@')) {
+            const at = s.indexOf('@');
+            let h = s.slice(at + 1);
+            const q = h.indexOf('?');
+            if (q >= 0) h = h.slice(0, q);
+            return h;
+        }
+        return s.replace('@', '');
+    }
+    function normalizeInstagramUser(v) {
+        const s = (v || '').trim();
+        if (s.includes('instagram.com/')) {
+            let h = s.split('instagram.com/')[1];
+            const q = h.indexOf('?');
+            if (q >= 0) h = h.slice(0, q);
+            return h.replace('/', '') || 'bizz_short';
+        }
+        return s || 'bizz_short';
+    }
+    const ytHandle = normalizeYouTubeHandle(body.getAttribute('data-youtube-handle') || '@bizz_short');
+    const igUser = normalizeInstagramUser(body.getAttribute('data-instagram-username') || 'bizz_short');
+    let ytItems = [];
+    const cid = await window.resolveYouTubeChannelId(ytHandle);
+    const ytCacheKey = `media_youtube_${ytHandle}`;
+    const igCacheKey = `media_instagram_${igUser}`;
+    ytItems = window.getCache ? (window.getCache(ytCacheKey, 10 * 60 * 1000) || []) : [];
+    if (cid && ytItems.length === 0) {
+        ytItems = await window.fetchYouTubeRSS(cid, 8);
+        if (ytItems.length && window.setCache) window.setCache(ytCacheKey, ytItems);
+    }
+    let igItems = window.getCache ? (window.getCache(igCacheKey, 10 * 60 * 1000) || []) : [];
+    if (igItems.length === 0) {
+        igItems = await window.fetchInstagramMedia(igUser, 8);
+        if (igItems.length && window.setCache) window.setCache(igCacheKey, igItems);
+    }
+    const items = [...ytItems, ...igItems].sort((a, b) => new Date(b.published) - new Date(a.published));
+    if (items.length === 0) {
+        const placeholder = document.createElement('div');
+        placeholder.className = 'loading-placeholder';
+        placeholder.innerHTML = '<i class="fas fa-info-circle"></i><p>Latest reels/videos could not be loaded. Showing existing articles.</p>';
+        grid.appendChild(placeholder);
+        return;
+    }
+    grid.innerHTML = '';
+    items.forEach(i => grid.appendChild(window.buildArticleCard(i)));
+});
+
 // Utility function for debouncing
 function debounce(func, wait) {
     let timeout;
@@ -328,3 +381,11 @@ function showNotification(message, type = 'info') {
         }, 300);
     }, 3000);
 }
+    // Show skeletons while loading
+    grid.innerHTML = '';
+    for (let i = 0; i < 4; i++) {
+        const sk = document.createElement('div');
+        sk.className = 'skeleton-card';
+        sk.innerHTML = '<div class="skeleton-thumb"></div><div class="skeleton-title"></div><div class="skeleton-text"></div>';
+        grid.appendChild(sk);
+    }

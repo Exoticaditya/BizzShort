@@ -82,6 +82,48 @@ let articlesDB = [
     }
 ];
 
+let videosDB = [
+    {
+        id: '1',
+        title: 'Stock Market Hits All-Time High: What This Means for Investors',
+        category: 'Markets',
+        source: 'youtube',
+        videoId: 'dQw4w9WgXcQ',
+        thumbnail: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800',
+        description: 'In-depth analysis of the market surge and investment strategies for the current scenario.',
+        views: '12.5K',
+        date: 'Dec 9, 2025',
+        duration: '8:45',
+        featured: true
+    },
+    {
+        id: '2',
+        title: 'Top 5 Indian Startups That Raised Massive Funding This Quarter',
+        category: 'Startups',
+        source: 'youtube',
+        videoId: 'dQw4w9WgXcQ',
+        thumbnail: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800',
+        description: 'Discover the Indian startups that secured major funding rounds and their growth strategies.',
+        views: '8.3K',
+        date: 'Dec 8, 2025',
+        duration: '6:30',
+        featured: false
+    },
+    {
+        id: '3',
+        title: 'RBI Monetary Policy Update: Key Takeaways for Businesses',
+        category: 'Economy',
+        source: 'instagram',
+        videoId: 'short_video_id',
+        thumbnail: 'https://images.unsplash.com/photo-1579532537598-459ecdaf39cc?w=800',
+        description: 'Breaking down the latest RBI monetary policy decisions and their business impact.',
+        views: '15.2K',
+        date: 'Dec 7, 2025',
+        duration: '3:15',
+        featured: false
+    }
+];
+
 let eventsDB = [
     {
         id: 1,
@@ -208,6 +250,74 @@ app.get('/api/articles/latest', (req, res) => {
 app.get('/api/categories', (req, res) => {
     const categories = [...new Set(articlesDB.map(a => a.category))];
     res.json({ success: true, data: categories });
+});
+
+// -------- Video Endpoints --------
+
+// Get all videos
+app.get('/api/videos', (req, res) => {
+    const { page = 1, limit = 10, category, source } = req.query;
+    
+    let filtered = [...videosDB];
+    
+    // Filter by category
+    if (category && category !== 'All') {
+        filtered = filtered.filter(v => v.category === category);
+    }
+    
+    // Filter by source (youtube/instagram)
+    if (source) {
+        filtered = filtered.filter(v => v.source === source);
+    }
+    
+    // Pagination
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+    const paginated = filtered.slice(startIndex, endIndex);
+    
+    res.json({
+        success: true,
+        data: {
+            videos: paginated,
+            total: filtered.length,
+            page: parseInt(page),
+            limit: parseInt(limit),
+            pages: Math.ceil(filtered.length / limit)
+        }
+    });
+});
+
+// Get single video
+app.get('/api/videos/:id', (req, res) => {
+    const video = videosDB.find(v => v.id == req.params.id);
+    
+    if (!video) {
+        return res.status(404).json({ 
+            success: false, 
+            error: 'Video not found' 
+        });
+    }
+    
+    res.json({ success: true, data: video });
+});
+
+// Get featured videos
+app.get('/api/videos/featured', (req, res) => {
+    const featured = videosDB.filter(v => v.featured);
+    res.json({ success: true, data: featured });
+});
+
+// Get video categories
+app.get('/api/videos/categories', (req, res) => {
+    const categories = ['All', ...new Set(videosDB.map(v => v.category))];
+    res.json({ success: true, data: categories });
+});
+
+// Get latest videos
+app.get('/api/videos/latest', (req, res) => {
+    const { limit = 6 } = req.query;
+    const latest = [...videosDB].slice(0, parseInt(limit));
+    res.json({ success: true, data: latest });
 });
 
 // -------- Analytics Endpoints --------

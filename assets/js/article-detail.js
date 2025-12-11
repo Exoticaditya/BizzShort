@@ -2,6 +2,81 @@
 // Handles interactions and functionality on article detail pages
 
 document.addEventListener('DOMContentLoaded', function() {
+    const params = new URLSearchParams(location.search);
+    const title = params.get('title') || '';
+    const thumb = params.get('thumb') || '';
+    const url = params.get('url') || '';
+    const source = params.get('source') || '';
+    const category = params.get('category') || '';
+    const published = params.get('published') || '';
+    const excerpt = params.get('excerpt') || '';
+    const titleEl = document.querySelector('.article-title');
+    const catEl = document.querySelector('.article-category');
+    const imgEl = document.querySelector('.featured-image img');
+    const leadEl = document.querySelector('.lead-paragraph');
+    const dateEl = document.querySelector('.publish-date');
+    if (titleEl && title) titleEl.textContent = title;
+    if (catEl) {
+        const cat = category || 'business';
+        catEl.textContent = cat.charAt(0).toUpperCase() + cat.slice(1);
+        catEl.className = `article-category ${cat}`;
+    }
+    if (imgEl) {
+        if (thumb) imgEl.src = thumb;
+        imgEl.style.cursor = 'pointer';
+        const container = document.querySelector('.featured-image');
+        function embedYouTube(u) {
+            const idMatch = u.match(/(?:v=|\/shorts\/|youtu\.be\/|\/watch\?v=|\/embed\/)([\w-]{11})/);
+            const vid = idMatch ? idMatch[1] : null;
+            if (!vid) return false;
+            const iframe = document.createElement('iframe');
+            iframe.src = `https://www.youtube.com/embed/${vid}?rel=0&autoplay=1`; 
+            iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+            iframe.allowFullscreen = true;
+            iframe.style.width = '100%';
+            iframe.style.height = '100%';
+            const player = document.createElement('div');
+            player.className = 'video-player';
+            player.appendChild(iframe);
+            container.innerHTML = '';
+            container.appendChild(player);
+            return true;
+        }
+        function embedInstagram(u) {
+            const iframe = document.createElement('iframe');
+            const embedUrl = u.endsWith('/') ? `${u}embed` : `${u}/embed`;
+            iframe.src = embedUrl;
+            iframe.style.width = '100%';
+            iframe.style.height = '100%';
+            iframe.frameBorder = '0';
+            const player = document.createElement('div');
+            player.className = 'video-player';
+            player.appendChild(iframe);
+            container.innerHTML = '';
+            container.appendChild(player);
+        }
+        function playInline() {
+            if (!url) return;
+            if (source === 'youtube') {
+                if (!embedYouTube(url)) window.open(url, '_blank');
+            } else if (source === 'instagram') {
+                embedInstagram(url);
+            } else {
+                window.open(url, '_blank');
+            }
+        }
+        container.addEventListener('click', playInline);
+        // Auto-embed if video URL exists
+        if (url && (source === 'youtube' || source === 'instagram')) {
+            // Show play button overlay initially
+            const overlay = container.querySelector('.play-overlay');
+            if (overlay) {
+                overlay.style.display = 'flex';
+            }
+        }
+    }
+    if (leadEl && excerpt) leadEl.textContent = excerpt;
+    if (dateEl && published) dateEl.innerHTML = `<i class="far fa-clock"></i> ${new Date(published).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}`;
     // Smooth scroll for anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
@@ -22,23 +97,23 @@ document.addEventListener('DOMContentLoaded', function() {
         button.addEventListener('click', function(e) {
             e.preventDefault();
             const platform = this.classList[1]; // facebook, twitter, linkedin, whatsapp
-            const url = encodeURIComponent(window.location.href);
+            const shareTarget = encodeURIComponent(url || window.location.href);
             const title = encodeURIComponent(document.querySelector('.article-title').textContent);
             
             let shareUrl = '';
             
             switch(platform) {
                 case 'facebook':
-                    shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+                    shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${shareTarget}`;
                     break;
                 case 'twitter':
-                    shareUrl = `https://twitter.com/intent/tweet?url=${url}&text=${title}`;
+                    shareUrl = `https://twitter.com/intent/tweet?url=${shareTarget}&text=${title}`;
                     break;
                 case 'linkedin':
-                    shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${url}`;
+                    shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${shareTarget}`;
                     break;
                 case 'whatsapp':
-                    shareUrl = `https://wa.me/?text=${title}%20${url}`;
+                    shareUrl = `https://wa.me/?text=${title}%20${shareTarget}`;
                     break;
             }
             

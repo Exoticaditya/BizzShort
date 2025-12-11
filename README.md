@@ -1,10 +1,18 @@
 # BizzShort - Business News & Market Insights
 
-Welcome to **BizzShort**, your premier destination for business news, market updates, and industry insights in India.
+Welcome to **BizzShort**, your premier destination for business news, market updates, video content, and industry insights in India.
+
+## 🎉 NEW! Automatic Video Updater Tool
+
+**Just added:** `AUTO_ADD_VIDEOS.html` - Paste YouTube URLs and automatically generate video code in 2 minutes!
+
+👉 **Quick Start:** Double-click `AUTO_ADD_VIDEOS.html` and paste your YouTube links. See `SUPER_EASY_VIDEO_UPDATE.md` for details.
+
+---
 
 ## About BizzShort
 
-BizzShort is a comprehensive business news platform that delivers real-time market updates, corporate developments, startup news, and economic insights. Based in Noida, we serve business professionals, entrepreneurs, investors, and anyone interested in India's dynamic business landscape.
+BizzShort is a comprehensive business news platform that delivers real-time market updates, corporate developments, startup news, economic insights, and video news coverage. Based in Noida, we serve business professionals, entrepreneurs, investors, and anyone interested in India's dynamic business landscape.
 
 ## 🚀 Features
 
@@ -13,6 +21,16 @@ BizzShort is a comprehensive business news platform that delivers real-time mark
 - Market movements and analysis  
 - Corporate announcements
 - Economic policy updates
+
+### 🎥 **Video News Coverage** (NEW!)
+- YouTube video integration
+- Instagram reels and video content
+- Category-based video filtering (Markets, Startups, Economy, etc.)
+- Dedicated video detail pages with embedded players
+- Social media integration (@bizz_short on YouTube & Instagram)
+- Video articles with full text content
+- Related videos suggestions
+- Featured video highlights
 
 ### 📊 **Market Intelligence**
 - Stock market analysis
@@ -29,7 +47,8 @@ BizzShort is a comprehensive business news platform that delivers real-time mark
 
 ### 📱 **Multi-Platform Presence**
 - Website with responsive design
-- Instagram news account (@bizzshort_news)
+- YouTube news channel (@bizz_short)
+- Instagram news account (@bizz_short)
 - Social media integration
 - Mobile-optimized content
 
@@ -37,6 +56,7 @@ BizzShort is a comprehensive business news platform that delivers real-time mark
 - Banner advertisements with hide functionality
 - Sponsored content opportunities
 - Newsletter sponsorships
+- Video advertising options
 - ROI calculator for advertisers
 - Comprehensive advertising analytics
 
@@ -87,15 +107,46 @@ BizzShort/
 ├── index.html                 # Homepage
 ├── about.html                 # About page
 ├── contact.html               # Contact page
+├── video-detail.html          # Video detail page (NEW)
+├── videos.html                # All videos page (NEW)
 ├── assets/
 │   ├── css/
 │   │   ├── style.css         # Main stylesheet
+│   │   ├── video-cards.css   # Video card styles (NEW)
+│   │   ├── video-detail.css  # Video detail styles (NEW)
 │   │   └── additional.css    # Additional page styles
 │   ├── js/
 │   │   ├── script.js         # Main JavaScript functionality
+│   │   ├── video-manager.js  # Video management (NEW)
+│   │   ├── video-detail.js   # Video detail logic (NEW)
 │   │   └── contact.js        # Contact form specific JS
 │   └── images/
 │       └── README.md         # Image requirements and guidelines
+
+## 📹 Video Integration
+
+BizzShort now features a comprehensive video news system:
+
+### Features
+- **YouTube Integration**: Embedded videos from [@bizz_short](https://youtube.com/@bizz_short?si=FZvH5iMI2v_J4vGE)
+- **Instagram Integration**: Video content from [@bizz_short](https://www.instagram.com/bizz_short?igsh=NDVwdHJza2R3dnF0)
+- **Category Filtering**: Markets, Startups, Economy, Energy, Cryptocurrency, etc.
+- **Video Detail Pages**: Full article content below embedded videos
+- **Responsive Grid**: Adaptive video card layout for all devices
+- **Social Sharing**: Easy sharing to Facebook, Twitter, WhatsApp, LinkedIn
+
+### Video Pages
+1. **Homepage Video Section** (`index.html#videos`) - Featured videos with category tabs
+2. **All Videos Page** (`videos.html`) - Complete video library with filtering
+3. **Video Detail Page** (`video-detail.html?id=X`) - Individual video with full article
+
+### API Endpoints
+- `GET /api/videos` - Get all videos with pagination
+- `GET /api/videos/:id` - Get single video
+- `GET /api/videos/categories` - Get video categories
+- `GET /api/videos/latest` - Get latest videos
+
+See [VIDEO_INTEGRATION_DOCS.md](VIDEO_INTEGRATION_DOCS.md) for complete documentation.
 ```
 
 ## 🎨 Design Inspiration
