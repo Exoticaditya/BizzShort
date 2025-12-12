@@ -365,13 +365,13 @@
             const password = document.getElementById('password').value;
             const rememberMe = document.getElementById('rememberMe').checked;
             
-            // Demo credentials (In production, this should be server-side authentication)
-            if (username === 'admin' && password === 'admin123') {
+            // Admin credentials: username: admin, password: admin@123
+            if (username === 'admin' && password === 'admin@123') {
                 showAlert('Login successful! Redirecting to admin panel...', 'success');
                 
                 // Store session
                 if (rememberMe) {
-                    localStorage.setItem('adminSession', 'true');
+                    localStorage.setItem('adminLoggedIn', 'true');
                 } else {
                     sessionStorage.setItem('adminSession', 'true');
                 }
@@ -386,7 +386,7 @@
         });
 
         // Check if already logged in
-        if (localStorage.getItem('adminSession') === 'true' || sessionStorage.getItem('adminSession') === 'true') {
+        if (localStorage.getItem('adminLoggedIn') === 'true' || sessionStorage.getItem('adminSession') === 'true') {
             window.location.href = 'admin.html';
         }
     </script>

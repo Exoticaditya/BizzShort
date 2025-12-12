@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -19,17 +19,9 @@
     <link rel="stylesheet" href="assets/css/main-style.css">
     <link rel="stylesheet" href="assets/css/wirecable-grid.css">
     <link rel="stylesheet" href="assets/css/market-sections.css">
+    <link rel="stylesheet" href="assets/css/video-cards.css?v=2.0">
     
-    <!-- Google Analytics (Replace GA_MEASUREMENT_ID with your actual ID) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'GA_MEASUREMENT_ID');
-    </script>
-    
-    <!-- Google AdSense (Replace with your AdSense publisher ID) -->
+    <!-- Google AdSense (Replace ca-pub-XXXXXXXXXXXXXXXX with your actual AdSense publisher ID) -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX"
          crossorigin="anonymous"></script>
     
@@ -59,7 +51,7 @@
     <meta name="twitter:description" content="Latest business news, market updates, and industry insights. Stay ahead with BizzShort.">
     <meta name="twitter:image" content="https://bizzshort.onrender.com/assets/images/logo.jpeg">
     
-    <!-- Google Analytics -->
+    <!-- Google Analytics (Replace G-XXXXXXXXXX with your actual GA4 Measurement ID) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -68,7 +60,7 @@
         gtag('config', 'G-XXXXXXXXXX');
     </script>
 </head>
-<body>
+<body data-youtube-handle="https://youtube.com/@bizz_short?si=FZvH5iMI2v_J4vGE" data-instagram-username="https://www.instagram.com/bizz_short?igsh=NDVwdHJza2R3dnF0">
     <!-- Side Advertisement Wrappers -->
     <div class="page-wrapper-with-ads">
         <!-- Left Side Advertisement -->
@@ -119,7 +111,7 @@
                         <li><a href="#interviews">Interviews</a></li>
                         <li><a href="#events">Events</a></li>
                         <li><a href="#analysis">Analysis</a></li>
-                        <li><a href="#videos">Videos</a></li>
+                        <li><a href="videos.html">Videos</a></li>
                         <li><a href="#advertise">Advertise</a></li>
                         <li><a href="about.html">About</a></li>
                     </ul>
@@ -146,7 +138,8 @@
                     </div>
                     
                     <!-- Main Breaking Story -->
-                    <article class="main-breaking-story">
+                    <a href="article-detail.html?id=1" style="text-decoration: none; color: inherit;">
+                    <article class="main-breaking-story" style="cursor: pointer;">
                         <img src="https://images.unsplash.com/photo-1611224923853-80b023f02d71?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Indian Stock Market Reaches All-Time High">
                         <div class="story-overlay">
                             <span class="story-category">Markets</span>
@@ -160,7 +153,8 @@
                     
                     <!-- News Cards (replacing market cards) -->
                     <div class="news-cards-grid">
-                        <article class="news-card" onclick="window.location.href='article-detail.html'" style="cursor: pointer;">
+                        <article class="news-card">
+                            <a href="article-detail.html?id=3" style="text-decoration: none; color: inherit;">
                             <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Tech Innovation">
                             <div class="news-card-content">
                                 <span class="news-category">Technology</span>
@@ -170,9 +164,11 @@
                                     <span><i class="far fa-clock"></i> 3 min read</span>
                                 </div>
                             </div>
+                            </a>
                         </article>
                         
-                        <article class="news-card" onclick="window.location.href='article-detail.html'" style="cursor: pointer;">
+                        <article class="news-card">
+                            <a href="article-detail.html?id=1" style="text-decoration: none; color: inherit;">
                             <img src="https://images.unsplash.com/photo-1579532537598-459ecdaf39cc?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Business Growth">
                             <div class="news-card-content">
                                 <span class="news-category">Business</span>
@@ -182,9 +178,11 @@
                                     <span><i class="far fa-clock"></i> 4 min read</span>
                                 </div>
                             </div>
+                            </a>
                         </article>
                         
-                        <article class="news-card" onclick="window.location.href='article-detail.html'" style="cursor: pointer;">
+                        <article class="news-card">
+                            <a href="article-detail.html?id=2" style="text-decoration: none; color: inherit;">
                             <img src="https://images.unsplash.com/photo-1559526324-4b87b5e36e44?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Investment Trends">
                             <div class="news-card-content">
                                 <span class="news-category">Investment</span>
@@ -194,6 +192,7 @@
                                     <span><i class="far fa-clock"></i> 5 min read</span>
                                 </div>
                             </div>
+                            </a>
                         </article>
                     </div>
                 </section>
@@ -204,7 +203,7 @@
                         <h3>Market Today</h3>
                     </div>
                     <div class="market-cards-stack">
-                        <article class="market-card">
+                        <article class="market-card" onclick="window.location.href='market-chart.html?market=nifty50'" style="cursor: pointer;">
                             <div class="market-card-header">
                                 <span class="market-icon">📈</span>
                                 <h4>Nifty 50</h4>
@@ -212,11 +211,11 @@
                             <div class="market-card-content">
                                 <div class="market-value" id="nifty-value">₹24,350</div>
                                 <div class="market-change positive" id="nifty-change">+2.5%</div>
-                                <p id="nifty-note">Record High of 24,350</p>
+                                <p id="nifty-note">Click to view real-time chart</p>
                             </div>
                         </article>
                         
-                        <article class="market-card">
+                        <article class="market-card" onclick="window.location.href='market-chart.html?market=sensex'" style="cursor: pointer;">
                             <div class="market-card-header">
                                 <span class="market-icon">📊</span>
                                 <h4>Sensex</h4>
@@ -224,19 +223,19 @@
                             <div class="market-card-content">
                                 <div class="market-value" id="sensex-value">₹85,200</div>
                                 <div class="market-change positive" id="sensex-change">+1.8%</div>
-                                <p id="sensex-note">Strong IT Earnings Boost</p>
+                                <p id="sensex-note">Click to view real-time chart</p>
                             </div>
                         </article>
                         
-                        <article class="market-card">
+                        <article class="market-card" onclick="window.location.href='market-chart.html?market=banknifty'" style="cursor: pointer;">
                             <div class="market-card-header">
-                                <span class="market-icon">💰</span>
-                                <h4>FII Inflow</h4>
+                                <span class="market-icon">🏦</span>
+                                <h4>Bank Nifty</h4>
                             </div>
                             <div class="market-card-content">
-                                <div class="market-value" id="fii-value">₹12K Cr</div>
-                                <div class="market-change positive" id="fii-change">+15%</div>
-                                <p id="fii-note">Foreign Investment Surge</p>
+                                <div class="market-value" id="bank-nifty-value">₹53,220</div>
+                                <div class="market-change positive" id="bank-nifty-change">+1.2%</div>
+                                <p id="bank-nifty-note">Click to view real-time chart</p>
                             </div>
                         </article>
                     </div>
@@ -260,7 +259,8 @@
                 
                 <div class="section-with-sidebar">
                     <div class="latest-news-grid">
-                    <article class="news-card-large" data-category="business" onclick="window.location.href='article-detail.html'" style="cursor: pointer;">
+                    <article class="news-card-large" data-category="business">
+                        <a href="article-detail.html?id=1" style="text-decoration: none; color: inherit;">
                         <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Business News">
                         <div class="card-content">
                             <span class="category-badge business">Business</span>
@@ -271,8 +271,10 @@
                                 <span class="time"><i class="far fa-clock"></i> 2 hours ago</span>
                             </div>
                         </div>
+                        </a>
                     </article>
-                    <article class="news-card-large" data-category="markets" onclick="window.location.href='article-detail.html'" style="cursor: pointer;">
+                    <article class="news-card-large" data-category="markets">
+                        <a href="article-detail.html?id=2" style="text-decoration: none; color: inherit;">
                         <img src="https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Stock Market">
                         <div class="card-content">
                             <span class="category-badge markets">Markets</span>
@@ -283,8 +285,10 @@
                                 <span class="time"><i class="far fa-clock"></i> 4 hours ago</span>
                             </div>
                         </div>
+                        </a>
                     </article>
-                    <article class="news-card-large" data-category="technology" onclick="window.location.href='article-detail.html'" style="cursor: pointer;">
+                    <article class="news-card-large" data-category="technology">
+                        <a href="article-detail.html?id=3" style="text-decoration: none; color: inherit;">
                         <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="AI Technology">
                         <div class="card-content">
                             <span class="category-badge technology">Technology</span>
@@ -295,8 +299,10 @@
                                 <span class="time"><i class="far fa-clock"></i> 5 hours ago</span>
                             </div>
                         </div>
+                        </a>
                     </article>
-                    <article class="news-card-large" data-category="business" onclick="window.location.href='article-detail.html'" style="cursor: pointer;">
+                    <article class="news-card-large" data-category="business">
+                        <a href="article-detail.html?id=1" style="text-decoration: none; color: inherit;">
                         <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Manufacturing">
                         <div class="card-content">
                             <span class="category-badge business">Business</span>
@@ -307,8 +313,10 @@
                                 <span class="time"><i class="far fa-clock"></i> 6 hours ago</span>
                             </div>
                         </div>
+                        </a>
                     </article>
-                    <article class="news-card-large" data-category="markets" onclick="window.location.href='article-detail.html'" style="cursor: pointer;">
+                    <article class="news-card-large" data-category="markets">
+                        <a href="article-detail.html?id=1" style="text-decoration: none; color: inherit;">
                         <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Investment">
                         <div class="card-content">
                             <span class="category-badge markets">Markets</span>
@@ -319,8 +327,10 @@
                                 <span class="time"><i class="far fa-clock"></i> 7 hours ago</span>
                             </div>
                         </div>
+                        </a>
                     </article>
-                    <article class="news-card-large" data-category="technology" onclick="window.location.href='article-detail.html'" style="cursor: pointer;">
+                    <article class="news-card-large" data-category="technology">
+                        <a href="article-detail.html?id=1" style="text-decoration: none; color: inherit;">
                         <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Startup">
                         <div class="card-content">
                             <span class="category-badge technology">Technology</span>
@@ -331,8 +341,10 @@
                                 <span class="time"><i class="far fa-clock"></i> 8 hours ago</span>
                             </div>
                         </div>
+                        </a>
                     </article>
-                    <article class="news-card-large" data-category="industry" onclick="window.location.href='article-detail.html'" style="cursor: pointer;">
+                    <article class="news-card-large" data-category="industry">
+                        <a href="article-detail.html?id=1" style="text-decoration: none; color: inherit;">
                         <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Industry Manufacturing">
                         <div class="card-content">
                             <span class="category-badge industry">Industry Update</span>
@@ -343,8 +355,10 @@
                                 <span class="time"><i class="far fa-clock"></i> 3 hours ago</span>
                             </div>
                         </div>
+                        </a>
                     </article>
-                    <article class="news-card-large" data-category="industry" onclick="window.location.href='article-detail.html'" style="cursor: pointer;">
+                    <article class="news-card-large" data-category="industry">
+                        <a href="article-detail.html?id=1" style="text-decoration: none; color: inherit;">
                         <img src="https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Renewable Energy">
                         <div class="card-content">
                             <span class="category-badge industry">Industry Update</span>
@@ -355,6 +369,7 @@
                                 <span class="time"><i class="far fa-clock"></i> 5 hours ago</span>
                             </div>
                         </div>
+                        </a>
                     </article>
                 </div>
                 
@@ -397,7 +412,8 @@
                     <a href="#interviews" class="view-all">View All →</a>
                 </div>
                 <div class="interview-grid">
-                    <article class="interview-card" onclick="window.location.href='article-detail.html'" style="cursor: pointer;">
+                    <article class="interview-card">
+                        <a href="article-detail.html?id=1" style="text-decoration: none; color: inherit;">
                         <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="CEO Interview">
                         <div class="interview-content">
                             <span class="interview-tag">CEO Interview</span>
@@ -408,8 +424,10 @@
                                 <span>â±ï¸ 12 min read</span>
                             </div>
                         </div>
+                        </a>
                     </article>
-                    <article class="interview-card" onclick="window.location.href='article-detail.html'" style="cursor: pointer;">
+                    <article class="interview-card">
+                        <a href="article-detail.html?id=1" style="text-decoration: none; color: inherit;">
                         <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Entrepreneur Interview">
                         <div class="interview-content">
                             <span class="interview-tag">Entrepreneur</span>
@@ -433,7 +451,8 @@
                     <a href="events.html" class="view-all">View All →</a>
                 </div>
                 <div class="events-grid">
-                    <article class="event-card" onclick="window.location.href='article-detail.html'" style="cursor: pointer;">
+                    <article class="event-card">
+                        <a href="article-detail.html?id=1" style="text-decoration: none; color: inherit;">
                         <div class="event-date">
                             <span class="date-day">15</span>
                             <span class="date-month">DEC</span>
@@ -444,8 +463,10 @@
                             <p class="event-time"><i class="fas fa-clock"></i> 9:00 AM - 6:00 PM</p>
                             <button class="event-btn">Register Now</button>
                         </div>
+                        </a>
                     </article>
-                    <article class="event-card" onclick="window.location.href='article-detail.html'" style="cursor: pointer;">
+                    <article class="event-card">
+                        <a href="article-detail.html?id=1" style="text-decoration: none; color: inherit;">
                         <div class="event-date">
                             <span class="date-day">20</span>
                             <span class="date-month">DEC</span>
@@ -456,8 +477,10 @@
                             <p class="event-time"><i class="fas fa-clock"></i> 2:00 PM - 5:00 PM</p>
                             <button class="event-btn">Join Online</button>
                         </div>
+                        </a>
                     </article>
-                    <article class="event-card" onclick="window.location.href='article-detail.html'" style="cursor: pointer;">
+                    <article class="event-card">
+                        <a href="article-detail.html?id=1" style="text-decoration: none; color: inherit;">
                         <div class="event-date">
                             <span class="date-day">28</span>
                             <span class="date-month">DEC</span>
@@ -468,6 +491,7 @@
                             <p class="event-time"><i class="fas fa-clock"></i> 6:00 PM - 9:00 PM</p>
                             <button class="event-btn">RSVP</button>
                         </div>
+                        </a>
                     </article>
                 </div>
             </div>
@@ -694,96 +718,7 @@
             </div>
         </section>
 
-        <!-- Video Section -->
-        <section id="videos" class="content-section video-section">
-            <div class="container">
-                <div class="section-header">
-                    <h2 class="section-title">Video Coverage</h2>
-                    <a href="#" class="view-all">View All →</a>
-                </div>
-                <div class="video-grid">
-                    <article class="video-card">
-                        <div class="video-thumbnail">
-                            <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Market Analysis">
-                            <div class="play-button"><i class="fas fa-play"></i></div>
-                            <span class="video-duration">12:45</span>
-                        </div>
-                        <h3>Market Outlook 2025: Expert Panel Discussion</h3>
-                        <p>Leading market analysts discuss key trends, opportunities, and risks for the coming year.</p>
-                    </article>
-                    <article class="video-card">
-                        <div class="video-thumbnail">
-                            <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Startup Story">
-                            <div class="play-button"><i class="fas fa-play"></i></div>
-                            <span class="video-duration">8:30</span>
-                        </div>
-                        <h3>From Garage to Unicorn: The Complete Story</h3>
-                        <p>How three IIT graduates built a billion-dollar company in just four years.</p>
-                    </article>
-                    <article class="video-card">
-                        <div class="video-thumbnail">
-                            <img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Economic News">
-                            <div class="play-button"><i class="fas fa-play"></i></div>
-                            <span class="video-duration">6:15</span>
-                        </div>
-                        <h3>Budget 2025: Key Highlights and Impact</h3>
-                        <p>Breaking down the budget announcements and what they mean for businesses and consumers.</p>
-                    </article>
-                </div>
-            </div>
-        </section>
-
-        <!-- Top Market Cap Companies Section -->
-        <section id="top-companies" class="top-companies-section">
-            <div class="container">
-                <div class="section-header">
-                    <h2 class="section-title">Top Market Cap Companies</h2>
-                    <div class="market-filter">
-                        <button class="filter-btn active" onclick="filterMarket('all')">All</button>
-                        <button class="filter-btn" onclick="filterMarket('gainers')">Top Gainers</button>
-                        <button class="filter-btn" onclick="filterMarket('losers')">Top Losers</button>
-                    </div>
-                </div>
-                <div id="top-companies-grid" class="companies-grid">
-                    <!-- Companies will be loaded dynamically -->
-                    <div class="loading-placeholder">
-                        <i class="fas fa-spinner fa-spin"></i>
-                        <p>Loading market data...</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Sector Performance Section -->
-        <section id="sectors" class="sectors-section">
-            <div class="container">
-                <div class="section-header">
-                    <h2 class="section-title">Sector Performance</h2>
-                    <a href="#" class="view-all">View All Sectors <i class="fas fa-arrow-right"></i></a>
-                </div>
-                <div id="sectors-grid" class="sectors-grid">
-                    <!-- Sectors will be loaded dynamically -->
-                    <div class="loading-placeholder">
-                        <i class="fas fa-spinner fa-spin"></i>
-                        <p>Loading sector data...</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Market Indices Section -->
-        <section id="indices" class="indices-section">
-            <div class="container">
-                <div class="section-header">
-                    <h2 class="section-title">Global Market Indices</h2>
-                </div>
-                <div id="indices-grid" class="indices-grid">
-                    <!-- Indices will be loaded dynamically -->
-                </div>
-            </div>
-        </section>
-
-        <!-- Advertise With Us Section - MOVED TO END -->
+        <!-- Advertise With Us Section -->
         <section id="advertise" class="content-section advertise-section">
             <div class="container">
                 <div class="section-header" style="text-align: center;">
@@ -962,12 +897,12 @@
                     <div class="footer-col">
                         <h4>Quick Links</h4>
                         <ul class="footer-links">
-                            <li><a href="#home"><i class="fas fa-chevron-right"></i> Home</a></li>
-                            <li><a href="#latest-news"><i class="fas fa-chevron-right"></i> Latest News</a></li>
-                            <li><a href="#interviews"><i class="fas fa-chevron-right"></i> Interviews</a></li>
-                            <li><a href="#events"><i class="fas fa-chevron-right"></i> Events</a></li>
-                            <li><a href="#top-companies"><i class="fas fa-chevron-right"></i> Top Companies</a></li>
-                            <li><a href="#sectors"><i class="fas fa-chevron-right"></i> Sectors</a></li>
+                            <li><a href="index.html"><i class="fas fa-chevron-right"></i> Home</a></li>
+                            <li><a href="index.html#latest-news"><i class="fas fa-chevron-right"></i> Latest News</a></li>
+                            <li><a href="index.html#interviews"><i class="fas fa-chevron-right"></i> Interviews</a></li>
+                            <li><a href="events.html"><i class="fas fa-chevron-right"></i> Events</a></li>
+                            <li><a href="index.html#top-companies"><i class="fas fa-chevron-right"></i> Top Companies</a></li>
+                            <li><a href="index.html#sectors"><i class="fas fa-chevron-right"></i> Sectors</a></li>
                         </ul>
                     </div>
 
@@ -975,12 +910,12 @@
                     <div class="footer-col">
                         <h4>Categories</h4>
                         <ul class="footer-links">
-                            <li><a href="#news"><i class="fas fa-chevron-right"></i> Business News</a></li>
-                            <li><a href="#industry"><i class="fas fa-chevron-right"></i> Industry Updates</a></li>
-                            <li><a href="#analysis"><i class="fas fa-chevron-right"></i> Market Analysis</a></li>
-                            <li><a href="#opinion"><i class="fas fa-chevron-right"></i> Opinion & Editorials</a></li>
-                            <li><a href="#videos"><i class="fas fa-chevron-right"></i> Video Coverage</a></li>
-                            <li><a href="#client"><i class="fas fa-chevron-right"></i> Client Features</a></li>
+                            <li><a href="blog.html"><i class="fas fa-chevron-right"></i> Business News</a></li>
+                            <li><a href="index.html#industry"><i class="fas fa-chevron-right"></i> Industry Updates</a></li>
+                            <li><a href="index.html#analysis"><i class="fas fa-chevron-right"></i> Market Analysis</a></li>
+                            <li><a href="index.html#opinion"><i class="fas fa-chevron-right"></i> Opinion & Editorials</a></li>
+                            <li><a href="videos.html"><i class="fas fa-chevron-right"></i> Video Coverage</a></li>
+                            <li><a href="index.html#client"><i class="fas fa-chevron-right"></i> Client Features</a></li>
                         </ul>
                     </div>
 
@@ -988,12 +923,12 @@
                     <div class="footer-col">
                         <h4>Company</h4>
                         <ul class="footer-links">
-                            <li><a href="#about"><i class="fas fa-chevron-right"></i> About Us</a></li>
-                            <li><a href="#advertise"><i class="fas fa-chevron-right"></i> Advertise</a></li>
-                            <li><a href="#policy"><i class="fas fa-chevron-right"></i> Company Policy</a></li>
+                            <li><a href="about.html"><i class="fas fa-chevron-right"></i> About Us</a></li>
+                            <li><a href="advertise.html"><i class="fas fa-chevron-right"></i> Advertise</a></li>
+                            <li><a href="about.html#policy"><i class="fas fa-chevron-right"></i> Company Policy</a></li>
                             <li><a href="contact.html"><i class="fas fa-chevron-right"></i> Contact Us</a></li>
-                            <li><a href="#"><i class="fas fa-chevron-right"></i> Careers</a></li>
-                            <li><a href="#"><i class="fas fa-chevron-right"></i> Media Kit</a></li>
+                            <li><a href="contact.html"><i class="fas fa-chevron-right"></i> Careers</a></li>
+                            <li><a href="contact.html"><i class="fas fa-chevron-right"></i> Media Kit</a></li>
                         </ul>
                     </div>
 
@@ -1013,14 +948,15 @@
                 </div>
             </div>
 
-            <div class="footer-bottom">
-                <div class="footer-bottom-content">
-                    <p class="footer-copyright">&copy; 2025 BizzShort. All rights reserved.</p>
-                    <div class="footer-bottom-links">
-                        <a href="#">Privacy Policy</a>
-                        <a href="#">Terms of Service</a>
-                        <a href="#">Cookie Policy</a>
-                        <a href="admin-login.html" class="admin-link">
+        <div class="footer-bottom">
+            <div class="footer-bottom-content">
+                <p class="footer-copyright">&copy; 2025 BizzShort. All rights reserved.</p>
+                <p class="footer-developed">(Developd by Garvik India)</p>
+                <div class="footer-bottom-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Cookie Policy</a>
+                    <a href="admin-login.html" class="admin-link">
                             <i class="fas fa-lock"></i> Admin Access
                         </a>
                     </div>
@@ -1028,49 +964,49 @@
             </div>
         </div>
     </footer>
-    
-    <script>
-        function toggleMobileMenu() {
-            const navMenu = document.querySelector('.main-nav ul');
-            navMenu.classList.toggle('active');
-        }
-        
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-                const navMenu = document.querySelector('.main-nav ul');
-                if(navMenu.classList.contains('active')) {
-                    navMenu.classList.remove('active');
-                }
-            });
-        });
-    </script>
-    
-    <!-- Chart.js Library -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    
-    <!-- Real-time Market Data -->
-    <script src="assets/js/market-data.js"></script>
-    <script src="assets/js/main-functionality.js"></script>
-    <script src="assets/js/advanced-market.js"></script>
-        </div>
-        <!-- End Main Content Wrapper -->
 
-        <!-- Right Side Advertisement -->
-        <aside class="side-ad right-ad">
-            <div class="ad-sticky">
-                <div class="ad-label">Advertisement</div>
-                <img src="https://via.placeholder.com/300x600/2c3e50/ffffff?text=Ad+Space+300x600" alt="Advertisement">
-                <div class="ad-space" style="margin-top: 20px;">
-                    <img src="https://via.placeholder.com/300x250/34495e/ffffff?text=Ad+Space+300x250" alt="Advertisement">
-                </div>
-            </div>
-        </aside>
     </div>
-    <!-- End Page Wrapper -->
+    <!-- End Main Content Wrapper -->
+
+    <!-- Right Side Advertisement -->
+    <aside class="side-ad right-ad">
+        <div class="ad-sticky">
+            <div class="ad-label">Advertisement</div>
+            <img src="https://via.placeholder.com/300x600/2c3e50/ffffff?text=Ad+Space+300x600" alt="Advertisement">
+            <div class="ad-space" style="margin-top: 20px;">
+                <img src="https://via.placeholder.com/300x250/34495e/ffffff?text=Ad+Space+300x250" alt="Advertisement">
+            </div>
+        </div>
+    </aside>
+</div>
+<!-- End Page Wrapper -->
+
+<!-- Core Scripts -->
+<script>
+    function toggleMobileMenu() {
+        const navMenu = document.querySelector('.main-nav ul');
+        navMenu.classList.toggle('active');
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+            const navMenu = document.querySelector('.main-nav ul');
+            if (navMenu.classList.contains('active')) {
+                navMenu.classList.remove('active');
+            }
+        });
+    });
+</script>
+
+<script src="assets/js/market-data.js"></script>
+<script src="assets/js/main-functionality.js"></script>
+<script src="assets/js/advanced-market.js"></script>
+<script src="assets/js/video-manager.js?v=2.0"></script>
+
 </body>
 </html>

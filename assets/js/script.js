@@ -317,7 +317,6 @@ document.addEventListener('DOMContentLoaded', function() {
         searchInput.addEventListener('input', function() {
             const query = this.value.toLowerCase();
             // Implement search logic here
-            console.log('Searching for:', query);
         });
     }
 
@@ -557,7 +556,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Performance Monitoring
     window.addEventListener('load', function() {
         const loadTime = performance.timing.loadEventEnd - performance.timing.navigationStart;
-        console.log('Page load time:', loadTime + 'ms');
+        // Track page load time for analytics if needed
     });
 
 
@@ -614,7 +613,6 @@ function debounce(func, wait) {
 // Initialize Analytics (if needed)
 function initAnalytics() {
     // Google Analytics or other tracking code would go here
-    console.log('Analytics initialized');
 }
 
 // Initialize the site

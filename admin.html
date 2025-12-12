@@ -26,6 +26,7 @@
             <div class="admin-user">
                 <span class="user-name">Admin User</span>
                 <img src="https://ui-avatars.com/api/?name=Admin+User&background=e74c3c&color=fff" alt="Admin" class="user-avatar">
+                <button class="btn-website" onclick="window.open('index.html', '_blank')"><i class="fas fa-globe"></i> Back to Website</button>
                 <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
             </div>
         </div>
@@ -40,6 +41,12 @@
                 </a>
                 <a href="#articles" class="nav-item" onclick="showSection('articles')">
                     <i class="fas fa-newspaper"></i> Articles
+                </a>
+                <a href="#youtube-converter" class="nav-item" onclick="showSection('youtube-converter')">
+                    <i class="fab fa-youtube"></i> YouTube to Article
+                </a>
+                <a href="#advertisements" class="nav-item" onclick="showSection('advertisements')">
+                    <i class="fas fa-ad"></i> Advertisements
                 </a>
                 <a href="#interviews" class="nav-item" onclick="showSection('interviews')">
                     <i class="fas fa-microphone"></i> Interviews
@@ -222,6 +229,271 @@
                     <button class="page-btn">2</button>
                     <button class="page-btn">3</button>
                     <button class="page-btn"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </section>
+
+            <!-- YouTube to Article Converter Section -->
+            <section id="youtube-converter" class="admin-section">
+                <div class="section-header">
+                    <h2><i class="fab fa-youtube" style="color: #FF0000;"></i> YouTube to Article Converter</h2>
+                    <p style="color: #6B7280; font-size: 14px; margin-top: 8px;">Paste a YouTube link to automatically create an article with embedded video</p>
+                </div>
+
+                <div class="converter-container">
+                    <div class="converter-card">
+                        <div class="converter-form">
+                            <div class="form-group">
+                                <label for="youtubeUrl"><i class="fas fa-link"></i> YouTube Video URL</label>
+                                <input 
+                                    type="url" 
+                                    id="youtubeUrl" 
+                                    class="form-input" 
+                                    placeholder="https://www.youtube.com/watch?v=VIDEO_ID or https://youtu.be/VIDEO_ID"
+                                    required
+                                >
+                                <small style="color: #6B7280;">Example: https://www.youtube.com/watch?v=fH8Ir7doWGk</small>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="articleTitle"><i class="fas fa-heading"></i> Article Title (Optional)</label>
+                                    <input 
+                                        type="text" 
+                                        id="articleTitle" 
+                                        class="form-input" 
+                                        placeholder="Leave empty to auto-generate from video"
+                                    >
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="articleCategory"><i class="fas fa-tag"></i> Category</label>
+                                    <select id="articleCategory" class="form-input">
+                                        <option value="business">Business</option>
+                                        <option value="markets">Markets</option>
+                                        <option value="technology">Technology</option>
+                                        <option value="startups">Startups</option>
+                                        <option value="economy">Economy</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="articleAuthor"><i class="fas fa-user"></i> Author Name</label>
+                                <input 
+                                    type="text" 
+                                    id="articleAuthor" 
+                                    class="form-input" 
+                                    value="BizzShort Team"
+                                    required
+                                >
+                            </div>
+
+                            <button class="btn-primary btn-large" onclick="convertYouTubeToArticle()">
+                                <i class="fas fa-magic"></i> Convert to Article & Add to Website
+                            </button>
+                        </div>
+
+                        <div class="converter-preview" id="articlePreview" style="display: none;">
+                            <h3><i class="fas fa-eye"></i> Article Preview</h3>
+                            <div class="preview-content" id="previewContent">
+                                <!-- Preview will be shown here -->
+                            </div>
+                            <div class="preview-actions">
+                                <button class="btn-success" onclick="publishArticle()">
+                                    <i class="fas fa-check-circle"></i> Publish to Website
+                                </button>
+                                <button class="btn-secondary" onclick="resetConverter()">
+                                    <i class="fas fa-redo"></i> Convert Another Video
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="converter-help">
+                        <h4><i class="fas fa-question-circle"></i> How to Use</h4>
+                        <ol>
+                            <li>Copy the YouTube video URL from your browser</li>
+                            <li>Paste it in the input field above</li>
+                            <li>Optionally customize the title, category, and author</li>
+                            <li>Click "Convert to Article"</li>
+                            <li>Preview the generated article</li>
+                            <li>Click "Publish to Website" to add it to your site</li>
+                        </ol>
+                        
+                        <div class="converter-tips">
+                            <h5><i class="fas fa-lightbulb"></i> Tips:</h5>
+                            <ul>
+                                <li>The video will be automatically embedded in the article</li>
+                                <li>Article content is generated based on video metadata</li>
+                                <li>Each article gets a unique ID for easy management</li>
+                                <li>Published articles appear immediately in Latest Updates</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="recent-conversions">
+                    <h3><i class="fas fa-history"></i> Recently Converted Articles</h3>
+                    <div id="recentConversions" class="conversions-list">
+                        <p class="empty-state-text">No articles converted yet. Convert your first YouTube video!</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Advertisements Section -->
+            <section id="advertisements" class="admin-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-ad"></i> Advertisement Management</h2>
+                    <button class="btn-primary" onclick="showAddAdModal()"><i class="fas fa-plus"></i> Add New Advertisement</button>
+                </div>
+
+                <!-- Ad Stats Overview -->
+                <div class="stats-grid" style="margin-bottom: 40px;">
+                    <div class="stat-card">
+                        <div class="stat-icon blue">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Total Impressions</h3>
+                            <div class="stat-number" id="totalImpressions">0</div>
+                            <span class="stat-change positive">↑ 12% from last week</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon green">
+                            <i class="fas fa-mouse-pointer"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Total Clicks</h3>
+                            <div class="stat-number" id="totalClicks">0</div>
+                            <span class="stat-change positive">↑ 8% from last week</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon orange">
+                            <i class="fas fa-percentage"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Click-Through Rate</h3>
+                            <div class="stat-number" id="avgCTR">0%</div>
+                            <span class="stat-change positive">↑ 2.1% from last week</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon red">
+                            <i class="fas fa-ad"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Active Ads</h3>
+                            <div class="stat-number" id="activeAds">0</div>
+                            <span class="stat-change neutral">Total ads running</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tabs -->
+                <div class="ad-tabs">
+                    <button class="ad-tab active" onclick="switchAdTab('active')">Active Ads</button>
+                    <button class="ad-tab" onclick="switchAdTab('analytics')">Analytics</button>
+                    <button class="ad-tab" onclick="switchAdTab('all')">All Ads</button>
+                </div>
+
+                <!-- Active Ads Table -->
+                <div id="activeAdsTab" class="ad-tab-content active">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Preview</th>
+                                <th>Ad Name</th>
+                                <th>Position</th>
+                                <th>Status</th>
+                                <th>Impressions</th>
+                                <th>Clicks</th>
+                                <th>CTR</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="activeAdsBody">
+                            <tr>
+                                <td colspan="8" style="text-align: center; padding: 40px;">
+                                    <i class="fas fa-ad" style="font-size: 48px; color: #e1e8ed; margin-bottom: 15px;"></i>
+                                    <p style="color: #6B7280;">No active advertisements. Click "Add New Advertisement" to create one.</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Analytics Tab -->
+                <div id="analyticsTab" class="ad-tab-content">
+                    <div class="analytics-container">
+                        <div class="analytics-card">
+                            <h3><i class="fas fa-chart-line"></i> Performance Over Time</h3>
+                            <canvas id="adPerformanceChart" height="80"></canvas>
+                        </div>
+                        
+                        <div class="analytics-grid">
+                            <div class="analytics-card">
+                                <h3><i class="fas fa-trophy"></i> Top Performing Ads</h3>
+                                <div id="topAdsContainer">
+                                    <p class="empty-state-text">No data available yet</p>
+                                </div>
+                            </div>
+                            
+                            <div class="analytics-card">
+                                <h3><i class="fas fa-map-marker-alt"></i> Performance by Position</h3>
+                                <canvas id="positionChart" height="200"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="analytics-card">
+                            <h3><i class="fas fa-clock"></i> Hourly Performance</h3>
+                            <canvas id="hourlyChart" height="80"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- All Ads Tab -->
+                <div id="allAdsTab" class="ad-tab-content">
+                    <div class="filter-bar">
+                        <input type="text" class="search-input" placeholder="Search advertisements..." id="adSearchInput" onkeyup="filterAds()">
+                        <select class="filter-select" id="adStatusFilter" onchange="filterAds()">
+                            <option value="">All Status</option>
+                            <option value="active">Active</option>
+                            <option value="paused">Paused</option>
+                            <option value="expired">Expired</option>
+                        </select>
+                        <select class="filter-select" id="adPositionFilter" onchange="filterAds()">
+                            <option value="">All Positions</option>
+                            <option value="header">Header</option>
+                            <option value="sidebar">Sidebar</option>
+                            <option value="footer">Footer</option>
+                            <option value="inline">Inline</option>
+                        </select>
+                    </div>
+
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Preview</th>
+                                <th>Ad Name</th>
+                                <th>Position</th>
+                                <th>Status</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Performance</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="allAdsBody">
+                            <tr>
+                                <td colspan="8" style="text-align: center; padding: 40px;">
+                                    <i class="fas fa-ad" style="font-size: 48px; color: #e1e8ed; margin-bottom: 15px;"></i>
+                                    <p style="color: #6B7280;">No advertisements created yet.</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </section>
 
@@ -431,6 +703,83 @@
         </div>
     </div>
 
+    <!-- Ad Upload Modal -->
+    <div id="adModal" class="modal">
+        <div class="modal-content" style="max-width: 700px;">
+            <span class="modal-close" onclick="closeAdModal()">&times;</span>
+            <h2><i class="fas fa-ad"></i> Add New Advertisement</h2>
+            <form id="adForm" onsubmit="saveAdvertisement(event)">
+                <div class="form-group">
+                    <label>Ad Name *</label>
+                    <input type="text" class="form-input" id="adName" required placeholder="e.g., Winter Sale Banner">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Position *</label>
+                        <select class="form-input" id="adPosition" required>
+                            <option value="">Select Position</option>
+                            <option value="header">Header (Top of page)</option>
+                            <option value="sidebar">Sidebar (Right side)</option>
+                            <option value="footer">Footer (Bottom)</option>
+                            <option value="inline">Inline (Between content)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Status *</label>
+                        <select class="form-input" id="adStatus" required>
+                            <option value="active">Active</option>
+                            <option value="paused">Paused</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Upload Image *</label>
+                    <input type="file" class="form-input" id="adImage" accept="image/*" required onchange="previewAdImage(event)">
+                    <small style="color: #6B7280; display: block; margin-top: 5px;">
+                        Recommended: 728x90 (Header), 300x250 (Sidebar), 728x90 (Footer), 468x60 (Inline)
+                    </small>
+                </div>
+
+                <div id="adImagePreview" style="display: none; margin: 20px 0;">
+                    <img id="previewImg" style="max-width: 100%; border-radius: 8px; border: 2px solid #e1e8ed;">
+                </div>
+
+                <div class="form-group">
+                    <label>Target URL</label>
+                    <input type="url" class="form-input" id="adUrl" placeholder="https://example.com">
+                    <small style="color: #6B7280; display: block; margin-top: 5px;">
+                        Where users will be redirected when clicking the ad
+                    </small>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Start Date</label>
+                        <input type="date" class="form-input" id="adStartDate">
+                    </div>
+                    <div class="form-group">
+                        <label>End Date</label>
+                        <input type="date" class="form-input" id="adEndDate">
+                    </div>
+                </div>
+
+                <div class="form-actions" style="display: flex; gap: 10px; margin-top: 25px;">
+                    <button type="submit" class="btn-primary" style="flex: 1;">
+                        <i class="fas fa-save"></i> Save Advertisement
+                    </button>
+                    <button type="button" class="btn-secondary" onclick="closeAdModal()" style="flex: 1;">
+                        <i class="fas fa-times"></i> Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script src="assets/js/admin-enhanced.js"></script>
+    <script src="assets/js/youtube-converter.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <script src="assets/js/ad-manager.js"></script>
 </body>
 </html>

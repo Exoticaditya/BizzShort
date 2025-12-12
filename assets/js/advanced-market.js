@@ -53,15 +53,16 @@ let currentChartData = null;
 // INITIALIZE ON PAGE LOAD
 // ============================================
 document.addEventListener('DOMContentLoaded', function() {
-    loadTopCompanies();
-    loadSectors();
-    loadGlobalIndices();
+    // Market sections removed - only keeping Market Today sidebar
+    // loadTopCompanies();
+    // loadSectors();
+    // loadGlobalIndices();
     
     // Refresh data every 5 minutes
-    setInterval(() => {
-        loadTopCompanies();
-        loadGlobalIndices();
-    }, 300000);
+    // setInterval(() => {
+    //     loadTopCompanies();
+    //     loadGlobalIndices();
+    // }, 300000);
 });
 
 // ============================================
@@ -242,20 +243,29 @@ function filterMarket(filter) {
     event.target.classList.add('active');
     
     // Reload companies with filter
-    loadTopCompanies();
+    // loadTopCompanies(); // Removed - section not needed
 }
 
 // ============================================
 // SHOW CHART MODAL
 // ============================================
 function showChart(name, symbol) {
+    const gfPath = toGoogleFinancePath(symbol);
+    if (window.documentPictureInPicture && documentPictureInPicture.requestWindow) {
+        openPiPChart(name, gfPath, symbol).catch(() => {
+            const modal = document.getElementById('chart-modal');
+            const title = document.getElementById('chart-title');
+            title.textContent = name;
+            modal.classList.add('active');
+            generateChartData(symbol);
+            renderChart('1M');
+        });
+        return;
+    }
     const modal = document.getElementById('chart-modal');
     const title = document.getElementById('chart-title');
-    
     title.textContent = name;
     modal.classList.add('active');
-    
-    // Generate chart data
     generateChartData(symbol);
     renderChart('1M');
 }
@@ -271,6 +281,150 @@ function closeChartModal() {
         chartInstance.destroy();
         chartInstance = null;
     }
+}
+
+// ============================================
+// GOOGLE FINANCE HELPERS + PiP
+// ============================================
+function toGoogleFinancePath(symbol) {
+    if (!symbol) return '';
+    if (symbol.endsWith('.NS')) {
+        return symbol.replace('.NS', '') + ':NSE';
+    }
+    const map = {
+        '^GSPC': 'INDEXSP:.INX',
+        '^IXIC': 'INDEXNASDAQ:.IXIC',
+        '^FTSE': 'INDEXFTSE:UKX',
+        '^GDAXI': 'INDEXDB:DAX',
+        '^N225': 'INDEXNIKKEI:NI225',
+        '^HSI': 'INDEXHANGSENG:HSI',
+        '^AXJO': 'INDEXASX:XJO',
+        '000001.SS': 'SHA:000001'
+    };
+    return map[symbol] || symbol;
+}
+
+async function openPiPChart(name, gfPath, symbol) {
+    const pip = await documentPictureInPicture.requestWindow({ width: 520, height: 380 });
+    const d = pip.document;
+    const style = d.createElement('style');
+    style.textContent = `
+        body{margin:0;font-family: Inter, Poppins, system-ui; background:#fff;}
+        .bar{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-bottom:1px solid #eee}
+        .bar h3{margin:0;font-size:14px;font-weight:700;color:#2c3e50}
+        .bar a{font-size:12px;color:#0066cc;text-decoration:none}
+        .wrap{padding:8px}
+        .canvas{width:100%;height:280px}
+        .meta{display:flex;gap:12px;font-size:12px;color:#7f8c8d;padding:6px 12px}
+    `;
+    d.head.appendChild(style);
+    const bar = d.createElement('div');
+    bar.className = 'bar';
+    const h = d.createElement('h3');
+    h.textContent = name;
+    const link = d.createElement('a');
+    const gfUrl = gfPath ? `https://www.google.com/finance/quote/${gfPath}` : '';
+    if (gfUrl) {
+        link.href = gfUrl;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        link.textContent = 'Open live Google chart';
+    } else {
+        link.textContent = '';
+    }
+    bar.appendChild(h);
+    bar.appendChild(link);
+    d.body.appendChild(bar);
+    const wrap = d.createElement('div');
+    wrap.className = 'wrap';
+    const canvas = d.createElement('canvas');
+    canvas.id = 'pip-chart';
+    canvas.className = 'canvas';
+    wrap.appendChild(canvas);
+    const meta = d.createElement('div');
+    meta.className = 'meta';
+    meta.id = 'pip-meta';
+    wrap.appendChild(meta);
+    d.body.appendChild(wrap);
+
+    await new Promise((resolve) => {
+        const s = d.createElement('script');
+        s.src = 'https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js';
+        s.onload = resolve;
+        d.body.appendChild(s);
+    });
+
+    const ctx = canvas.getContext('2d');
+    const gradientFill = ctx.createLinearGradient(0, 0, 0, 280);
+    gradientFill.addColorStop(0, 'rgba(39, 174, 96, 0.20)');
+    gradientFill.addColorStop(1, 'rgba(255, 255, 255, 0)');
+    const data = [];
+    const labels = [];
+    const chart = new pip.window.Chart(ctx, {
+        type: 'line',
+        data: {
+            labels,
+            datasets: [{
+                label: 'Price',
+                data,
+                borderColor: '#27ae60',
+                backgroundColor: gradientFill,
+                borderWidth: 2,
+                fill: true,
+                tension: 0.4,
+                pointRadius: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: false,
+            plugins: { legend: { display: false } },
+            scales: {
+                x: { ticks: { maxTicksLimit: 6, color: '#95a5a6', font: { size: 10 } }, grid: { display:false } },
+                y: { ticks: { color: '#95a5a6', font: { size: 10 }, callback: v => '₹' + Number(v).toFixed(2) }, grid: { color:'rgba(0,0,0,0.05)' } }
+            }
+        }
+    });
+
+    async function fetchGoogleFinancePrice(path) {
+        try {
+            if (!path) return null;
+            const res = await fetch(`https://r.jina.ai/http://www.google.com/finance/quote/${path}`);
+            const html = await res.text();
+            const m = html.match(/YMlKec fxKbKc">([^<]+)/);
+            if (!m) return null;
+            const raw = m[1];
+            const num = parseFloat(raw.replace(/[₹$,\s]/g, '').replace(/,/g, ''));
+            return isNaN(num) ? null : num;
+        } catch (_) {
+            return null;
+        }
+    }
+
+    function updateMeta(price) {
+        meta.textContent = price != null ? `Live price: ₹${price.toFixed(2)} • Source: Google Finance` : 'Fetching live price…';
+    }
+
+    async function tick() {
+        const price = await fetchGoogleFinancePrice(gfPath);
+        const now = new Date();
+        if (price != null) {
+            labels.push(now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' }));
+            data.push(price);
+            if (labels.length > 60) { labels.shift(); data.shift(); }
+            const isPositive = data.length > 1 ? data[data.length - 1] >= data[0] : true;
+            chart.data.datasets[0].borderColor = isPositive ? '#27ae60' : '#e74c3c';
+            chart.update();
+            updateMeta(price);
+        } else {
+            updateMeta(null);
+        }
+    }
+
+    await tick();
+    const interval = setInterval(tick, 10000);
+    pip.addEventListener('pagehide', () => clearInterval(interval));
 }
 
 // ============================================

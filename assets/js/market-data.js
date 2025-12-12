@@ -44,7 +44,7 @@ class MarketDataManager {
             this.updateSensexDisplay(80245.30, 1.85, 1458.25);
             this.updateFIIDisplay(12450, 14.5);
             
-            console.log('✅ Market data updated successfully');
+            // Market data updated successfully
         } catch (error) {
             console.error('❌ Error updating market data:', error);
             this.showFallbackData();

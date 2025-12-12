@@ -1,32 +1,34 @@
-// BizzShort Backend API Server
-// Simple Node.js + Express API for BizzShort platform
-
+// BizzShort Backend API Server - Complete Version
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Create uploads directory
+if (!fs.existsSync('uploads')) {
+    fs.mkdirSync('uploads');
+}
+
 // Middleware
 app.use(cors());
 app.use(morgan('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 
-// Serve static files (HTML, CSS, JS, images)
+// Serve static files
 app.use(express.static(path.join(__dirname)));
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 app.use('/uploads', express.static('uploads'));
 
 // File upload configuration
 const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'uploads/');
-    },
+    destination: (req, file, cb) => cb(null, 'uploads/'),
     filename: (req, file, cb) => {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
         cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
@@ -35,591 +37,249 @@ const storage = multer.diskStorage({
 
 const upload = multer({ 
     storage: storage,
-    limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
+    limits: { fileSize: 5 * 1024 * 1024 },
     fileFilter: (req, file, cb) => {
         const allowedTypes = /jpeg|jpg|png|gif|webp/;
         const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
         const mimetype = allowedTypes.test(file.mimetype);
-        
-        if (mimetype && extname) {
-            return cb(null, true);
-        }
-        cb(new Error('Only image files are allowed!'));
+        if (mimetype && extname) return cb(null, true);
+        cb(new Error('Only image files allowed!'));
     }
 });
 
-// ============ Mock Database ============
-let articlesDB = [
-    {
-        id: 1,
-        title: 'Indian Stock Market Hits New All-Time High',
-        slug: 'indian-stock-market-hits-new-all-time-high',
-        category: 'Market Updates',
-        excerpt: 'Sensex crosses 85,000 mark for the first time driven by strong quarterly earnings from major tech companies.',
-        content: '<p>Full article content here...</p>',
-        image: 'https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=1200',
-        author: { name: 'Rajesh Kumar', avatar: '/avatars/rajesh.jpg' },
-        publishedAt: '2025-11-30T10:00:00Z',
-        views: 45234,
-        likes: 892,
-        readTime: 5,
-        tags: ['Stock Market', 'Sensex', 'IT Sector', 'Investment']
-    },
-    {
-        id: 2,
-        title: 'Indian Startups Raise Record $12B in Funding This Quarter',
-        slug: 'indian-startups-raise-record-funding',
-        category: 'Business News',
-        excerpt: 'Unprecedented growth in Indian startup ecosystem with record-breaking funding rounds.',
-        content: '<p>Full article content here...</p>',
-        image: 'https://images.unsplash.com/photo-1590479773265-7464e5d48118?w=1200',
-        author: { name: 'Priya Sharma', avatar: '/avatars/priya.jpg' },
-        publishedAt: '2025-11-29T09:00:00Z',
-        views: 38192,
-        likes: 756,
-        readTime: 4,
-        tags: ['Startups', 'Funding', 'Venture Capital', 'Technology']
-    }
+// Mock Database
+let articlesDB = [];
+let eventsDB = [];
+let interviewsDB = [];
+let newsDB = [];
+let industryDB = [];
+let clientsDB = [];
+let usersDB = [
+    { id: 1, name: 'John Doe', email: 'john@bizzshort.com', role: 'EDITOR', status: 'ACTIVE', joined: 'Jan 15, 2025' }
 ];
-
-let eventsDB = [
-    {
-        id: 1,
-        title: 'India Business Summit 2025',
-        slug: 'india-business-summit-2025',
-        description: 'Annual gathering of business leaders, entrepreneurs, and investors.',
-        date: '2025-12-15',
-        endDate: '2025-12-17',
-        location: 'Mumbai Convention Center',
-        city: 'Mumbai',
-        category: 'Conference',
-        image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200',
-        attendees: 500,
-        maxAttendees: 1000,
-        price: 5000,
-        currency: 'INR'
-    }
-];
-
 let analyticsDB = {
-    visitors: { total: 245382, growth: 12.5 },
-    pageViews: { total: 1200000, growth: 18.3 },
-    avgSessionTime: { value: '4:32', growth: 8.7 },
-    bounceRate: { value: 32.4, growth: -5.2 }
+    totalArticles: 0,
+    activeUsers: 45678,
+    pageViews: 2300000,
+    events: 0,
+    articlesTrend: '+12%',
+    usersTrend: '+8%',
+    viewsTrend: '+15%',
+    eventsTrend: 'Same',
+    monthlyTraffic: [120000, 145000, 165000, 189000, 210000, 235000],
+    contentDistribution: { articles: 45, videos: 30, interviews: 15, events: 10 }
 };
 
 // ============ API Routes ============
 
 // Health Check
 app.get('/api/health', (req, res) => {
-    res.json({ 
-        status: 'ok', 
-        timestamp: new Date().toISOString(),
-        service: 'BizzShort API',
-        version: '1.0.0'
-    });
+    res.json({ success: true, status: 'healthy', timestamp: new Date().toISOString() });
 });
 
-// -------- Articles Endpoints --------
+// Analytics
+app.get('/api/analytics', (req, res) => {
+    analyticsDB.totalArticles = articlesDB.length;
+    analyticsDB.events = eventsDB.length;
+    res.json({ success: true, data: analyticsDB });
+});
 
-// Get all articles
+// Articles
 app.get('/api/articles', (req, res) => {
-    const { page = 1, limit = 10, category, search } = req.query;
-    
-    let filtered = [...articlesDB];
-    
-    // Filter by category
-    if (category) {
-        filtered = filtered.filter(a => a.category === category);
-    }
-    
-    // Search
-    if (search) {
-        const query = search.toLowerCase();
-        filtered = filtered.filter(a => 
-            a.title.toLowerCase().includes(query) ||
-            a.excerpt.toLowerCase().includes(query)
-        );
-    }
-    
-    // Pagination
-    const startIndex = (page - 1) * limit;
-    const endIndex = page * limit;
-    const paginated = filtered.slice(startIndex, endIndex);
-    
+    const { category, page = 1, limit = 10 } = req.query;
+    let filtered = category ? articlesDB.filter(a => a.category.toLowerCase() === category.toLowerCase()) : [...articlesDB];
+    const start = (page - 1) * limit;
+    const paginated = filtered.slice(start, start + parseInt(limit));
     res.json({
         success: true,
-        data: {
-            articles: paginated,
-            total: filtered.length,
-            page: parseInt(page),
-            limit: parseInt(limit),
-            pages: Math.ceil(filtered.length / limit)
-        }
+        data: paginated,
+        pagination: { page: parseInt(page), limit: parseInt(limit), total: filtered.length, pages: Math.ceil(filtered.length / limit) }
     });
 });
 
-// Get single article
 app.get('/api/articles/:id', (req, res) => {
-    const article = articlesDB.find(a => a.id == req.params.id);
-    
-    if (!article) {
-        return res.status(404).json({ 
-            success: false, 
-            error: 'Article not found' 
-        });
-    }
-    
-    // Increment views
-    article.views++;
-    
+    const article = articlesDB.find(a => a.id === parseInt(req.params.id));
+    if (!article) return res.status(404).json({ success: false, error: 'Article not found' });
     res.json({ success: true, data: article });
 });
 
-// Get trending articles
-app.get('/api/articles/trending', (req, res) => {
-    const trending = [...articlesDB]
-        .sort((a, b) => b.views - a.views)
-        .slice(0, 5);
-    
-    res.json({ success: true, data: trending });
-});
-
-// Get popular articles
-app.get('/api/articles/popular', (req, res) => {
-    const popular = [...articlesDB]
-        .sort((a, b) => b.likes - a.likes)
-        .slice(0, 5);
-    
-    res.json({ success: true, data: popular });
-});
-
-// Get latest articles
-app.get('/api/articles/latest', (req, res) => {
-    const { limit = 10 } = req.query;
-    const latest = [...articlesDB]
-        .sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt))
-        .slice(0, parseInt(limit));
-    
-    res.json({ success: true, data: latest });
-});
-
-// Get categories
-app.get('/api/categories', (req, res) => {
-    const categories = [...new Set(articlesDB.map(a => a.category))];
-    res.json({ success: true, data: categories });
-});
-
-// -------- Analytics Endpoints --------
-
-app.get('/api/analytics', (req, res) => {
-    const { period = '7d' } = req.query;
-    
-    res.json({ 
-        success: true, 
-        data: {
-            ...analyticsDB,
-            period
-        }
-    });
-});
-
-app.get('/api/analytics/traffic', (req, res) => {
-    const trafficData = {
-        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-        visitors: [32000, 35000, 38000, 42000, 39000, 45000, 48000],
-        pageViews: [128000, 140000, 152000, 168000, 156000, 180000, 192000]
-    };
-    
-    res.json({ success: true, data: trafficData });
-});
-
-app.get('/api/analytics/sources', (req, res) => {
-    const sources = {
-        direct: 45000,
-        google: 38000,
-        social: 28000,
-        referral: 15000,
-        email: 12000
-    };
-    
-    res.json({ success: true, data: sources });
-});
-
-// -------- Newsletter Endpoint --------
-
-app.post('/api/newsletter/subscribe', (req, res) => {
-    const { email } = req.body;
-    
-    if (!email || !email.includes('@')) {
-        return res.status(400).json({ 
-            success: false, 
-            error: 'Invalid email address' 
-        });
+app.post('/api/articles', upload.single('image'), (req, res) => {
+    try {
+        const { title, category, excerpt, content, author, tags } = req.body;
+        const newArticle = {
+            id: articlesDB.length + 1,
+            title,
+            slug: title.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+            category: category || 'Business',
+            excerpt: excerpt || '',
+            content: content || '',
+            image: req.file ? `/uploads/${req.file.filename}` : 'https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=1200',
+            author: author ? JSON.parse(author) : { name: 'BizzShort Team', avatar: '/avatars/default.jpg' },
+            publishedAt: new Date().toISOString(),
+            views: 0,
+            likes: 0,
+            readTime: 5,
+            tags: tags ? JSON.parse(tags) : []
+        };
+        articlesDB.push(newArticle);
+        res.status(201).json({ success: true, data: newArticle, message: 'Article created successfully' });
+    } catch (error) {
+        res.status(500).json({ success: false, error: 'Failed to create article' });
     }
-    
-    // In production, save to database
-    console.log('Newsletter subscription:', email);
-    
-    res.json({ 
-        success: true, 
-        message: 'Successfully subscribed to newsletter!' 
-    });
 });
 
-// -------- Contact Endpoint --------
-
-app.post('/api/contact', (req, res) => {
-    const { name, email, phone, message } = req.body;
-    
-    if (!name || !email || !message) {
-        return res.status(400).json({ 
-            success: false, 
-            error: 'Name, email, and message are required' 
-        });
+app.put('/api/articles/:id', upload.single('image'), (req, res) => {
+    try {
+        const index = articlesDB.findIndex(a => a.id === parseInt(req.params.id));
+        if (index === -1) return res.status(404).json({ success: false, error: 'Article not found' });
+        
+        const { title, category, excerpt, content } = req.body;
+        articlesDB[index] = {
+            ...articlesDB[index],
+            title: title || articlesDB[index].title,
+            category: category || articlesDB[index].category,
+            excerpt: excerpt || articlesDB[index].excerpt,
+            content: content || articlesDB[index].content,
+            image: req.file ? `/uploads/${req.file.filename}` : articlesDB[index].image,
+            updatedAt: new Date().toISOString()
+        };
+        res.json({ success: true, data: articlesDB[index], message: 'Article updated successfully' });
+    } catch (error) {
+        res.status(500).json({ success: false, error: 'Failed to update article' });
     }
-    
-    // In production, save to database and send email
-    console.log('Contact form submission:', { name, email, phone, message });
-    
-    res.json({ 
-        success: true, 
-        message: 'Your message has been sent successfully!' 
-    });
 });
 
-// -------- Events Endpoints --------
-
-app.get('/api/events', (req, res) => {
-    const { category, city } = req.query;
-    
-    let filtered = [...eventsDB];
-    
-    if (category) {
-        filtered = filtered.filter(e => e.category === category);
-    }
-    
-    if (city) {
-        filtered = filtered.filter(e => e.city === city);
-    }
-    
-    res.json({ success: true, data: filtered });
-});
-
-app.get('/api/events/:id', (req, res) => {
-    const event = eventsDB.find(e => e.id == req.params.id);
-    
-    if (!event) {
-        return res.status(404).json({ 
-            success: false, 
-            error: 'Event not found' 
-        });
-    }
-    
-    res.json({ success: true, data: event });
-});
-
-app.post('/api/events/:id/register', (req, res) => {
-    const { name, email, phone, company } = req.body;
-    const event = eventsDB.find(e => e.id == req.params.id);
-    
-    if (!event) {
-        return res.status(404).json({ 
-            success: false, 
-            error: 'Event not found' 
-        });
-    }
-    
-    if (event.attendees >= event.maxAttendees) {
-        return res.status(400).json({ 
-            success: false, 
-            error: 'Event is full' 
-        });
-    }
-    
-    // In production, save registration
-    event.attendees++;
-    console.log('Event registration:', { eventId: event.id, name, email });
-    
-    res.json({ 
-        success: true, 
-        message: 'Successfully registered for event!' 
-    });
-});
-
-// -------- Advertisement Endpoints --------
-
-app.post('/api/advertisements/upload', upload.single('file'), (req, res) => {
-    if (!req.file) {
-        return res.status(400).json({ 
-            success: false, 
-            error: 'No file uploaded' 
-        });
-    }
-    
-    const adData = {
-        id: Date.now(),
-        filename: req.file.filename,
-        url: `/uploads/${req.file.filename}`,
-        title: req.body.title || 'Untitled Ad',
-        link: req.body.link || '',
-        uploadedAt: new Date().toISOString()
-    };
-    
-    res.json({ 
-        success: true, 
-        data: adData,
-        message: 'Advertisement uploaded successfully!' 
-    });
-});
-
-// -------- Search Endpoint --------
-
-app.get('/api/search', (req, res) => {
-    const { q } = req.query;
-    
-    if (!q) {
-        return res.status(400).json({ 
-            success: false, 
-            error: 'Search query required' 
-        });
-    }
-    
-    const query = q.toLowerCase();
-    const results = articlesDB.filter(a => 
-        a.title.toLowerCase().includes(query) ||
-        a.excerpt.toLowerCase().includes(query) ||
-        a.tags.some(tag => tag.toLowerCase().includes(query))
-    );
-    
-    res.json({ 
-        success: true, 
-        data: {
-            query: q,
-            results,
-            total: results.length
-        }
-    });
-});
-
-// ============ Admin Authentication Middleware ============
-function requireAuth(req, res, next) {
-    // For development, skip auth check
-    next();
-}
-
-// ============ Admin Articles Endpoints ============
-app.post('/api/admin/articles', requireAuth, (req, res) => {
-    const { title, category, content, author, image, excerpt, slug, publishedAt, views, likes, readTime, tags } = req.body;
-    
-    if (!title || !content || !author) {
-        return res.status(400).json({ success: false, error: 'Title, content, and author are required' });
-    }
-    
-    const newArticle = {
-        id: articlesDB.length > 0 ? Math.max(...articlesDB.map(a => a.id)) + 1 : 1,
-        title,
-        slug: slug || title.toLowerCase().replace(/\s+/g, '-'),
-        category: category || 'Uncategorized',
-        excerpt: excerpt || content.substring(0, 200) + '...',
-        content,
-        image: image || 'https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=1200',
-        author: typeof author === 'string' ? { name: author, avatar: '/avatars/default.jpg' } : author,
-        publishedAt: publishedAt || new Date().toISOString(),
-        views: views || 0,
-        likes: likes || 0,
-        readTime: readTime || Math.ceil(content.split(' ').length / 200),
-        tags: tags || []
-    };
-    
-    articlesDB.push(newArticle);
-    res.json({ success: true, data: newArticle, message: 'Article created successfully' });
-});
-
-app.put('/api/admin/articles/:id', requireAuth, (req, res) => {
-    const article = articlesDB.find(a => a.id == req.params.id);
-    if (!article) return res.status(404).json({ success: false, error: 'Article not found' });
-    
-    Object.keys(req.body).forEach(key => {
-        if (req.body[key] !== undefined) article[key] = req.body[key];
-    });
-    res.json({ success: true, data: article, message: 'Article updated successfully' });
-});
-
-app.delete('/api/admin/articles/:id', requireAuth, (req, res) => {
-    const index = articlesDB.findIndex(a => a.id == req.params.id);
+app.delete('/api/articles/:id', (req, res) => {
+    const index = articlesDB.findIndex(a => a.id === parseInt(req.params.id));
     if (index === -1) return res.status(404).json({ success: false, error: 'Article not found' });
-    
-    const deleted = articlesDB.splice(index, 1)[0];
-    res.json({ success: true, data: deleted, message: 'Article deleted successfully' });
+    articlesDB.splice(index, 1);
+    res.json({ success: true, message: 'Article deleted successfully' });
 });
 
-// ============ Admin Events Endpoints ============
-app.post('/api/admin/events', requireAuth, (req, res) => {
-    const { title, date, endDate, location, city, description, maxAttendees, category, image, price, currency } = req.body;
-    
-    if (!title || !date || !location) {
-        return res.status(400).json({ success: false, error: 'Title, date, and location are required' });
-    }
-    
-    const newEvent = {
-        id: eventsDB.length > 0 ? Math.max(...eventsDB.map(e => e.id)) + 1 : 1,
-        title,
-        slug: title.toLowerCase().replace(/\s+/g, '-'),
-        description: description || '',
-        date,
-        endDate: endDate || date,
-        location,
-        city: city || '',
-        category: category || 'Conference',
-        image: image || 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200',
-        attendees: 0,
-        maxAttendees: maxAttendees || 100,
-        price: price || 0,
-        currency: currency || 'INR'
-    };
-    
-    eventsDB.push(newEvent);
-    res.json({ success: true, data: newEvent, message: 'Event created successfully' });
+// Events
+app.get('/api/events', (req, res) => {
+    res.json({ success: true, data: eventsDB });
 });
 
-app.put('/api/admin/events/:id', requireAuth, (req, res) => {
-    const event = eventsDB.find(e => e.id == req.params.id);
-    if (!event) return res.status(404).json({ success: false, error: 'Event not found' });
-    
-    Object.keys(req.body).forEach(key => {
-        if (req.body[key] !== undefined) event[key] = req.body[key];
-    });
-    res.json({ success: true, data: event, message: 'Event updated successfully' });
-});
-
-app.delete('/api/admin/events/:id', requireAuth, (req, res) => {
-    const index = eventsDB.findIndex(e => e.id == req.params.id);
-    if (index === -1) return res.status(404).json({ success: false, error: 'Event not found' });
-    
-    const deleted = eventsDB.splice(index, 1)[0];
-    res.json({ success: true, data: deleted, message: 'Event deleted successfully' });
-});
-
-console.log('✅ Admin endpoints added successfully');
-
-// ============ Contact Form API ============
-app.post('/api/contact', async (req, res) => {
+app.post('/api/events', (req, res) => {
     try {
-        const { name, email, phone, subject, message } = req.body;
-        
-        // Validation
-        if (!name || !email || !message) {
-            return res.status(400).json({
-                success: false,
-                error: 'Name, email, and message are required'
-            });
-        }
-        
-        // Email validation
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-            return res.status(400).json({
-                success: false,
-                error: 'Invalid email format'
-            });
-        }
-        
-        // In production, send email using nodemailer or email service
-        console.log('📧 Contact Form Submission:', {
+        const { name, date, location, description, status } = req.body;
+        const newEvent = {
+            id: eventsDB.length + 1,
             name,
-            email,
-            phone,
-            subject,
-            message,
-            timestamp: new Date().toISOString()
-        });
-        
-        // Simulate email sending
-        res.json({
-            success: true,
-            message: 'Thank you for contacting us! We will get back to you soon.',
-            data: {
-                name,
-                email,
-                submittedAt: new Date().toISOString()
-            }
-        });
+            date,
+            location,
+            description,
+            status: status || 'upcoming',
+            registrations: 0,
+            createdAt: new Date().toISOString()
+        };
+        eventsDB.push(newEvent);
+        res.status(201).json({ success: true, data: newEvent, message: 'Event created successfully' });
     } catch (error) {
-        console.error('Contact form error:', error);
-        res.status(500).json({
-            success: false,
-            error: 'Failed to submit contact form'
-        });
+        res.status(500).json({ success: false, error: 'Failed to create event' });
     }
 });
 
-// ============ Newsletter Subscription API ============
-app.post('/api/newsletter', async (req, res) => {
+app.put('/api/events/:id', (req, res) => {
     try {
-        const { email } = req.body;
-        
-        if (!email) {
-            return res.status(400).json({
-                success: false,
-                error: 'Email is required'
-            });
-        }
-        
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-            return res.status(400).json({
-                success: false,
-                error: 'Invalid email format'
-            });
-        }
-        
-        console.log('📬 Newsletter Subscription:', email);
-        
-        res.json({
-            success: true,
-            message: 'Successfully subscribed to newsletter!',
-            data: { email }
-        });
+        const index = eventsDB.findIndex(e => e.id === parseInt(req.params.id));
+        if (index === -1) return res.status(404).json({ success: false, error: 'Event not found' });
+        const { name, date, location, description, status } = req.body;
+        eventsDB[index] = {
+            ...eventsDB[index],
+            name: name || eventsDB[index].name,
+            date: date || eventsDB[index].date,
+            location: location || eventsDB[index].location,
+            description: description || eventsDB[index].description,
+            status: status || eventsDB[index].status,
+            updatedAt: new Date().toISOString()
+        };
+        res.json({ success: true, data: eventsDB[index], message: 'Event updated successfully' });
     } catch (error) {
-        console.error('Newsletter subscription error:', error);
-        res.status(500).json({
-            success: false,
-            error: 'Failed to subscribe'
-        });
+        res.status(500).json({ success: false, error: 'Failed to update event' });
     }
 });
 
-// Error handling middleware
+app.delete('/api/events/:id', (req, res) => {
+    const index = eventsDB.findIndex(e => e.id === parseInt(req.params.id));
+    if (index === -1) return res.status(404).json({ success: false, error: 'Event not found' });
+    eventsDB.splice(index, 1);
+    res.json({ success: true, message: 'Event deleted successfully' });
+});
+
+// Interviews
+app.get('/api/interviews', (req, res) => {
+    res.json({ success: true, data: interviewsDB });
+});
+
+app.post('/api/interviews', upload.single('image'), (req, res) => {
+    try {
+        const { name, title, company, description } = req.body;
+        const newInterview = {
+            id: interviewsDB.length + 1,
+            name, title, company, description,
+            image: req.file ? `/uploads/${req.file.filename}` : 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400',
+            createdAt: new Date().toISOString()
+        };
+        interviewsDB.push(newInterview);
+        res.status(201).json({ success: true, data: newInterview, message: 'Interview created successfully' });
+    } catch (error) {
+        res.status(500).json({ success: false, error: 'Failed to create interview' });
+    }
+});
+
+app.delete('/api/interviews/:id', (req, res) => {
+    const index = interviewsDB.findIndex(i => i.id === parseInt(req.params.id));
+    if (index === -1) return res.status(404).json({ success: false, error: 'Interview not found' });
+    interviewsDB.splice(index, 1);
+    res.json({ success: true, message: 'Interview deleted successfully' });
+});
+
+// News, Industry, Clients
+app.get('/api/news', (req, res) => res.json({ success: true, data: newsDB }));
+app.get('/api/industry', (req, res) => res.json({ success: true, data: industryDB }));
+app.get('/api/clients', (req, res) => res.json({ success: true, data: clientsDB }));
+app.get('/api/users', (req, res) => res.json({ success: true, data: usersDB }));
+
+// Contact & Newsletter
+app.post('/api/contact', (req, res) => {
+    const { name, email, subject, message } = req.body;
+    if (!name || !email || !message) return res.status(400).json({ success: false, error: 'Missing required fields' });
+    console.log('📧 Contact:', { name, email, subject });
+    res.json({ success: true, message: 'Thank you! We will get back to you soon.' });
+});
+
+app.post('/api/newsletter', (req, res) => {
+    const { email } = req.body;
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        return res.status(400).json({ success: false, error: 'Invalid email' });
+    }
+    console.log('📬 Newsletter:', email);
+    res.json({ success: true, message: 'Successfully subscribed!' });
+});
+
+// Error handlers
 app.use((err, req, res, next) => {
     console.error(err.stack);
-    res.status(500).json({ 
-        success: false, 
-        error: err.message || 'Internal server error' 
-    });
+    res.status(500).json({ success: false, error: err.message || 'Internal server error' });
 });
 
-// 404 handler for API endpoints
 app.use('/api/*', (req, res) => {
-    res.status(404).json({ 
-        success: false, 
-        error: 'API endpoint not found',
-        endpoint: req.originalUrl
-    });
+    res.status(404).json({ success: false, error: 'API endpoint not found', endpoint: req.originalUrl });
 });
 
-// 404 handler for HTML pages - serve 404.html
 app.use((req, res) => {
-    res.status(404).sendFile(path.join(__dirname, '404.html'));
+    const file404 = path.join(__dirname, '404.html');
+    fs.existsSync(file404) ? res.status(404).sendFile(file404) : res.status(404).send('Page not found');
 });
 
 // Start server
 app.listen(PORT, () => {
-    console.log(`🚀 BizzShort API Server running on http://localhost:${PORT}`);
-    console.log(`📊 Health check: http://localhost:${PORT}/api/health`);
+    console.log(`\n🚀 BizzShort API Server running on http://localhost:${PORT}`);
+    console.log(`📊 Health: http://localhost:${PORT}/api/health`);
     console.log(`📰 Articles: http://localhost:${PORT}/api/articles`);
-    console.log(`🌐 Website: http://localhost:${PORT}`);
-    console.log(`🔐 Admin: http://localhost:${PORT}/admin-login.html`);
+    console.log(`🔐 Admin: http://localhost:${PORT}/admin-login.html\n`);
 });
 
 module.exports = app;
