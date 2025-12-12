@@ -48,8 +48,107 @@ const upload = multer({
 });
 
 // Mock Database
-let articlesDB = [];
-let eventsDB = [];
+let articlesDB = [
+    {
+        id: 1,
+        title: 'Nifty 50 Crosses Historic 25,000 Mark: Complete Market Analysis',
+        slug: 'nifty-50-crosses-25000-market-analysis',
+        category: 'Markets',
+        excerpt: 'The Indian stock market reached an unprecedented milestone as Nifty 50 crossed 25,000 for the first time. Analysis of sectoral performance and investment strategies.',
+        content: '<h3>Historic Market Milestone</h3><p>The Indian stock market reached an unprecedented milestone today as the Nifty 50 index crossed the 25,000 mark for the first time in its history. This represents a gain of over 18% year-to-date and reflects strong investor confidence in India\'s economic growth story.</p><h3>Key Drivers Behind the Rally</h3><p>Several factors have contributed to this remarkable market performance: Strong Corporate Earnings showing robust growth across sectors, Foreign Institutional Investors pumping in ₹45,000 crores in the last quarter, India\'s GDP growing at 7.6% in Q2, and a stable macro environment with lower inflation and favorable government policies.</p>',
+        image: 'https://img.youtube.com/vi/fH8Ir7doWGk/maxresdefault.jpg',
+        author: { name: 'BizzShort Market Team', avatar: 'https://ui-avatars.com/api/?name=Market+Team&background=3498db&color=fff' },
+        publishedAt: '2025-12-11T09:00:00Z',
+        views: 2547,
+        likes: 189,
+        readTime: 8,
+        tags: ['Markets', 'Nifty', 'Stock Market', 'Investment']
+    },
+    {
+        id: 2,
+        title: 'Indian Economy Update: 7.6% GDP Growth Beats Expectations',
+        slug: 'indian-economy-gdp-growth-update',
+        category: 'Economy',
+        excerpt: 'India maintains its position as the fastest-growing major economy with Q2 GDP growth of 7.6%, surpassing analyst expectations and global trends.',
+        content: '<h3>Economic Resilience</h3><p>India\'s economy demonstrated remarkable resilience with a 7.6% GDP growth rate in Q2 2025, outperforming analyst estimates and maintaining the country\'s status as the world\'s fastest-growing major economy.</p><h3>Sectoral Contributions</h3><p>The services sector led the growth with 8.2% expansion, followed by manufacturing at 6.8% and agriculture at 4.5%. Government infrastructure spending and private consumption remained key drivers.</p><h3>Future Outlook</h3><p>Economists project full-year growth between 7.2-7.8%, supported by strong domestic demand, increasing digitalization, and government reforms.</p>',
+        image: 'https://img.youtube.com/vi/TXoQOkT8FiQ/maxresdefault.jpg',
+        author: { name: 'Economics Desk', avatar: 'https://ui-avatars.com/api/?name=Economics+Desk&background=27ae60&color=fff' },
+        publishedAt: '2025-12-10T10:30:00Z',
+        views: 3124,
+        likes: 245,
+        readTime: 6,
+        tags: ['Economy', 'GDP', 'Growth', 'India']
+    },
+    {
+        id: 3,
+        title: 'Startup Funding Boom: $2.3 Billion Invested in Q4 2025',
+        slug: 'startup-funding-boom-q4-2025',
+        category: 'Startups',
+        excerpt: 'Indian startups raised $2.3 billion in Q4 2025, marking a 45% increase from previous quarter. Fintech and AI sectors lead the funding rounds.',
+        content: '<h3>Funding Renaissance</h3><p>The Indian startup ecosystem witnessed a remarkable funding revival in Q4 2025, with venture capital investments reaching $2.3 billion across 287 deals, representing a 45% quarter-on-quarter increase.</p><h3>Sector-wise Breakdown</h3><p>Fintech startups attracted 32% of total funding at $736 million, followed by AI/ML companies at 24% ($552 million), e-commerce at 18% ($414 million), and healthcare tech at 15% ($345 million).</p><h3>Mega Deals</h3><p>Five startups achieved unicorn status this quarter, with valuations exceeding $1 billion. Notable funding rounds include a $150 million Series D for a fintech platform and $120 million Series C for an AI-powered logistics company.</p>',
+        image: 'https://img.youtube.com/vi/ZZND7BcDA_c/maxresdefault.jpg',
+        author: { name: 'Startup Reporter', avatar: 'https://ui-avatars.com/api/?name=Startup+Reporter&background=e74c3c&color=fff' },
+        publishedAt: '2025-12-09T14:15:00Z',
+        views: 4521,
+        likes: 367,
+        readTime: 7,
+        tags: ['Startups', 'Funding', 'Unicorn', 'Investment']
+    },
+    {
+        id: 4,
+        title: 'Technology Sector Surges: AI Adoption Drives Growth',
+        slug: 'technology-sector-ai-adoption-growth',
+        category: 'Technology',
+        excerpt: 'India\'s IT sector reports 24% YTD gains as companies accelerate AI integration. TCS, Infosys lead with strong order books and margin expansion.',
+        content: '<h3>Tech Transformation</h3><p>India\'s technology sector is experiencing unprecedented growth, with the sector index gaining 24% year-to-date, driven primarily by increased adoption of artificial intelligence and cloud computing solutions across global enterprises.</p><h3>Industry Leaders</h3><p>Major IT services companies reported stellar Q2 results. TCS posted 12.5% revenue growth with improved margins, Infosys signed deals worth $4.2 billion, and HCL Tech expanded its product portfolio with three strategic acquisitions.</p><h3>AI Revolution</h3><p>Over 65% of Indian tech companies have integrated AI into their operations, focusing on generative AI, machine learning, and automation solutions. This transition is creating 200,000+ high-skilled jobs.</p>',
+        image: 'https://img.youtube.com/vi/B8ulzu1X8Y8/maxresdefault.jpg',
+        author: { name: 'Tech Analyst', avatar: 'https://ui-avatars.com/api/?name=Tech+Analyst&background=9b59b6&color=fff' },
+        publishedAt: '2025-12-08T11:45:00Z',
+        views: 2890,
+        likes: 198,
+        readTime: 5,
+        tags: ['Technology', 'AI', 'IT Sector', 'Innovation']
+    },
+    {
+        id: 5,
+        title: 'Banking Sector Strength: NPAs Hit Decade Low',
+        slug: 'banking-sector-npa-lowest-decade',
+        category: 'Banking',
+        excerpt: 'Indian banks report lowest NPA levels in a decade at 2.8%, coupled with 15%+ credit growth. Digital lending and strong corporate demand fuel expansion.',
+        content: '<h3>Banking Health Improves</h3><p>The Indian banking sector has achieved a remarkable turnaround, with Non-Performing Assets (NPAs) declining to 2.8%, the lowest level in over a decade. This improvement reflects better risk management and economic recovery.</p><h3>Credit Growth Accelerates</h3><p>Bank credit grew 15.2% year-on-year, driven by retail loans (housing, auto, personal) growing at 17% and corporate lending at 12%. Digital lending platforms processed 45% of all new loans.</p><h3>Profitability Surge</h3><p>Public sector banks reported combined profits of ₹1.2 lakh crores in FY2025, while private banks maintained ROE above 16%. HDFC Bank, ICICI Bank, and SBI led the performance metrics.</p>',
+        image: 'https://img.youtube.com/vi/Pq4wzBT0Fh4/maxresdefault.jpg',
+        author: { name: 'Banking Correspondent', avatar: 'https://ui-avatars.com/api/?name=Banking+Correspondent&background=f39c12&color=fff' },
+        publishedAt: '2025-12-07T09:20:00Z',
+        views: 1876,
+        likes: 142,
+        readTime: 6,
+        tags: ['Banking', 'NPA', 'Credit Growth', 'Finance']
+    }
+];
+let eventsDB = [
+    {
+        id: 1,
+        name: 'India Fintech Summit 2025',
+        date: '2026-01-15',
+        location: 'Mumbai, Maharashtra',
+        description: 'Annual gathering of fintech leaders, investors, and innovators to discuss the future of digital finance in India.',
+        status: 'upcoming',
+        registrations: 450,
+        maxAttendees: 1000,
+        createdAt: new Date().toISOString()
+    },
+    {
+        id: 2,
+        name: 'Startup Pitch Day',
+        date: '2026-01-22',
+        location: 'Bangalore, Karnataka',
+        description: 'Early-stage startups pitch to VCs and angel investors. Networking session and mentorship opportunities included.',
+        status: 'upcoming',
+        registrations: 120,
+        maxAttendees: 200,
+        createdAt: new Date().toISOString()
+    }
+];
 let interviewsDB = [];
 let newsDB = [];
 let industryDB = [];
