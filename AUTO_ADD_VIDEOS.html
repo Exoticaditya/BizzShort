@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BizzShort - Automatic Video Updater</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+            border-left: 5px solid #e74c3c;
+            padding-left: 15px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #34495e;
+            font-weight: 600;
+        }
+
+        textarea, input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: 'Courier New', monospace;
+            transition: border-color 0.3s;
+        }
+
+        textarea:focus, input:focus, select:focus {
+            outline: none;
+            border-color: #e74c3c;
+        }
+
+        textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-right: 10px;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(231, 76, 60, 0.3);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+        }
+
+        .btn-secondary:hover {
+            box-shadow: 0 10px 20px rgba(52, 152, 219, 0.3);
+        }
+
+        .output {
+            background: #f8f9fa;
+            border: 2px solid #e74c3c;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            min-height: 200px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .output pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .alert {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+
+        .alert-info {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+        }
+
+        .instructions {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 5px;
+        }
+
+        .instructions h3 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+
+        .instructions ol {
+            margin-left: 20px;
+            color: #856404;
+        }
+
+        .instructions li {
+            margin-bottom: 8px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+        }
+
+        .copy-btn {
+            position: relative;
+            float: right;
+        }
+
+        .video-preview {
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            background: #f8f9fa;
+        }
+
+        .video-preview h4 {
+            color: #e74c3c;
+            margin-bottom: 10px;
+        }
+
+        .video-preview-item {
+            background: white;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border-left: 3px solid #e74c3c;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #e74c3c;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎬 BizzShort Video Updater</h1>
+            <p>Automatically add YouTube videos to your website</p>
+        </div>
+
+        <div class="content">
+            <div class="instructions">
+                <h3>📋 Quick Instructions (2 Modes):</h3>
+                
+                <div style="background: #fff3cd; padding: 15px; border-radius: 8px; margin-bottom: 15px; border-left: 5px solid #ffc107;">
+                    <p style="margin: 0; color: #856404;"><strong>🎯 Choose Your Mode:</strong></p>
+                    <p style="margin: 10px 0 0 0; color: #856404;">
+                        <strong>➕ ADD Mode:</strong> Keeps all existing videos + adds new ones<br>
+                        <strong>🔄 REPLACE Mode:</strong> Replaces all videos with new ones only
+                    </p>
+                </div>
+                
+                <p style="margin-bottom: 15px;"><strong>🚀 Super Easy Method (Recommended):</strong></p>
+                <ol>
+                    <li><strong>Paste YouTube URLs</strong> below (supports 100+ links at once!)</li>
+                    <li><strong>Choose mode:</strong> ADD (keeps old) or REPLACE (new only)</li>
+                    <li><strong>Click "Generate Code"</strong> - Auto-processes all links</li>
+                    <li><strong>Click "Download Updated video-manager.js"</strong> - Gets complete file with all data</li>
+                    <li><strong>Replace the old file</strong> in <code>assets/js/</code> folder</li>
+                    <li><strong>Refresh website</strong> - Ctrl+Shift+R</li>
+                    <li>✅ <strong>Done!</strong> All videos are live!</li>
+                </ol>
+                <p style="margin: 15px 0;"><strong>📋 Manual Copy Method:</strong></p>
+                <ol>
+                    <li>Generate code as above</li>
+                    <li>Click "Copy Code" button</li>
+                    <li>Open <code>assets/js/video-manager.js</code> manually</li>
+                    <li>Replace the videoDatabase array</li>
+                    <li>Save and refresh!</li>
+                </ol>
+            </div>
+
+            <div class="alert alert-success" id="successAlert"></div>
+            <div class="alert alert-error" id="errorAlert"></div>
+            <div class="alert alert-info" id="infoAlert"></div>
+
+            <!-- Method 1: Paste YouTube URLs -->
+            <div class="section">
+                <h2>Method 1: Paste YouTube URLs (Supports 100+ Links!)</h2>
+                
+                <div class="input-group">
+                    <label>📺 Paste YouTube Video URLs (one per line, supports unlimited links):</label>
+                    <textarea id="youtubeUrls" style="min-height: 250px;" placeholder="Example - Paste as many as you want:
+https://www.youtube.com/watch?v=dQw4w9WgXcQ
+https://www.youtube.com/watch?v=abc123xyz
+https://youtu.be/xyz789abc
+https://www.youtube.com/watch?v=def456ghi
+https://youtu.be/jkl789mno
+... (paste 10, 50, 100+ links - all at once!)
+
+✅ Supports unlimited YouTube URLs
+✅ Auto-extracts all video IDs
+✅ Processes everything in seconds"></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label style="display: flex; align-items: center; gap: 10px;">
+                        <strong>Update Mode:</strong>
+                        <select id="updateMode" style="width: auto; min-width: 300px;">
+                            <option value="add">➕ ADD Mode - Keep existing videos + add new ones</option>
+                            <option value="replace">🔄 REPLACE Mode - Replace all with new videos only</option>
+                        </select>
+                    </label>
+                    <p style="margin-top: 10px; color: #666; font-size: 14px;">
+                        <strong>ADD Mode:</strong> Your old videos stay, new videos are added (recommended for regular updates)<br>
+                        <strong>REPLACE Mode:</strong> Only new videos will be on website (use for complete refresh)
+                    </p>
+                </div>
+
+                <div style="background: #e3f2fd; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                    <p style="margin: 0; color: #1565c0;"><strong>💡 Bulk Upload Tips:</strong></p>
+                    <ul style="margin: 10px 0 0 20px; color: #1565c0;">
+                        <li>Copy multiple URLs from YouTube channel or playlist</li>
+                        <li>Paste all at once (10, 50, 100+ links)</li>
+                        <li>Tool processes everything automatically</li>
+                        <li>Takes 5-10 seconds regardless of quantity</li>
+                        <li>In ADD mode, old videos are preserved</li>
+                    </ul>
+                </div>
+
+                <button class="btn" onclick="extractVideoIds()">Extract Video IDs</button>
+                <button class="btn btn-secondary" onclick="generateWithAI()">Generate Code (Auto-categorize)</button>
+                <button class="btn" style="background: linear-gradient(135deg, #27ae60 0%, #229954 100%);" onclick="downloadUpdatedFile()">💾 Download Updated video-manager.js</button>
+            </div>
+
+            <!-- Method 2: Manual Entry -->
+            <div class="section">
+                <h2>Method 2: Manual Entry</h2>
+                
+                <div class="grid-2">
+                    <div class="input-group">
+                        <label>Video ID:</label>
+                        <input type="text" id="manualVideoId" placeholder="dQw4w9WgXcQ">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Category:</label>
+                        <select id="manualCategory">
+                            <option value="Markets">Markets</option>
+                            <option value="Startups">Startups</option>
+                            <option value="Economy">Economy</option>
+                            <option value="Energy">Energy</option>
+                            <option value="Cryptocurrency">Cryptocurrency</option>
+                            <option value="Manufacturing">Manufacturing</option>
+                            <option value="E-commerce">E-commerce</option>
+                            <option value="Healthcare">Healthcare</option>
+                            <option value="Banking">Banking</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Video Title:</label>
+                    <input type="text" id="manualTitle" placeholder="Your Video Title Here">
+                </div>
+
+                <div class="input-group">
+                    <label>Description:</label>
+                    <textarea id="manualDescription" style="min-height: 80px;" placeholder="Brief description of your video..."></textarea>
+                </div>
+
+                <div class="grid-2">
+                    <div class="input-group">
+                        <label>Views (e.g., 15.2K):</label>
+                        <input type="text" id="manualViews" placeholder="15.2K">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Duration (mm:ss):</label>
+                        <input type="text" id="manualDuration" placeholder="10:45">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>
+                        <input type="checkbox" id="manualFeatured" style="width: auto; margin-right: 10px;">
+                        Featured Video (show on homepage)
+                    </label>
+                </div>
+
+                <button class="btn" onclick="addManualVideo()">Add This Video</button>
+                <button class="btn btn-secondary" onclick="clearManualForm()">Clear Form</button>
+            </div>
+
+            <!-- Loading Indicator -->
+            <div class="loading" id="loadingIndicator">
+                <div class="spinner"></div>
+                <p style="margin-top: 15px; color: #666;">Processing videos...</p>
+            </div>
+
+            <!-- Stats Display -->
+            <div id="statsDisplay" style="display: none; margin-bottom: 30px;">
+                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 12px;">
+                    <h3 style="margin: 0 0 15px 0;">📊 Video Statistics</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                        <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 8px;">
+                            <div style="font-size: 14px; opacity: 0.9;">Existing Videos</div>
+                            <div style="font-size: 32px; font-weight: bold;" id="existingCount">0</div>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 8px;">
+                            <div style="font-size: 14px; opacity: 0.9;">New Videos</div>
+                            <div style="font-size: 32px; font-weight: bold;" id="newCount">0</div>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 8px;">
+                            <div style="font-size: 14px; opacity: 0.9;">Total Videos</div>
+                            <div style="font-size: 32px; font-weight: bold;" id="totalCount">0</div>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 8px;">
+                            <div style="font-size: 14px; opacity: 0.9;">Mode</div>
+                            <div style="font-size: 24px; font-weight: bold;" id="modeDisplay">-</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Video Preview -->
+            <div id="videoPreview" style="display: none;">
+                <h2>📹 Video Preview</h2>
+                <div id="previewContent" class="video-preview"></div>
+            </div>
+
+            <!-- Output Section -->
+            <div class="section">
+                <h2>📄 Generated Code</h2>
+                <button class="btn copy-btn" onclick="copyToClipboard()">📋 Copy Code</button>
+                <div class="output">
+                    <pre id="outputCode">// Your generated video code will appear here...
+// Follow the instructions above to get started!</pre>
+                </div>
+            </div>
+
+            <!-- Instructions for Updating Website -->
+            <div class="section">
+                <h2>🚀 How to Update Your Website</h2>
+                
+                <div style="background: #d4edda; padding: 20px; border-radius: 8px; border-left: 5px solid #27ae60; margin-bottom: 20px;">
+                    <h3 style="color: #27ae60; margin-bottom: 15px;">⭐ Method 1: Download Complete File (Easiest!)</h3>
+                    <ol style="line-height: 2;">
+                        <li><strong>Click</strong> the green "Download Updated video-manager.js" button above</li>
+                        <li><strong>Go to:</strong> <code>assets/js/</code> folder in your project</li>
+                        <li><strong>Delete</strong> or rename the old <code>video-manager.js</code></li>
+                        <li><strong>Move</strong> the downloaded file into <code>assets/js/</code> folder</li>
+                        <li><strong>Refresh your website</strong> with <code>Ctrl + Shift + R</code></li>
+                        <li>✅ <strong>Done!</strong> Your videos are now live!</li>
+                    </ol>
+                    <p style="margin-top: 15px; color: #155724;"><strong>Note:</strong> This method gives you a complete, ready-to-use file with all functions included!</p>
+                </div>
+
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; border-left: 5px solid #e74c3c;">
+                    <h3 style="color: #e74c3c; margin-bottom: 15px;">📋 Method 2: Manual Copy-Paste</h3>
+                    <ol style="line-height: 2;">
+                        <li><strong>Copy the generated code</strong> above (click "Copy Code" button)</li>
+                        <li><strong>Open:</strong> <code>assets/js/video-manager.js</code></li>
+                        <li><strong>Find:</strong> <code>const videoDatabase = [</code> (around line 16)</li>
+                        <li><strong>Select everything</strong> from <code>const videoDatabase = [</code> to the closing <code>];</code></li>
+                        <li><strong>Replace with your copied code</strong></li>
+                        <li><strong>Save the file</strong></li>
+                        <li><strong>Refresh your website</strong> with <code>Ctrl + Shift + R</code></li>
+                        <li>✅ <strong>Done!</strong> Your videos are now live!</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Store all videos
+        let allVideos = [];
+        let existingVideos = []; // Store existing videos from current website
+        let videoCounter = 1;
+        
+        // Existing videos from current video-manager.js (will be preserved in ADD mode)
+        // This array will be populated when you first load the tool
+        const currentWebsiteVideos = [
+    {
+        id: '1',
+        title: 'Nifty 50 Crosses 25,000: Market Analysis & Investment Strategy',
+        category: 'Markets',
+        source: 'youtube',
+        videoId: 'YOUR_VIDEO_ID_1',
+        thumbnail: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800',
+        description: 'Complete breakdown of the historic Nifty milestone, sectoral performance, and expert investment recommendations for retail investors.',
+        views: '15.2K',
+        date: 'Dec 10, 2025',
+        duration: '10:45',
+        featured: true,
+        tags: ['Nifty', 'Stock Market', 'Investment', 'BSE', 'NSE']
+    },
+    {
+        id: '2',
+        title: 'Top 5 Unicorn Startups of 2025: Success Stories & Business Models',
+        category: 'Startups',
+        source: 'youtube',
+        videoId: 'YOUR_VIDEO_ID_2',
+        thumbnail: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800',
+        description: 'Deep dive into India\'s newest unicorns, their funding journey, business strategies, and lessons for aspiring entrepreneurs.',
+        views: '12.8K',
+        date: 'Dec 9, 2025',
+        duration: '9:30',
+        featured: true,
+        tags: ['Startups', 'Unicorn', 'Funding', 'Entrepreneurship']
+    },
+    {
+        id: '3',
+        title: 'RBI Rate Decision Impact: What It Means for Your EMI & Savings',
+        category: 'Economy',
+        source: 'youtube',
+        videoId: 'YOUR_VIDEO_ID_3',
+        thumbnail: 'https://images.unsplash.com/photo-1579532537598-459ecdaf39cc?w=800',
+        description: 'Comprehensive analysis of RBI\'s repo rate decision and its direct impact on home loans, car loans, and savings accounts.',
+        views: '18.5K',
+        date: 'Dec 8, 2025',
+        duration: '8:15',
+        featured: true,
+        tags: ['RBI', 'Interest Rates', 'EMI', 'Banking', 'Loans']
+    },
+    {
+        id: '4',
+        title: 'Green Energy Stocks: Top Investment Opportunities in Renewable Sector',
+        category: 'Energy',
+        source: 'youtube',
+        videoId: 'YOUR_VIDEO_ID_4',
+        thumbnail: 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=800',
+        description: 'Analyzing India\'s renewable energy revolution and the best stocks to invest in solar, wind, and electric vehicle sectors.',
+        views: '11.2K',
+        date: 'Dec 7, 2025',
+        duration: '12:20',
+        featured: false,
+        tags: ['Solar Energy', 'Green Energy', 'Renewable', 'Stocks', 'Investment']
+    },
+    {
+        id: '5',
+        title: 'Crypto Tax Rules 2025: Everything You Need to Know',
+        category: 'Cryptocurrency',
+        source: 'youtube',
+        videoId: 'YOUR_VIDEO_ID_5',
+        thumbnail: 'https://images.unsplash.com/photo-1621416894569-0f39ed31d241?w=800',
+        description: 'Complete guide to cryptocurrency taxation in India, VDA rules, TDS requirements, and compliance strategies.',
+        views: '14.7K',
+        date: 'Dec 6, 2025',
+        duration: '10:50',
+        featured: false,
+        tags: ['Cryptocurrency', 'Bitcoin', 'Tax', 'Regulations', 'VDA']
+    },
+    {
+        id: '6',
+        title: 'Make in India: Electronics Manufacturing Success Story',
+        category: 'Manufacturing',
+        source: 'instagram',
+        videoId: 'YOUR_VIDEO_ID_6',
+        thumbnail: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800',
+        description: 'How India is becoming a global electronics manufacturing hub with PLI scheme benefits and export achievements.',
+        views: '9.3K',
+        date: 'Dec 5, 2025',
+        duration: '3:45',
+        featured: false,
+        tags: ['Manufacturing', 'Make in India', 'PLI', 'Electronics', 'Export']
+    },
+    {
+        id: '7',
+        title: 'Quick Commerce War: Blinkit vs Zepto vs Swiggy Instamart Analysis',
+        category: 'E-commerce',
+        source: 'youtube',
+        videoId: 'YOUR_VIDEO_ID_7',
+        thumbnail: 'https://images.unsplash.com/photo-1556740758-90de374c12ad?w=800',
+        description: 'Deep dive into India\'s quick commerce battle, unit economics, expansion strategies, and future predictions.',
+        views: '13.1K',
+        date: 'Dec 4, 2025',
+        duration: '11:15',
+        featured: false,
+        tags: ['E-commerce', 'Quick Commerce', 'Blinkit', 'Zepto', 'Delivery']
+    },
+    {
+        id: '8',
+        title: 'Healthcare IPOs 2025: Investment Opportunities in Medical Sector',
+        category: 'Healthcare',
+        source: 'youtube',
+        videoId: 'YOUR_VIDEO_ID_8',
+        thumbnail: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=800',
+        description: 'Analysis of upcoming healthcare IPOs, company fundamentals, growth prospects, and investment recommendations.',
+        views: '10.5K',
+        date: 'Dec 3, 2025',
+        duration: '9:50',
+        featured: false,
+        tags: ['Healthcare', 'IPO', 'Investment', 'Medical', 'Pharma']
+    },
+    {
+        id: '9',
+        title: 'UPI Crosses 12 Billion Transactions: Digital Payment Revolution',
+        category: 'Banking',
+        source: 'instagram',
+        videoId: 'YOUR_VIDEO_ID_9',
+        thumbnail: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=800',
+        description: 'Celebrating India\'s UPI milestone, transaction trends, bank participation, and future of digital payments.',
+        views: '16.3K',
+        date: 'Dec 2, 2025',
+        duration: '4:20',
+        featured: false,
+        tags: ['UPI', 'Digital Payment', 'Banking', 'FinTech', 'NPCI']
+    },
+    {
+        id: '10',
+        title: 'Tesla India Entry: Impact on EV Market & Stock Opportunities',
+        category: 'Markets',
+        source: 'youtube',
+        videoId: 'YOUR_VIDEO_ID_10',
+        thumbnail: 'https://images.unsplash.com/photo-1560958089-b8a1929cea89?w=800',
+        description: 'Analyzing Tesla\'s India launch plans, local manufacturing setup, competition with domestic EV makers, and investment angles.',
+        views: '19.8K',
+        date: 'Dec 1, 2025',
+        duration: '13:30',
+        featured: false,
+        tags: ['Tesla', 'EV', 'Electric Vehicle', 'Stock Market', 'Investment']
+    }
+];
+
+        // Extract Video IDs from YouTube URLs
+        function extractVideoIds() {
+            const urls = document.getElementById('youtubeUrls').value.trim();
+            
+            if (!urls) {
+                showAlert('Please paste YouTube URLs first!', 'error');
+                return;
+            }
+
+            const lines = urls.split('\n').filter(line => line.trim());
+            const videoIds = [];
+            
+            lines.forEach(url => {
+                const id = extractIdFromUrl(url.trim());
+                if (id) {
+                    videoIds.push(id);
+                }
+            });
+
+            if (videoIds.length === 0) {
+                showAlert('No valid YouTube URLs found. Please check your input.', 'error');
+                return;
+            }
+
+            showAlert(`Found ${videoIds.length} video(s)! Now generating code...`, 'info');
+            
+            // Create preview
+            showVideoPreview(videoIds);
+            
+            // Generate code
+            setTimeout(() => {
+                generateCodeFromIds(videoIds);
+            }, 500);
+        }
+
+        // Extract YouTube video ID from URL
+        function extractIdFromUrl(url) {
+            // Handle different YouTube URL formats
+            const patterns = [
+                /(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/,
+                /youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/,
+                /youtube\.com\/v\/([a-zA-Z0-9_-]{11})/
+            ];
+
+            for (const pattern of patterns) {
+                const match = url.match(pattern);
+                if (match && match[1]) {
+                    return match[1];
+                }
+            }
+
+            return null;
+        }
+
+        // Show video preview
+        function showVideoPreview(videoIds) {
+            const preview = document.getElementById('videoPreview');
+            const content = document.getElementById('previewContent');
+            
+            let html = '<h4>Found Videos:</h4>';
+            videoIds.forEach((id, index) => {
+                html += `
+                    <div class="video-preview-item">
+                        <strong>Video ${index + 1}:</strong> ${id}<br>
+                        <small>Thumbnail: <a href="https://img.youtube.com/vi/${id}/maxresdefault.jpg" target="_blank">View</a></small><br>
+                        <small>Watch: <a href="https://www.youtube.com/watch?v=${id}" target="_blank">YouTube</a></small>
+                    </div>
+                `;
+            });
+            
+            content.innerHTML = html;
+            preview.style.display = 'block';
+        }
+
+        // Generate code from video IDs
+        function generateCodeFromIds(videoIds) {
+            const categories = ['Markets', 'Startups', 'Economy', 'Energy', 'Cryptocurrency', 
+                              'Manufacturing', 'E-commerce', 'Healthcare', 'Banking'];
+            
+            const updateMode = document.getElementById('updateMode').value;
+            const newVideos = [];
+            
+            // Generate new videos
+            videoIds.forEach((id, index) => {
+                const category = categories[index % categories.length];
+                const isFeatured = index < 3 && updateMode === 'replace'; // Featured only in replace mode
+                
+                const video = {
+                    id: String(index + 1), // Will be renumbered later
+                    title: `Business News Video ${index + 1}`, // User can edit this
+                    category: category,
+                    source: 'youtube',
+                    videoId: id,
+                    thumbnail: `https://img.youtube.com/vi/${id}/maxresdefault.jpg`,
+                    description: `Important business news update covering latest developments in ${category}.`,
+                    views: '0', // User should update
+                    date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+                    duration: '0:00', // User should update
+                    featured: isFeatured,
+                    tags: [category, 'Business', 'News']
+                };
+                
+                newVideos.push(video);
+            });
+
+            // Combine videos based on mode
+            if (updateMode === 'add') {
+                // ADD MODE: Keep existing + add new
+                allVideos = [...currentWebsiteVideos, ...newVideos];
+                // Renumber all videos sequentially
+                allVideos.forEach((video, index) => {
+                    video.id = String(index + 1);
+                });
+                
+                // Update stats display
+                document.getElementById('existingCount').textContent = currentWebsiteVideos.length;
+                document.getElementById('newCount').textContent = newVideos.length;
+                document.getElementById('totalCount').textContent = allVideos.length;
+                document.getElementById('modeDisplay').textContent = '➕ ADD';
+                document.getElementById('statsDisplay').style.display = 'block';
+                
+                showAlert(`✅ ADD Mode: Keeping ${currentWebsiteVideos.length} existing videos + adding ${newVideos.length} new videos = ${allVideos.length} total!`, 'success');
+            } else {
+                // REPLACE MODE: Only new videos
+                allVideos = newVideos;
+                
+                // Update stats display
+                document.getElementById('existingCount').textContent = '0 (replaced)';
+                document.getElementById('newCount').textContent = newVideos.length;
+                document.getElementById('totalCount').textContent = allVideos.length;
+                document.getElementById('modeDisplay').textContent = '🔄 REPLACE';
+                document.getElementById('statsDisplay').style.display = 'block';
+                
+                showAlert(`✅ REPLACE Mode: Generated ${videoIds.length} new videos (old videos will be replaced)!`, 'success');
+            }
+
+            displayGeneratedCode();
+        }
+
+        // Generate with AI-style auto-categorization
+        function generateWithAI() {
+            extractVideoIds();
+        }
+
+        // Display generated code
+        function displayGeneratedCode() {
+            let code = 'const videoDatabase = [\n';
+            
+            allVideos.forEach((video, index) => {
+                code += `    {\n`;
+                code += `        id: '${video.id}',\n`;
+                code += `        title: '${video.title}',\n`;
+                code += `        category: '${video.category}',\n`;
+                code += `        source: '${video.source}',\n`;
+                code += `        videoId: '${video.videoId}',\n`;
+                code += `        thumbnail: '${video.thumbnail}',\n`;
+                code += `        description: '${video.description}',\n`;
+                code += `        views: '${video.views}',\n`;
+                code += `        date: '${video.date}',\n`;
+                code += `        duration: '${video.duration}',\n`;
+                code += `        featured: ${video.featured},\n`;
+                code += `        tags: ${JSON.stringify(video.tags)}\n`;
+                code += `    }${index < allVideos.length - 1 ? ',' : ''}\n`;
+            });
+            
+            code += '];\n';
+            
+            document.getElementById('outputCode').textContent = code;
+        }
+
+        // Add manual video
+        function addManualVideo() {
+            const videoId = document.getElementById('manualVideoId').value.trim();
+            const title = document.getElementById('manualTitle').value.trim();
+            const category = document.getElementById('manualCategory').value;
+            const description = document.getElementById('manualDescription').value.trim();
+            const views = document.getElementById('manualViews').value.trim() || '0';
+            const duration = document.getElementById('manualDuration').value.trim() || '0:00';
+            const featured = document.getElementById('manualFeatured').checked;
+
+            if (!videoId || !title) {
+                showAlert('Please fill in Video ID and Title!', 'error');
+                return;
+            }
+
+            const video = {
+                id: String(allVideos.length + 1),
+                title: title,
+                category: category,
+                source: 'youtube',
+                videoId: videoId,
+                thumbnail: `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`,
+                description: description || `Business news update about ${category}.`,
+                views: views,
+                date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+                duration: duration,
+                featured: featured,
+                tags: [category, 'Business', 'News']
+            };
+
+            allVideos.push(video);
+            displayGeneratedCode();
+            clearManualForm();
+            showAlert('✅ Video added successfully!', 'success');
+        }
+
+        // Clear manual form
+        function clearManualForm() {
+            document.getElementById('manualVideoId').value = '';
+            document.getElementById('manualTitle').value = '';
+            document.getElementById('manualDescription').value = '';
+            document.getElementById('manualViews').value = '';
+            document.getElementById('manualDuration').value = '';
+            document.getElementById('manualFeatured').checked = false;
+        }
+
+        // Copy to clipboard
+        function copyToClipboard() {
+            const code = document.getElementById('outputCode').textContent;
+            
+            if (code.includes('Your generated video code')) {
+                showAlert('Please generate code first!', 'error');
+                return;
+            }
+
+            navigator.clipboard.writeText(code).then(() => {
+                showAlert('✅ Code copied to clipboard! Now paste it in video-manager.js', 'success');
+            }).catch(() => {
+                // Fallback for older browsers
+                const textarea = document.createElement('textarea');
+                textarea.value = code;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                showAlert('✅ Code copied to clipboard! Now paste it in video-manager.js', 'success');
+            });
+        }
+
+        // Download updated video-manager.js file
+        function downloadUpdatedFile() {
+            if (allVideos.length === 0) {
+                showAlert('Please generate videos first!', 'error');
+                return;
+            }
+
+            // Get the video database code
+            let videoCode = 'const videoDatabase = [\n';
+            
+            allVideos.forEach((video, index) => {
+                videoCode += `    {\n`;
+                videoCode += `        id: '${video.id}',\n`;
+                videoCode += `        title: '${video.title}',\n`;
+                videoCode += `        category: '${video.category}',\n`;
+                videoCode += `        source: '${video.source}',\n`;
+                videoCode += `        videoId: '${video.videoId}',\n`;
+                videoCode += `        thumbnail: '${video.thumbnail}',\n`;
+                videoCode += `        description: '${video.description}',\n`;
+                videoCode += `        views: '${video.views}',\n`;
+                videoCode += `        date: '${video.date}',\n`;
+                videoCode += `        duration: '${video.duration}',\n`;
+                videoCode += `        featured: ${video.featured},\n`;
+                videoCode += `        tags: ${JSON.stringify(video.tags)}\n`;
+                videoCode += `    }${index < allVideos.length - 1 ? ',' : ''}\n`;
+            });
+            
+            videoCode += '];\n\n';
+
+            // Add the rest of the video-manager.js code
+            const fullCode = videoCode + `
+// ============================================
+// CATEGORY MANAGEMENT
+// ============================================
+
+const categories = [
+    'All',
+    'Markets',
+    'Startups',
+    'Economy',
+    'Energy',
+    'Cryptocurrency',
+    'Manufacturing',
+    'E-commerce',
+    'Healthcare',
+    'Banking'
+];
+
+// ============================================
+// VIDEO FILTERING
+// ============================================
+
+function filterVideosByCategory(category) {
+    if (category === 'All') {
+        return videoDatabase;
+    }
+    return videoDatabase.filter(video => video.category === category);
+}
+
+function getFeaturedVideos() {
+    return videoDatabase.filter(video => video.featured === true);
+}
+
+function getVideoById(id) {
+    return videoDatabase.find(video => video.id === id);
+}
+
+function getRelatedVideos(currentVideoId, category, limit = 3) {
+    return videoDatabase
+        .filter(video => video.id !== currentVideoId && video.category === category)
+        .slice(0, limit);
+}
+
+// ============================================
+// VIDEO DISPLAY
+// ============================================
+
+function displayVideos(videos, containerId) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    if (videos.length === 0) {
+        container.innerHTML = '<p style="text-align: center; color: #999; padding: 40px;">No videos found in this category.</p>';
+        return;
+    }
+
+    container.innerHTML = videos.map(video => createVideoCard(video)).join('');
+}
+
+function createVideoCard(video) {
+    const featuredBadge = video.featured ? '<span class="featured-badge">Featured</span>' : '';
+    const sourceBadge = \`<span class="source-badge source-\${video.source}">\${video.source === 'youtube' ? 'YouTube' : 'Instagram'}</span>\`;
+    
+    const videoUrl = video.source === 'youtube' ? \`https://www.youtube.com/watch?v=\${video.videoId}\` : \`https://www.instagram.com/p/\${video.videoId}/\`;
+    
+    return \`
+        <div class="video-card" onclick="window.location.href='article-detail.html?title=\${encodeURIComponent(video.title)}&thumb=\${encodeURIComponent(video.thumbnail)}&url=\${encodeURIComponent(videoUrl)}&source=\${video.source}&category=\${video.category}&published=\${video.date}&excerpt=\${encodeURIComponent(video.description)}&type=video'">
+            <div class="video-thumbnail">
+                <img src="\${video.thumbnail}" alt="\${video.title}" onerror="this.src='https://via.placeholder.com/800x450?text=Video+Thumbnail'">
+                <div class="video-duration">\${video.duration}</div>
+                \${featuredBadge}
+                \${sourceBadge}
+                <div class="video-overlay">
+                    <i class="fas fa-play-circle"></i>
+                </div>
+            </div>
+            <div class="video-info">
+                <h3 class="video-title">\${video.title}</h3>
+                <p class="video-description">\${video.description}</p>
+                <div class="video-meta">
+                    <span class="video-category">
+                        <i class="fas fa-tag"></i> \${video.category}
+                    </span>
+                    <span class="video-views">
+                        <i class="fas fa-eye"></i> \${video.views} views
+                    </span>
+                    <span class="video-date">
+                        <i class="far fa-calendar"></i> \${video.date}
+                    </span>
+                </div>
+            </div>
+        </div>
+    \`;
+}
+
+// ============================================
+// CATEGORY TABS
+// ============================================
+
+function initializeCategoryTabs(containerId, videosContainerId) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    container.innerHTML = categories.map(cat => 
+        \`<button class="category-tab \${cat === 'All' ? 'active' : ''}" onclick="switchCategory('\${cat}', '\${videosContainerId}')">\${cat}</button>\`
+    ).join('');
+}
+
+function switchCategory(category, containerId) {
+    // Update active tab
+    document.querySelectorAll('.category-tab').forEach(tab => {
+        tab.classList.remove('active');
+        if (tab.textContent === category) {
+            tab.classList.add('active');
+        }
+    });
+
+    // Filter and display videos
+    const filteredVideos = filterVideosByCategory(category);
+    displayVideos(filteredVideos, containerId);
+}
+
+// ============================================
+// SEARCH FUNCTIONALITY
+// ============================================
+
+function searchVideos(query) {
+    const lowerQuery = query.toLowerCase();
+    return videoDatabase.filter(video => 
+        video.title.toLowerCase().includes(lowerQuery) ||
+        video.description.toLowerCase().includes(lowerQuery) ||
+        video.category.toLowerCase().includes(lowerQuery) ||
+        video.tags.some(tag => tag.toLowerCase().includes(lowerQuery))
+    );
+}
+
+// ============================================
+// INITIALIZATION
+// ============================================
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize video grid on homepage
+    if (document.getElementById('videos-grid')) {
+        initializeCategoryTabs('category-tabs', 'videos-grid');
+        displayVideos(videoDatabase, 'videos-grid');
+    }
+
+    // Initialize featured videos
+    if (document.getElementById('featured-videos')) {
+        const featured = getFeaturedVideos();
+        displayVideos(featured, 'featured-videos');
+    }
+
+    // Search functionality
+    const searchInput = document.getElementById('video-search');
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            const results = searchVideos(e.target.value);
+            displayVideos(results, 'videos-grid');
+        });
+    }
+});
+
+// Export for use in other files
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = {
+        videoDatabase,
+        categories,
+        filterVideosByCategory,
+        getFeaturedVideos,
+        getVideoById,
+        getRelatedVideos,
+        searchVideos
+    };
+}
+`;
+
+            // Create blob and download
+            const blob = new Blob([fullCode], { type: 'text/javascript' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'video-manager.js';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            showAlert('✅ video-manager.js downloaded! Replace the old file in assets/js/ folder', 'success');
+        }
+
+        // Show alert
+        function showAlert(message, type) {
+            const alertTypes = ['success', 'error', 'info'];
+            alertTypes.forEach(t => {
+                const el = document.getElementById(`${t}Alert`);
+                el.style.display = 'none';
+            });
+
+            const alert = document.getElementById(`${type}Alert`);
+            alert.textContent = message;
+            alert.style.display = 'block';
+
+            setTimeout(() => {
+                alert.style.display = 'none';
+            }, 5000);
+        }
+
+        // Load example on page load
+        window.onload = function() {
+            showAlert('👋 Welcome! Paste your YouTube URLs above to get started.', 'info');
+        };
+    </script>
+</body>
+</html>
