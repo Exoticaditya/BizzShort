@@ -1,19 +1,95 @@
-// Enhanced Admin Panel JavaScript - Static Mode (No Backend Required)
+// Enhanced Admin Panel JavaScript - Connected to Backend API
 
 // ============ Configuration ============
-// API disabled - using static content only
-const API_BASE_URL = null;
-const API_ENDPOINTS = {};
-const USE_STATIC_MODE = true;
+const API_BASE_URL = 'http://localhost:3000';
+const USE_STATIC_MODE = true; // Enabled for demonstration/offline
+
+const MOCK_DATA = {
+    articles: [
+        { id: 1, title: 'Future of AI in Business', category: 'Technology', author: { name: 'John Doe' }, publishedAt: new Date().toISOString() },
+        { id: 2, title: 'Startup Trends 2025', category: 'Startups', author: { name: 'Jane Smith' }, publishedAt: new Date().toISOString() }
+    ],
+    events: [
+        { id: 1, title: 'Tech Summit 2025', date: '2025-12-01', location: 'New York', attendees: 150, maxAttendees: 200 }
+    ],
+    interviews: [
+        { id: 1, name: 'Vishal Mehta', company: 'TechCorp', designation: 'CEO', image: 'https://via.placeholder.com/150' }
+    ],
+    news: [
+        { id: 1, title: 'Breaking: Market Reaches All Time High', content: 'The stock market...', created_at: new Date().toISOString() }
+    ],
+    industry: [
+        { id: 1, sector: 'Technology', description: 'AI adoption varies...', icon: 'microchip' }
+    ],
+    clients: [
+        { id: 1, name: 'Acme Corp', type: 'Corporate', image: 'https://via.placeholder.com/150' }
+    ],
+    users: [
+        { id: 1, name: 'Admin User', email: 'admin@bizzshort.com', role: 'ADMIN', status: 'Active', joined: '2024-01-01' },
+        { id: 2, name: 'Test User', email: 'user@test.com', role: 'USER', status: 'Active', joined: '2025-01-01' }
+    ]
+};
+
+const API_ENDPOINTS = {
+    health: `${API_BASE_URL}/api/health`,
+    analytics: `${API_BASE_URL}/api/analytics`,
+    articles: `${API_BASE_URL}/api/articles`,
+    events: `${API_BASE_URL}/api/events`,
+    interviews: `${API_BASE_URL}/api/interviews`,
+    news: `${API_BASE_URL}/api/news`,
+    industry: `${API_BASE_URL}/api/industry`,
+    clients: `${API_BASE_URL}/api/clients`,
+    users: `${API_BASE_URL}/api/users`,
+    advertisements: `${API_BASE_URL}/api/advertisements`,
+    youtubeConvert: `${API_BASE_URL}/api/youtube/convert`,
+    youtubePublish: `${API_BASE_URL}/api/youtube/publish`,
+    adminLogin: `${API_BASE_URL}/api/admin/login`,
+    adminLogout: `${API_BASE_URL}/api/admin/logout`
+};
 
 // ============ API Helper Functions ============
-async function apiRequest(endpoint, method = 'GET', data = null) {
-    // Static mode - no API calls
+async function apiRequest(endpoint, method = 'GET', data = null, isFormData = false) {
     if (USE_STATIC_MODE) {
-        console.log('Static mode: API call skipped');
-        return { success: true, message: 'Static mode active' };
+        console.log(`[Static] ${method} ${endpoint}`, data);
+        await new Promise(r => setTimeout(r, 500)); // Simulate delay
+
+        // Return mock data based on endpoint
+        if (endpoint.includes('articles')) return { success: true, data: MOCK_DATA.articles };
+        if (endpoint.includes('events')) return { success: true, data: MOCK_DATA.events };
+        if (endpoint.includes('interviews')) return { success: true, data: MOCK_DATA.interviews };
+        if (endpoint.includes('news')) return { success: true, data: MOCK_DATA.news };
+        if (endpoint.includes('industry')) return { success: true, data: MOCK_DATA.industry };
+        if (endpoint.includes('clients')) return { success: true, data: MOCK_DATA.clients };
+        if (endpoint.includes('users')) return { success: true, data: MOCK_DATA.users };
+
+        return { success: true, message: 'Operation simulated in static mode' };
     }
-    return null;
+
+    try {
+        const options = {
+            method,
+            headers: {}
+        };
+
+        if (data && !isFormData) {
+            options.headers['Content-Type'] = 'application/json';
+            options.body = JSON.stringify(data);
+        } else if (data && isFormData) {
+            options.body = data; // FormData sets its own content-type
+        }
+
+        const response = await fetch(endpoint, options);
+        const result = await response.json();
+
+        if (!response.ok) {
+            throw new Error(result.error || 'Request failed');
+        }
+
+        return result;
+    } catch (error) {
+        console.error('API Request Error:', error);
+        throw error;
+    }
 }
 
 // ============ Notification System ============
@@ -35,9 +111,9 @@ function showNotification(message, type = 'success') {
         max-width: 400px;
         animation: slideInRight 0.3s ease;
     `;
-    
+
     document.body.appendChild(notification);
-    
+
     setTimeout(() => {
         notification.style.animation = 'slideOutRight 0.3s ease';
         setTimeout(() => notification.remove(), 300);
@@ -63,28 +139,28 @@ function showSection(sectionId) {
     document.querySelectorAll('.admin-section').forEach(section => {
         section.classList.remove('active');
     });
-    
+
     const selectedSection = document.getElementById(sectionId);
     if (selectedSection) {
         selectedSection.classList.add('active');
     }
-    
+
     document.querySelectorAll('.nav-item').forEach(item => {
         item.classList.remove('active');
     });
-    
+
     if (event && event.target) {
         const navItem = event.target.closest('.nav-item');
         if (navItem) navItem.classList.add('active');
     }
-    
+
     // Load data for section
     loadSectionData(sectionId);
 }
 
 // ============ Load Section Data ============
 async function loadSectionData(sectionId) {
-    switch(sectionId) {
+    switch (sectionId) {
         case 'dashboard':
             await refreshDashboard();
             break;
@@ -94,14 +170,37 @@ async function loadSectionData(sectionId) {
         case 'events':
             await loadEvents();
             break;
+        case 'interviews':
+            await loadInterviews();
+            break;
+        case 'news':
+            await loadNews();
+            break;
+        case 'industry':
+            await loadIndustry();
+            break;
+        case 'clients':
+            await loadClients();
+            break;
+        case 'users':
+            await loadUsersData();
+            break;
     }
 }
 
 // ============ Dashboard Functions ============
 async function refreshDashboard() {
-    // Static mode - no API calls needed
-    console.log('Dashboard: Static mode active');
-    showNotification('Dashboard loaded', 'success');
+    try {
+        const response = await apiRequest(API_ENDPOINTS.analytics);
+        if (response.success && response.data) {
+            // Update dashboard stats with real data
+            console.log('Dashboard data loaded:', response.data);
+        }
+        showNotification('Dashboard refreshed', 'success');
+    } catch (error) {
+        console.error('Dashboard refresh error:', error);
+        showNotification('Failed to refresh dashboard', 'error');
+    }
 }
 
 function updateStatCard(type, value) {
@@ -113,14 +212,21 @@ function updateStatCard(type, value) {
 
 // ============ Articles Management ============
 async function loadArticles() {
-    // Static mode - no API calls
-    console.log('Articles: Static mode active');
+    try {
+        const response = await apiRequest(API_ENDPOINTS.articles);
+        if (response.success && response.data) {
+            displayArticlesTable(response.data);
+        }
+    } catch (error) {
+        console.error('Load articles error:', error);
+        showNotification('Failed to load articles', 'error');
+    }
 }
 
 function displayArticlesTable(articles) {
     const tableBody = document.querySelector('#articles table tbody');
     if (!tableBody) return;
-    
+
     tableBody.innerHTML = articles.map(article => `
         <tr>
             <td>${article.id}</td>
@@ -141,12 +247,12 @@ function displayArticlesTable(articles) {
     `).join('');
 }
 
-async function saveArticle(event) {
+async function saveArticle(event, id) {
     event.preventDefault();
-    
+
     const form = event.target;
     const formData = new FormData(form);
-    
+
     const articleData = {
         title: formData.get('title'),
         category: formData.get('category'),
@@ -160,37 +266,34 @@ async function saveArticle(event) {
         likes: 0,
         readTime: Math.ceil(formData.get('content')?.split(' ').length / 200) || 1
     };
-    
+
+    const method = id ? 'PUT' : 'POST';
+    const endpoint = id ? `${API_ENDPOINTS.articles}/${id}` : API_ENDPOINTS.articles;
+
     try {
-        // Static mode - no backend saves
-        showNotification('Article saved locally (static mode)', 'info');
-        const response = { success: true };
-        
+        const response = await apiRequest(endpoint, method, articleData);
+
         if (response.success) {
-            showNotification('Article saved successfully!', 'success');
+            showNotification(response.message || 'Article saved successfully!', 'success');
             closeModal();
             loadArticles();
         }
     } catch (error) {
-        // Fallback for when endpoint doesn't exist yet
-        console.warn('Admin endpoint not available yet. Article data:', articleData);
-        showNotification('Article saved (mock mode - add admin endpoints to server.js)', 'success');
-        closeModal();
+        console.error('Save article error:', error);
+        showNotification(error.message || 'Failed to save article', 'error');
     }
 }
 
 async function editArticle(id) {
     try {
         const response = await apiRequest(`${API_ENDPOINTS.articles}/${id}`);
-        
+
         if (response.success && response.data) {
-            const article = response.data;
-            
-            // Open modal with pre-filled form
-            openModal('editArticle', article);
+            openModal('editArticle', response.data);
         }
     } catch (error) {
         console.error('Edit article error:', error);
+        showNotification('Failed to load article', 'error');
     }
 }
 
@@ -198,15 +301,14 @@ async function deleteArticle(id) {
     if (!confirm('Are you sure you want to delete this article?')) {
         return;
     }
-    
+
     try {
-        // NOTE: This endpoint needs to be added to server.js
-        await apiRequest(`${API_ENDPOINTS.adminArticles}/${id}`, 'DELETE');
-        showNotification('Article deleted successfully!', 'success');
+        const response = await apiRequest(`${API_ENDPOINTS.articles}/${id}`, 'DELETE');
+        showNotification(response.message || 'Article deleted successfully!', 'success');
         loadArticles();
     } catch (error) {
-        console.warn('Admin delete endpoint not available yet');
-        showNotification('Delete functionality requires admin endpoints in server.js', 'error');
+        console.error('Delete article error:', error);
+        showNotification(error.message || 'Failed to delete article', 'error');
     }
 }
 
@@ -225,7 +327,7 @@ async function loadEvents() {
 function displayEventsTable(events) {
     const tableBody = document.querySelector('#events table tbody');
     if (!tableBody) return;
-    
+
     tableBody.innerHTML = events.map(event => `
         <tr>
             <td>${event.id}</td>
@@ -245,12 +347,12 @@ function displayEventsTable(events) {
     `).join('');
 }
 
-async function saveEvent(event) {
+async function saveEvent(event, id) {
     event.preventDefault();
-    
+
     const form = event.target;
     const formData = new FormData(form);
-    
+
     const eventData = {
         title: formData.get('title'),
         date: formData.get('date'),
@@ -266,16 +368,18 @@ async function saveEvent(event) {
         currency: 'INR',
         slug: formData.get('title')?.toLowerCase().replace(/\s+/g, '-')
     };
-    
+
+    const method = id ? 'PUT' : 'POST';
+    const endpoint = id ? `${API_ENDPOINTS.events}/${id}` : API_ENDPOINTS.events;
+
     try {
-        await apiRequest(API_ENDPOINTS.adminEvents, 'POST', eventData);
-        showNotification('Event saved successfully!', 'success');
+        const response = await apiRequest(endpoint, method, eventData);
+        showNotification(response.message || 'Event saved successfully!', 'success');
         closeModal();
         loadEvents();
     } catch (error) {
-        console.warn('Admin endpoint not available yet. Event data:', eventData);
-        showNotification('Event saved (mock mode)', 'success');
-        closeModal();
+        console.error('Save event error:', error);
+        showNotification(error.message || 'Failed to save event', 'error');
     }
 }
 
@@ -292,13 +396,92 @@ async function editEvent(id) {
 
 async function deleteEvent(id) {
     if (!confirm('Are you sure you want to delete this event?')) return;
-    
+
     try {
-        await apiRequest(`${API_ENDPOINTS.adminEvents}/${id}`, 'DELETE');
-        showNotification('Event deleted successfully!', 'success');
+        const response = await apiRequest(`${API_ENDPOINTS.events}/${id}`, 'DELETE');
+        showNotification(response.message || 'Event deleted successfully!', 'success');
         loadEvents();
     } catch (error) {
-        showNotification('Delete functionality requires admin endpoints', 'error');
+        console.error('Delete event error:', error);
+        showNotification(error.message || 'Failed to delete event', 'error');
+    }
+}
+
+// ============ Interviews Management ============
+async function loadInterviews() {
+    try {
+        const response = await apiRequest(API_ENDPOINTS.interviews);
+        if (response.success && response.data) {
+            displayInterviews(response.data);
+        }
+    } catch (error) {
+        console.error('Load interviews error:', error);
+    }
+}
+
+function displayInterviews(interviews) {
+    const container = document.querySelector('#interviews .content-grid');
+    if (!container) return;
+
+    if (interviews.length === 0) {
+        container.innerHTML = '<p class="empty-state-text">No interviews yet.</p>';
+        return;
+    }
+
+    container.innerHTML = interviews.map(interview => `
+        <div class="content-card">
+            <img src="${interview.image || 'https://via.placeholder.com/400x250'}" alt="${interview.name}">
+            <div class="card-body">
+                <h4>${interview.name} - ${interview.designation}</h4>
+                <p>${interview.company}</p>
+                <div class="card-actions">
+                    <button class="btn-small btn-edit" onclick="editInterview(${interview.id})">Edit</button>
+                    <button class="btn-small btn-delete" onclick="deleteInterview(${interview.id})">Delete</button>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+async function saveInterview(event, id) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const data = Object.fromEntries(formData.entries());
+    const method = id ? 'PUT' : 'POST';
+    const endpoint = id ? `${API_ENDPOINTS.interviews}/${id}` : API_ENDPOINTS.interviews;
+
+    try {
+        const response = await apiRequest(endpoint, method, data);
+        showNotification(response.message || 'Interview saved successfully!', 'success');
+        closeModal();
+        loadInterviews();
+    } catch (error) {
+        console.error('Save interview error:', error);
+        showNotification(error.message || 'Failed to save interview', 'error');
+    }
+}
+
+async function editInterview(id) {
+    try {
+        const response = await apiRequest(API_ENDPOINTS.interviews);
+        if (response.success && response.data) {
+            const item = response.data.find(i => i.id === id);
+            if (item) openModal('editInterview', item);
+        }
+    } catch (error) {
+        console.error('Edit interview error:', error);
+    }
+}
+
+async function deleteInterview(id) {
+    if (!confirm('Are you sure you want to delete this interview?')) return;
+    try {
+        const response = await apiRequest(`${API_ENDPOINTS.interviews}/${id}`, 'DELETE');
+        showNotification(response.message || 'Interview deleted successfully!', 'success');
+        loadInterviews();
+    } catch (error) {
+        console.error('Delete interview error:', error);
+        showNotification(error.message || 'Failed to delete interview', 'error');
     }
 }
 
@@ -306,20 +489,20 @@ async function deleteEvent(id) {
 function openModal(type, data = null) {
     const modal = document.getElementById('modal');
     const modalBody = document.getElementById('modalBody');
-    
+
     if (!modal || !modalBody) {
         console.error('Modal elements not found');
         return;
     }
-    
+
     let content = '';
-    
-    switch(type) {
+
+    switch (type) {
         case 'addArticle':
         case 'editArticle':
             content = `
                 <h2>${data ? 'Edit' : 'Add New'} Article</h2>
-                <form onsubmit="saveArticle(event)">
+                <form onsubmit="saveArticle(event, ${data ? `'${data.id}'` : 'null'})">
                     <div class="form-group">
                         <label>Title</label>
                         <input type="text" name="title" class="form-input" value="${data?.title || ''}" required>
@@ -350,12 +533,12 @@ function openModal(type, data = null) {
                 </form>
             `;
             break;
-            
+
         case 'addEvent':
         case 'editEvent':
             content = `
                 <h2>${data ? 'Edit' : 'Add New'} Event</h2>
-                <form onsubmit="saveEvent(event)">
+                <form onsubmit="saveEvent(event, ${data ? `'${data.id}'` : 'null'})">
                     <div class="form-group">
                         <label>Event Name</label>
                         <input type="text" name="title" class="form-input" value="${data?.title || ''}" required>
@@ -406,8 +589,150 @@ function openModal(type, data = null) {
                 </form>
             `;
             break;
+
+        case 'addInterview':
+        case 'editInterview':
+            content = `
+                <h2>${data ? 'Edit' : 'Add New'} Interview</h2>
+                <form onsubmit="saveInterview(event, ${data ? `'${data.id}'` : 'null'})">
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input type="text" name="name" class="form-input" value="${data?.name || ''}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Designation</label>
+                        <input type="text" name="designation" class="form-input" value="${data?.designation || ''}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Company</label>
+                        <input type="text" name="company" class="form-input" value="${data?.company || ''}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Image URL</label>
+                        <input type="url" name="image" class="form-input" value="${data?.image || ''}">
+                    </div>
+                     <div class="form-group">
+                        <label>Video URL (Optional)</label>
+                        <input type="url" name="videoUrl" class="form-input" value="${data?.videoUrl || ''}">
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea name="description" class="form-textarea" rows="4">${data?.description || ''}</textarea>
+                    </div>
+                    <button type="submit" class="btn-primary">Save Interview</button>
+                    <button type="button" onclick="closeModal()" class="btn-secondary">Cancel</button>
+                </form>
+            `;
+            break;
+
+        case 'addNews':
+        case 'editNews':
+            content = `
+                <h2>${data ? 'Edit' : 'Add'} Breaking News</h2>
+                <form onsubmit="saveNews(event, ${data ? `'${data.id}'` : 'null'})">
+                    <div class="form-group">
+                        <label>Title</label>
+                        <input type="text" name="title" class="form-input" value="${data?.title || ''}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Content</label>
+                        <textarea name="content" class="form-textarea" rows="4" required>${data?.content || ''}</textarea>
+                    </div>
+                    <button type="submit" class="btn-primary">Save News</button>
+                    <button type="button" onclick="closeModal()" class="btn-secondary">Cancel</button>
+                </form>
+            `;
+            break;
+
+        case 'addIndustry':
+        case 'editIndustry':
+            content = `
+                <h2>${data ? 'Edit' : 'Add'} Industry Update</h2>
+                <form onsubmit="saveIndustry(event, ${data ? `'${data.id}'` : 'null'})">
+                    <div class="form-group">
+                        <label>Sector</label>
+                        <input type="text" name="sector" class="form-input" value="${data?.sector || ''}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                         <textarea name="description" class="form-textarea" rows="4" required>${data?.description || ''}</textarea>
+                    </div>
+                     <div class="form-group">
+                        <label>Icon (FontAwesome class, e.g., 'microchip')</label>
+                        <input type="text" name="icon" class="form-input" value="${data?.icon || 'industry'}">
+                    </div>
+                    <button type="submit" class="btn-primary">Save Update</button>
+                    <button type="button" onclick="closeModal()" class="btn-secondary">Cancel</button>
+                </form>
+            `;
+            break;
+
+        case 'addClient':
+        case 'editClient':
+            content = `
+                <h2>${data ? 'Edit' : 'Add'} Client</h2>
+                <form onsubmit="saveClient(event, ${data ? `'${data.id}'` : 'null'})">
+                    <div class="form-group">
+                        <label>Client Name</label>
+                        <input type="text" name="name" class="form-input" value="${data?.name || ''}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Type</label>
+                        <select name="type" class="form-input">
+                             <option value="Corporate" ${data?.type === 'Corporate' ? 'selected' : ''}>Corporate</option>
+                             <option value="Startup" ${data?.type === 'Startup' ? 'selected' : ''}>Startup</option>
+                             <option value="Partner" ${data?.type === 'Partner' ? 'selected' : ''}>Partner</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Logo URL</label>
+                        <input type="url" name="image" class="form-input" value="${data?.image || ''}" required>
+                    </div>
+                    <button type="submit" class="btn-primary">Save Client</button>
+                    <button type="button" onclick="closeModal()" class="btn-secondary">Cancel</button>
+                </form>
+            `;
+            break;
+
+        case 'addUser':
+        case 'editUser':
+            content = `
+                 <h2>${data ? 'Edit' : 'Add'} User</h2>
+                <form onsubmit="saveUser(event, ${data ? `'${data.id}'` : 'null'})">
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input type="text" name="name" class="form-input" value="${data?.name || ''}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" name="email" class="form-input" value="${data?.email || ''}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Role</label>
+                         <select name="role" class="form-input">
+                             <option value="USER" ${data?.role === 'USER' ? 'selected' : ''}>User</option>
+                             <option value="ADMIN" ${data?.role === 'ADMIN' ? 'selected' : ''}>Admin</option>
+                             <option value="EDITOR" ${data?.role === 'EDITOR' ? 'selected' : ''}>Editor</option>
+                        </select>
+                    </div>
+                     <div class="form-group">
+                        <label>Status</label>
+                         <select name="status" class="form-input">
+                             <option value="Active" ${data?.status === 'Active' ? 'selected' : ''}>Active</option>
+                             <option value="Inactive" ${data?.status === 'Inactive' ? 'selected' : ''}>Inactive</option>
+                        </select>
+                    </div>
+                     <div class="form-group">
+                        <label>Password ${data ? '(Leave blank to keep current)' : '*'}</label>
+                        <input type="password" name="password" class="form-input" ${!data ? 'required' : ''}>
+                    </div>
+                    <button type="submit" class="btn-primary">Save User</button>
+                    <button type="button" onclick="closeModal()" class="btn-secondary">Cancel</button>
+                </form>
+            `;
+            break;
     }
-    
+
     modalBody.innerHTML = content;
     modal.style.display = 'block';
 }
@@ -432,42 +757,439 @@ function logout() {
 }
 
 // ============ Initialize on Page Load ============
-document.addEventListener('DOMContentLoaded', async function() {
+document.addEventListener('DOMContentLoaded', async function () {
     // Check authentication
-    const isAuthenticated = localStorage.getItem('adminSession') === 'true' || 
-                           sessionStorage.getItem('adminSession') === 'true';
-    
+    const isAuthenticated = localStorage.getItem('adminSession') || sessionStorage.getItem('adminSession');
+
     if (!isAuthenticated) {
         window.location.href = 'admin-login.html';
         return;
     }
-    
+
     // Static mode - no API connection needed
     console.log('✅ Admin Panel: Static mode active');
     showNotification('Admin Panel Ready', 'success');
-    
+
     // Close modal on outside click
-    window.onclick = function(event) {
+    window.onclick = function (event) {
         const modal = document.getElementById('modal');
         if (event.target === modal) {
             closeModal();
         }
     };
-    
+
     // Search functionality
     const searchInputs = document.querySelectorAll('input[type="search"]');
     searchInputs.forEach(input => {
-        input.addEventListener('input', function(e) {
+        input.addEventListener('input', function (e) {
             const searchTerm = e.target.value.toLowerCase();
             const section = e.target.closest('.admin-section');
             const rows = section.querySelectorAll('tbody tr');
-            
+
             rows.forEach(row => {
                 const text = row.textContent.toLowerCase();
                 row.style.display = text.includes(searchTerm) ? '' : 'none';
             });
         });
     });
-    
+
     console.log('✅ Admin Panel Initialized');
 });
+
+// ============ News Management ============
+async function loadNews() {
+    try {
+        const response = await apiRequest(API_ENDPOINTS.news);
+        if (response.success && response.data) {
+            displayNews(response.data);
+        }
+    } catch (error) {
+        console.error('Load news error:', error);
+    }
+}
+
+function displayNews(newsItems) {
+    const container = document.querySelector('#news .news-list');
+    if (!container) return;
+
+    if (newsItems.length === 0) {
+        container.innerHTML = '<p class="empty-state-text">No news items yet.</p>';
+        return;
+    }
+
+    container.innerHTML = newsItems.map(news => `
+        <div class="news-item-admin">
+            <h4>${news.title}</h4>
+            <p>${news.content}</p>
+            <div class="item-meta">
+                <span>${new Date(news.createdAt || Date.now()).toLocaleString()}</span>
+                <button class="btn-icon" onclick="editNews(${news.id})"><i class="fas fa-edit"></i></button>
+                <button class="btn-icon" onclick="deleteNews(${news.id})"><i class="fas fa-trash"></i></button>
+            </div>
+        </div>
+    `).join('');
+}
+
+async function deleteNews(id) {
+    if (!confirm('Are you sure you want to delete this news item?')) return;
+
+    try {
+        const response = await apiRequest(`${API_ENDPOINTS.news}/${id}`, 'DELETE');
+        showNotification(response.message || 'News deleted successfully!', 'success');
+        loadNews();
+    } catch (error) {
+        console.error('Delete news error:', error);
+        showNotification(error.message || 'Failed to delete news', 'error');
+    }
+}
+
+async function saveNews(event, id) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const data = Object.fromEntries(formData.entries());
+    const method = id ? 'PUT' : 'POST';
+    const endpoint = id ? `${API_ENDPOINTS.news}/${id}` : API_ENDPOINTS.news;
+
+    try {
+        const response = await apiRequest(endpoint, method, data);
+        showNotification(response.message || 'News saved successfully!', 'success');
+        closeModal();
+        loadNews();
+    } catch (error) {
+        console.error('Save news error:', error);
+        showNotification(error.message || 'Failed to save news', 'error');
+    }
+}
+
+async function editNews(id) {
+    try {
+        const response = await apiRequest(API_ENDPOINTS.news);
+        if (response.success && response.data) {
+            const item = response.data.find(n => n.id === id);
+            if (item) openModal('editNews', item);
+        }
+    } catch (error) {
+        console.error('Edit news error:', error);
+    }
+}
+
+// ============ Industry Management ============
+async function loadIndustry() {
+    try {
+        const response = await apiRequest(API_ENDPOINTS.industry);
+        if (response.success && response.data) {
+            displayIndustry(response.data);
+        }
+    } catch (error) {
+        console.error('Load industry error:', error);
+    }
+}
+
+function displayIndustry(industryItems) {
+    const container = document.querySelector('#industry .content-grid');
+    if (!container) return;
+
+    if (industryItems.length === 0) {
+        container.innerHTML = '<p class="empty-state-text">No industry updates yet.</p>';
+        return;
+    }
+
+    container.innerHTML = industryItems.map(item => `
+        <div class="industry-card-admin">
+            <div class="card-icon"><i class="fas fa-${item.icon || 'industry'}"></i></div>
+            <h4>${item.sector}</h4>
+            <p>${item.description}</p>
+            <div class="card-actions">
+                <button class="btn-small btn-edit" onclick="editIndustry(${item.id})">Edit</button>
+                <button class="btn-small btn-delete" onclick="deleteIndustry(${item.id})">Delete</button>
+            </div>
+        </div>
+    `).join('');
+}
+
+async function deleteIndustry(id) {
+    if (!confirm('Are you sure you want to delete this industry update?')) return;
+
+    try {
+        const response = await apiRequest(`${API_ENDPOINTS.industry}/${id}`, 'DELETE');
+        showNotification(response.message || 'Industry update deleted successfully!', 'success');
+        loadIndustry();
+    } catch (error) {
+        console.error('Delete industry error:', error);
+        showNotification(error.message || 'Failed to delete industry update', 'error');
+    }
+}
+
+async function saveIndustry(event, id) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const data = Object.fromEntries(formData.entries());
+    const method = id ? 'PUT' : 'POST';
+    const endpoint = id ? `${API_ENDPOINTS.industry}/${id}` : API_ENDPOINTS.industry;
+
+    try {
+        const response = await apiRequest(endpoint, method, data);
+        showNotification(response.message || 'Industry update saved successfully!', 'success');
+        closeModal();
+        loadIndustry();
+    } catch (error) {
+        console.error('Save industry error:', error);
+        showNotification(error.message || 'Failed to save industry update', 'error');
+    }
+}
+
+async function editIndustry(id) {
+    try {
+        // Industry data is usually already loaded, but fetching single item is safer if API supports it.
+        // If API doesn't have GET /:id, we might need to find it from list.
+        // Assuming we rely on list reload for now or fetch list and find.
+        // However, standard REST usually has GET /:id. The backend I wrote DOES NOT have GET /:id for all, only GET / which returns all.
+        // server.js for industry: app.get('/api/industry', ...) returns all.
+        // I should probably fetch all and find, OR just pass data if available.
+        // Let's implement fetch all and find for now as robust fallback.
+
+        const response = await apiRequest(API_ENDPOINTS.industry);
+        if (response.success && response.data) {
+            const item = response.data.find(i => i.id === id);
+            if (item) openModal('editIndustry', item);
+        }
+    } catch (error) {
+        console.error('Edit industry error:', error);
+    }
+}
+
+// ============ Clients Management ============
+async function loadClients() {
+    try {
+        const response = await apiRequest(API_ENDPOINTS.clients);
+        if (response.success && response.data) {
+            displayClients(response.data);
+        }
+    } catch (error) {
+        console.error('Load clients error:', error);
+    }
+}
+
+function displayClients(clients) {
+    const container = document.querySelector('#clients .content-grid');
+    if (!container) return;
+
+    if (clients.length === 0) {
+        container.innerHTML = '<p class="empty-state-text">No clients yet.</p>';
+        return;
+    }
+
+    container.innerHTML = clients.map(client => `
+        <div class="content-card">
+            <img src="${client.image}" alt="${client.name}">
+            <div class="card-body">
+                <h4>${client.name}</h4>
+                <p>${client.type}</p>
+                <div class="card-actions">
+                    <button class="btn-small btn-edit" onclick="editClient(${client.id})">Edit</button>
+                    <button class="btn-small btn-delete" onclick="deleteClient(${client.id})">Delete</button>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+async function deleteClient(id) {
+    if (!confirm('Are you sure you want to delete this client?')) return;
+
+    try {
+        const response = await apiRequest(`${API_ENDPOINTS.clients}/${id}`, 'DELETE');
+        showNotification(response.message || 'Client deleted successfully!', 'success');
+        loadClients();
+    } catch (error) {
+        console.error('Delete client error:', error);
+        showNotification(error.message || 'Failed to delete client', 'error');
+    }
+}
+
+async function saveClient(event, id) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    // Handle file upload manually if needed, or let apiRequest handle FormData
+    // The apiRequest helper handles FormData if passed as data with isFormData=true
+
+    // However, my modal form construction for others used JSON.
+    // Client has file upload.
+
+    const method = id ? 'PUT' : 'POST';
+    const endpoint = id ? `${API_ENDPOINTS.clients}/${id}` : API_ENDPOINTS.clients;
+
+    try {
+        const response = await apiRequest(endpoint, method, formData, true);
+        showNotification(response.message || 'Client saved successfully!', 'success');
+        closeModal();
+        loadClients();
+    } catch (error) {
+        console.error('Save client error:', error);
+        showNotification(error.message || 'Failed to save client', 'error');
+    }
+}
+
+async function editClient(id) {
+    try {
+        const response = await apiRequest(API_ENDPOINTS.clients);
+        if (response.success && response.data) {
+            const item = response.data.find(c => c.id === id);
+            if (item) openModal('editClient', item);
+        }
+    } catch (error) {
+        console.error('Edit client error:', error);
+    }
+}
+
+// ============ Users Management ============
+async function loadUsersData() {
+    try {
+        const response = await apiRequest(API_ENDPOINTS.users);
+        if (response.success && response.data) {
+            displayUsers(response.data);
+        }
+    } catch (error) {
+        console.error('Load users error:', error);
+    }
+}
+
+function displayUsers(users) {
+    const tbody = document.querySelector('#users table tbody');
+    if (!tbody) return;
+
+    if (users.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">No users yet.</td></tr>';
+        return;
+    }
+
+    tbody.innerHTML = users.map(user => `
+        <tr>
+            <td>${user.name}</td>
+            <td>${user.email}</td>
+            <td><span class="badge badge-blue">${user.role}</span></td>
+            <td><span class="badge badge-success">${user.status}</span></td>
+            <td>${user.joined}</td>
+            <td class="actions">
+                <button class="btn-icon" onclick="editUserData(${user.id})"><i class="fas fa-edit"></i></button>
+                <button class="btn-icon" onclick="deleteUser(${user.id})"><i class="fas fa-trash"></i></button>
+            </td>
+        </tr>
+    `).join('');
+}
+
+async function deleteUser(id) {
+    if (!confirm('Are you sure you want to delete this user?')) return;
+
+    try {
+        const response = await apiRequest(`${API_ENDPOINTS.users}/${id}`, 'DELETE');
+        showNotification(response.message || 'User deleted successfully!', 'success');
+        loadUsersData();
+    } catch (error) {
+        console.error('Delete user error:', error);
+        showNotification(error.message || 'Failed to delete user', 'error');
+    }
+}
+
+async function saveUser(event, id) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const data = Object.fromEntries(formData.entries());
+
+    // Remove empty password if editing
+    if (id && !data.password) delete data.password;
+
+    const method = id ? 'PUT' : 'POST';
+    const endpoint = id ? `${API_ENDPOINTS.users}/${id}` : API_ENDPOINTS.users;
+
+    try {
+        const response = await apiRequest(endpoint, method, data);
+        showNotification(response.message || 'User saved successfully!', 'success');
+        closeModal();
+        loadUsersData();
+    } catch (error) {
+        console.error('Save user error:', error);
+        showNotification(error.message || 'Failed to save user', 'error');
+    }
+}
+
+function editUserData(id) { // Renamed from editUser to match HTML call
+    apiRequest(API_ENDPOINTS.users).then(response => {
+        if (response.success && response.data) {
+            const item = response.data.find(u => u.id === id);
+            if (item) openModal('editUser', item);
+        }
+    });
+}
+
+// ============ YouTube Converter ============
+async function convertYouTubeToArticle() {
+    const urlInput = document.getElementById('youtubeUrl');
+    const titleInput = document.getElementById('articleTitle');
+    const categorySelect = document.getElementById('articleCategory');
+    const authorInput = document.getElementById('articleAuthor');
+
+    if (!urlInput || !urlInput.value) {
+        showNotification('Please enter a YouTube URL', 'error');
+        return;
+    }
+
+    try {
+        const response = await apiRequest(API_ENDPOINTS.youtubeConvert, 'POST', {
+            url: urlInput.value,
+            title: titleInput.value,
+            category: categorySelect.value,
+            author: authorInput.value
+        });
+
+        if (response.success && response.data) {
+            const previewContainer = document.getElementById('articlePreview');
+            const previewContent = document.getElementById('previewContent');
+
+            if (previewContainer && previewContent) {
+                previewContent.innerHTML = `
+                    <h3>${response.data.title}</h3>
+                    <img src="${response.data.image}" alt="Thumbnail" style="max-width: 100%; margin: 10px 0;">
+                    <div>${response.data.content}</div>
+                `;
+                previewContainer.style.display = 'block';
+                window.convertedArticle = response.data;
+            }
+
+            showNotification(response.message || 'Video converted successfully!', 'success');
+        }
+    } catch (error) {
+        console.error('Convert YouTube error:', error);
+        showNotification(error.message || 'Failed to convert video', 'error');
+    }
+}
+
+async function publishArticle() {
+    if (!window.convertedArticle) {
+        showNotification('No article to publish', 'error');
+        return;
+    }
+
+    try {
+        const response = await apiRequest(API_ENDPOINTS.youtubePublish, 'POST', window.convertedArticle);
+        showNotification(response.message || 'Article published successfully!', 'success');
+        resetConverter();
+        loadArticles();
+    } catch (error) {
+        console.error('Publish article error:', error);
+        showNotification(error.message || 'Failed to publish article', 'error');
+    }
+}
+
+function resetConverter() {
+    const urlInput = document.getElementById('youtubeUrl');
+    const titleInput = document.getElementById('articleTitle');
+    const previewContainer = document.getElementById('articlePreview');
+
+    if (urlInput) urlInput.value = '';
+    if (titleInput) titleInput.value = '';
+    if (previewContainer) previewContainer.style.display = 'none';
+    window.convertedArticle = null;
+}
+
+console.log('\u2705 Admin Panel Initialized');

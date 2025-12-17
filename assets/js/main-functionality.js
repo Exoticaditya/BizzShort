@@ -1,21 +1,21 @@
 // ============================================
 // SMOOTH SCROLL TO SECTIONS
 // ============================================
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Smooth scroll for all anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             const href = this.getAttribute('href');
-            
+
             // Skip if href is just "#"
             if (href === '#') {
                 e.preventDefault();
                 return;
             }
-            
+
             const targetId = href.substring(1);
             const targetElement = document.getElementById(targetId);
-            
+
             if (targetElement) {
                 e.preventDefault();
                 const headerOffset = 80; // Account for sticky navbar
@@ -26,13 +26,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     top: offsetPosition,
                     behavior: 'smooth'
                 });
-                
+
                 // Update active navbar item
                 updateActiveNavItem(this);
             }
         });
     });
-    
+
     // Update active state on scroll
     window.addEventListener('scroll', debounce(updateNavOnScroll, 100));
 });
@@ -43,20 +43,20 @@ document.addEventListener('DOMContentLoaded', function() {
 function filterNews(category) {
     const newsCards = document.querySelectorAll('.news-card-large');
     const tabButtons = document.querySelectorAll('.tab-btn');
-    
+
     // Update active tab
     tabButtons.forEach(btn => {
         btn.classList.remove('active');
-        if (btn.textContent.toLowerCase() === category || 
+        if (btn.textContent.toLowerCase() === category ||
             (category === 'all' && btn.textContent.toLowerCase() === 'all')) {
             btn.classList.add('active');
         }
     });
-    
+
     // Filter news cards with animation
     newsCards.forEach((card, index) => {
         const cardCategory = card.getAttribute('data-category');
-        
+
         if (category === 'all' || cardCategory === category) {
             card.style.display = 'block';
             // Stagger animation
@@ -85,7 +85,7 @@ function filterNews(category) {
 function toggleMobileMenu() {
     const nav = document.querySelector('.main-nav ul');
     const toggle = document.querySelector('.mobile-menu-toggle');
-    
+
     nav.classList.toggle('mobile-active');
     toggle.classList.toggle('active');
 }
@@ -106,12 +106,12 @@ function updateActiveNavItem(clickedElement) {
 function updateNavOnScroll() {
     const sections = document.querySelectorAll('section[id]');
     const scrollPosition = window.pageYOffset + 100;
-    
+
     sections.forEach(section => {
         const sectionTop = section.offsetTop;
         const sectionHeight = section.offsetHeight;
         const sectionId = section.getAttribute('id');
-        
+
         if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
             document.querySelectorAll('.main-nav a').forEach(link => {
                 link.classList.remove('active');
@@ -141,15 +141,15 @@ function debounce(func, wait) {
 // ============================================
 // CARD HOVER EFFECTS
 // ============================================
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const cards = document.querySelectorAll('.news-card, .news-card-large, .interview-card, .event-card');
-    
+
     cards.forEach(card => {
-        card.addEventListener('mouseenter', function() {
+        card.addEventListener('mouseenter', function () {
             this.style.transform = 'translateY(-8px)';
         });
-        
-        card.addEventListener('mouseleave', function() {
+
+        card.addEventListener('mouseleave', function () {
             this.style.transform = 'translateY(0)';
         });
     });
@@ -158,7 +158,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // ============================================
 // NAVBAR SCROLL EFFECT
 // ============================================
-window.addEventListener('scroll', function() {
+window.addEventListener('scroll', function () {
     const navbar = document.querySelector('.navbar-section');
     if (window.scrollY > 100) {
         navbar.style.boxShadow = '0 4px 20px rgba(0,0,0,0.15)';
@@ -170,9 +170,9 @@ window.addEventListener('scroll', function() {
 // ============================================
 // LAZY LOADING FOR IMAGES
 // ============================================
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const images = document.querySelectorAll('img[data-src]');
-    
+
     const imageObserver = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -183,7 +183,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-    
+
     images.forEach(img => imageObserver.observe(img));
 });
 
@@ -192,7 +192,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // ============================================
 function animateOnScroll() {
     const elements = document.querySelectorAll('.news-card, .interview-card, .event-card, .analysis-card');
-    
+
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -203,7 +203,7 @@ function animateOnScroll() {
     }, {
         threshold: 0.1
     });
-    
+
     elements.forEach(el => {
         el.style.opacity = '0';
         el.style.transform = 'translateY(30px)';
@@ -277,7 +277,7 @@ function getCache(key, ttlMs) {
 function setCache(key, value) {
     try {
         localStorage.setItem(key, JSON.stringify({ t: Date.now(), v: value }));
-    } catch (_) {}
+    } catch (_) { }
 }
 
 function decodeInstagramString(s) {
@@ -354,7 +354,7 @@ function buildVideoCard(item) {
         <h3>${escapeHtml(item.title)}</h3>
         <p>${escapeHtml(item.excerpt)}</p>
     `;
-return el;
+    return el;
 }
 
 function buildNewsCardSmall(item) {
@@ -453,7 +453,7 @@ function buildNewsCardLarge(item) {
     return el;
 }
 
-document.addEventListener('DOMContentLoaded', async function() {
+document.addEventListener('DOMContentLoaded', async function () {
     const videoGrid = document.querySelector('.video-section .video-grid');
     const latestGrid = document.querySelector('.latest-news-grid');
     const breakingStory = document.querySelector('.main-breaking-story');
@@ -506,22 +506,20 @@ document.addEventListener('DOMContentLoaded', async function() {
             if (igItems.length) setCache(igCacheKey, igItems);
         }
         const items = [...ytItems, ...igItems].sort((a, b) => new Date(b.published) - new Date(a.published));
-        if (items.length === 0) {
-            if (videoGrid) {
-                videoGrid.innerHTML = '<div class="empty-state">No recent videos available</div>';
-            }
-            if (latestGrid) {
-                latestGrid.innerHTML = '<div class="empty-state">No latest updates available</div>';
-            }
-            return;
-        }
+        // If no items from external APIs, keep static HTML content as fallback (don't show empty state)
         if (videoGrid) {
             videoGrid.innerHTML = '';
             items.slice(0, 6).forEach(i => videoGrid.appendChild(buildVideoCard(i)));
         }
         if (latestGrid) {
-            latestGrid.innerHTML = '';
-            items.slice(0, 8).forEach(i => latestGrid.appendChild(buildNewsCardLarge(i)));
+            // IMPORTANT: Don't clear the grid if we have no items - keep static HTML content as fallback
+            if (items.length > 0) {
+                latestGrid.innerHTML = '';
+                items.slice(0, 8).forEach(i => latestGrid.appendChild(buildNewsCardLarge(i)));
+            } else {
+                console.warn('⚠️ No external content loaded - keeping static HTML content in Latest Updates section');
+                // Static content in index.html will remain visible as fallback
+            }
         }
         if (breakingStory) {
             const top = items[0];
@@ -576,25 +574,25 @@ window.buildNewsCardLarge = buildNewsCardLarge;
 // ============================================
 // BACK TO TOP BUTTON
 // ============================================
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Create back to top button
     const backToTop = document.createElement('button');
     backToTop.innerHTML = '<i class="fas fa-arrow-up"></i>';
     backToTop.className = 'back-to-top';
     backToTop.setAttribute('aria-label', 'Back to top');
     document.body.appendChild(backToTop);
-    
+
     // Show/hide button on scroll
-    window.addEventListener('scroll', function() {
+    window.addEventListener('scroll', function () {
         if (window.pageYOffset > 300) {
             backToTop.classList.add('visible');
         } else {
             backToTop.classList.remove('visible');
         }
     });
-    
+
     // Scroll to top on click
-    backToTop.addEventListener('click', function() {
+    backToTop.addEventListener('click', function () {
         window.scrollTo({
             top: 0,
             behavior: 'smooth'
@@ -608,15 +606,15 @@ document.addEventListener('DOMContentLoaded', function() {
 function initializeSearch() {
     const searchInput = document.querySelector('.search-input');
     if (!searchInput) return;
-    
-    searchInput.addEventListener('input', debounce(function(e) {
+
+    searchInput.addEventListener('input', debounce(function (e) {
         const searchTerm = e.target.value.toLowerCase();
         const allCards = document.querySelectorAll('.news-card, .news-card-large, .interview-card');
-        
+
         allCards.forEach(card => {
             const title = card.querySelector('h3, h4').textContent.toLowerCase();
             const description = card.querySelector('p') ? card.querySelector('p').textContent.toLowerCase() : '';
-            
+
             if (title.includes(searchTerm) || description.includes(searchTerm)) {
                 card.style.display = 'block';
             } else {
@@ -649,12 +647,12 @@ function shareArticle(title, url) {
 // ============================================
 // READING PROGRESS BAR
 // ============================================
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const progressBar = document.createElement('div');
     progressBar.className = 'reading-progress';
     document.body.appendChild(progressBar);
-    
-    window.addEventListener('scroll', function() {
+
+    window.addEventListener('scroll', function () {
         const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
         const scrolled = (window.pageYOffset / windowHeight) * 100;
         progressBar.style.width = scrolled + '%';

@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Login - BizzShort</title>
     <link rel="stylesheet" href="assets/css/theme-blue-white.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         body {
@@ -228,12 +231,13 @@
         }
     </style>
 </head>
+
 <body>
     <div class="login-container">
         <div class="login-left">
             <h1>🔐 Admin Panel</h1>
             <p>Manage your BizzShort platform with powerful administrative tools.</p>
-            
+
             <div class="features">
                 <div class="feature-item">
                     <div class="feature-icon">
@@ -244,7 +248,7 @@
                         <small>Upload and manage advertisements</small>
                     </div>
                 </div>
-                
+
                 <div class="feature-item">
                     <div class="feature-icon">
                         <i class="fas fa-chart-line"></i>
@@ -254,7 +258,7 @@
                         <small>Track traffic and revenue</small>
                     </div>
                 </div>
-                
+
                 <div class="feature-item">
                     <div class="feature-icon">
                         <i class="fas fa-check-circle"></i>
@@ -280,14 +284,8 @@
                     <label for="username">
                         <i class="fas fa-user"></i> Username or Email
                     </label>
-                    <input 
-                        type="text" 
-                        id="username" 
-                        name="username" 
-                        class="form-input" 
-                        placeholder="Enter your username"
-                        required
-                    >
+                    <input type="text" id="username" name="username" class="form-input"
+                        placeholder="Enter your username" required>
                 </div>
 
                 <div class="form-group">
@@ -295,14 +293,8 @@
                         <i class="fas fa-lock"></i> Password
                     </label>
                     <div class="password-container">
-                        <input 
-                            type="password" 
-                            id="password" 
-                            name="password" 
-                            class="form-input" 
-                            placeholder="Enter your password"
-                            required
-                        >
+                        <input type="password" id="password" name="password" class="form-input"
+                            placeholder="Enter your password" required>
                         <button type="button" class="password-toggle" onclick="togglePassword()">
                             <i class="fas fa-eye" id="toggleIcon"></i>
                         </button>
@@ -333,7 +325,7 @@
         function togglePassword() {
             const passwordInput = document.getElementById('password');
             const toggleIcon = document.getElementById('toggleIcon');
-            
+
             if (passwordInput.type === 'password') {
                 passwordInput.type = 'text';
                 toggleIcon.classList.remove('fa-eye');
@@ -351,44 +343,117 @@
             alertBox.textContent = message;
             alertBox.className = `alert ${type}`;
             alertBox.style.display = 'block';
-            
+
             setTimeout(() => {
                 alertBox.style.display = 'none';
             }, 5000);
         }
 
         // Handle form submission
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
+        document.getElementById('loginForm').addEventListener('submit', async function (e) {
             e.preventDefault();
-            
+
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
             const rememberMe = document.getElementById('rememberMe').checked;
-            
-            // Admin credentials: username: admin, password: admin@123
-            if (username === 'admin' && password === 'admin@123') {
-                showAlert('Login successful! Redirecting to admin panel...', 'success');
-                
-                // Store session
-                if (rememberMe) {
-                    localStorage.setItem('adminLoggedIn', 'true');
+
+            const loginBtn = document.querySelector('.login-btn');
+            loginBtn.disabled = true;
+            loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
+
+            console.log('🔄 Login attempt started', { username, rememberMe });
+
+            try {
+                // Call backend authentication API
+                console.log('📡 Sending fetch to /api/admin/login...');
+                const response = await fetch('http://localhost:3000/api/admin/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password, rememberMe })
+                });
+
+                console.log('📥 Response received:', response.status, response.statusText);
+                const data = await response.json();
+                console.log('📦 Response data:', data);
+
+                if (response.ok && data.success) {
+                    console.log('✅ Login successful!');
+                    showAlert('Login successful! Redirecting to admin panel...', 'success');
+
+                    // Store session based on remember me
+                    const storage = rememberMe ? localStorage : sessionStorage;
+                    storage.setItem('adminSession', data.sessionId);
+                    storage.setItem('adminUser', JSON.stringify(data.user));
+                    console.log('💾 Session stored in', rememberMe ? 'localStorage' : 'sessionStorage');
+
+                    // Redirect to admin panel immediately using replace to avoid history issues
+                    console.log('🔄 Redirecting to admin.html...');
+                    window.location.replace('admin.html');
                 } else {
-                    sessionStorage.setItem('adminSession', 'true');
+                    console.error('❌ Login failed:', data.message || data.error);
+                    showAlert(data.message || data.error || 'Invalid username or password. Please try again.', 'error');
+                    loginBtn.disabled = false;
+                    loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login to Admin Panel';
                 }
-                
-                // Redirect to admin panel
-                setTimeout(() => {
-                    window.location.href = 'admin.html';
-                }, 1500);
-            } else {
-                showAlert('Invalid username or password. Please try again.', 'error');
+            } catch (error) {
+                console.error('🔥 Login error caught:', error);
+
+                // Fallback for demo/offline mode
+                if (username === 'admin' && password === 'admin123') {
+                    console.log('⚠️ Offline/Demo mode active. Logging in with hardcoded credentials.');
+                    showAlert('Login successful (Offline Mode)! Redirecting...', 'success');
+
+                    const storage = rememberMe ? localStorage : sessionStorage;
+                    storage.setItem('adminSession', 'demo-session-id');
+                    storage.setItem('adminUser', JSON.stringify({ name: 'Admin (Offline)', role: 'ADMIN' }));
+
+                    setTimeout(() => {
+                        window.location.replace('admin.html');
+                    }, 1000);
+                    return;
+                }
+
+                showAlert('Connection error. Please make sure the server is running.', 'error');
+                loginBtn.disabled = false;
+                loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login to Admin Panel';
             }
         });
 
         // Check if already logged in
-        if (localStorage.getItem('adminLoggedIn') === 'true' || sessionStorage.getItem('adminSession') === 'true') {
-            window.location.href = 'admin.html';
+        async function checkSession() {
+            const sessionId = localStorage.getItem('adminSession') || sessionStorage.getItem('adminSession');
+
+            if (sessionId) {
+                try {
+                    const response = await fetch('http://localhost:3000/api/admin/verify-session', {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Session-ID': sessionId
+                        }
+                    });
+
+                    const data = await response.json();
+
+                    if (data.valid) {
+                        window.location.href = 'admin.html';
+                    } else {
+                        // Clear invalid session
+                        localStorage.removeItem('adminSession');
+                        sessionStorage.removeItem('adminSession');
+                    }
+                } catch (error) {
+                    console.error('Session verification error:', error);
+                }
+            }
         }
+
+        // Check session on page load
+        checkSession();
+
     </script>
 </body>
+
 </html>
