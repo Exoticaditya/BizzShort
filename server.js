@@ -22,6 +22,8 @@ const IndustryUpdate = require('./models/IndustryUpdate');
 const Client = require('./models/Client');
 const User = require('./models/User');
 const Advertisement = require('./models/Advertisement');
+const Video = require('./models/Video');
+const Video = require('./models/Video');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -572,6 +574,41 @@ app.get('/api/advertisements', async (req, res) => {
 app.post('/api/advertisements', protect, conditionalUpload('image'), async (req, res) => {
     const ad = await Advertisement.create({ ...req.body, imageUrl: req.file ? `/uploads/${req.file.filename}` : undefined });
     res.status(201).json({ success: true, data: { ...ad._doc, id: ad._id } });
+});
+
+app.delete('/api/advertisements/:id', protect, async (req, res) => {
+    try { await Advertisement.findByIdAndDelete(req.params.id); res.json({ success: true }); }
+    catch (e) { res.status(500).json({ success: false }); }
+});
+
+// Videos
+app.get('/api/videos', async (req, res) => {
+    try {
+        const videos = await Video.find().sort({ createdAt: -1 });
+        res.json({ success: true, data: videos.map(v => ({ ...v._doc, id: v._id })) });
+    } catch (err) { res.status(500).json({ success: false, error: err.message }); }
+});
+
+app.post('/api/videos', protect, async (req, res) => {
+    try {
+        const video = await Video.create(req.body);
+        res.status(201).json({ success: true, data: { ...video._doc, id: video._id } });
+    } catch (err) { res.status(500).json({ success: false, error: err.message }); }
+});
+
+app.put('/api/videos/:id', protect, async (req, res) => {
+    try {
+        const video = await Video.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        if (!video) return res.status(404).json({ success: false, error: 'Video not found' });
+        res.json({ success: true, data: { ...video._doc, id: video._id } });
+    } catch (err) { res.status(500).json({ success: false, error: err.message }); }
+});
+
+app.delete('/api/videos/:id', protect, async (req, res) => {
+    try {
+        await Video.findByIdAndDelete(req.params.id);
+        res.json({ success: true, message: 'Video deleted' });
+    } catch (err) { res.status(500).json({ success: false, error: err.message }); }
 });
 
 // Start Server

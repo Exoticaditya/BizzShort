@@ -666,28 +666,80 @@
             <section id="videos" class="admin-section">
                 <div class="section-header">
                     <h2>🎬 Video Manager</h2>
-                    <p style="margin: 10px 0; color: #666;">Manage YouTube videos - Add up to 100+ videos at once!</p>
+                    <button class="btn-primary" onclick="showAddVideoModal()"><i class="fas fa-plus"></i> Add
+                        Video</button>
                 </div>
 
-                <iframe src="AUTO_ADD_VIDEOS.html"
-                    style="width: 100%; height: calc(100vh - 150px); border: none; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
-                </iframe>
+                <!-- Add Video Modal/Form (Hidden by default or inline) -->
+                <div id="addVideoFormContainer"
+                    style="display: none; background: #fff; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                    <h3 id="videoFormTitle" style="margin-bottom: 15px;">Add New Video</h3>
+                    <form id="videoForm">
+                        <input type="hidden" id="videoId">
+                        <div class="form-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                            <div class="form-group">
+                                <label>Video Title</label>
+                                <input type="text" id="videoTitle" required placeholder="Enter video title">
+                            </div>
+                            <div class="form-group">
+                                <label>Category</label>
+                                <select id="videoCategory">
+                                    <option value="Markets">Markets</option>
+                                    <option value="Startups">Startups</option>
+                                    <option value="Economy">Economy</option>
+                                    <option value="Energy">Energy</option>
+                                    <option value="Cryptocurrency">Cryptocurrency</option>
+                                    <option value="Manufacturing">Manufacturing</option>
+                                    <option value="E-commerce">E-commerce</option>
+                                    <option value="Healthcare">Healthcare</option>
+                                    <option value="Banking">Banking</option>
+                                    <option value="Technology">Technology</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Source</label>
+                                <select id="videoSource">
+                                    <option value="youtube">YouTube</option>
+                                    <option value="instagram">Instagram</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Video URL or ID</label>
+                                <input type="text" id="videoUrl" required placeholder="Paste YouTube URL or ID">
+                            </div>
+                            <div class="form-group" style="grid-column: span 2;">
+                                <label>Description</label>
+                                <textarea id="videoDescription" rows="3" placeholder="Video description..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                                    <input type="checkbox" id="videoFeatured" style="width: auto;">
+                                    Featured Video (Show on Homepage)
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-actions" style="margin-top: 20px; display: flex; gap: 10px;">
+                            <button type="submit" class="btn-primary">Save Video</button>
+                            <button type="button" class="btn-secondary" onclick="hideAddVideoModal()">Cancel</button>
+                        </div>
+                    </form>
+                </div>
 
-                <div
-                    style="margin-top: 20px; padding: 20px; background: #e3f2fd; border-radius: 8px; border-left: 5px solid #2196f3;">
-                    <h3 style="color: #1565c0; margin-bottom: 10px;">📘 Quick Instructions:</h3>
-                    <ol style="color: #1565c0; line-height: 1.8;">
-                        <li><strong>Paste YouTube URLs</strong> in the tool above (supports 100+ links)</li>
-                        <li><strong>Choose mode:</strong> ADD (keeps old videos) or REPLACE (new only)</li>
-                        <li><strong>Click "Generate Code"</strong> - Processes all links automatically</li>
-                        <li><strong>Click "Download Updated video-manager.js"</strong> - Downloads complete file</li>
-                        <li><strong>Replace file:</strong> Go to <code>assets/js/</code> and replace
-                            <code>video-manager.js</code>
-                        </li>
-                        <li><strong>Refresh website:</strong> Press Ctrl+Shift+R to see changes</li>
-                    </ol>
-                    <p style="margin-top: 15px; color: #0d47a1;"><strong>💡 Tip:</strong> Use ADD mode for weekly
-                        updates to keep all existing videos. Use REPLACE mode only for complete website refresh.</p>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Thumbnail</th>
+                                <th>Title</th>
+                                <th>Category</th>
+                                <th>Source</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="videoTableBody">
+                            <!-- Videos will be loaded here -->
+                        </tbody>
+                    </table>
                 </div>
             </section>
 

@@ -13,7 +13,7 @@
  * Video ID can be found in YouTube URL: youtube.com/watch?v=VIDEO_ID_HERE
  */
 
-const videoDatabase = [
+let videoDatabase = [
     {
         id: '1',
         title: 'Business News Today | Latest Market Updates & Analysis',
@@ -314,10 +314,10 @@ function filterVideosByCategory(category) {
 function createVideoCard(video) {
     const featuredClass = video.featured ? 'featured' : '';
     const sourceIcon = video.source === 'youtube' ? 'fa-youtube' : 'fa-instagram';
-    const videoUrl = video.source === 'youtube' 
+    const videoUrl = video.source === 'youtube'
         ? `https://www.youtube.com/watch?v=${video.videoId}`
         : `https://www.instagram.com/bizz_short/`;
-    
+
     return `
         <article class="video-card ${featuredClass}" data-category="${video.category}">
             <div class="video-thumbnail-container" onclick="window.open('${videoUrl}', '_blank')">
@@ -354,12 +354,12 @@ function createVideoCard(video) {
 // Render videos grid
 function renderVideos(videos, containerId = 'videos-grid') {
     const container = document.getElementById(containerId);
-    
+
     if (!container) {
         console.warn(`Container with id '${containerId}' not found`);
         return;
     }
-    
+
     if (!videos || videos.length === 0) {
         container.innerHTML = `
             <div class="no-videos">
@@ -370,20 +370,20 @@ function renderVideos(videos, containerId = 'videos-grid') {
         `;
         return;
     }
-    
+
     container.innerHTML = videos.map(video => createVideoCard(video)).join('');
 }
 
 // Render featured videos
 function renderFeaturedVideos(containerId = 'featured-videos-slider') {
     const container = document.getElementById(containerId);
-    
+
     if (!container) {
         return;
     }
-    
+
     const featuredVideos = videoDatabase.filter(video => video.featured);
-    
+
     if (featuredVideos.length === 0) {
         container.innerHTML = `
             <div class="no-videos">
@@ -394,21 +394,21 @@ function renderFeaturedVideos(containerId = 'featured-videos-slider') {
         `;
         return;
     }
-    
+
     container.innerHTML = featuredVideos.map(video => createVideoCard(video)).join('');
 }
 
 // Render category tabs
 function renderCategoryTabs(containerId = 'video-category-tabs') {
     const container = document.getElementById(containerId);
-    
+
     if (!container) {
         console.error(`Container with id '${containerId}' not found`);
         return;
     }
-    
+
     const categories = getCategories();
-    
+
     container.innerHTML = categories.map((category, index) => `
         <button class="video-tab-btn ${index === 0 ? 'active' : ''}" 
                 onclick="filterVideos('${category}')" 
@@ -427,7 +427,7 @@ function filterVideos(category) {
             btn.classList.add('active');
         }
     });
-    
+
     // Filter and render videos
     const filteredVideos = filterVideosByCategory(category);
     renderVideos(filteredVideos);
@@ -438,20 +438,7 @@ function navigateToVideo(videoId) {
     window.location.href = `video-detail.html?id=${videoId}`;
 }
 
-// Initialize video section
-function initializeVideoSection() {
-    // Render category tabs if container exists
-    const tabsContainer = document.getElementById('video-category-tabs');
-    if (tabsContainer) {
-        renderCategoryTabs();
-    }
-    
-    // Render initial videos
-    const videosContainer = document.getElementById('videos-grid');
-    if (videosContainer) {
-        renderVideos(videoDatabase);
-    }
-}
+
 
 // Load featured videos for homepage
 function loadFeaturedVideos(limit = 3) {
@@ -472,17 +459,17 @@ class YouTubeAPI {
         this.channelId = channelId;
         this.baseUrl = 'https://www.googleapis.com/youtube/v3';
     }
-    
+
     async getChannelVideos(maxResults = 10) {
         try {
             const response = await fetch(
                 `${this.baseUrl}/search?key=${this.apiKey}&channelId=${this.channelId}&part=snippet,id&order=date&maxResults=${maxResults}&type=video`
             );
-            
+
             if (!response.ok) {
                 throw new Error('Failed to fetch YouTube videos');
             }
-            
+
             const data = await response.json();
             return this.formatYouTubeVideos(data.items);
         } catch (error) {
@@ -490,7 +477,7 @@ class YouTubeAPI {
             return [];
         }
     }
-    
+
     formatYouTubeVideos(items) {
         return items.map((item, index) => ({
             id: `yt_${item.id.videoId}`,
@@ -501,10 +488,10 @@ class YouTubeAPI {
             thumbnail: item.snippet.thumbnails.high.url,
             description: item.snippet.description.substring(0, 150) + '...',
             views: 'N/A', // Would need additional API call
-            date: new Date(item.snippet.publishedAt).toLocaleDateString('en-US', { 
-                month: 'short', 
-                day: 'numeric', 
-                year: 'numeric' 
+            date: new Date(item.snippet.publishedAt).toLocaleDateString('en-US', {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric'
             }),
             duration: '0:00', // Would need additional API call
             featured: index === 0
@@ -518,17 +505,17 @@ class InstagramAPI {
         this.accessToken = accessToken;
         this.baseUrl = 'https://graph.instagram.com/me';
     }
-    
+
     async getRecentMedia(limit = 10) {
         try {
             const response = await fetch(
                 `${this.baseUrl}/media?fields=id,caption,media_type,media_url,thumbnail_url,permalink,timestamp&access_token=${this.accessToken}&limit=${limit}`
             );
-            
+
             if (!response.ok) {
                 throw new Error('Failed to fetch Instagram media');
             }
-            
+
             const data = await response.json();
             return this.formatInstagramMedia(data.data.filter(item => item.media_type === 'VIDEO'));
         } catch (error) {
@@ -536,7 +523,7 @@ class InstagramAPI {
             return [];
         }
     }
-    
+
     formatInstagramMedia(items) {
         return items.map((item, index) => ({
             id: `ig_${item.id}`,
@@ -547,16 +534,16 @@ class InstagramAPI {
             thumbnail: item.thumbnail_url || item.media_url,
             description: item.caption ? item.caption.substring(0, 150) + '...' : '',
             views: 'N/A',
-            date: new Date(item.timestamp).toLocaleDateString('en-US', { 
-                month: 'short', 
-                day: 'numeric', 
-                year: 'numeric' 
+            date: new Date(item.timestamp).toLocaleDateString('en-US', {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric'
             }),
             duration: '0:00',
             featured: index === 0
         }));
     }
-    
+
     extractTitle(caption) {
         if (!caption) return 'Instagram Video';
         const firstLine = caption.split('\n')[0];
@@ -587,4 +574,35 @@ if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initializeVideoSection);
 } else {
     initializeVideoSection();
+}
+
+async function fetchVideosFromApi() {
+    try {
+        const response = await fetch('/api/videos');
+        const result = await response.json();
+        if (result.success && result.data && result.data.length > 0) {
+            videoDatabase = result.data;
+            console.log('Loaded videos from API:', videoDatabase.length);
+        }
+    } catch (err) {
+        console.warn('Failed to fetch videos from API, using static fallback:', err);
+    }
+}
+
+// Updated Initialize
+async function initializeVideoSection() {
+    // Attempt to fetch from API
+    await fetchVideosFromApi();
+
+    // Render category tabs if container exists
+    const tabsContainer = document.getElementById('video-category-tabs');
+    if (tabsContainer) {
+        renderCategoryTabs();
+    }
+
+    // Render initial videos
+    const videosContainer = document.getElementById('videos-grid');
+    if (videosContainer) {
+        renderVideos(videoDatabase);
+    }
 }

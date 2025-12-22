@@ -19,7 +19,9 @@ const API_ENDPOINTS = {
     industry: `${API_BASE_URL}/api/industry`,
     clients: `${API_BASE_URL}/api/clients`,
     users: `${API_BASE_URL}/api/users`,
+    users: `${API_BASE_URL}/api/users`,
     advertisements: `${API_BASE_URL}/api/advertisements`,
+    videos: `${API_BASE_URL}/api/videos`,
     youtubeConvert: `${API_BASE_URL}/api/youtube/convert`,
     youtubePublish: `${API_BASE_URL}/api/youtube/publish`,
     adminLogin: `${API_BASE_URL}/api/admin/login`,
@@ -165,6 +167,9 @@ async function loadSectionData(sectionId) {
             break;
         case 'users':
             await loadUsersData();
+            break;
+        case 'videos':
+            await loadVideos();
             break;
     }
 }
@@ -1178,3 +1183,143 @@ function resetConverter() {
 }
 
 console.log('\u2705 Admin Panel Initialized');
+// ============ Video Management ============
+async function loadVideos() {
+    try {
+        const response = await apiRequest(API_ENDPOINTS.videos);
+        if (response.success && response.data) {
+            displayVideosTable(response.data);
+        }
+    } catch (error) {
+        console.error('Load videos error:', error);
+        showNotification('Failed to load videos', 'error');
+    }
+}
+
+function displayVideosTable(videos) {
+    const tableBody = document.getElementById('videoTableBody');
+    if (!tableBody) return;
+
+    if (videos.length === 0) {
+        tableBody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 20px;">No videos found. Add one!</td></tr>';
+        return;
+    }
+
+    tableBody.innerHTML = videos.map(video => `
+        <tr>
+            <td><img src="${video.thumbnail}" style="width: 80px; height: 45px; object-fit: cover; border-radius: 4px;"></td>
+            <td>
+                <strong>${video.title}</strong><br>
+                <small style="color:#666">${video.videoId}</small>
+            </td>
+            <td><span class="badge badge-blue">${video.category}</span></td>
+            <td><i class="fab fa-${video.source}"></i> ${video.source}</td>
+            <td>
+                <button onclick="editVideo('${video.id}')" class="btn-icon" title="Edit"><i class="fas fa-edit"></i></button>
+                <button onclick="deleteVideo('${video.id}')" class="btn-icon" title="Delete"><i class="fas fa-trash"></i></button>
+            </td>
+        </tr>
+    `).join('');
+}
+
+function showAddVideoModal(editMode = false) {
+    const container = document.getElementById('addVideoFormContainer');
+    if (container) {
+        container.style.display = 'block';
+        if (!editMode) {
+            const form = document.getElementById('videoForm');
+            if (form) form.reset();
+            document.getElementById('videoId').value = '';
+            document.getElementById('videoFormTitle').innerText = 'Add New Video';
+        }
+    }
+}
+
+function hideAddVideoModal() {
+    const container = document.getElementById('addVideoFormContainer');
+    if (container) container.style.display = 'none';
+}
+
+// Video Form Handler
+const videoForm = document.getElementById('videoForm');
+if (videoForm) {
+    videoForm.addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        const id = document.getElementById('videoId').value;
+        const url = document.getElementById('videoUrl').value;
+        let videoId = url;
+
+        const source = document.getElementById('videoSource').value;
+
+        if (source === 'youtube') {
+            const ytMatch = url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/);
+            if (ytMatch) videoId = ytMatch[1];
+        }
+
+        let thumbnail = '';
+        if (source === 'youtube') {
+            thumbnail = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+        } else {
+            thumbnail = 'https://via.placeholder.com/320x180?text=Instagram+Video';
+        }
+
+        const data = {
+            title: document.getElementById('videoTitle').value,
+            category: document.getElementById('videoCategory').value,
+            source: source,
+            videoId: videoId,
+            description: document.getElementById('videoDescription').value,
+            featured: document.getElementById('videoFeatured').checked,
+            thumbnail: thumbnail,
+            date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+            duration: '10:00', // Placeholder
+            views: '0'
+        };
+
+        const method = id ? 'PUT' : 'POST';
+        const endpoint = id ? `${API_ENDPOINTS.videos}/${id}` : API_ENDPOINTS.videos;
+
+        try {
+            const response = await apiRequest(endpoint, method, data);
+            if (response.success) {
+                showNotification('Video saved successfully', 'success');
+                hideAddVideoModal();
+                loadVideos();
+            }
+        } catch (err) {
+            console.error(err);
+            showNotification(err.message || 'Failed to save video', 'error');
+        }
+    });
+}
+
+async function deleteVideo(id) {
+    if (!confirm("Delete this video?")) return;
+    try {
+        await apiRequest(`${API_ENDPOINTS.videos}/${id}`, 'DELETE');
+        showNotification('Video deleted', 'success');
+        loadVideos();
+    } catch (err) { showNotification('Delete failed', 'error'); }
+}
+
+async function editVideo(id) {
+    try {
+        const response = await apiRequest(API_ENDPOINTS.videos);
+        if (response.success && response.data) {
+            const video = response.data.find(v => v.id === id);
+            if (video) {
+                document.getElementById('videoId').value = video.id;
+                document.getElementById('videoTitle').value = video.title;
+                document.getElementById('videoCategory').value = video.category;
+                document.getElementById('videoSource').value = video.source;
+                document.getElementById('videoUrl').value = video.videoId;
+                document.getElementById('videoDescription').value = video.description;
+                document.getElementById('videoFeatured').checked = video.featured;
+
+                document.getElementById('videoFormTitle').innerText = 'Edit Video';
+                showAddVideoModal(true);
+            }
+        }
+    } catch (err) { console.error(err); }
+}
