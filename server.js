@@ -23,7 +23,7 @@ const Client = require('./models/Client');
 const User = require('./models/User');
 const Advertisement = require('./models/Advertisement');
 const Video = require('./models/Video');
-const Video = require('./models/Video');
+
 
 const app = express();
 const PORT = process.env.PORT || 3000;
