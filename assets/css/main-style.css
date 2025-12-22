@@ -301,7 +301,8 @@ a {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
-    padding: 20px;
+    padding: 20px 0 0 0;
+    /* Top spacing only, no side padding */
 }
 
 .news-card {

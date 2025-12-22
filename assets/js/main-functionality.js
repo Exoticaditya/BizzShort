@@ -245,9 +245,25 @@ async function fetchYouTubeRSS(channelId, limit = 6) {
             const title = e.getElementsByTagName('title')[0]?.textContent || '';
             const link = e.getElementsByTagName('link')[0]?.getAttribute('href') || '';
             const published = e.getElementsByTagName('published')[0]?.textContent || '';
+
+            // Extract Video ID to ensure high quality thumbnail
+            let videoId = '';
+            const ytVideoIdNode = e.getElementsByTagName('yt:videoId')[0];
+            if (ytVideoIdNode) {
+                videoId = ytVideoIdNode.textContent;
+            } else {
+                const urlMatch = link.match(/[?&]v=([^&]+)/);
+                if (urlMatch) videoId = urlMatch[1];
+            }
+
             let thumb = '';
-            const mt = e.getElementsByTagName('media:thumbnail')[0] || e.getElementsByTagName('thumbnail')[0];
-            if (mt) thumb = mt.getAttribute('url') || '';
+            if (videoId) {
+                thumb = `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`; // Standard quality
+            } else {
+                const mt = e.getElementsByTagName('media:thumbnail')[0] || e.getElementsByTagName('thumbnail')[0];
+                if (mt) thumb = mt.getAttribute('url') || '';
+            }
+
             let desc = '';
             const mg = e.getElementsByTagName('media:group')[0];
             if (mg) {
@@ -598,60 +614,76 @@ async function loadBackendContent() {
     ]);
 
     // Update Latest Updates (Articles)
-    const latestGrid = document.querySelector('.latest-news-grid');
-    if (latestGrid && articles.length > 0) {
-        // Clear only if we have backend data to show, otherwise keep static/skeleton
-        latestGrid.innerHTML = '';
-        articles.slice(0, 8).forEach(item => {
-            // Map backend article to frontend structure
-            const mapped = {
-                title: item.title,
-                excerpt: item.excerpt || item.content.substring(0, 100) + '...',
-                thumbnail: item.image,
-                category: item.category,
-                published: item.publishedAt || item.createdAt,
-                url: `article-detail.html?id=${item.id}`,
-                source: 'bizzshort'
-            };
-            latestGrid.appendChild(buildNewsCardLarge(mapped));
-        });
-    }
+}
 
-    // Update Events
-    const eventsGrid = document.querySelector('.events-grid');
-    if (eventsGrid && events.length > 0) {
-        eventsGrid.innerHTML = '';
-        events.slice(0, 3).forEach(item => {
-            const mapped = {
-                title: item.name,
-                excerpt: `${item.location} • ${new Date(item.date).toLocaleDateString()}`,
-                thumbnail: item.image || 'https://placehold.co/600x400?text=Event',
-                category: 'events',
-                published: item.createdAt,
-                url: '#', // or event detail page
-                source: 'bizzshort'
-            };
-            eventsGrid.appendChild(buildArticleCard(mapped));
-        });
-    }
+// Update Latest Updates (Articles) - Ensure thumbnails are handled correctly
+const latestGrid = document.querySelector('.latest-news-grid');
+if (latestGrid && articles.length > 0) {
+    latestGrid.innerHTML = '';
+    articles.slice(0, 8).forEach(item => {
 
-    // Update Interviews
-    const interviewGrid = document.querySelector('.interview-grid');
-    if (interviewGrid && interviews.length > 0) {
-        interviewGrid.innerHTML = '';
-        interviews.slice(0, 2).forEach(item => {
-            const mapped = {
-                title: `${item.intervieweeName} - ${item.company}`,
-                excerpt: item.summary || item.designation,
-                thumbnail: item.image || 'https://placehold.co/600x400?text=Interview',
-                category: 'interviews',
-                published: item.publishedAt,
-                url: '#',
-                source: 'bizzshort'
-            };
-            interviewGrid.appendChild(buildArticleCard(mapped));
-        });
-    }
+        // Logic to prefer youtube thumbnail if it's a video article
+        let thumbnail = item.image;
+        if (!thumbnail || thumbnail.includes('via.placeholder') || thumbnail.includes('placehold.co')) {
+            // If backend didn't provide good image, check if we can extract from video URL
+            if (item.videoUrl && (item.videoUrl.includes('youtube.com') || item.videoUrl.includes('youtu.be'))) {
+                const match = item.videoUrl.match(/(?:v=|\/)([a-zA-Z0-9_-]{11}).*/);
+                if (match && match[1]) {
+                    thumbnail = `https://img.youtube.com/vi/${match[1]}/mqdefault.jpg`;
+                }
+            }
+        }
+        // Fallback
+        if (!thumbnail) thumbnail = 'assets/images/logo.jpeg';
+
+        const mapped = {
+            title: item.title,
+            excerpt: item.excerpt || item.content.substring(0, 100) + '...',
+            thumbnail: thumbnail,
+            category: item.category,
+            published: item.publishedAt || item.createdAt,
+            url: `article-detail.html?id=${item.id}`,
+            source: 'bizzshort'
+        };
+        latestGrid.appendChild(buildNewsCardLarge(mapped));
+    });
+}
+
+// Update Events
+const eventsGrid = document.querySelector('.events-grid');
+if (eventsGrid && events.length > 0) {
+    eventsGrid.innerHTML = '';
+    events.slice(0, 3).forEach(item => {
+        const mapped = {
+            title: item.name,
+            excerpt: `${item.location} • ${new Date(item.date).toLocaleDateString()}`,
+            thumbnail: item.image || 'https://placehold.co/600x400?text=Event',
+            category: 'events',
+            published: item.createdAt,
+            url: '#', // or event detail page
+            source: 'bizzshort'
+        };
+        eventsGrid.appendChild(buildArticleCard(mapped));
+    });
+}
+
+// Update Interviews
+const interviewGrid = document.querySelector('.interview-grid');
+if (interviewGrid && interviews.length > 0) {
+    interviewGrid.innerHTML = '';
+    interviews.slice(0, 2).forEach(item => {
+        const mapped = {
+            title: `${item.intervieweeName} - ${item.company}`,
+            excerpt: item.summary || item.designation,
+            thumbnail: item.image || 'https://placehold.co/600x400?text=Interview',
+            category: 'interviews',
+            published: item.publishedAt,
+            url: '#',
+            source: 'bizzshort'
+        };
+        interviewGrid.appendChild(buildArticleCard(mapped));
+    });
+}
 }
 
 document.addEventListener('DOMContentLoaded', loadBackendContent);
