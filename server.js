@@ -151,20 +151,16 @@ app.get('/api/setup-production', async (req, res) => {
             ],
             events: [
                 {
-                    title: "E-Summit 2025: Asia's Largest Business Conclave",
+                    name: "E-Summit 2025: Asia's Largest Business Conclave",
                     date: "2025-12-11",
                     location: "IIT Bombay, Mumbai",
                     description: "Asia's largest business conclave, focusing on groundbreaking ideas and visionary solutions.",
-                    category: "Conference",
-                    maxAttendees: 500
                 },
                 {
-                    title: "Bengaluru Tech Summit 2025",
+                    name: "Bengaluru Tech Summit 2025",
                     date: "2025-11-19",
                     location: "Bangalore Palace Grounds",
                     description: "A broad-based technology summit covering IT, innovation, IoT, and digital transformation.",
-                    category: "Summit",
-                    maxAttendees: 2000
                 }
             ],
             interviews: [
