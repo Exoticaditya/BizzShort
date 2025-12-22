@@ -349,7 +349,7 @@ app.get('/api/articles', async (req, res) => {
 
 app.post('/api/articles', protect, conditionalUpload('image'), async (req, res) => {
     try {
-        const { title, category, excerpt, content, author, tags } = req.body;
+        const { title, slug, category, excerpt, content, author, tags, videoUrl } = req.body;
 
         let parsedAuthor = author;
         if (typeof author === 'string') {
@@ -364,12 +364,14 @@ app.post('/api/articles', protect, conditionalUpload('image'), async (req, res) 
 
         const article = await Article.create({
             title,
+            slug: slug || (title ? title.toLowerCase().replace(/[^a-z0-9]+/g, '-') : undefined),
             category,
             excerpt,
             content,
             image: req.file ? `/uploads/${req.file.filename}` : undefined,
             author: parsedAuthor,
-            tags: parsedTags
+            tags: parsedTags,
+            videoUrl
         });
 
         res.status(201).json({ success: true, data: { ...article._doc, id: article._id } });
