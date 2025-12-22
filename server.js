@@ -79,6 +79,165 @@ const protect = async (req, res, next) => {
     }
 };
 
+// ============ Setup Route (Emergency Seed) ============
+app.get('/api/setup-production', async (req, res) => {
+    // Basic protection using query param
+    // Usage: /api/setup-production?key=secure_setup_123
+    if (req.query.key !== 'secure_setup_123') {
+        return res.status(403).send('Forbidden: Invalid Setup Key. Use ?key=secure_setup_123');
+    }
+
+    try {
+        // 1. Create Admin if not exists
+        let admin = await User.findOne({ name: 'admin' });
+        if (!admin) {
+            admin = await User.create({
+                name: 'admin',
+                email: 'admin@bizzshort.com',
+                password: 'admin123', // Model middleware will hash
+                role: 'ADMIN'
+            });
+            console.log('Setup: Admin Created');
+        } else {
+            console.log('Setup: Admin already exists');
+        }
+
+        // 2. Data to Seed
+        const seedData = {
+            articles: [
+                {
+                    title: "Tata Group and Intel Announce Strategic Alliance for Semiconductor Manufacturing",
+                    category: "Technology",
+                    author: "Business Desk",
+                    content: "Tata Group and Intel Corporation announced a strategic alliance to explore collaboration in consumer and enterprise hardware enablement, and semiconductor and systems manufacturing to support India's domestic semiconductor ecosystem.",
+                    date: "2025-12-08"
+                },
+                {
+                    title: "Microsoft Announces $17.5 Billion Investment in India's AI Infrastructure",
+                    category: "Technology",
+                    author: "Tech Reporter",
+                    content: "Microsoft announced its largest investment in Asia, committing US$17.5 billion over four years (CY 2026 to 2029) to advance India's cloud and artificial intelligence (AI) infrastructure.",
+                    date: "2025-12-12"
+                },
+                {
+                    title: "Sensex Surges to 85,221 as Markets Break Three-Day Losing Streak",
+                    category: "Markets",
+                    author: "Market Analyst",
+                    content: "Indian equity indices broke a three-day losing streak, with the Nifty closing near 25,900 and the Sensex at 84,818.13, both supported by positive global cues.",
+                    date: "2025-12-12"
+                },
+                {
+                    title: "India's Wealth Creation Reaches ₹148 Trillion from 2020-2025",
+                    category: "Economy",
+                    author: "Economic Affairs",
+                    content: "India's wealth creation reached ₹148 trillion from 2020-2025, with Bharti Airtel leading the wealth creation charts.",
+                    date: "2025-12-10"
+                }
+            ],
+            events: [
+                {
+                    title: "E-Summit 2025: Asia's Largest Business Conclave",
+                    date: "2025-12-11",
+                    location: "IIT Bombay, Mumbai",
+                    description: "Asia's largest business conclave, focusing on groundbreaking ideas and visionary solutions.",
+                    category: "Conference",
+                    maxAttendees: 500
+                },
+                {
+                    title: "Bengaluru Tech Summit 2025",
+                    date: "2025-11-19",
+                    location: "Bangalore Palace Grounds",
+                    description: "A broad-based technology summit covering IT, innovation, IoT, and digital transformation.",
+                    category: "Summit",
+                    maxAttendees: 2000
+                }
+            ],
+            interviews: [
+                {
+                    name: "Roshni Nadar Malhotra",
+                    designation: "Chairperson",
+                    company: "HCLTech",
+                    description: "Discussing India's AI Future and Women's Leadership in Tech at Davos 2024."
+                },
+                {
+                    name: "Satya Nadella",
+                    designation: "Chairman & CEO",
+                    company: "Microsoft",
+                    description: "Microsoft's Commitment to India's Digital Transformation and AI investment."
+                }
+            ],
+            industry: [
+                {
+                    sector: "Semiconductor",
+                    description: "With Tata-Intel alliance and government incentives, India is positioning itself as a major hub."
+                }
+            ],
+            clients: [
+                { name: "Tata Group", type: "Corporate" },
+                { name: "Reliance Industries", type: "Corporate" }
+            ]
+        };
+
+        // 3. Clear and Insert Data (Upsert style to avoid dupes or just simple insert?)
+        // Let's check counts to be safe, or just insert. For setup, we'll try to insert if empty.
+
+        let logs = [];
+
+        // Articles
+        const articleCount = await Article.countDocuments();
+        if (articleCount === 0) {
+            await Article.insertMany(seedData.articles);
+            logs.push(`✅ Added ${seedData.articles.length} Articles`);
+        } else {
+            logs.push(`ℹ️ Articles already exist (${articleCount})`);
+        }
+
+        // Events
+        const eventCount = await Event.countDocuments();
+        if (eventCount === 0) {
+            await Event.insertMany(seedData.events);
+            logs.push(`✅ Added ${seedData.events.length} Events`);
+        } else {
+            logs.push(`ℹ️ Events already exist (${eventCount})`);
+        }
+
+        // Interviews
+        const interviewCount = await Interview.countDocuments();
+        if (interviewCount === 0) {
+            await Interview.insertMany(seedData.interviews);
+            logs.push(`✅ Added ${seedData.interviews.length} Interviews`);
+        }
+
+        // Industry 
+        const indCount = await IndustryUpdate.countDocuments();
+        if (indCount === 0) {
+            await IndustryUpdate.insertMany(seedData.industry);
+            logs.push(`✅ Added ${seedData.industry.length} Industry Updates`);
+        }
+
+        // Clients
+        const clientCount = await Client.countDocuments();
+        if (clientCount === 0) {
+            await Client.insertMany(seedData.clients);
+            logs.push(`✅ Added ${seedData.clients.length} Clients`);
+        }
+
+        res.send(`
+            <h1>Setup Complete 🚀</h1>
+            <p>Admin User: Verified/Created</p>
+            <ul>
+                ${logs.map(l => `<li>${l}</li>`).join('')}
+            </ul>
+            <p><a href="/admin-login.html">Login to Admin Panel</a></p>
+        `);
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Setup Failed: ' + err.message);
+    }
+});
+
+
 // ============ API Routes ============
 
 // Auth & Users

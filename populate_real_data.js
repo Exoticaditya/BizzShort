@@ -128,12 +128,16 @@ async function loginAdmin() {
         });
 
         const data = await response.json();
+        console.log('🔍 Login Response:', JSON.stringify(data));
+
         if (data.success && data.sessionId) {
             console.log('🔓 Admin Logged In. Using Token.');
             return data.sessionId;
+        } else {
+            console.log('⚠️ Login Failed. Message:', data.error || data.message);
         }
     } catch (e) {
-        console.log('⚠️ Login failed (Normal for fresh DB if admin not created yet). Proceeding...');
+        console.log('⚠️ Login Exception:', e.message);
     }
     return null;
 }
