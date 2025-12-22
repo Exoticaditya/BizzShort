@@ -165,16 +165,18 @@ app.get('/api/setup-production', async (req, res) => {
             ],
             interviews: [
                 {
-                    name: "Roshni Nadar Malhotra",
+                    intervieweeName: "Roshni Nadar Malhotra",
                     designation: "Chairperson",
                     company: "HCLTech",
-                    description: "Discussing India's AI Future and Women's Leadership in Tech at Davos 2024."
+                    title: "Discussing India's AI Future and Women's Leadership in Tech",
+                    summary: "Discussing India's AI Future and Women's Leadership in Tech at Davos 2024."
                 },
                 {
-                    name: "Satya Nadella",
+                    intervieweeName: "Satya Nadella",
                     designation: "Chairman & CEO",
                     company: "Microsoft",
-                    description: "Microsoft's Commitment to India's Digital Transformation and AI investment."
+                    title: "Microsoft's Commitment to India's Digital Transformation",
+                    summary: "Microsoft's Commitment to India's Digital Transformation and AI investment."
                 }
             ],
             industry: [
