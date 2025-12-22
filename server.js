@@ -89,12 +89,10 @@ app.post('/api/admin/login', async (req, res) => {
 
         // DEV: Create default admin if DB is empty and credentials match hardcoded
         if (!user && username === 'admin' && password === 'admin123') {
-            const salt = await bcrypt.genSalt(10);
-            const hashedPassword = await bcrypt.hash(password, salt);
             user = await User.create({
                 name: 'admin',
                 email: 'admin@bizzshort.com',
-                password: hashedPassword,
+                password: password, // Model middleware will hash this
                 role: 'ADMIN'
             });
         }
