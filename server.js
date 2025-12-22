@@ -182,6 +182,7 @@ app.get('/api/setup-production', async (req, res) => {
             industry: [
                 {
                     sector: "Semiconductor",
+                    title: "India's Semiconductor Boom",
                     description: "With Tata-Intel alliance and government incentives, India is positioning itself as a major hub."
                 }
             ],
