@@ -623,9 +623,9 @@ async function loadBackendContent() {
         eventsGrid.innerHTML = '';
         events.slice(0, 3).forEach(item => {
             const mapped = {
-                title: item.title,
+                title: item.name,
                 excerpt: `${item.location} • ${new Date(item.date).toLocaleDateString()}`,
-                thumbnail: item.image,
+                thumbnail: item.image || 'https://placehold.co/600x400?text=Event',
                 category: 'events',
                 published: item.createdAt,
                 url: '#', // or event detail page
@@ -641,11 +641,11 @@ async function loadBackendContent() {
         interviewGrid.innerHTML = '';
         interviews.slice(0, 2).forEach(item => {
             const mapped = {
-                title: `${item.name} - ${item.company}`,
-                excerpt: item.description,
-                thumbnail: item.image,
+                title: `${item.intervieweeName} - ${item.company}`,
+                excerpt: item.summary || item.designation,
+                thumbnail: item.image || 'https://placehold.co/600x400?text=Interview',
                 category: 'interviews',
-                published: item.updatedAt,
+                published: item.publishedAt,
                 url: '#',
                 source: 'bizzshort'
             };
