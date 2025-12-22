@@ -11,19 +11,8 @@ const UserSchema = new mongoose.Schema({
     joinedAt: { type: Date, default: Date.now }
 });
 
-// Encrypt password using bcrypt
-UserSchema.pre('save', async function (next) {
-    if (!this.isModified('password')) {
-        return next();
-    }
-    try {
-        const salt = await bcrypt.genSalt(10);
-        this.password = await bcrypt.hash(this.password, salt);
-        next();
-    } catch (err) {
-        next(err);
-    }
-});
+// Encryption handled manually in controller/setup
+// No pre-save hook to avoid middleware issues
 
 // Match user entered password to hashed password in database
 UserSchema.methods.matchPassword = async function (enteredPassword) {

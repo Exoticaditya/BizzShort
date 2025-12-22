@@ -91,10 +91,13 @@ app.get('/api/setup-production', async (req, res) => {
         // 1. Create Admin if not exists
         let admin = await User.findOne({ name: 'admin' });
         if (!admin) {
+            const salt = await bcrypt.genSalt(10);
+            const hashedPassword = await bcrypt.hash('admin123', salt);
+
             admin = await User.create({
                 name: 'admin',
                 email: 'admin@bizzshort.com',
-                password: 'admin123', // Model middleware will hash
+                password: hashedPassword,
                 role: 'ADMIN'
             });
             console.log('Setup: Admin Created');
@@ -248,10 +251,12 @@ app.post('/api/admin/login', async (req, res) => {
 
         // DEV: Create default admin if DB is empty and credentials match hardcoded
         if (!user && username === 'admin' && password === 'admin123') {
+            const salt = await bcrypt.genSalt(10);
+            const hashedPassword = await bcrypt.hash(password, salt);
             user = await User.create({
                 name: 'admin',
                 email: 'admin@bizzshort.com',
-                password: password, // Model middleware will hash this
+                password: hashedPassword,
                 role: 'ADMIN'
             });
         }
