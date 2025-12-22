@@ -1,7 +1,12 @@
 // populate_real_data.js
-const http = require('http');
+// Standard Node.js fetch (Node 18+)
+// Usage: node populate_real_data.js [API_URL]
+// Example: node populate_real_data.js https://bizzshort.onrender.com/api
 
-const BASE_URL = 'http://localhost:3000/api';
+const args = process.argv.slice(2);
+const BASE_URL = args[0] || 'http://localhost:3000/api';
+
+console.log(`📡 Target API: ${BASE_URL}\n`);
 
 const realData = {
     articles: [
@@ -36,28 +41,32 @@ const realData = {
     ],
     events: [
         {
-            name: "E-Summit 2025: Asia's Largest Business Conclave",
+            title: "E-Summit 2025: Asia's Largest Business Conclave",
             date: "2025-12-11",
             location: "IIT Bombay, Mumbai",
-            description: "Asia's largest business conclave, focusing on groundbreaking ideas and visionary solutions."
+            description: "Asia's largest business conclave, focusing on groundbreaking ideas and visionary solutions.",
+            category: "Conference",
+            maxAttendees: 500
         },
         {
-            name: "Bengaluru Tech Summit 2025",
+            title: "Bengaluru Tech Summit 2025",
             date: "2025-11-19",
             location: "Bangalore Palace Grounds",
-            description: "A broad-based technology summit covering IT, innovation, IoT, and digital transformation."
+            description: "A broad-based technology summit covering IT, innovation, IoT, and digital transformation.",
+            category: "Summit",
+            maxAttendees: 2000
         }
     ],
     interviews: [
         {
             name: "Roshni Nadar Malhotra",
-            title: "Chairperson",
+            designation: "Chairperson",
             company: "HCLTech",
             description: "Discussing India's AI Future and Women's Leadership in Tech at Davos 2024."
         },
         {
             name: "Satya Nadella",
-            title: "Chairman & CEO",
+            designation: "Chairman & CEO",
             company: "Microsoft",
             description: "Microsoft's Commitment to India's Digital Transformation and AI investment."
         }
@@ -65,60 +74,108 @@ const realData = {
     industry: [
         {
             sector: "Semiconductor",
-            title: "India's Semiconductor Push Gains Momentum",
-            description: "With Tata-Intel alliance and government incentives, India is positioning itself as a major hub.",
-            growth: "+150% by 2027"
+            description: "With Tata-Intel alliance and government incentives, India is positioning itself as a major hub."
         }
     ],
     clients: [
-        { name: "Tata Group", type: "Strategic Partner" },
-        { name: "Reliance Industries", type: "Premium Partner" }
+        { name: "Tata Group", type: "Corporate" },
+        { name: "Reliance Industries", type: "Corporate" }
     ]
 };
 
-function postData(endpoint, data) {
-    return new Promise((resolve, reject) => {
-        const dataStr = JSON.stringify(data);
-        const options = {
-            hostname: 'localhost',
-            port: 3000,
-            path: `/api/${endpoint}`,
+async function postData(endpoint, data) {
+    // Determine admin token logic if needed (skipping for now, assuming public or dev endpoints)
+    // If your API is protected, you might need to login first or use a hardcoded DEV bypass.
+    // For now, these specific endpoints might be protected.
+
+    // NOTE: If endpoints are protected, we need a token.
+    // Let's assume we can login as admin first or endpoints are open for seed?
+    // Looking at server.js: some POSTs are protected.
+    // We should try to login as admin first.
+
+    try {
+        const response = await fetch(`${BASE_URL}/${endpoint}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Content-Length': dataStr.length
-            }
-        };
-
-        const req = http.request(options, (res) => {
-            let body = '';
-            res.on('data', (chunk) => body += chunk);
-            res.on('end', () => {
-                if (res.statusCode >= 200 && res.statusCode < 300) {
-                    console.log(`✅ [${endpoint}] Created: ${data.title || data.name}`);
-                    resolve(true);
-                } else {
-                    console.error(`❌ [${endpoint}] Failed (${res.statusCode}):`, body);
-                    resolve(false);
-                }
-            });
+                // Add Authorization header here if we had a token
+                // 'Authorization': `Bearer ${token}` 
+            },
+            body: JSON.stringify(data)
         });
 
-        req.on('error', (e) => {
-            console.error(`🔥 [${endpoint}] Error:`, e.message);
-            resolve(false);
-        });
-
-        req.write(dataStr);
-        req.end();
-    });
+        if (response.ok) {
+            console.log(`✅ [${endpoint}] Created: ${data.title || data.name}`);
+            return true;
+        } else {
+            const err = await response.text();
+            console.error(`❌ [${endpoint}] Failed (${response.status}):`, err);
+            return false;
+        }
+    } catch (error) {
+        console.error(`🔥 [${endpoint}] Error:`, error.message);
+        return false;
+    }
 }
+
+async function loginAdmin() {
+    console.log('🔑 Attempting to login/create admin...');
+    try {
+        const response = await fetch(`${BASE_URL}/admin/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username: 'admin', password: 'admin123' })
+        });
+
+        const data = await response.json();
+        if (data.success && data.sessionId) {
+            console.log('🔓 Admin Logged In. Using Token.');
+            return data.sessionId;
+        }
+    } catch (e) {
+        console.log('⚠️ Login failed (Normal for fresh DB if admin not created yet). Proceeding...');
+    }
+    return null;
+}
+
+// Wrap original postData to include token
+let authToken = null;
+async function postDataWithAuth(endpoint, data) {
+    try {
+        const headers = { 'Content-Type': 'application/json' };
+        if (authToken) headers['Authorization'] = `Bearer ${authToken}`;
+
+        const response = await fetch(`${BASE_URL}/${endpoint}`, {
+            method: 'POST',
+            headers: headers,
+            body: JSON.stringify(data)
+        });
+
+        if (response.ok) {
+            console.log(`✅ [${endpoint}] Created: ${data.title || data.name}`);
+            return true;
+        } else {
+            const err = await response.text();
+            console.error(`❌ [${endpoint}] Failed (${response.status}): ${err}`); // Shortened error
+            return false;
+        }
+    } catch (error) {
+        console.error(`🔥 [${endpoint}] Error:`, error.message);
+        return false;
+    }
+}
+
 
 async function run() {
     console.log('🚀 Starting Data Population...');
+
+    // 1. Try to get a token (will create admin if server is fresh and has that logic enabled)
+    // Note: server.js snippet showed: if (!user && username === 'admin'...) -> create default admin.
+    authToken = await loginAdmin();
+
     for (const key in realData) {
         for (const item of realData[key]) {
-            await postData(key, item);
+            await postDataWithAuth(key, item);
         }
     }
     console.log('✨ Done!');

@@ -11,33 +11,33 @@ class BizzShortAPI {
             trending: '/api/articles/trending',
             popular: '/api/articles/popular',
             latest: '/api/articles/latest',
-            
+
             // Analytics Endpoints
             analytics: '/api/analytics',
             traffic: '/api/analytics/traffic',
             engagement: '/api/analytics/engagement',
             sources: '/api/analytics/sources',
-            
+
             // User Endpoints
             newsletter: '/api/newsletter/subscribe',
             contact: '/api/contact',
             feedback: '/api/feedback',
-            
+
             // Advertisement Endpoints
             ads: '/api/advertisements',
             adUpload: '/api/advertisements/upload',
             adStats: '/api/advertisements/stats',
-            
+
             // Events Endpoints
             events: '/api/events',
             eventById: '/api/events/:id',
             eventRegister: '/api/events/:id/register',
-            
+
             // Search
             search: '/api/search',
             autocomplete: '/api/search/autocomplete'
         };
-        
+
         this.cache = new Map();
         this.cacheTimeout = 5 * 60 * 1000; // 5 minutes
     }
@@ -45,18 +45,19 @@ class BizzShortAPI {
     getAPIBaseURL() {
         // Development vs Production
         const hostname = window.location.hostname;
-        
+
         if (hostname === 'localhost' || hostname === '127.0.0.1') {
             return 'http://localhost:3000';
         }
-        
-        return 'https://api.bizzshort.com';
+
+        // In production (Render), use relative path so it works automatically
+        return '';
     }
 
     // Generic request method
     async request(endpoint, options = {}) {
         const url = `${this.baseURL}${endpoint}`;
-        
+
         const defaultOptions = {
             method: 'GET',
             headers: {
@@ -66,7 +67,7 @@ class BizzShortAPI {
         };
 
         const config = { ...defaultOptions, ...options };
-        
+
         // Add authorization token if available
         const token = this.getAuthToken();
         if (token) {
@@ -75,7 +76,7 @@ class BizzShortAPI {
 
         try {
             const response = await fetch(url, config);
-            
+
             if (!response.ok) {
                 throw new Error(`API Error: ${response.status} ${response.statusText}`);
             }
@@ -91,7 +92,7 @@ class BizzShortAPI {
     // GET request with caching
     async get(endpoint, useCache = true) {
         const cacheKey = `GET_${endpoint}`;
-        
+
         if (useCache && this.cache.has(cacheKey)) {
             const cached = this.cache.get(cacheKey);
             if (Date.now() - cached.timestamp < this.cacheTimeout) {
@@ -100,7 +101,7 @@ class BizzShortAPI {
         }
 
         const result = await this.request(endpoint, { method: 'GET' });
-        
+
         if (result.success && useCache) {
             this.cache.set(cacheKey, {
                 data: result,
@@ -138,7 +139,7 @@ class BizzShortAPI {
     async upload(endpoint, file, additionalData = {}) {
         const formData = new FormData();
         formData.append('file', file);
-        
+
         Object.entries(additionalData).forEach(([key, value]) => {
             formData.append(key, value);
         });

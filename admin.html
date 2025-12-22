@@ -7,11 +7,9 @@
     <title>Admin Panel - BizzShort</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="assets/css/admin.css">
-    
+
     <script>
-        console.log('✅ AUTH BYPASSED FOR TESTING');
-        // Fake a session for other scripts if needed
-        localStorage.setItem('adminSession', 'test-session-bypass');
+        // Auth verified by admin-enhanced.js
     </script>
 </head>
 
@@ -92,32 +90,32 @@
                         <div class="stat-icon blue"><i class="fas fa-newspaper"></i></div>
                         <div class="stat-info">
                             <h3>Total Articles</h3>
-                            <p class="stat-number">1,234</p>
-                            <span class="stat-change positive">+12% from last month</span>
+                            <p class="stat-number" data-stat="articles">-</p>
+                            <span class="stat-change positive">Live Data</span>
                         </div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon green"><i class="fas fa-users"></i></div>
                         <div class="stat-info">
-                            <h3>Active Users</h3>
-                            <p class="stat-number">45,678</p>
-                            <span class="stat-change positive">+8% from last month</span>
+                            <h3>Total Users</h3>
+                            <p class="stat-number" data-stat="users">-</p>
+                            <span class="stat-change positive">Registered</span>
                         </div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-icon orange"><i class="fas fa-eye"></i></div>
+                        <div class="stat-icon orange"><i class="fas fa-microphone"></i></div>
                         <div class="stat-info">
-                            <h3>Page Views</h3>
-                            <p class="stat-number">2.3M</p>
-                            <span class="stat-change positive">+15% from last month</span>
+                            <h3>Interviews</h3>
+                            <p class="stat-number" data-stat="interviews">-</p>
+                            <span class="stat-change positive">Published</span>
                         </div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon red"><i class="fas fa-calendar-check"></i></div>
                         <div class="stat-info">
                             <h3>Events</h3>
-                            <p class="stat-number">24</p>
-                            <span class="stat-change neutral">Same as last month</span>
+                            <p class="stat-number" data-stat="events">-</p>
+                            <span class="stat-change neutral">Upcoming</span>
                         </div>
                     </div>
                 </div>

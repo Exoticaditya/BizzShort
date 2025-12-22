@@ -50,16 +50,41 @@ const generateToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET || 'secret', { expiresIn: '30d' });
 };
 
+// ============ Middleware ============
+const protect = async (req, res, next) => {
+    let token;
+
+    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+        try {
+            token = req.headers.authorization.split(' ')[1];
+            const decoded = jwt.verify(token, process.env.JWT_SECRET || 'secret');
+            req.user = await User.findById(decoded.id).select('-password');
+            next();
+        } catch (error) {
+            console.error(error);
+            res.status(401).json({ success: false, error: 'Not authorized, token failed' });
+        }
+    } else if (req.headers['session-id']) {
+        // Backward compatibility for existing frontend using session-id header
+        try {
+            token = req.headers['session-id'];
+            const decoded = jwt.verify(token, process.env.JWT_SECRET || 'secret');
+            req.user = await User.findById(decoded.id).select('-password');
+            next();
+        } catch (error) {
+            res.status(401).json({ success: false, error: 'Not authorized, invalid session' });
+        }
+    } else {
+        res.status(401).json({ success: false, error: 'Not authorized, no token' });
+    }
+};
+
 // ============ API Routes ============
 
 // Auth & Users
 app.post('/api/admin/login', async (req, res) => {
     const { username, password } = req.body;
     try {
-        // For migration: Check if it's the hardcoded admin first (fallback)
-        // OR just check DB. Let's create a default admin if none exists?
-        // Better: Check DB.
-
         let user = await User.findOne({ $or: [{ name: username }, { email: username }] });
 
         // DEV: Create default admin if DB is empty and credentials match hardcoded
@@ -69,18 +94,15 @@ app.post('/api/admin/login', async (req, res) => {
             user = await User.create({
                 name: 'admin',
                 email: 'admin@bizzshort.com',
-                password: hashedPassword, // Store hashed even for auto-create
+                password: hashedPassword,
                 role: 'ADMIN'
             });
         }
 
-        if (user && (await bcrypt.compare(password, user.password) || (username === 'admin' && password === 'admin123'))) {
-            // Note: Second condition in OR is risky, removed for prod, but kept for seamless transition if hashing fails on first run
-            // actually, if we created it with hash, compare will work.
-
+        if (user && (await bcrypt.compare(password, user.password))) {
             res.json({
                 success: true,
-                sessionId: generateToken(user._id), // Use token as sessionId for compatibility
+                sessionId: generateToken(user._id),
                 user: { id: user._id, name: user.name, role: user.role }
             });
         } else {
@@ -109,6 +131,21 @@ app.get('/api/admin/verify-session', async (req, res) => {
     }
 });
 
+// Admin Stats
+app.get('/api/stats', protect, async (req, res) => {
+    try {
+        const stats = {
+            articles: await Article.countDocuments(),
+            events: await Event.countDocuments(),
+            interviews: await Interview.countDocuments(),
+            users: await User.countDocuments()
+        };
+        res.json({ success: true, data: stats });
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
+
 // Articles
 app.get('/api/articles', async (req, res) => {
     try {
@@ -124,7 +161,7 @@ app.get('/api/articles', async (req, res) => {
 
         res.json({
             success: true,
-            data: articles.map(a => ({ ...a._doc, id: a._id })), // Map _id to id
+            data: articles.map(a => ({ ...a._doc, id: a._id })),
             pagination: { page: +page, limit: +limit, total: count, pages: Math.ceil(count / limit) }
         });
     } catch (err) {
@@ -132,17 +169,15 @@ app.get('/api/articles', async (req, res) => {
     }
 });
 
-app.post('/api/articles', conditionalUpload('image'), async (req, res) => {
+app.post('/api/articles', protect, conditionalUpload('image'), async (req, res) => {
     try {
         const { title, category, excerpt, content, author, tags } = req.body;
 
-        // Handle JSON parsing for author/tags if they come as strings
         let parsedAuthor = author;
         if (typeof author === 'string') {
             try { parsedAuthor = JSON.parse(author); } catch { parsedAuthor = { name: author, avatar: '' }; }
         }
-        // Default author if missing
-        if (!parsedAuthor) parsedAuthor = { name: 'BizzShort Team' };
+        if (!parsedAuthor) parsedAuthor = { name: req.user.name || 'BizzShort Team' };
 
         let parsedTags = tags;
         if (typeof tags === 'string') {
@@ -166,7 +201,7 @@ app.post('/api/articles', conditionalUpload('image'), async (req, res) => {
     }
 });
 
-app.put('/api/articles/:id', upload.single('image'), async (req, res) => {
+app.put('/api/articles/:id', protect, upload.single('image'), async (req, res) => {
     try {
         const updateData = { ...req.body };
         if (req.file) updateData.image = `/uploads/${req.file.filename}`;
@@ -180,7 +215,7 @@ app.put('/api/articles/:id', upload.single('image'), async (req, res) => {
     }
 });
 
-app.delete('/api/articles/:id', async (req, res) => {
+app.delete('/api/articles/:id', protect, async (req, res) => {
     try {
         await Article.findByIdAndDelete(req.params.id);
         res.json({ success: true, message: 'Deleted' });
@@ -195,14 +230,14 @@ app.get('/api/events', async (req, res) => {
     res.json({ success: true, data: events.map(e => ({ ...e._doc, id: e._id })) });
 });
 
-app.post('/api/events', conditionalUpload('image'), async (req, res) => {
+app.post('/api/events', protect, conditionalUpload('image'), async (req, res) => {
     try {
         const event = await Event.create({ ...req.body, image: req.file ? `/uploads/${req.file.filename}` : undefined });
         res.status(201).json({ success: true, data: { ...event._doc, id: event._id } });
     } catch (err) { res.status(500).json({ success: false, error: err.message }); }
 });
 
-app.put('/api/events/:id', conditionalUpload('image'), async (req, res) => {
+app.put('/api/events/:id', protect, conditionalUpload('image'), async (req, res) => {
     try {
         const updateData = { ...req.body };
         if (req.file) updateData.image = `/uploads/${req.file.filename}`;
@@ -214,9 +249,7 @@ app.put('/api/events/:id', conditionalUpload('image'), async (req, res) => {
     } catch (err) { res.status(500).json({ success: false, error: err.message }); }
 });
 
-// ... (Put events skipped for brevity if not targeted)
-
-app.delete('/api/events/:id', async (req, res) => {
+app.delete('/api/events/:id', protect, async (req, res) => {
     try { await Event.findByIdAndDelete(req.params.id); res.json({ success: true }); }
     catch (e) { res.status(500).json({ success: false }); }
 });
@@ -228,14 +261,14 @@ app.get('/api/interviews', async (req, res) => {
         res.json({ success: true, data: items.map(i => ({ ...i._doc, id: i._id })) });
     } catch (e) { res.status(500).json({ success: false }); }
 });
-app.post('/api/interviews', conditionalUpload('image'), async (req, res) => {
+app.post('/api/interviews', protect, conditionalUpload('image'), async (req, res) => {
     try {
         const item = await Interview.create({ ...req.body, image: req.file ? `/uploads/${req.file.filename}` : undefined });
         res.status(201).json({ success: true, data: { ...item._doc, id: item._id } });
     } catch (err) { res.status(500).json({ success: false, error: err.message }); }
 });
 
-app.put('/api/interviews/:id', conditionalUpload('image'), async (req, res) => {
+app.put('/api/interviews/:id', protect, conditionalUpload('image'), async (req, res) => {
     try {
         const updateData = { ...req.body };
         if (req.file) updateData.image = `/uploads/${req.file.filename}`;
@@ -245,7 +278,7 @@ app.put('/api/interviews/:id', conditionalUpload('image'), async (req, res) => {
     } catch (err) { res.status(500).json({ success: false, error: err.message }); }
 });
 
-app.delete('/api/interviews/:id', async (req, res) => {
+app.delete('/api/interviews/:id', protect, async (req, res) => {
     try { await Interview.findByIdAndDelete(req.params.id); res.json({ success: true }); }
     catch (e) { res.status(500).json({ success: false }); }
 });
@@ -255,19 +288,19 @@ app.get('/api/news', async (req, res) => {
     const items = await News.find().sort({ publishedAt: -1 });
     res.json({ success: true, data: items.map(n => ({ ...n._doc, id: n._id })) });
 });
-app.post('/api/news', async (req, res) => {
+app.post('/api/news', protect, async (req, res) => {
     const item = await News.create(req.body);
     res.status(201).json({ success: true, data: { ...item._doc, id: item._id } });
 });
 
-app.put('/api/news/:id', async (req, res) => {
+app.put('/api/news/:id', protect, async (req, res) => {
     try {
         const item = await News.findByIdAndUpdate(req.params.id, req.body, { new: true });
         res.json({ success: true, data: { ...item._doc, id: item._id } });
     } catch (err) { res.status(500).json({ success: false, error: err.message }); }
 });
 
-app.delete('/api/news/:id', async (req, res) => {
+app.delete('/api/news/:id', protect, async (req, res) => {
     try { await News.findByIdAndDelete(req.params.id); res.json({ success: true }); }
     catch (e) { res.status(500).json({ success: false }); }
 });
@@ -277,19 +310,19 @@ app.get('/api/industry', async (req, res) => {
     res.json({ success: true, data: items.map(i => ({ ...i._doc, id: i._id })) });
 });
 
-app.post('/api/industry', async (req, res) => {
+app.post('/api/industry', protect, async (req, res) => {
     const item = await IndustryUpdate.create(req.body);
     res.status(201).json({ success: true, data: { ...item._doc, id: item._id } });
 });
 
-app.put('/api/industry/:id', async (req, res) => {
+app.put('/api/industry/:id', protect, async (req, res) => {
     try {
         const item = await IndustryUpdate.findByIdAndUpdate(req.params.id, req.body, { new: true });
         res.json({ success: true, data: { ...item._doc, id: item._id } });
     } catch (err) { res.status(500).json({ success: false, error: err.message }); }
 });
 
-app.delete('/api/industry/:id', async (req, res) => {
+app.delete('/api/industry/:id', protect, async (req, res) => {
     try { await IndustryUpdate.findByIdAndDelete(req.params.id); res.json({ success: true }); }
     catch (e) { res.status(500).json({ success: false }); }
 });
@@ -300,13 +333,13 @@ app.get('/api/clients', async (req, res) => {
     res.json({ success: true, data: items.map(c => ({ ...c._doc, id: c._id })) });
 });
 
-app.post('/api/clients', conditionalUpload('logo'), async (req, res) => {
+app.post('/api/clients', protect, conditionalUpload('logo'), async (req, res) => {
     const item = await Client.create({ ...req.body, logo: req.file ? `/uploads/${req.file.filename}` : undefined });
     res.status(201).json({ success: true, data: { ...item._doc, id: item._id } });
 });
 
 
-app.put('/api/clients/:id', conditionalUpload('logo'), async (req, res) => {
+app.put('/api/clients/:id', protect, conditionalUpload('logo'), async (req, res) => {
     try {
         const updateData = { ...req.body };
         if (req.file) updateData.logo = `/uploads/${req.file.filename}`;
@@ -316,18 +349,18 @@ app.put('/api/clients/:id', conditionalUpload('logo'), async (req, res) => {
     } catch (err) { res.status(500).json({ success: false, error: err.message }); }
 });
 
-app.delete('/api/clients/:id', async (req, res) => {
+app.delete('/api/clients/:id', protect, async (req, res) => {
     try { await Client.findByIdAndDelete(req.params.id); res.json({ success: true }); }
     catch (e) { res.status(500).json({ success: false }); }
 });
 
 // Users
-app.get('/api/users', async (req, res) => {
+app.get('/api/users', protect, async (req, res) => {
     const users = await User.find({}, '-password'); // Exclude password
     res.json({ success: true, data: users.map(u => ({ ...u._doc, id: u._id })) });
 });
 
-app.post('/api/users', async (req, res) => {
+app.post('/api/users', protect, async (req, res) => {
     try {
         const user = await User.create(req.body); // Password hash hook handles encryption
         res.status(201).json({ success: true, data: { ...user._doc, id: user._id } });
@@ -336,13 +369,9 @@ app.post('/api/users', async (req, res) => {
     }
 });
 
-app.put('/api/users/:id', async (req, res) => {
+app.put('/api/users/:id', protect, async (req, res) => {
     try {
         const updateData = { ...req.body };
-        // If password is being updated, it should be hashed by model pre-save hook? 
-        // findByIdAndUpdate bypasses pre-save hooks usually. 
-        // So if password is handled, we need to be careful.
-        // For now, let's assume basic info update. If password needed, we'd need to hash it here if logic isn't in service layer.
 
         if (updateData.password) {
             const salt = await bcrypt.genSalt(10);
@@ -354,7 +383,7 @@ app.put('/api/users/:id', async (req, res) => {
     } catch (err) { res.status(500).json({ success: false, error: err.message }); }
 });
 
-app.delete('/api/users/:id', async (req, res) => {
+app.delete('/api/users/:id', protect, async (req, res) => {
     try { await User.findByIdAndDelete(req.params.id); res.json({ success: true }); }
     catch (e) { res.status(500).json({ success: false }); }
 });
@@ -364,7 +393,7 @@ app.get('/api/advertisements', async (req, res) => {
     const ads = await Advertisement.find({});
     res.json({ success: true, data: ads.map(a => ({ ...a._doc, id: a._id })) });
 });
-app.post('/api/advertisements', conditionalUpload('image'), async (req, res) => {
+app.post('/api/advertisements', protect, conditionalUpload('image'), async (req, res) => {
     const ad = await Advertisement.create({ ...req.body, imageUrl: req.file ? `/uploads/${req.file.filename}` : undefined });
     res.status(201).json({ success: true, data: { ...ad._doc, id: ad._id } });
 });

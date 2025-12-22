@@ -1,38 +1,17 @@
 // Enhanced Admin Panel JavaScript - Connected to Backend API
 
 // ============ Configuration ============
-const API_BASE_URL = 'http://localhost:3000';
-const USE_STATIC_MODE = true; // Enabled for demonstration/offline
+const API_BASE_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+    ? 'http://localhost:3000'
+    : '';
+const USE_STATIC_MODE = false; // Connected to backend
 
-const MOCK_DATA = {
-    articles: [
-        { id: 1, title: 'Future of AI in Business', category: 'Technology', author: { name: 'John Doe' }, publishedAt: new Date().toISOString() },
-        { id: 2, title: 'Startup Trends 2025', category: 'Startups', author: { name: 'Jane Smith' }, publishedAt: new Date().toISOString() }
-    ],
-    events: [
-        { id: 1, title: 'Tech Summit 2025', date: '2025-12-01', location: 'New York', attendees: 150, maxAttendees: 200 }
-    ],
-    interviews: [
-        { id: 1, name: 'Vishal Mehta', company: 'TechCorp', designation: 'CEO', image: 'https://via.placeholder.com/150' }
-    ],
-    news: [
-        { id: 1, title: 'Breaking: Market Reaches All Time High', content: 'The stock market...', created_at: new Date().toISOString() }
-    ],
-    industry: [
-        { id: 1, sector: 'Technology', description: 'AI adoption varies...', icon: 'microchip' }
-    ],
-    clients: [
-        { id: 1, name: 'Acme Corp', type: 'Corporate', image: 'https://via.placeholder.com/150' }
-    ],
-    users: [
-        { id: 1, name: 'Admin User', email: 'admin@bizzshort.com', role: 'ADMIN', status: 'Active', joined: '2024-01-01' },
-        { id: 2, name: 'Test User', email: 'user@test.com', role: 'USER', status: 'Active', joined: '2025-01-01' }
-    ]
-};
+const MOCK_DATA = {}; // Cleared mock data to ensure we use API
 
 const API_ENDPOINTS = {
     health: `${API_BASE_URL}/api/health`,
     analytics: `${API_BASE_URL}/api/analytics`,
+    stats: `${API_BASE_URL}/api/stats`, // Add stats endpoint
     articles: `${API_BASE_URL}/api/articles`,
     events: `${API_BASE_URL}/api/events`,
     interviews: `${API_BASE_URL}/api/interviews`,
@@ -68,7 +47,9 @@ async function apiRequest(endpoint, method = 'GET', data = null, isFormData = fa
     try {
         const options = {
             method,
-            headers: {}
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('adminSession') || sessionStorage.getItem('adminSession')}`
+            }
         };
 
         if (data && !isFormData) {
@@ -191,10 +172,14 @@ async function loadSectionData(sectionId) {
 // ============ Dashboard Functions ============
 async function refreshDashboard() {
     try {
-        const response = await apiRequest(API_ENDPOINTS.analytics);
+        const response = await apiRequest(API_ENDPOINTS.stats);
         if (response.success && response.data) {
             // Update dashboard stats with real data
-            console.log('Dashboard data loaded:', response.data);
+            const stats = response.data;
+            updateStatCard('articles', stats.articles);
+            updateStatCard('users', stats.users); // Assuming you want active users = total users for now
+            updateStatCard('events', stats.events);
+            updateStatCard('interviews', stats.interviews);
         }
         showNotification('Dashboard refreshed', 'success');
     } catch (error) {

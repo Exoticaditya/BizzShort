@@ -7,21 +7,31 @@ let currentArticle = null;
 let nextArticleId = 4; // Starting from 4 since we have 3 existing articles
 
 /**
- * Extract YouTube video ID from various URL formats
+ * Extract ID from various URL formats (YouTube & Instagram)
  */
-function extractVideoId(url) {
-    const patterns = [
+function extractSocialId(url) {
+    // YouTube
+    const ytPatterns = [
         /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/,
         /^([a-zA-Z0-9_-]{11})$/
     ];
-    
-    for (const pattern of patterns) {
+    for (const pattern of ytPatterns) {
         const match = url.match(pattern);
-        if (match && match[1]) {
-            return match[1];
-        }
+        if (match && match[1]) return match[1];
     }
+
+    // Instagram
+    // https://www.instagram.com/p/CODE/ or reel/CODE/
+    const instaPattern = /(?:instagram\.com\/(?:p|reel)\/)([^/?#&]+)/;
+    const instaMatch = url.match(instaPattern);
+    if (instaMatch && instaMatch[1]) return instaMatch[1];
+
     return null;
+}
+
+function getSocialType(url) {
+    if (url.includes('instagram.com')) return 'instagram';
+    return 'youtube';
 }
 
 /**
@@ -35,53 +45,55 @@ async function convertYouTubeToArticle() {
     const previewDiv = document.getElementById('articlePreview');
     const previewContent = document.getElementById('previewContent');
     const convertBtn = document.querySelector('.btn-primary');
-    
+
     const url = urlInput.value.trim();
-    
+
     if (!url) {
-        alert('Please enter a YouTube URL');
+        alert('Please enter a YouTube or Instagram URL');
         return;
     }
-    
-    const videoId = extractVideoId(url);
-    
+
+    const videoId = extractSocialId(url); // Updated function name
+    const type = getSocialType(url);
+
     if (!videoId) {
-        alert('Invalid YouTube URL. Please enter a valid YouTube video URL.');
+        alert('Invalid URL. Please enter a valid YouTube or Instagram URL.');
         return;
     }
-    
+
     // Show loading state
     convertBtn.disabled = true;
     convertBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Converting...';
-    
+
     try {
         // Generate article content
         const articleData = {
             id: nextArticleId,
             videoId: videoId,
-            title: titleInput.value.trim() || `Business Insights: Video Analysis`,
+            type: type, // 'youtube' or 'instagram'
+            title: titleInput.value.trim() || `${type === 'youtube' ? 'Video' : 'Post'} Analysis: Business Insights`,
             category: categoryInput.value || 'Business',
             author: authorInput.value.trim() || 'BizzShort Team',
             date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
             views: Math.floor(Math.random() * 5000) + 1000,
-            readTime: '5 min',
+            readTime: '3 min',
             comments: 0,
-            content: generateArticleContent(videoId, titleInput.value.trim())
+            content: generateArticleContent(videoId, titleInput.value.trim(), type)
         };
-        
+
         currentArticle = articleData;
-        
+
         // Display preview
         displayPreview(articleData);
         previewDiv.style.display = 'block';
-        
+
         // Reset button state
         convertBtn.disabled = false;
         convertBtn.innerHTML = '<i class="fas fa-magic"></i> Convert to Article & Add to Website';
-        
+
         // Add to recent conversions
         addToRecentConversions(articleData);
-        
+
     } catch (error) {
         console.error('Conversion error:', error);
         alert('An error occurred during conversion. Please try again.');
@@ -93,11 +105,12 @@ async function convertYouTubeToArticle() {
 /**
  * Generate article content with proper formatting
  */
-function generateArticleContent(videoId, customTitle) {
+function generateArticleContent(videoId, customTitle, type = 'youtube') {
     const title = customTitle || 'Business Insights from Expert Analysis';
-    
+    const source = type === 'youtube' ? 'video' : 'social media post';
+
     return `
-        <p>In this comprehensive analysis, we explore the key business insights and market trends that are shaping today's economic landscape. This video presentation offers valuable perspectives from industry experts.</p>
+        <p>In this comprehensive update, we explore the key business insights and market trends that are shaping today's economic landscape. This ${source} offers valuable perspectives from our official channels.</p>
         
         <h3>Key Highlights</h3>
         <p>The discussion covers critical aspects of current market conditions, providing viewers with actionable insights for navigating today's complex business environment. Expert analysis helps break down complex economic concepts into understandable segments.</p>
@@ -123,7 +136,7 @@ function generateArticleContent(videoId, customTitle) {
  */
 function displayPreview(article) {
     const previewContent = document.getElementById('previewContent');
-    
+
     const previewHTML = `
         <div class="preview-article">
             <div class="preview-header">
@@ -138,14 +151,17 @@ function displayPreview(article) {
             </div>
             
             <div class="preview-video">
-                <iframe 
+                ${article.type === 'instagram' ?
+            `<blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/${article.videoId}/" data-instgrm-version="14" style=" max-width:540px; min-width:326px; width:99%; margin: 0 auto; border: 1px solid #dbdbdb; border-radius: 3px; box-shadow: none;"></blockquote><script async src="//www.instagram.com/embed.js"></script>`
+            :
+            `<iframe 
                     width="100%" 
                     height="400" 
                     src="https://www.youtube.com/embed/${article.videoId}" 
                     frameborder="0" 
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                     allowfullscreen>
-                </iframe>
+                </iframe>`}
             </div>
             
             <div class="preview-content">
@@ -153,7 +169,7 @@ function displayPreview(article) {
             </div>
         </div>
     `;
-    
+
     previewContent.innerHTML = previewHTML;
 }
 
@@ -179,19 +195,19 @@ function publishArticle() {
         alert('Please convert a YouTube video first');
         return;
     }
-    
+
     // Add article to article-manager.js
     if (typeof ArticleManager !== 'undefined' && ArticleManager.articles) {
         ArticleManager.articles[currentArticle.id] = currentArticle;
-        
+
         // Save to localStorage for persistence
         saveArticleToStorage(currentArticle);
-        
+
         alert(`Article "${currentArticle.title}" has been published successfully!\n\nArticle ID: ${currentArticle.id}\nYou can view it at: article-detail.html?id=${currentArticle.id}`);
-        
+
         // Increment article ID for next conversion
         nextArticleId++;
-        
+
         // Reset the converter
         resetConverter();
     } else {
@@ -246,10 +262,10 @@ function resetConverter() {
  */
 function addToRecentConversions(article) {
     const recentDiv = document.getElementById('recentConversions');
-    
+
     // Get existing conversions
     let conversions = JSON.parse(localStorage.getItem('recentConversions')) || [];
-    
+
     // Add new conversion at the beginning
     conversions.unshift({
         id: article.id,
@@ -258,13 +274,13 @@ function addToRecentConversions(article) {
         videoId: article.videoId,
         date: new Date().toISOString()
     });
-    
+
     // Keep only last 5 conversions
     conversions = conversions.slice(0, 5);
-    
+
     // Save to localStorage
     localStorage.setItem('recentConversions', JSON.stringify(conversions));
-    
+
     // Display conversions
     displayRecentConversions(conversions);
 }
@@ -274,12 +290,12 @@ function addToRecentConversions(article) {
  */
 function displayRecentConversions(conversions) {
     const recentDiv = document.getElementById('recentConversions');
-    
+
     if (conversions.length === 0) {
         recentDiv.innerHTML = '<p style="text-align: center; color: #6B7280;">No recent conversions yet</p>';
         return;
     }
-    
+
     let html = '';
     conversions.forEach(conv => {
         const date = new Date(conv.date).toLocaleString();
@@ -296,17 +312,17 @@ function displayRecentConversions(conversions) {
             </div>
         `;
     });
-    
+
     recentDiv.innerHTML = html;
 }
 
 /**
  * Initialize converter on page load
  */
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Load next article ID
     loadArticlesFromStorage();
-    
+
     // Display recent conversions
     const conversions = JSON.parse(localStorage.getItem('recentConversions')) || [];
     displayRecentConversions(conversions);

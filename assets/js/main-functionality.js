@@ -572,6 +572,91 @@ window.setCache = setCache;
 window.buildNewsCardLarge = buildNewsCardLarge;
 
 // ============================================
+// BACKEND API INTEGRATION
+// ============================================
+const API_BASE = '/api'; // Relative path for production
+
+async function fetchFromBackend(endpoint) {
+    try {
+        const response = await fetch(`${API_BASE}${endpoint}`);
+        if (!response.ok) throw new Error('Network response was not ok');
+        const result = await response.json();
+        return result.success ? result.data : [];
+    } catch (error) {
+        console.warn(`Failed to fetch from ${endpoint}:`, error);
+        return [];
+    }
+}
+
+async function loadBackendContent() {
+    // Parallel fetch for speed
+    const [articles, events, news, interviews] = await Promise.all([
+        fetchFromBackend('/articles'),
+        fetchFromBackend('/events'),
+        fetchFromBackend('/news'),
+        fetchFromBackend('/interviews')
+    ]);
+
+    // Update Latest Updates (Articles)
+    const latestGrid = document.querySelector('.latest-news-grid');
+    if (latestGrid && articles.length > 0) {
+        // Clear only if we have backend data to show, otherwise keep static/skeleton
+        latestGrid.innerHTML = '';
+        articles.slice(0, 8).forEach(item => {
+            // Map backend article to frontend structure
+            const mapped = {
+                title: item.title,
+                excerpt: item.excerpt || item.content.substring(0, 100) + '...',
+                thumbnail: item.image,
+                category: item.category,
+                published: item.publishedAt || item.createdAt,
+                url: `article-detail.html?id=${item.id}`,
+                source: 'bizzshort'
+            };
+            latestGrid.appendChild(buildNewsCardLarge(mapped));
+        });
+    }
+
+    // Update Events
+    const eventsGrid = document.querySelector('.events-grid');
+    if (eventsGrid && events.length > 0) {
+        eventsGrid.innerHTML = '';
+        events.slice(0, 3).forEach(item => {
+            const mapped = {
+                title: item.title,
+                excerpt: `${item.location} • ${new Date(item.date).toLocaleDateString()}`,
+                thumbnail: item.image,
+                category: 'events',
+                published: item.createdAt,
+                url: '#', // or event detail page
+                source: 'bizzshort'
+            };
+            eventsGrid.appendChild(buildArticleCard(mapped));
+        });
+    }
+
+    // Update Interviews
+    const interviewGrid = document.querySelector('.interview-grid');
+    if (interviewGrid && interviews.length > 0) {
+        interviewGrid.innerHTML = '';
+        interviews.slice(0, 2).forEach(item => {
+            const mapped = {
+                title: `${item.name} - ${item.company}`,
+                excerpt: item.description,
+                thumbnail: item.image,
+                category: 'interviews',
+                published: item.updatedAt,
+                url: '#',
+                source: 'bizzshort'
+            };
+            interviewGrid.appendChild(buildArticleCard(mapped));
+        });
+    }
+}
+
+document.addEventListener('DOMContentLoaded', loadBackendContent);
+
+// ============================================
 // BACK TO TOP BUTTON
 // ============================================
 document.addEventListener('DOMContentLoaded', function () {
