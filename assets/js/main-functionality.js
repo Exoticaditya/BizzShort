@@ -523,7 +523,8 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
         const items = [...ytItems, ...igItems].sort((a, b) => new Date(b.published) - new Date(a.published));
         // If no items from external APIs, keep static HTML content as fallback (don't show empty state)
-        if (videoGrid) {
+        // If no items from external APIs, keep static HTML content as fallback (don't show empty state)
+        if (videoGrid && items.length > 0) {
             videoGrid.innerHTML = '';
             items.slice(0, 6).forEach(i => videoGrid.appendChild(buildVideoCard(i)));
         }
@@ -551,7 +552,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             breakingStory.onclick = () => { window.location.href = articleUrl; };
         }
         const breakingGrid = document.querySelector('.news-cards-grid');
-        if (breakingGrid) {
+        if (breakingGrid && items.length > 1) {
             breakingGrid.innerHTML = '';
             items.slice(1, 4).forEach(i => breakingGrid.appendChild(buildNewsCardSmall(i)));
         }
