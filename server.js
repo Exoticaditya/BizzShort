@@ -105,11 +105,20 @@ app.get('/api/setup-production', async (req, res) => {
             console.log('Setup: Admin already exists');
         }
 
+        // Helper to slugify
+        const slugify = (text) => text.toString().toLowerCase()
+            .replace(/\s+/g, '-')           // Replace spaces with -
+            .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+            .replace(/\-\-+/g, '-')         // Replace multiple - with single -
+            .replace(/^-+/, '')             // Trim - from start of text
+            .replace(/-+$/, '');            // Trim - from end of text
+
         // 2. Data to Seed
         const seedData = {
             articles: [
                 {
                     title: "Tata Group and Intel Announce Strategic Alliance for Semiconductor Manufacturing",
+                    slug: slugify("Tata Group and Intel Announce Strategic Alliance for Semiconductor Manufacturing"),
                     category: "Technology",
                     author: "Business Desk",
                     content: "Tata Group and Intel Corporation announced a strategic alliance to explore collaboration in consumer and enterprise hardware enablement, and semiconductor and systems manufacturing to support India's domestic semiconductor ecosystem.",
@@ -117,6 +126,7 @@ app.get('/api/setup-production', async (req, res) => {
                 },
                 {
                     title: "Microsoft Announces $17.5 Billion Investment in India's AI Infrastructure",
+                    slug: slugify("Microsoft Announces $17.5 Billion Investment in India's AI Infrastructure"),
                     category: "Technology",
                     author: "Tech Reporter",
                     content: "Microsoft announced its largest investment in Asia, committing US$17.5 billion over four years (CY 2026 to 2029) to advance India's cloud and artificial intelligence (AI) infrastructure.",
@@ -124,6 +134,7 @@ app.get('/api/setup-production', async (req, res) => {
                 },
                 {
                     title: "Sensex Surges to 85,221 as Markets Break Three-Day Losing Streak",
+                    slug: slugify("Sensex Surges to 85,221 as Markets Break Three-Day Losing Streak"),
                     category: "Markets",
                     author: "Market Analyst",
                     content: "Indian equity indices broke a three-day losing streak, with the Nifty closing near 25,900 and the Sensex at 84,818.13, both supported by positive global cues.",
@@ -131,6 +142,7 @@ app.get('/api/setup-production', async (req, res) => {
                 },
                 {
                     title: "India's Wealth Creation Reaches ₹148 Trillion from 2020-2025",
+                    slug: slugify("India's Wealth Creation Reaches ₹148 Trillion from 2020-2025"),
                     category: "Economy",
                     author: "Economic Affairs",
                     content: "India's wealth creation reached ₹148 trillion from 2020-2025, with Bharti Airtel leading the wealth creation charts.",
