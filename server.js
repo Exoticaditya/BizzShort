@@ -88,12 +88,12 @@ app.get('/api/setup-production', async (req, res) => {
     }
 
     try {
-        // 1. Create Admin if not exists
+        // 1. Create OR Update Admin
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash('admin123', salt);
+
         let admin = await User.findOne({ name: 'admin' });
         if (!admin) {
-            const salt = await bcrypt.genSalt(10);
-            const hashedPassword = await bcrypt.hash('admin123', salt);
-
             admin = await User.create({
                 name: 'admin',
                 email: 'admin@bizzshort.com',
@@ -102,7 +102,10 @@ app.get('/api/setup-production', async (req, res) => {
             });
             console.log('Setup: Admin Created');
         } else {
-            console.log('Setup: Admin already exists');
+            // FORCE RESET PASSWORD
+            admin.password = hashedPassword;
+            await admin.save();
+            console.log('Setup: Admin Password Reset');
         }
 
         // Helper to slugify
