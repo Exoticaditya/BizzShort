@@ -331,8 +331,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const marketManager = new MarketDataManager();
     marketManager.init();
     
-    // Add market status indicator (optional)
-    console.log('Market Status:', marketManager.getMarketStatus());
+    // Market data initialized
 });
 
 // Export for use in other scripts if needed

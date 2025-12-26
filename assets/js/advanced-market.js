@@ -760,4 +760,4 @@ document.addEventListener('keydown', function(event) {
     }
 });
 
-console.log('✅ Advanced market data system loaded with chart functionality');
+// Advanced market data system loaded

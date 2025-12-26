@@ -18,7 +18,6 @@ class ContentLoader {
             ]);
             
             this.initialized = true;
-            console.log('✅ All content sections loaded successfully');
         } catch (error) {
             console.error('❌ Content loading failed:', error);
             // Keep static content as fallback

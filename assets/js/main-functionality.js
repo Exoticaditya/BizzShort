@@ -798,4 +798,4 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-console.log('✅ BizzShort - All frontend functionality loaded successfully');
+// BizzShort frontend functionality loaded
