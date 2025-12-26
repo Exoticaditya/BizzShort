@@ -108,8 +108,8 @@ a {
 }
 
 .logo-img {
-    width: 60px;
-    height: 60px;
+    width: 85px;
+    height: 85px;
     border-radius: 8px;
     border: none;
     box-shadow: none;
@@ -126,7 +126,7 @@ a {
 }
 
 .logo-text h1 {
-    font-size: 36px;
+    font-size: 42px;
     font-weight: 800;
     color: #2c3e50;
     font-family: 'Poppins', sans-serif;
@@ -136,10 +136,10 @@ a {
 }
 
 .logo-text p {
-    font-size: 12px;
+    font-size: 13px;
     color: #7f8c8d;
     text-transform: uppercase;
-    letter-spacing: 1.6px;
+    letter-spacing: 2px;
     font-family: 'Poppins', sans-serif;
     margin: 0;
     font-weight: 600;
@@ -284,38 +284,32 @@ a {
 .news-cards-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    /* 3 cards in a row */
-    gap: 20px;
+    gap: 12px; /* Tighter gap */
     padding: 0;
     min-width: 0;
 }
 
 .news-card {
     display: flex;
-    gap: 15px;
+    gap: 10px;
     background: white;
     border-radius: 12px;
-    /* Premium rounded corners */
     border: 1px solid rgba(0, 0, 0, 0.05);
-    /* Subtle border */
-    padding: 12px;
+    padding: 10px; /* Reduced padding */
     align-items: center;
-    min-height: 120px;
-    /* Reduced from fixed height */
+    min-height: 100px; /* Compact height */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
-    /* Clean base shadow */
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     min-width: 0;
-    /* Critical flex child constraint */
+    overflow: hidden; /* Prevent overflow */
 }
 
 .news-card img {
-    width: 100px;
-    height: 100px;
+    width: 90px;
+    height: 90px;
     object-fit: cover;
     border-radius: 8px;
     flex-shrink: 0;
-    /* Prevent image squishing */
 }
 
 .news-card-content {

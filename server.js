@@ -6,6 +6,11 @@ const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const helmet = require('helmet');
+const mongoSanitize = require('express-mongo-sanitize');
+const rateLimit = require('express-rate-limit');
+const xss = require('xss-clean');
+const validator = require('validator');
 
 // Load env vars
 dotenv.config();
@@ -28,10 +33,84 @@ const Video = require('./models/Video');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Security Middleware
+// Set security headers
+app.use(helmet({
+    contentSecurityPolicy: {
+        directives: {
+            defaultSrc: ["'self'"],
+            styleSrc: ["'self'", "'unsafe-inline'", "https://cdnjs.cloudflare.com", "https://fonts.googleapis.com"],
+            scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://cdnjs.cloudflare.com", "https://www.googletagmanager.com", "https://pagead2.googlesyndication.com"],
+            imgSrc: ["'self'", "data:", "https:", "http:"],
+            fontSrc: ["'self'", "https://cdnjs.cloudflare.com", "https://fonts.gstatic.com"],
+            connectSrc: ["'self'", "https://bizzshort.onrender.com"],
+            frameSrc: ["'self'", "https://www.youtube.com"],
+        }
+    },
+    crossOriginEmbedderPolicy: false,
+    crossOriginResourcePolicy: { policy: "cross-origin" }
+}));
+
+// Rate limiting
+const limiter = rateLimit({
+    windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000, // 15 minutes
+    max: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS) || 100, // limit each IP to 100 requests per windowMs
+    message: 'Too many requests from this IP, please try again later.',
+    standardHeaders: true,
+    legacyHeaders: false,
+});
+
+// Apply rate limiting to API routes
+app.use('/api/', limiter);
+
+// Stricter rate limit for authentication
+const authLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 5, // limit each IP to 5 login requests per windowMs
+    message: 'Too many login attempts from this IP, please try again after 15 minutes.'
+});
+
+// Data sanitization against NoSQL query injection
+app.use(mongoSanitize());
+
+// Data sanitization against XSS
+app.use(xss());
+
+// CORS Configuration with whitelist
+const allowedOrigins = (process.env.CORS_ORIGIN || '')
+    .split(',')
+    .map(origin => origin.trim())
+    .filter(origin => origin.length > 0);
+
+if (allowedOrigins.length === 0) {
+    // Default allowed origins if not configured
+    allowedOrigins.push(
+        'https://bizzshort.com',
+        'https://www.bizzshort.com',
+        'https://bizzshort.onrender.com',
+        'http://localhost:3000'
+    );
+}
+
+const corsOptions = {
+    origin: function (origin, callback) {
+        // Allow requests with no origin (like mobile apps or curl requests)
+        if (!origin) return callback(null, true);
+        
+        if (allowedOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV === 'development') {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials: true,
+    optionsSuccessStatus: 200
+};
+
 // Middleware
-app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(cors(corsOptions));
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use(express.static(path.join(__dirname))); // Serve Admin Panel
 
@@ -49,29 +128,46 @@ const conditionalUpload = (fieldName) => (req, res, next) => {
 
 // ============ Helper Functions ============
 const generateToken = (id) => {
-    return jwt.sign({ id }, process.env.JWT_SECRET || 'secret', { expiresIn: '30d' });
+    if (!process.env.JWT_SECRET) {
+        throw new Error('JWT_SECRET is not defined in environment variables');
+    }
+    return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRE || '30d' });
 };
 
 // ============ Middleware ============
 const protect = async (req, res, next) => {
     let token;
 
+    if (!process.env.JWT_SECRET) {
+        return res.status(500).json({ success: false, error: 'Server configuration error' });
+    }
+
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
         try {
             token = req.headers.authorization.split(' ')[1];
-            const decoded = jwt.verify(token, process.env.JWT_SECRET || 'secret');
+            const decoded = jwt.verify(token, process.env.JWT_SECRET);
             req.user = await User.findById(decoded.id).select('-password');
+            
+            if (!req.user) {
+                return res.status(401).json({ success: false, error: 'User not found' });
+            }
+            
             next();
         } catch (error) {
-            console.error(error);
+            console.error('Token verification error:', error);
             res.status(401).json({ success: false, error: 'Not authorized, token failed' });
         }
     } else if (req.headers['session-id']) {
         // Backward compatibility for existing frontend using session-id header
         try {
             token = req.headers['session-id'];
-            const decoded = jwt.verify(token, process.env.JWT_SECRET || 'secret');
+            const decoded = jwt.verify(token, process.env.JWT_SECRET);
             req.user = await User.findById(decoded.id).select('-password');
+            
+            if (!req.user) {
+                return res.status(401).json({ success: false, error: 'User not found' });
+            }
+            
             next();
         } catch (error) {
             res.status(401).json({ success: false, error: 'Not authorized, invalid session' });
@@ -83,10 +179,11 @@ const protect = async (req, res, next) => {
 
 // ============ Setup Route (Emergency Seed) ============
 app.get('/api/setup-production', async (req, res) => {
-    // Basic protection using query param
-    // Usage: /api/setup-production?key=secure_setup_123
-    if (req.query.key !== 'secure_setup_123') {
-        return res.status(403).send('Forbidden: Invalid Setup Key. Use ?key=secure_setup_123');
+    // Basic protection using query param from environment
+    const setupKey = process.env.SETUP_KEY || 'secure_setup_123';
+    
+    if (req.query.key !== setupKey) {
+        return res.status(403).send('Forbidden: Invalid Setup Key. Use ?key=YOUR_SETUP_KEY');
     }
 
     try {
@@ -260,10 +357,28 @@ app.get('/api/setup-production', async (req, res) => {
 // ============ API Routes ============
 
 // Auth & Users
-app.post('/api/admin/login', async (req, res) => {
+app.post('/api/admin/login', authLimiter, async (req, res) => {
     const { username, password } = req.body;
+    
+    // Input validation
+    if (!username || !password) {
+        return res.status(400).json({ success: false, error: 'Username and password are required' });
+    }
+    
+    // Sanitize inputs
+    const sanitizedUsername = validator.escape(username.trim());
+    
+    if (!validator.isLength(sanitizedUsername, { min: 3, max: 50 })) {
+        return res.status(400).json({ success: false, error: 'Invalid username length' });
+    }
+    
     try {
-        let user = await User.findOne({ $or: [{ name: username }, { email: username }] });
+        let user = await User.findOne({ 
+            $or: [
+                { name: sanitizedUsername }, 
+                { email: sanitizedUsername }
+            ] 
+        });
 
         // DEV: Create default admin if DB is empty and credentials match hardcoded
         if (!user && username === 'admin' && password === 'admin123') {
@@ -287,7 +402,7 @@ app.post('/api/admin/login', async (req, res) => {
             res.status(401).json({ success: false, error: 'Invalid credentials' });
         }
     } catch (err) {
-        console.error(err);
+        console.error('Login error:', err);
         res.status(500).json({ success: false, error: 'Server error' });
     }
 });
@@ -296,8 +411,12 @@ app.get('/api/admin/verify-session', async (req, res) => {
     const token = req.headers['session-id'];
     if (!token) return res.json({ valid: false });
 
+    if (!process.env.JWT_SECRET) {
+        return res.status(500).json({ valid: false, error: 'Server configuration error' });
+    }
+
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET || 'secret');
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
         const user = await User.findById(decoded.id);
         if (user) {
             res.json({ valid: true, user: { id: user._id, name: user.name } });

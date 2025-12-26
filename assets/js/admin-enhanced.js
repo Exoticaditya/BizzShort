@@ -747,15 +747,52 @@ function logout() {
 // ============ Initialize on Page Load ============
 document.addEventListener('DOMContentLoaded', async function () {
     // Check authentication
-    const isAuthenticated = localStorage.getItem('adminSession') || sessionStorage.getItem('adminSession');
+    const sessionToken = localStorage.getItem('adminSession') || sessionStorage.getItem('adminSession');
 
-    if (!isAuthenticated) {
+    if (!sessionToken) {
+        console.warn('No session token found, redirecting to login');
         window.location.href = 'admin-login.html';
         return;
     }
 
-    // Static mode - no API connection needed
-    console.log('✅ Admin Panel: Static mode active');
+    // Verify session with backend
+    try {
+        const response = await fetch(`${API_BASE_URL}/api/admin/verify-session`, {
+            method: 'GET',
+            headers: {
+                'session-id': sessionToken,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const result = await response.json();
+
+        if (!result.valid) {
+            console.warn('Session validation failed, redirecting to login');
+            localStorage.removeItem('adminSession');
+            sessionStorage.removeItem('adminSession');
+            window.location.href = 'admin-login.html';
+            return;
+        }
+
+        console.log('✅ Session validated for user:', result.user?.name || 'Admin');
+        
+        // Update user info in header if available
+        const userNameElement = document.querySelector('.user-name');
+        if (userNameElement && result.user) {
+            userNameElement.textContent = result.user.name;
+        }
+
+    } catch (error) {
+        console.error('Session verification error:', error);
+        // In development mode or static mode, allow operation
+        if (USE_STATIC_MODE) {
+            console.log('✅ Admin Panel: Static mode active (Session verification bypassed)');
+        } else {
+            showNotification('Unable to verify session with server', 'error');
+        }
+    }
+
     showNotification('Admin Panel Ready', 'success');
 
     // Close modal on outside click
@@ -783,6 +820,95 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     console.log('✅ Admin Panel Initialized');
 });
+
+// ============ Dashboard Refresh Function ============
+async function refreshDashboard() {
+    try {
+        // Load all stats
+        const statsResponse = await apiRequest(API_ENDPOINTS.stats);
+        
+        if (statsResponse.success && statsResponse.data) {
+            // Update stat cards
+            const statsData = statsResponse.data;
+            
+            updateStatCard('articles', statsData.articles || 0);
+            updateStatCard('events', statsData.events || 0);
+            updateStatCard('users', statsData.users || 0);
+            updateStatCard('interviews', statsData.interviews || 0);
+        }
+        
+        showNotification('Dashboard refreshed', 'success');
+        
+    } catch (error) {
+        console.error('Dashboard refresh error:', error);
+        // Use fallback data in static mode
+        if (USE_STATIC_MODE) {
+            updateStatCard('articles', 45);
+            updateStatCard('events', 12);
+            updateStatCard('users', 8);
+            updateStatCard('interviews', 15);
+        }
+    }
+}
+
+function updateStatCard(statName, value) {
+    const statElement = document.querySelector(`[data-stat="${statName}"]`);
+    if (statElement) {
+        statElement.textContent = value.toLocaleString();
+    }
+}
+
+// ============ Section Navigation ============
+function showSection(sectionId) {
+    // Update active nav item
+    const navItems = document.querySelectorAll('.nav-item');
+    navItems.forEach(item => {
+        item.classList.remove('active');
+        if (item.getAttribute('href') === `#${sectionId}`) {
+            item.classList.add('active');
+        }
+    });
+
+    // Update active section
+    const sections = document.querySelectorAll('.admin-section');
+    sections.forEach(section => {
+        section.classList.remove('active');
+        if (section.id === sectionId) {
+            section.classList.add('active');
+        }
+    });
+
+    // Load section data
+    switch(sectionId) {
+        case 'dashboard':
+            refreshDashboard();
+            break;
+        case 'articles':
+            loadArticles();
+            break;
+        case 'events':
+            loadEvents();
+            break;
+        case 'interviews':
+            loadInterviews();
+            break;
+        case 'news':
+            loadNews();
+            break;
+        case 'industry':
+            loadIndustry();
+            break;
+        case 'clients':
+            loadClients();
+            break;
+        case 'users':
+            loadUsersData();
+            break;
+        case 'videos':
+            loadVideos();
+            break;
+    }
+}
 
 // ============ News Management ============
 async function loadNews() {
@@ -1110,74 +1236,177 @@ function editUserData(id) { // Renamed from editUser to match HTML call
     });
 }
 
-// ============ YouTube Converter ============
+// ============ Video Card Generator ============
 async function convertYouTubeToArticle() {
     const urlInput = document.getElementById('youtubeUrl');
     const titleInput = document.getElementById('articleTitle');
     const categorySelect = document.getElementById('articleCategory');
-    const authorInput = document.getElementById('articleAuthor');
+    const descriptionInput = document.getElementById('videoDescription');
+    const featuredCheck = document.getElementById('featuredVideo');
+    const fullscreenCheck = document.getElementById('enableFullscreen');
+    const pipCheck = document.getElementById('enablePiP');
 
     if (!urlInput || !urlInput.value) {
-        showNotification('Please enter a YouTube URL', 'error');
+        showNotification('Please enter a video URL (YouTube or Instagram)', 'error');
+        return;
+    }
+
+    // Extract video ID and determine source
+    const videoInfo = extractVideoInfo(urlInput.value);
+    if (!videoInfo) {
+        showNotification('Invalid video URL. Please use YouTube or Instagram links', 'error');
         return;
     }
 
     try {
-        const response = await apiRequest(API_ENDPOINTS.youtubeConvert, 'POST', {
+        // Create video card data
+        const videoCardData = {
+            videoId: videoInfo.videoId,
+            source: videoInfo.source,
             url: urlInput.value,
-            title: titleInput.value,
-            category: categorySelect.value,
-            author: authorInput.value
-        });
+            title: titleInput.value || `${videoInfo.source} Video`,
+            description: descriptionInput.value || '',
+            category: categorySelect.value || 'General',
+            thumbnail: videoInfo.thumbnail,
+            embedUrl: videoInfo.embedUrl,
+            featured: featuredCheck ? featuredCheck.checked : false,
+            fullscreen: fullscreenCheck ? fullscreenCheck.checked : true,
+            pip: pipCheck ? pipCheck.checked : true,
+            createdAt: new Date().toISOString()
+        };
 
-        if (response.success && response.data) {
-            const previewContainer = document.getElementById('articlePreview');
-            const previewContent = document.getElementById('previewContent');
+        // Show preview
+        displayVideoCardPreview(videoCardData);
+        window.currentVideoCard = videoCardData;
 
-            if (previewContainer && previewContent) {
-                previewContent.innerHTML = `
-                    <h3>${response.data.title}</h3>
-                    <img src="${response.data.image}" alt="Thumbnail" style="max-width: 100%; margin: 10px 0;">
-                    <div>${response.data.content}</div>
-                `;
-                previewContainer.style.display = 'block';
-                window.convertedArticle = response.data;
-            }
-
-            showNotification(response.message || 'Video converted successfully!', 'success');
-        }
+        showNotification('Video card generated! Review and publish', 'success');
     } catch (error) {
-        console.error('Convert YouTube error:', error);
-        showNotification(error.message || 'Failed to convert video', 'error');
+        console.error('Generate video card error:', error);
+        showNotification(error.message || 'Failed to generate video card', 'error');
     }
 }
 
+function extractVideoInfo(url) {
+    // YouTube URL patterns
+    const youtubeRegex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i;
+    const youtubeMatch = url.match(youtubeRegex);
+    
+    if (youtubeMatch) {
+        const videoId = youtubeMatch[1];
+        return {
+            videoId,
+            source: 'youtube',
+            thumbnail: `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`,
+            embedUrl: `https://www.youtube.com/embed/${videoId}?enablejsapi=1`
+        };
+    }
+
+    // Instagram URL patterns
+    const instagramRegex = /instagram\.com\/(p|reel)\/([A-Za-z0-9_-]+)/i;
+    const instagramMatch = url.match(instagramRegex);
+    
+    if (instagramMatch) {
+        const postId = instagramMatch[2];
+        return {
+            videoId: postId,
+            source: 'instagram',
+            thumbnail: '/assets/images/instagram-placeholder.jpg',
+            embedUrl: `https://www.instagram.com/p/${postId}/embed/`
+        };
+    }
+
+    return null;
+}
+
+function displayVideoCardPreview(videoData) {
+    const previewContainer = document.getElementById('articlePreview');
+    const previewContent = document.getElementById('previewContent');
+
+    if (!previewContainer || !previewContent) return;
+
+    const featuredBadge = videoData.featured ? '<span class="featured-badge">FEATURED</span>' : '';
+    
+    previewContent.innerHTML = `
+        <div class="video-card-player" data-fullscreen="${videoData.fullscreen}" data-pip="${videoData.pip}">
+            ${featuredBadge}
+            <div class="video-player-frame">
+                <iframe 
+                    src="${videoData.embedUrl}" 
+                    data-video-id="${videoData.videoId}"
+                    data-source="${videoData.source}"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen>
+                </iframe>
+                <div class="play-overlay">
+                    <i class="fas fa-play"></i>
+                </div>
+            </div>
+            <div class="video-card-info">
+                <h3>${videoData.title}</h3>
+                <p>${videoData.description}</p>
+                <div class="video-card-meta">
+                    <span class="video-category">
+                        <i class="fas fa-tag"></i> ${videoData.category}
+                    </span>
+                    <div class="video-stats">
+                        <span><i class="fab fa-${videoData.source}"></i> ${videoData.source}</span>
+                        ${videoData.fullscreen ? '<span><i class="fas fa-expand"></i> Fullscreen</span>' : ''}
+                        ${videoData.pip ? '<span><i class="fas fa-clone"></i> PiP</span>' : ''}
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    previewContainer.style.display = 'block';
+
+    // Initialize video player for preview
+    setTimeout(() => {
+        const playerElement = previewContent.querySelector('.video-player-frame');
+        if (playerElement && window.VideoCardPlayer) {
+            new VideoCardPlayer(playerElement, {
+                enableFullscreen: videoData.fullscreen,
+                enablePiP: videoData.pip
+            });
+        }
+    }, 100);
+}
+
 async function publishArticle() {
-    if (!window.convertedArticle) {
-        showNotification('No article to publish', 'error');
+    if (!window.currentVideoCard) {
+        showNotification('No video card to publish', 'error');
         return;
     }
 
     try {
-        const response = await apiRequest(API_ENDPOINTS.youtubePublish, 'POST', window.convertedArticle);
-        showNotification(response.message || 'Article published successfully!', 'success');
+        const response = await apiRequest(API_ENDPOINTS.videos, 'POST', window.currentVideoCard);
+        showNotification(response.message || 'Video card published successfully!', 'success');
         resetConverter();
-        loadArticles();
+        loadVideos();
     } catch (error) {
-        console.error('Publish article error:', error);
-        showNotification(error.message || 'Failed to publish article', 'error');
+        console.error('Publish video card error:', error);
+        showNotification(error.message || 'Failed to publish video card', 'error');
     }
 }
 
 function resetConverter() {
     const urlInput = document.getElementById('youtubeUrl');
     const titleInput = document.getElementById('articleTitle');
+    const descriptionInput = document.getElementById('videoDescription');
+    const featuredCheck = document.getElementById('featuredVideo');
+    const fullscreenCheck = document.getElementById('enableFullscreen');
+    const pipCheck = document.getElementById('enablePiP');
     const previewContainer = document.getElementById('articlePreview');
 
     if (urlInput) urlInput.value = '';
     if (titleInput) titleInput.value = '';
+    if (descriptionInput) descriptionInput.value = '';
+    if (featuredCheck) featuredCheck.checked = false;
+    if (fullscreenCheck) fullscreenCheck.checked = true;
+    if (pipCheck) pipCheck.checked = true;
     if (previewContainer) previewContainer.style.display = 'none';
-    window.convertedArticle = null;
+    window.currentVideoCard = null;
 }
 
 console.log('\u2705 Admin Panel Initialized');
