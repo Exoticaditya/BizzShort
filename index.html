@@ -293,93 +293,10 @@
                             </div>
                         </div>
                         
-                        <!-- Wirecable Grid with Video Players -->
-                        <div class="news-video-grid-large">
-                            <!-- This will be populated from database with real YouTube videos -->
-                            <!-- Placeholder cards with embedded video players -->
-                            
-                            <!-- Large Video Card 1 -->
-                            <article class="news-video-card-large" data-category="business">
-                                <div class="video-player-wrapper">
-                                    <img src="https://placehold.co/600x400/e74c3c/ffffff?text=BizzShort+News" alt="Business News" class="video-thumbnail-img">
-                                    <div class="play-button-overlay">
-                                        <i class="fab fa-youtube"></i>
-                                    </div>
-                                </div>
-                                <div class="video-card-content">
-                                    <span class="video-category-badge business">BUSINESS</span>
-                                    <h3 class="video-title">प्रधानमंत्री नरेंद्र मोदी आज पश्चिम बंगाल के दौरे पर हैं</h3>
-                                    <p class="video-excerpt">प्रधानमंत्री नरेंद्र मोदी आज पश्चिम बंगाल के दौरे पर हैं, लेकिन खराब मौसम के कारण वह नदिया जिले में...</p>
-                                    <div class="video-meta-info">
-                                        <span><i class="far fa-calendar"></i> 26 Dec 2025</span>
-                                        <span><i class="fab fa-youtube"></i> YouTube</span>
-                                    </div>
-                                </div>
-                            </article>
-
-                            <!-- Large Video Card 2 -->
-                            <article class="news-video-card-large" data-category="business">
-                                <div class="video-player-wrapper">
-                                    <img src="https://placehold.co/600x400/e74c3c/ffffff?text=BizzShort+News" alt="Business News" class="video-thumbnail-img">
-                                    <div class="play-button-overlay">
-                                        <i class="fab fa-youtube"></i>
-                                    </div>
-                                </div>
-                                <div class="video-card-content">
-                                    <span class="video-category-badge business">BUSINESS</span>
-                                    <h3 class="video-title">कई वर्षों तक यह अनुमान लगाया जाता रहा</h3>
-                                    <p class="video-excerpt">कई वर्षों तक यह अनुमान लगाया जाता रहा कि वैश्विक तेल मांग जल्द ही अपने चरम पर पहुँच जाएगी...</p>
-                                    <div class="video-meta-info">
-                                        <span><i class="far fa-calendar"></i> 26 Dec 2025</span>
-                                        <span><i class="fab fa-youtube"></i> YouTube</span>
-                                    </div>
-                                </div>
-                            </article>
-
-                            <!-- Large Video Card 3 -->
-                            <article class="news-video-card-large" data-category="business">
-                                <div class="video-player-wrapper">
-                                    <img src="https://placehold.co/600x400/e74c3c/ffffff?text=BizzShort+News" alt="Business News" class="video-thumbnail-img">
-                                    <div class="play-button-overlay">
-                                        <i class="fab fa-youtube"></i>
-                                    </div>
-                                </div>
-                                <div class="video-card-content">
-                                    <span class="video-category-badge business">BUSINESS</span>
-                                    <h3 class="video-title">डेलावेयर सुप्रीम कोर्ट ने शुक्रवार को एलन मस्क</h3>
-                                    <p class="video-excerpt">डेलावेयर सुप्रीम कोर्ट ने शुक्रवार को एलन मस्क के टेस्ला से जुड़े 2018 के विवादित वेतन पैकेज को बहाल...</p>
-                                    <div class="video-meta-info">
-                                        <span><i class="far fa-calendar"></i> 26 Dec 2025</span>
-                                        <span><i class="fab fa-youtube"></i> YouTube</span>
-                                    </div>
-                                </div>
-                            </article>
-
-                            <!-- More video cards will be loaded from database -->
-                        </div>
-                        
-                        <!-- Advertisement placeholder on the right -->
-                        <aside class="sidebar-ad-container">
-                            <div class="ad-label">Advertisement</div>
-                            <div class="sidebar-ad-space">
-                                <img src="https://placehold.co/300x600/34495e/ffffff?text=Image+Not+Found" alt="Advertisement">
-                            </div>
-                            <div class="sidebar-ad-space" style="margin-top: 20px;">
-                                <img src="https://placehold.co/300x600/34495e/ffffff?text=Image+Not+Found" alt="Advertisement">
-                            </div>
-                        </aside>
-                    </div>
-                </section>
-
-                <!-- Advertisement Banner Template -->
-                <section class="ad-banner-section">
-                    <div class="container">
-                        <div class="ad-banner-wrapper">
-                            <span class="ad-label-top">Advertisement</span>
-                            <div class="horizontal-ad-space">
-                                <img src="https://via.placeholder.com/1200x200/34495e/ffffff?text=Advertisement+Space+1200x200"
-                                    alt="Advertisement Banner">
-                            </div>
+                        <!-- Wirecable Grid with Video Players - Full Width -->
+                        <div class="news-video-grid-large" id="latestUpdatesGrid">
+                            <!-- This will be populated dynamically from database with real YouTube videos -->
+                            <!-- JavaScript will load real data from @bizz_short YouTube channel -->
                         </div>
                     </div>
                 </section>
@@ -507,63 +424,57 @@
                     </div>
                 </section>
 
+        <!-- Company Policies Section -->
         <section id="policy" class="content-section policy-section">
             <div class="container">
-                <div class="section-header" style="text-align: center;">
+                <div class="section-header-center">
                     <h2 class="section-title">Company Policies</h2>
                     <p class="section-subtitle">Transparency, Trust, and Integrity in Everything We Do</p>
                 </div>
-                <div class="policy-grid">
-                    <div class="policy-card">
-                        <div class="policy-icon"><i class="fas fa-shield-alt"></i></div>
+                <div class="policy-grid-clean">
+                    <div class="policy-card-clean">
+                        <div class="policy-icon-clean">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
                         <h3>Privacy Policy</h3>
-                        <p>We respect your privacy and protect your personal information. Learn how we collect, use, and
-                            safeguard your data.</p>
-                        <ul class="policy-list">
-                            <li><i class="fas fa-check"></i> Data encryption and secure storage</li>
-                            <li><i class="fas fa-check"></i> No sharing with third parties</li>
-                            <li><i class="fas fa-check"></i> GDPR compliant practices</li>
-                            <li><i class="fas fa-check"></i> User control over data</li>
-                        </ul>
-                        <a href="about.html#policy" class="policy-link">Read Full Policy →</a>
+                        <p>We protect your personal information with industry-leading security measures.</p>
+                        <a href="about.html#policy" class="policy-link-clean">
+                            <span>Learn More</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
                     </div>
-                    <div class="policy-card">
-                        <div class="policy-icon"><i class="fas fa-file-contract"></i></div>
+                    <div class="policy-card-clean">
+                        <div class="policy-icon-clean">
+                            <i class="fas fa-file-contract"></i>
+                        </div>
                         <h3>Terms of Service</h3>
-                        <p>Understand your rights and responsibilities when using BizzShort platform and services.</p>
-                        <ul class="policy-list">
-                            <li><i class="fas fa-check"></i> User content guidelines</li>
-                            <li><i class="fas fa-check"></i> Intellectual property rights</li>
-                            <li><i class="fas fa-check"></i> Account usage terms</li>
-                            <li><i class="fas fa-check"></i> Liability limitations</li>
-                        </ul>
-                        <a href="about.html#policy" class="policy-link">Read Full Terms →</a>
+                        <p>Understand your rights and responsibilities when using our platform.</p>
+                        <a href="about.html#policy" class="policy-link-clean">
+                            <span>Learn More</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
                     </div>
-                    <div class="policy-card">
-                        <div class="policy-icon"><i class="fas fa-pen-fancy"></i></div>
+                    <div class="policy-card-clean">
+                        <div class="policy-icon-clean">
+                            <i class="fas fa-pen-fancy"></i>
+                        </div>
                         <h3>Editorial Policy</h3>
-                        <p>Our commitment to accurate, unbiased, and ethical journalism that serves the public interest.
-                        </p>
-                        <ul class="policy-list">
-                            <li><i class="fas fa-check"></i> Fact-checking standards</li>
-                            <li><i class="fas fa-check"></i> Editorial independence</li>
-                            <li><i class="fas fa-check"></i> Source verification</li>
-                            <li><i class="fas fa-check"></i> Corrections policy</li>
-                        </ul>
-                        <a href="about.html#policy" class="policy-link">Read Full Policy →</a>
+                        <p>Our commitment to accurate, unbiased, and ethical journalism.</p>
+                        <a href="about.html#policy" class="policy-link-clean">
+                            <span>Learn More</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
                     </div>
-                    <div class="policy-card">
-                        <div class="policy-icon"><i class="fas fa-cookie-bite"></i></div>
+                    <div class="policy-card-clean">
+                        <div class="policy-icon-clean">
+                            <i class="fas fa-cookie-bite"></i>
+                        </div>
                         <h3>Cookie Policy</h3>
-                        <p>Information about how we use cookies to enhance your browsing experience and analyze site
-                            usage.</p>
-                        <ul class="policy-list">
-                            <li><i class="fas fa-check"></i> Essential cookies only</li>
-                            <li><i class="fas fa-check"></i> Analytics for improvement</li>
-                            <li><i class="fas fa-check"></i> User preference controls</li>
-                            <li><i class="fas fa-check"></i> Third-party cookies disclosure</li>
-                        </ul>
-                        <a href="about.html#policy" class="policy-link">Read Full Policy →</a>
+                        <p>How we use cookies to enhance your browsing experience.</p>
+                        <a href="about.html#policy" class="policy-link-clean">
+                            <span>Learn More</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -600,7 +511,7 @@
         <footer class="site-footer">
             <div class="footer-container">
                 <div class="footer-top">
-                    <div class="footer-grid">
+                    <div class="footer-grid-enhanced">
                         <!-- About Column -->
                         <div class="footer-col">
                             <div class="footer-logo">
@@ -628,33 +539,13 @@
 
                         <!-- Quick Links -->
                         <div class="footer-col">
-                            <h4>Quick Links</h4>
+                            <h4>Explore</h4>
                             <ul class="footer-links">
-                                <li><a href="index.html"><i class="fas fa-chevron-right"></i> Home</a></li>
-                                <li><a href="index.html#latest-news"><i class="fas fa-chevron-right"></i> Latest
-                                        News</a></li>
-                                <li><a href="index.html#interviews"><i class="fas fa-chevron-right"></i> Interviews</a>
-                                </li>
-                                <li><a href="events.html"><i class="fas fa-chevron-right"></i> Events</a></li>
-                                <li><a href="index.html#client"><i class="fas fa-chevron-right"></i> Our
-                                        Clients</a></li>
-                                <li><a href="index.html#sectors"><i class="fas fa-chevron-right"></i> Sectors</a></li>
-                            </ul>
-                        </div>
-
-                        <!-- Categories -->
-                        <div class="footer-col">
-                            <h4>Categories</h4>
-                            <ul class="footer-links">
-                                <li><a href="blog.html"><i class="fas fa-chevron-right"></i> Business News</a></li>
-                                <li><a href="index.html#industry"><i class="fas fa-chevron-right"></i> Industry
-                                        Updates</a></li>
-                                <li><a href="index.html#analysis"><i class="fas fa-chevron-right"></i> Market
-                                        Analysis</a></li>
-                                <li><a href="index.html#opinion"><i class="fas fa-chevron-right"></i> Opinion &
-                                        Editorials</a></li>
-                                <li><a href="index.html#client"><i class="fas fa-chevron-right"></i> Client Features</a>
-                                </li>
+                                <li><a href="index.html">Home</a></li>
+                                <li><a href="index.html#latest-news">Latest Updates</a></li>
+                                <li><a href="index.html#breaking-news">Breaking News</a></li>
+                                <li><a href="index.html#interviews">Interviews</a></li>
+                                <li><a href="events.html">Events</a></li>
                             </ul>
                         </div>
 
@@ -662,13 +553,21 @@
                         <div class="footer-col">
                             <h4>Company</h4>
                             <ul class="footer-links">
-                                <li><a href="about.html"><i class="fas fa-chevron-right"></i> About Us</a></li>
-                                <li><a href="advertise.html"><i class="fas fa-chevron-right"></i> Advertise</a></li>
-                                <li><a href="about.html#policy"><i class="fas fa-chevron-right"></i> Company Policy</a>
-                                </li>
-                                <li><a href="contact.html"><i class="fas fa-chevron-right"></i> Contact Us</a></li>
-                                <li><a href="contact.html"><i class="fas fa-chevron-right"></i> Careers</a></li>
-                                <li><a href="contact.html"><i class="fas fa-chevron-right"></i> Media Kit</a></li>
+                                <li><a href="about.html">About Us</a></li>
+                                <li><a href="contact.html">Contact</a></li>
+                                <li><a href="advertise.html">Advertise</a></li>
+                                <li><a href="about.html#policy">Policies</a></li>
+                            </ul>
+                        </div>
+
+                        <!-- Legal -->
+                        <div class="footer-col">
+                            <h4>Legal</h4>
+                            <ul class="footer-links">
+                                <li><a href="about.html#policy">Privacy Policy</a></li>
+                                <li><a href="about.html#policy">Terms of Service</a></li>
+                                <li><a href="about.html#policy">Cookie Policy</a></li>
+                                <li><a href="about.html#policy">Editorial Policy</a></li>
                             </ul>
                         </div>
 
@@ -691,14 +590,14 @@
 
                 <div class="footer-bottom">
                     <div class="footer-bottom-content">
-                        <p class="footer-copyright">&copy; 2025 BizzShort. All rights reserved.</p>
-                        <p class="footer-developed">(Developd by Garvik India)</p>
-                        <div class="footer-bottom-links">
-                            <a href="#">Privacy Policy</a>
-                            <a href="#">Terms of Service</a>
-                            <a href="#">Cookie Policy</a>
-                            <a href="admin-login.html" class="admin-link">
-                                <i class="fas fa-lock"></i> Admin Access
+                        <div class="footer-bottom-left">
+                            <p class="footer-copyright">&copy; 2025 BizzShort. All rights reserved.</p>
+                            <p class="footer-developed">Developed by Garvik India</p>
+                        </div>
+                        <div class="footer-bottom-right">
+                            <a href="admin-login.html" class="admin-link-clean">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>Admin</span>
                             </a>
                         </div>
                     </div>
@@ -754,6 +653,7 @@
     <script src="assets/js/main-functionality.js?v=20251226"></script>
     <script src="assets/js/advanced-market.js?v=20251226"></script>
     <script src="assets/js/video-manager.js?v=20251226"></script>
+    <script src="assets/js/latest-updates-loader.js?v=20251227"></script>
 
 </body>
 

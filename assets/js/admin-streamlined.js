@@ -132,7 +132,7 @@ async function loadDashboard() {
     try {
         const stats = await apiRequest(API_ENDPOINTS.stats);
         
-        // Update stat cards
+        // Update stat cards with fallback values
         document.querySelector('[data-stat="videos"]').textContent = stats.videos || 0;
         document.querySelector('[data-stat="events"]').textContent = stats.events || 0;
         document.querySelector('[data-stat="advertisements"]').textContent = stats.advertisements || 0;
@@ -143,7 +143,18 @@ async function loadDashboard() {
         loadContentChart();
     } catch (error) {
         console.error('Error loading dashboard:', error);
-        showNotification('Failed to load dashboard stats', 'error');
+        
+        // Display fallback values when API fails
+        document.querySelector('[data-stat="videos"]').textContent = '0';
+        document.querySelector('[data-stat="events"]').textContent = '0';
+        document.querySelector('[data-stat="advertisements"]').textContent = '0';
+        document.querySelector('[data-stat="views"]').textContent = '0';
+        
+        // Still load charts with default data
+        loadTrafficChart();
+        loadContentChart();
+        
+        showNotification('Dashboard stats unavailable. Using default values.', 'warning');
     }
 }
 
