@@ -652,8 +652,10 @@ async function loadBackendContent() {
                     }
                 }
             }
-            // Fallback
-            if (!thumbnail) thumbnail = 'assets/images/logo.jpeg';
+            // Fallback - Use a generic news placeholder instead of logo if no image found
+            if (!thumbnail || thumbnail === 'assets/images/logo.jpeg') {
+                thumbnail = 'https://placehold.co/600x400/e74c3c/ffffff?text=BizzShort+News';
+            }
 
             const mapped = {
                 title: item.title,

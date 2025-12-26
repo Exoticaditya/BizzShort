@@ -41,9 +41,9 @@
     /* Slightly softer corners */
     object-fit: contain;
     /* Ensure logo isn't cropped */
-    background: white;
     /* Clean background */
-    border: 1px solid rgba(0, 0, 0, 0.1);
+    border: none;
+    background: transparent;
     /* Subtle definition */
 }
 

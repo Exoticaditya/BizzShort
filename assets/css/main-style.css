@@ -265,28 +265,29 @@ a {
 
 /* Breaking Grid Wrapper for layout */
 .breaking-grid-wrapper {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 20px;
-    align-items: stretch;
-    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    padding: 24px;
 }
 
 .main-breaking-story {
     position: relative;
     border-radius: 12px;
     overflow: hidden;
-    height: 100%;
+    width: 100%;
+    aspect-ratio: 21/9;
+    /* Wider for top placement */
     min-height: 400px;
 }
 
 .news-cards-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    /* 3 cards in a row */
+    gap: 20px;
     padding: 0;
     min-width: 0;
-    /* Critical for grid child */
 }
 
 .news-card {
