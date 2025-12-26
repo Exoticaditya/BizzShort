@@ -270,6 +270,8 @@ a {
     gap: 25px;
     align-items: start;
     /* Prevent stretching */
+    padding: 24px;
+    /* Added padding to fix layout */
 }
 
 .main-breaking-story {

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,7 +14,7 @@
             padding: 30px;
             background: white;
             border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         }
 
         body {
@@ -89,7 +90,7 @@
             background: white;
             padding: 20px;
             border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
 
         .stat-label {
@@ -182,8 +183,13 @@
         }
 
         @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
         }
 
         @media (max-width: 768px) {
@@ -211,6 +217,7 @@
         }
     </style>
 </head>
+
 <body>
     <!-- Header -->
     <header class="main-header">
@@ -299,8 +306,8 @@
         <div class="chart-info">
             <h3><i class="fas fa-info-circle"></i> About This Chart</h3>
             <p>
-                This real-time chart displays live market data powered by Google Finance. 
-                The data is updated continuously during market hours (9:15 AM - 3:30 PM IST). 
+                This real-time chart displays live market data powered by Google Finance.
+                The data is updated continuously during market hours (9:15 AM - 3:30 PM IST).
                 Use the tabs above to switch between different indices and view their performance.
                 Historical data, technical indicators, and intraday movements are all visible in the interactive chart.
             </p>
@@ -340,19 +347,20 @@
         let currentMarket = 'nifty50';
 
         // Market symbol mappings for Google Finance
+        // Market symbol mappings for Google Finance / TradingView
         const marketSymbols = {
-            'nifty50': 'INDEXNSE:NIFTY_50',
-            'sensex': 'INDEXBOM:SENSEX',
-            'banknifty': 'INDEXNSE:NIFTY_BANK',
-            'niftyit': 'INDEXNSE:NIFTY_IT',
-            'niftypharma': 'INDEXNSE:NIFTY_PHARMA'
+            'nifty50': 'NSE:NIFTY',
+            'sensex': 'BSE:SENSEX',
+            'banknifty': 'NSE:BANKNIFTY',
+            'niftyit': 'NSE:CNXIT',
+            'niftypharma': 'NSE:CNXPHARMA'
         };
 
         // Initialize with Nifty 50
-        window.onload = function() {
+        window.onload = function () {
             loadMarketChart('nifty50');
             updateMarketData();
-            
+
             // Update market data every 30 seconds
             setInterval(updateMarketData, 30000);
         };
@@ -362,13 +370,13 @@
          */
         function switchMarket(market) {
             currentMarket = market;
-            
+
             // Update active tab
             document.querySelectorAll('.market-tab').forEach(tab => {
                 tab.classList.remove('active');
             });
             event.target.classList.add('active');
-            
+
             // Load new chart
             loadMarketChart(market);
         }
@@ -379,7 +387,7 @@
         function loadMarketChart(market) {
             const container = document.getElementById('chartContainer');
             const symbol = marketSymbols[market];
-            
+
             // Show loading
             container.innerHTML = `
                 <div class="loading-spinner">
@@ -391,13 +399,13 @@
             // Load TradingView widget
             setTimeout(() => {
                 container.innerHTML = `<div id="tradingview_widget"></div>`;
-                
+
                 // Load TradingView script if not already loaded
                 if (!window.TradingView) {
                     const script = document.createElement('script');
                     script.type = 'text/javascript';
                     script.src = 'https://s3.tradingview.com/tv.js';
-                    script.onload = function() {
+                    script.onload = function () {
                         initTradingViewWidget(symbol);
                     };
                     document.head.appendChild(script);
@@ -463,7 +471,7 @@
         const marketParam = urlParams.get('market');
         if (marketParam && marketSymbols[marketParam]) {
             currentMarket = marketParam;
-            window.onload = function() {
+            window.onload = function () {
                 loadMarketChart(marketParam);
                 // Highlight the correct tab
                 document.querySelectorAll('.market-tab').forEach((tab, index) => {
@@ -477,4 +485,5 @@
         }
     </script>
 </body>
+
 </html>
