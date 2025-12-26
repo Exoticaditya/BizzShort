@@ -617,10 +617,28 @@ async function loadBackendContent() {
     // Update Latest Updates (Articles)
     // Update Latest Updates (Articles)
 
+    // Update Breaking News using the first article from backend
+    const breakingStory = document.querySelector('.main-breaking-story');
+    if (breakingStory && articles.length > 0) {
+        const top = articles[0];
+        const img = breakingStory.querySelector('img');
+        const h3 = breakingStory.querySelector('h3');
+        const cat = breakingStory.querySelector('.story-category');
+
+        if (img) img.src = top.image || 'assets/images/logo.jpeg';
+        if (h3) h3.textContent = top.title;
+        if (cat) cat.textContent = top.category || 'Breaking';
+
+        breakingStory.style.cursor = 'pointer';
+        breakingStory.onclick = () => {
+            window.location.href = `article-detail.html?id=${top._id}`;
+        };
+    }
+
     // Update Latest Updates (Articles) - Ensure thumbnails are handled correctly
     const latestGrid = document.querySelector('.latest-news-grid');
     if (latestGrid && articles.length > 0) {
-        latestGrid.innerHTML = '';
+        latestGrid.innerHTML = ''; // Clear static/mock content immediately
         articles.slice(0, 8).forEach(item => {
 
             // Logic to prefer youtube thumbnail if it's a video article

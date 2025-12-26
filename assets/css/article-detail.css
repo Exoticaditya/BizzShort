@@ -12,7 +12,7 @@
 /* SITE HEADER */
 .site-header {
     background: white;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -37,8 +37,14 @@
 .site-logo {
     width: 50px;
     height: 50px;
-    border-radius: 10px;
-    object-fit: cover;
+    border-radius: 8px;
+    /* Slightly softer corners */
+    object-fit: contain;
+    /* Ensure logo isn't cropped */
+    background: white;
+    /* Clean background */
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    /* Subtle definition */
 }
 
 .logo-text {
@@ -232,7 +238,7 @@
     margin: 40px 0;
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     position: relative;
     transition: all 0.3s ease;
 }
@@ -276,7 +282,8 @@
 .video-player {
     width: 100%;
     height: 0;
-    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    padding-bottom: 56.25%;
+    /* 16:9 aspect ratio */
     position: relative;
     background: #000;
 }
@@ -360,7 +367,7 @@
     border-left: 4px solid #e74c3c;
     border-radius: 8px;
     font-style: italic;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .article-body blockquote p {
@@ -386,7 +393,7 @@
     border-radius: 10px;
     padding: 30px;
     margin: 40px 0;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .highlight-box h4 {
@@ -462,7 +469,7 @@
 
 .share-btn:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
 .share-btn.facebook {
@@ -566,14 +573,14 @@
     background: white;
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
     transition: all 0.3s ease;
     cursor: pointer;
 }
 
 .related-card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 12px 30px rgba(231,76,60,0.15);
+    box-shadow: 0 12px 30px rgba(231, 76, 60, 0.15);
 }
 
 .related-card img {
@@ -637,7 +644,7 @@
     border-radius: 12px;
     padding: 25px;
     margin-bottom: 30px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
 .sidebar-widget h3 {
@@ -708,7 +715,7 @@
 
 .newsletter-widget h3 {
     color: white;
-    border-bottom-color: rgba(255,255,255,0.3);
+    border-bottom-color: rgba(255, 255, 255, 0.3);
 }
 
 .newsletter-widget p {
@@ -764,11 +771,11 @@
 
 .category-badge:hover {
     transform: translateX(5px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .category-badge span {
-    background: rgba(255,255,255,0.3);
+    background: rgba(255, 255, 255, 0.3);
     padding: 4px 10px;
     border-radius: 12px;
     font-size: 12px;
@@ -798,7 +805,7 @@
 }
 
 .footer-nav a {
-    color: rgba(255,255,255,0.8);
+    color: rgba(255, 255, 255, 0.8);
     text-decoration: none;
     transition: color 0.3s ease;
 }
@@ -812,11 +819,11 @@
     .article-layout {
         grid-template-columns: 1fr;
     }
-    
+
     .article-sidebar {
         display: none;
     }
-    
+
     .related-grid {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -826,50 +833,52 @@
     .article-title {
         font-size: 32px;
     }
-    
+
     .article-meta {
         flex-direction: column;
         align-items: flex-start;
     }
-    
+
     .article-body {
         font-size: 16px;
     }
-    
+
     .article-body h2 {
         font-size: 26px;
     }
-    
+
     .related-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .author-bio {
         flex-direction: column;
         text-align: center;
     }
-    
+
     .author-social {
         justify-content: center;
     }
-    
+
     .share-buttons {
         flex-direction: column;
     }
-    
+
     .share-btn {
         justify-content: center;
     }
 }
+
 .video-player {
     position: relative;
     width: 100%;
     padding-top: 56.25%;
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
     background: #000;
 }
+
 .video-player iframe {
     position: absolute;
     top: 0;

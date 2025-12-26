@@ -279,12 +279,16 @@ a {
     display: flex;
     gap: 15px;
     background: white;
-    border-radius: 8px;
-    border: 1px solid #eee;
+    border-radius: 12px;
+    /* Premium rounded corners */
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    /* Subtle border */
     padding: 12px;
     align-items: center;
     height: 150px;
-    /* Fixed height for consistency */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+    /* Clean base shadow */
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .news-card img {
@@ -309,6 +313,8 @@ a {
     color: #2c3e50;
     display: -webkit-box;
     -webkit-line-clamp: 2;
+    line-clamp: 2;
+    /* Standard property for compatibility */
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
@@ -388,10 +394,11 @@ a {
 
 .news-card {
     background: white;
-    border-radius: 8px;
-    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
     overflow: hidden;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
 }
 
 .news-card:hover {
@@ -473,10 +480,12 @@ a {
 
 .market-card {
     background: white;
-    border-radius: 8px;
-    padding: 18px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
+    border-radius: 16px;
+    /* Extra rounded for feature cards */
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(0, 0, 0, 0.03);
 }
 
 .market-card:hover {
@@ -654,10 +663,12 @@ a {
 
 .news-card-large {
     background: white;
-    border-radius: 8px;
+    border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-    transition: all 0.3s ease;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    /* Deep premium shadow */
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(0, 0, 0, 0.03);
 }
 
 .news-card-large:hover {
@@ -746,10 +757,11 @@ a {
 
 .analysis-card {
     background: white;
-    border-radius: 8px;
+    border-radius: 16px;
     padding: 24px;
-    border: 2px solid #e0e0e0;
-    transition: all 0.3s ease;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
 }
 
 .analysis-card:hover {
