@@ -279,87 +279,95 @@
                     </div>
                 </div>
 
-                <!-- Latest News Videos Grid -->
+                <!-- Latest Updates Section with Category Filters -->
                 <section id="latest-news" class="content-section latest-news-section">
                     <div class="container">
-                        <div class="section-header">
+                        <div class="section-header-with-filters">
                             <h2 class="section-title">Latest Updates</h2>
-                            <a href="https://youtube.com/@bizz_short" target="_blank" class="view-all">View Channel →</a>
+                            <div class="category-filters">
+                                <button class="filter-btn active" data-category="all">All</button>
+                                <button class="filter-btn" data-category="business">Business</button>
+                                <button class="filter-btn" data-category="markets">Markets</button>
+                                <button class="filter-btn" data-category="technology">Technology</button>
+                                <button class="filter-btn" data-category="industry">Industry Update</button>
+                            </div>
                         </div>
                         
-                        <div class="news-videos-grid">
-                            <!-- Video Card 1 -->
-                            <article class="news-video-card" data-video-id="VIDEO_ID_1">
-                                <div class="video-thumbnail">
-                                    <img src="https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg" alt="Business News">
-                                    <div class="play-overlay">
+                        <!-- Wirecable Grid with Video Players -->
+                        <div class="news-video-grid-large">
+                            <!-- This will be populated from database with real YouTube videos -->
+                            <!-- Placeholder cards with embedded video players -->
+                            
+                            <!-- Large Video Card 1 -->
+                            <article class="news-video-card-large" data-category="business">
+                                <div class="video-player-wrapper">
+                                    <img src="https://placehold.co/600x400/e74c3c/ffffff?text=BizzShort+News" alt="Business News" class="video-thumbnail-img">
+                                    <div class="play-button-overlay">
                                         <i class="fab fa-youtube"></i>
                                     </div>
-                                    <span class="video-duration">8:45</span>
                                 </div>
-                                <div class="video-details">
-                                    <h3>Stock Market Analysis Today</h3>
-                                    <div class="video-meta">
-                                        <span><i class="far fa-eye"></i> 2.5K</span>
-                                        <span><i class="far fa-clock"></i> 3 hours ago</span>
+                                <div class="video-card-content">
+                                    <span class="video-category-badge business">BUSINESS</span>
+                                    <h3 class="video-title">प्रधानमंत्री नरेंद्र मोदी आज पश्चिम बंगाल के दौरे पर हैं</h3>
+                                    <p class="video-excerpt">प्रधानमंत्री नरेंद्र मोदी आज पश्चिम बंगाल के दौरे पर हैं, लेकिन खराब मौसम के कारण वह नदिया जिले में...</p>
+                                    <div class="video-meta-info">
+                                        <span><i class="far fa-calendar"></i> 26 Dec 2025</span>
+                                        <span><i class="fab fa-youtube"></i> YouTube</span>
                                     </div>
                                 </div>
                             </article>
 
-                            <!-- Video Card 2 -->
-                            <article class="news-video-card" data-video-id="VIDEO_ID_2">
-                                <div class="video-thumbnail">
-                                    <img src="https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg" alt="Business News">
-                                    <div class="play-overlay">
+                            <!-- Large Video Card 2 -->
+                            <article class="news-video-card-large" data-category="business">
+                                <div class="video-player-wrapper">
+                                    <img src="https://placehold.co/600x400/e74c3c/ffffff?text=BizzShort+News" alt="Business News" class="video-thumbnail-img">
+                                    <div class="play-button-overlay">
                                         <i class="fab fa-youtube"></i>
                                     </div>
-                                    <span class="video-duration">10:30</span>
                                 </div>
-                                <div class="video-details">
-                                    <h3>Indian Economy Update</h3>
-                                    <div class="video-meta">
-                                        <span><i class="far fa-eye"></i> 3.2K</span>
-                                        <span><i class="far fa-clock"></i> 5 hours ago</span>
+                                <div class="video-card-content">
+                                    <span class="video-category-badge business">BUSINESS</span>
+                                    <h3 class="video-title">कई वर्षों तक यह अनुमान लगाया जाता रहा</h3>
+                                    <p class="video-excerpt">कई वर्षों तक यह अनुमान लगाया जाता रहा कि वैश्विक तेल मांग जल्द ही अपने चरम पर पहुँच जाएगी...</p>
+                                    <div class="video-meta-info">
+                                        <span><i class="far fa-calendar"></i> 26 Dec 2025</span>
+                                        <span><i class="fab fa-youtube"></i> YouTube</span>
                                     </div>
                                 </div>
                             </article>
 
-                            <!-- Video Card 3 -->
-                            <article class="news-video-card" data-video-id="VIDEO_ID_3">
-                                <div class="video-thumbnail">
-                                    <img src="https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg" alt="Business News">
-                                    <div class="play-overlay">
+                            <!-- Large Video Card 3 -->
+                            <article class="news-video-card-large" data-category="business">
+                                <div class="video-player-wrapper">
+                                    <img src="https://placehold.co/600x400/e74c3c/ffffff?text=BizzShort+News" alt="Business News" class="video-thumbnail-img">
+                                    <div class="play-button-overlay">
                                         <i class="fab fa-youtube"></i>
                                     </div>
-                                    <span class="video-duration">6:15</span>
                                 </div>
-                                <div class="video-details">
-                                    <h3>Startup Funding News</h3>
-                                    <div class="video-meta">
-                                        <span><i class="far fa-eye"></i> 1.8K</span>
-                                        <span><i class="far fa-clock"></i> 1 day ago</span>
+                                <div class="video-card-content">
+                                    <span class="video-category-badge business">BUSINESS</span>
+                                    <h3 class="video-title">डेलावेयर सुप्रीम कोर्ट ने शुक्रवार को एलन मस्क</h3>
+                                    <p class="video-excerpt">डेलावेयर सुप्रीम कोर्ट ने शुक्रवार को एलन मस्क के टेस्ला से जुड़े 2018 के विवादित वेतन पैकेज को बहाल...</p>
+                                    <div class="video-meta-info">
+                                        <span><i class="far fa-calendar"></i> 26 Dec 2025</span>
+                                        <span><i class="fab fa-youtube"></i> YouTube</span>
                                     </div>
                                 </div>
                             </article>
 
-                            <!-- Video Card 4 -->
-                            <article class="news-video-card" data-video-id="VIDEO_ID_4">
-                                <div class="video-embed-wrapper">
-                                    <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ?enablejsapi=1&rel=0&modestbranding=1" 
-                                        frameborder="0" 
-                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen" 
-                                        allowfullscreen
-                                        title="Tech Industry Trends"></iframe>
-                                </div>
-                                <div class="video-details">
-                                    <h3>Tech Industry Trends</h3>
-                                    <div class="video-meta">
-                                        <span><i class="far fa-eye"></i> 4.1K</span>
-                                        <span><i class="far fa-clock"></i> 2 days ago</span>
-                                    </div>
-                                </div>
-                            </article>
+                            <!-- More video cards will be loaded from database -->
                         </div>
+                        
+                        <!-- Advertisement placeholder on the right -->
+                        <aside class="sidebar-ad-container">
+                            <div class="ad-label">Advertisement</div>
+                            <div class="sidebar-ad-space">
+                                <img src="https://placehold.co/300x600/34495e/ffffff?text=Image+Not+Found" alt="Advertisement">
+                            </div>
+                            <div class="sidebar-ad-space" style="margin-top: 20px;">
+                                <img src="https://placehold.co/300x600/34495e/ffffff?text=Image+Not+Found" alt="Advertisement">
+                            </div>
+                        </aside>
                     </div>
                 </section>
 
