@@ -162,13 +162,16 @@ a {
 
 /* NAVBAR */
 .navbar-section {
-    background: linear-gradient(135deg, #1a252f 0%, #2c3e50 50%, #34495e 100%);
+    background: rgba(44, 62, 80, 0.85);
+    /* Semi-transparent for glass effect */
     position: sticky;
     top: 0;
     z-index: 999;
     border-bottom: 3px solid #e74c3c;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(12px);
+    /* Stronger blur */
+    -webkit-backdrop-filter: blur(12px);
 }
 
 .main-nav ul {
@@ -260,12 +263,21 @@ a {
     overflow: hidden;
 }
 
-/* Breaking Grid Wrapper for 2-column layout */
+/* Breaking Grid Wrapper for layout */
 .breaking-grid-wrapper {
     display: grid;
     grid-template-columns: 2fr 1fr;
-    /* 2/3 for main, 1/3 for side list */
     gap: 25px;
+    align-items: start;
+    /* Prevent stretching */
+}
+
+.main-breaking-story {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    /* Remove fixed height to allow content to dictate size, or match aspect ratio */
+    aspect-ratio: 16/9;
 }
 
 .news-cards-grid {

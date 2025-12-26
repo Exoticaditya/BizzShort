@@ -21,16 +21,16 @@ class LiveMarketCharts {
     createTradingViewWidgets() {
         // Nifty 50 Chart
         this.createTradingViewWidget('nifty-chart', 'NSE:NIFTY', 'Nifty 50');
-        
+
         // Sensex Chart
         this.createTradingViewWidget('sensex-chart', 'BSE:SENSEX', 'Sensex');
-        
+
         // Bank Nifty Chart
         this.createTradingViewWidget('banknifty-chart', 'NSE:BANKNIFTY', 'Bank Nifty');
-        
+
         // Market Overview Widget
         this.createMarketOverviewWidget();
-        
+
         // Stock Screener Widget
         this.createStockScreenerWidget();
     }
@@ -113,22 +113,22 @@ class LiveMarketCharts {
                 {
                     "title": "Indices",
                     "symbols": [
-                        {"s": "NSE:NIFTY", "d": "Nifty 50"},
-                        {"s": "BSE:SENSEX", "d": "Sensex"},
-                        {"s": "NSE:BANKNIFTY", "d": "Bank Nifty"},
-                        {"s": "NSE:NIFTYIT", "d": "Nifty IT"},
-                        {"s": "NSE:CNXMIDCAP", "d": "Nifty Midcap"}
+                        { "s": "NSE:NIFTY", "d": "Nifty 50" },
+                        { "s": "BSE:SENSEX", "d": "Sensex" },
+                        { "s": "NSE:BANKNIFTY", "d": "Bank Nifty" },
+                        { "s": "NSE:NIFTYIT", "d": "Nifty IT" },
+                        { "s": "NSE:CNXMIDCAP", "d": "Nifty Midcap" }
                     ],
                     "originalTitle": "Indices"
                 },
                 {
                     "title": "Top Stocks",
                     "symbols": [
-                        {"s": "NSE:RELIANCE", "d": "Reliance"},
-                        {"s": "NSE:TCS", "d": "TCS"},
-                        {"s": "NSE:HDFCBANK", "d": "HDFC Bank"},
-                        {"s": "NSE:INFY", "d": "Infosys"},
-                        {"s": "NSE:ICICIBANK", "d": "ICICI Bank"}
+                        { "s": "NSE:RELIANCE", "d": "Reliance" },
+                        { "s": "NSE:TCS", "d": "TCS" },
+                        { "s": "NSE:HDFCBANK", "d": "HDFC Bank" },
+                        { "s": "NSE:INFY", "d": "Infosys" },
+                        { "s": "NSE:ICICIBANK", "d": "ICICI Bank" }
                     ],
                     "originalTitle": "Top Stocks"
                 }
@@ -187,12 +187,12 @@ class LiveMarketCharts {
             this.charts['nifty-intraday'].destroy();
         }
         const ctx = canvas.getContext('2d');
-        
+
         // Generate mock intraday data
         const labels = [];
         const data = [];
         const baseValue = 24850;
-        
+
         for (let i = 9.25; i <= 15.5; i += 0.25) {
             const hours = Math.floor(i);
             const minutes = (i % 1) * 60;
@@ -229,7 +229,7 @@ class LiveMarketCharts {
                     y: {
                         beginAtZero: false,
                         ticks: {
-                            callback: function(value) {
+                            callback: function (value) {
                                 return '₹' + value.toLocaleString('en-IN');
                             }
                         }
@@ -298,7 +298,7 @@ class LiveMarketCharts {
                     y: {
                         beginAtZero: true,
                         ticks: {
-                            callback: function(value) {
+                            callback: function (value) {
                                 return value + '%';
                             }
                         }
