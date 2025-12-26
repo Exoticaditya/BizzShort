@@ -1,0 +1,370 @@
+/* ========================================
+   VIDEO-BASED LAYOUT STYLES
+   All sections now use video players instead of articles
+   ======================================== */
+
+/* Breaking News Large Video Player */
+.breaking-video-player {
+    background: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    margin-bottom: 30px;
+}
+
+.main-video-wrapper {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    background: #000;
+    overflow: hidden;
+}
+
+.main-video-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.video-info {
+    padding: 25px;
+}
+
+.video-category {
+    display: inline-block;
+    background: linear-gradient(135deg, #ff0000, #cc0000);
+    color: #ffffff;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.75em;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+}
+
+.video-info h3 {
+    font-size: 1.8em;
+    color: #1a1a1a;
+    margin: 15px 0;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.video-info p {
+    color: #666;
+    font-size: 1em;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.video-stats {
+    display: flex;
+    gap: 25px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #e5e5e5;
+}
+
+.video-stats span {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #666;
+    font-size: 0.9em;
+}
+
+.video-stats i {
+    color: #ff0000;
+    font-size: 1.1em;
+}
+
+/* Latest News Video Grid */
+.news-videos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+    margin-top: 30px;
+}
+
+.news-video-card {
+    background: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+}
+
+.news-video-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.video-thumbnail {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* 16:9 */
+    overflow: hidden;
+    background: #000;
+}
+
+.video-thumbnail img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.news-video-card:hover .video-thumbnail img {
+    transform: scale(1.08);
+}
+
+.play-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 70px;
+    height: 70px;
+    background: rgba(255, 0, 0, 0.95);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 2;
+}
+
+.play-overlay i {
+    color: #ffffff;
+    font-size: 2em;
+    margin-left: 4px;
+}
+
+.news-video-card:hover .play-overlay {
+    transform: translate(-50%, -50%) scale(1.15);
+    background: rgba(255, 0, 0, 1);
+    box-shadow: 0 0 30px rgba(255, 0, 0, 0.5);
+}
+
+.video-duration {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.85);
+    color: #ffffff;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    z-index: 2;
+}
+
+.video-details {
+    padding: 18px;
+}
+
+.video-details h3 {
+    font-size: 1.1em;
+    color: #1a1a1a;
+    margin: 0 0 12px 0;
+    font-weight: 600;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.video-meta {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    color: #888;
+    font-size: 0.85em;
+}
+
+.video-meta span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.video-meta i {
+    color: #ff0000;
+}
+
+/* Interview Videos Grid */
+.interview-videos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.interview-video-card {
+    background: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 3px 20px rgba(0, 0, 0, 0.08);
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+}
+
+.interview-video-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+.interview-details {
+    padding: 20px;
+}
+
+.interview-tag {
+    display: inline-block;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: #ffffff;
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 0.7em;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+}
+
+.interview-details h3 {
+    font-size: 1.2em;
+    color: #1a1a1a;
+    margin: 10px 0;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .news-videos-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
+    }
+    
+    .interview-videos-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .main-video-wrapper {
+        padding-bottom: 60%; /* Slightly taller on mobile */
+    }
+    
+    .video-info h3 {
+        font-size: 1.4em;
+    }
+    
+    .video-stats {
+        gap: 15px;
+        font-size: 0.85em;
+    }
+    
+    .news-videos-grid,
+    .interview-videos-grid {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 18px;
+    }
+    
+    .play-overlay {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .play-overlay i {
+        font-size: 1.6em;
+    }
+}
+
+@media (max-width: 480px) {
+    .news-videos-grid,
+    .interview-videos-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .video-info {
+        padding: 18px;
+    }
+    
+    .video-info h3 {
+        font-size: 1.2em;
+    }
+    
+    .video-details {
+        padding: 15px;
+    }
+    
+    .interview-details {
+        padding: 18px;
+    }
+}
+
+/* Click Effect for Video Cards */
+.news-video-card:active,
+.interview-video-card:active {
+    transform: translateY(-5px) scale(0.98);
+}
+
+/* Loading State */
+.video-thumbnail::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    z-index: 1;
+}
+
+.video-thumbnail img {
+    z-index: 2;
+}
+
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+/* YouTube Branding */
+.fab.fa-youtube {
+    color: #ff0000;
+}
+
+/* Accessibility */
+.news-video-card:focus,
+.interview-video-card:focus {
+    outline: 3px solid #ff0000;
+    outline-offset: 2px;
+}
+
+/* Print Styles */
+@media print {
+    .play-overlay,
+    .video-duration {
+        display: none;
+    }
+    
+    .video-thumbnail {
+        page-break-inside: avoid;
+    }
+}
