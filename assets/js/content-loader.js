@@ -4,6 +4,8 @@ class ContentLoader {
     constructor() {
         this.api = new BizzShortAPI();
         this.initialized = false;
+        this.youtubeHandle = '@bizz_short';
+        this.instagramHandle = 'bizz_short';
     }
 
     async init() {
@@ -14,14 +16,69 @@ class ContentLoader {
                 this.loadLatestNews(),
                 this.loadInterviews(),
                 this.loadEvents(),
-                this.loadIndustryUpdates()
+                this.loadIndustryUpdates(),
+                this.loadVideos()
             ]);
             
             this.initialized = true;
         } catch (error) {
-            console.error('❌ Content loading failed:', error);
+            console.error('Content loading failed:', error);
             // Keep static content as fallback
         }
+    }
+
+    async loadVideos() {
+        try {
+            // Load videos from backend API
+            const response = await fetch('https://bizzshort.onrender.com/api/videos?limit=20');
+            if (!response.ok) {
+                // Fallback to YouTube RSS if backend not available
+                await this.loadYouTubeVideos();
+                return;
+            }
+            
+            const videos = await response.json();
+            if (videos && videos.length > 0) {
+                this.renderVideoGrid(videos);
+            }
+        } catch (error) {
+            console.warn('Loading videos from YouTube:', error.message);
+            await this.loadYouTubeVideos();
+        }
+    }
+
+    async loadYouTubeVideos() {
+        try {
+            // Use YouTube Data API v3 or fetch from video-manager.js database
+            const videoManager = window.videoDatabase;
+            if (videoManager && videoManager.length > 0) {
+                this.renderVideoGrid(videoManager);
+            }
+        } catch (error) {
+            console.warn('Video loading skipped');
+        }
+    }
+
+    renderVideoGrid(videos) {
+        // Add videos to news items dynamically
+        const newsCards = document.querySelectorAll('.news-card-large, .interview-card, .event-card');
+        
+        newsCards.forEach((card, index) => {
+            if (videos[index]) {
+                const video = videos[index];
+                const videoLink = document.createElement('a');
+                videoLink.href = `https://youtube.com/watch?v=${video.videoId || video.url}`;
+                videoLink.target = '_blank';
+                videoLink.className = 'video-link';
+                videoLink.innerHTML = '<i class="fab fa-youtube"></i> YouTube';
+                videoLink.style.cssText = 'display:inline-block;margin-top:10px;color:#ff0000;font-weight:bold;';
+                
+                const cardContent = card.querySelector('.card-content, .interview-content, .event-content');
+                if (cardContent) {
+                    cardContent.appendChild(videoLink);
+                }
+            }
+        });
     }
 
     async loadLatestNews() {
@@ -87,17 +144,21 @@ class ContentLoader {
         newsGrid.innerHTML = articles.map(article => `
             <article class="news-card-large" data-category="${article.category?.toLowerCase() || 'business'}">
                 <a href="article-detail.html?id=${article._id}" style="text-decoration: none; color: inherit;">
-                    <img src="${article.image || 'https://placehold.co/800x400/2c3e50/ffffff?text=No+Image'}" 
+                    <img src="${article.image || article.thumbnail || 'https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg'}" 
                          alt="${article.title}"
-                         onerror="this.src='https://placehold.co/800x400/2c3e50/ffffff?text=Image+Error'">
+                         onerror="this.src='https://placehold.co/800x400/2c3e50/ffffff?text=BizzShort+News'">
                     <div class="card-content">
                         <span class="category-badge ${article.category?.toLowerCase() || 'business'}">${article.category || 'Business'}</span>
                         <h3>${article.title}</h3>
-                        <p>${article.summary || article.content?.substring(0, 150) + '...' || ''}</p>
+                        <p>${article.summary || article.excerpt || article.content?.substring(0, 150) + '...' || ''}</p>
                         <div class="card-footer">
-                            <span class="author"><i class="fas fa-user"></i> ${article.author || 'BizzShort'}</span>
-                            <span class="time"><i class="far fa-clock"></i> ${this.formatDate(article.createdAt)}</span>
+                            <span class="author"><i class="fas fa-user"></i> ${article.author || 'BizzShort Team'}</span>
+                            <span class="time"><i class="far fa-clock"></i> ${this.formatDate(article.createdAt || article.published)}</span>
                         </div>
+                        ${article.url && article.url.includes('youtube') ? `
+                        <a href="${article.url}" target="_blank" class="video-link" style="display:inline-block;margin-top:10px;color:#ff0000;font-weight:bold;">
+                            <i class="fab fa-youtube"></i> Watch on YouTube
+                        </a>` : ''}
                     </div>
                 </a>
             </article>
