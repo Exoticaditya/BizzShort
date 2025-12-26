@@ -359,10 +359,7 @@
         // Initialize with Nifty 50
         window.onload = function () {
             loadMarketChart('nifty50');
-            updateMarketData();
-
-            // Update market data every 30 seconds
-            setInterval(updateMarketData, 30000);
+            // updateMarketData(); // Removing mock update
         };
 
         /**
@@ -437,34 +434,17 @@
         /**
          * Update market data (simulated - in production, use real API)
          */
+        /**
+         * Update market data - Deprecated in favor of Ticker Tape Widget
+         */
         function updateMarketData() {
-            // Simulate small random changes
-            const niftyChange = (Math.random() - 0.5) * 100;
-            const sensexChange = (Math.random() - 0.5) * 300;
-            const bankNiftyChange = (Math.random() - 0.5) * 200;
-            const vixChange = (Math.random() - 0.5) * 2;
-
-            // Update values (in production, fetch from real API)
-            updateStatBox('niftyValue', 24587.25 + niftyChange, niftyChange);
-            updateStatBox('sensexValue', 81332.72 + sensexChange, sensexChange);
-            updateStatBox('bankNiftyValue', 53220.85 + bankNiftyChange, bankNiftyChange);
-            updateStatBox('vixValue', 13.25 + vixChange, vixChange);
+            // Widget handles real-time updates
         }
 
         /**
          * Update stat box with animation
          */
-        function updateStatBox(id, value, change) {
-            const element = document.getElementById(id);
-            if (element) {
-                element.textContent = value.toFixed(2);
-                element.style.transition = 'transform 0.3s ease';
-                element.style.transform = 'scale(1.05)';
-                setTimeout(() => {
-                    element.style.transform = 'scale(1)';
-                }, 300);
-            }
-        }
+
 
         // Get market parameter from URL
         const urlParams = new URLSearchParams(window.location.search);

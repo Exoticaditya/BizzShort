@@ -614,8 +614,23 @@ async function loadBackendContent() {
         fetchFromBackend('/interviews')
     ]);
 
-    // Update Latest Updates (Articles)
-    // Update Latest Updates (Articles)
+    // Process thumbnails globally for articles
+    articles.forEach(item => {
+        let thumbnail = item.image;
+        if (!thumbnail || thumbnail.includes('via.placeholder') || thumbnail.includes('placehold.co')) {
+            if (item.videoUrl && (item.videoUrl.includes('youtube.com') || item.videoUrl.includes('youtu.be'))) {
+                const match = item.videoUrl.match(/(?:v=|\/)([a-zA-Z0-9_-]{11}).*/);
+                if (match && match[1]) {
+                    thumbnail = `https://img.youtube.com/vi/${match[1]}/mqdefault.jpg`;
+                }
+            }
+        }
+        // Fallback
+        if (!thumbnail || thumbnail === 'assets/images/logo.jpeg') {
+            thumbnail = 'https://placehold.co/600x400/e74c3c/ffffff?text=BizzShort+News';
+        }
+        item.thumbnail = thumbnail;
+    });
 
     // Update Breaking News using the first article from backend
     const breakingStory = document.querySelector('.main-breaking-story');
@@ -625,7 +640,7 @@ async function loadBackendContent() {
         const h3 = breakingStory.querySelector('h3');
         const cat = breakingStory.querySelector('.story-category');
 
-        if (img) img.src = top.image || 'assets/images/logo.jpeg';
+        if (img) img.src = top.thumbnail;
         if (h3) h3.textContent = top.title;
         if (cat) cat.textContent = top.category || 'Breaking';
 
@@ -640,27 +655,13 @@ async function loadBackendContent() {
     if (latestGrid && articles.length > 0) {
         latestGrid.innerHTML = ''; // Clear static/mock content immediately
         articles.slice(0, 8).forEach(item => {
+            // Thumbnail is already processed above
 
-            // Logic to prefer youtube thumbnail if it's a video article
-            let thumbnail = item.image;
-            if (!thumbnail || thumbnail.includes('via.placeholder') || thumbnail.includes('placehold.co')) {
-                // If backend didn't provide good image, check if we can extract from video URL
-                if (item.videoUrl && (item.videoUrl.includes('youtube.com') || item.videoUrl.includes('youtu.be'))) {
-                    const match = item.videoUrl.match(/(?:v=|\/)([a-zA-Z0-9_-]{11}).*/);
-                    if (match && match[1]) {
-                        thumbnail = `https://img.youtube.com/vi/${match[1]}/mqdefault.jpg`;
-                    }
-                }
-            }
-            // Fallback - Use a generic news placeholder instead of logo if no image found
-            if (!thumbnail || thumbnail === 'assets/images/logo.jpeg') {
-                thumbnail = 'https://placehold.co/600x400/e74c3c/ffffff?text=BizzShort+News';
-            }
 
             const mapped = {
                 title: item.title,
                 excerpt: item.excerpt || item.content.substring(0, 100) + '...',
-                thumbnail: thumbnail,
+                thumbnail: item.thumbnail, // Already processed
                 category: item.category,
                 published: item.publishedAt || item.createdAt,
                 url: `article-detail.html?id=${item.id}`,
