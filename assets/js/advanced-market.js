@@ -632,15 +632,70 @@ function updateChartInfo(data) {
 // ============================================
 // NEWSLETTER SUBSCRIPTION
 // ============================================
-function subscribeNewsletter(event) {
+async function subscribeNewsletter(event) {
     event.preventDefault();
     const input = event.target.querySelector('input[type="email"]');
     const email = input.value;
+    const button = event.target.querySelector('button[type="submit"]');
     
-    // Simulate subscription
-    alert(`Thank you for subscribing! We'll send updates to ${email}`);
-    input.value = '';
+    // Show loading state
+    const originalHTML = button.innerHTML;
+    button.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+    button.disabled = true;
+    
+    try {
+        const response = await fetch('https://bizzshort.onrender.com/api/newsletter/subscribe', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email })
+        });
+        
+        if (!response.ok) throw new Error('Subscription failed');
+        
+        const result = await response.json();
+        
+        // Show success message
+        showNotification(`✅ Successfully subscribed! Welcome to BizzShort.`, 'success');
+        input.value = '';
+        
+    } catch (error) {
+        console.error('Newsletter subscription error:', error);
+        showNotification(`❌ Subscription failed. Please try again.`, 'error');
+    } finally {
+        button.innerHTML = originalHTML;
+        button.disabled = false;
+    }
 }
+
+// Show notification helper function
+function showNotification(message, type = 'info') {
+    const notification = document.createElement('div');
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: ${type === 'success' ? '#27ae60' : type === 'error' ? '#e74c3c' : '#3498db'};
+        color: white;
+        padding: 15px 25px;
+        border-radius: 8px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        z-index: 100000;
+        font-size: 15px;
+        max-width: 350px;
+        animation: slideInRight 0.4s ease;
+        font-weight: 500;
+    `;
+    notification.textContent = message;
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.style.animation = 'slideOutRight 0.4s ease';
+        setTimeout(() => notification.remove(), 400);
+    }, 4000);
+}
+
 
 // ============================================
 // UTILITY FUNCTIONS
