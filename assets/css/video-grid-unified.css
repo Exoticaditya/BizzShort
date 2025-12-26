@@ -1,0 +1,633 @@
+/* ==============================================
+   UNIFIED VIDEO GRID SYSTEM - ALL SECTIONS
+   ============================================== */
+
+/* Breaking News Large Player */
+.breaking-video-player {
+    background: #ffffff;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+    margin-bottom: 30px;
+    transition: all 0.3s ease;
+}
+
+.breaking-video-player:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+}
+
+.main-video-wrapper {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+    background: linear-gradient(135deg, #000000, #1a1a1a);
+    overflow: hidden;
+}
+
+.main-video-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(231, 76, 60, 0.1), rgba(192, 57, 43, 0.1));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.breaking-video-player:hover .main-video-wrapper::before {
+    opacity: 1;
+}
+
+.main-video-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.video-info {
+    padding: 25px;
+}
+
+.video-category {
+    display: inline-block;
+    background: linear-gradient(135deg, #ff0000, #cc0000);
+    color: white;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+}
+
+.video-info h3 {
+    font-size: 1.6rem;
+    color: #2c3e50;
+    margin: 12px 0;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+.video-info p {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.video-stats {
+    display: flex;
+    gap: 25px;
+    flex-wrap: wrap;
+}
+
+.video-stats span {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #7f8c8d;
+    font-size: 0.9rem;
+}
+
+.video-stats i {
+    color: #ff0000;
+    font-size: 1.1rem;
+}
+
+/* ==============================================
+   VIDEO CARD GRID - LATEST UPDATES SECTION
+   Wirecable Grid Layout for Videos
+   ============================================== */
+
+.latest-news-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 25px;
+    margin-bottom: 30px;
+}
+
+.news-video-card-large {
+    background: #ffffff;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    position: relative;
+}
+
+.news-video-card-large::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: 3px solid transparent;
+    border-radius: 16px;
+    transition: all 0.3s ease;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.news-video-card-large:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 16px 40px rgba(231, 76, 60, 0.25);
+}
+
+.news-video-card-large:hover::before {
+    border-color: rgba(231, 76, 60, 0.3);
+}
+
+.video-thumbnail-wrapper {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* 16:9 */
+    background: linear-gradient(135deg, #000000, #1a1a1a);
+    overflow: hidden;
+}
+
+.video-thumbnail-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, transparent 0%, transparent 60%, rgba(0,0,0,0.7) 100%);
+    z-index: 1;
+}
+
+.video-thumbnail-wrapper img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease, filter 0.3s ease;
+}
+
+.news-video-card-large:hover .video-thumbnail-wrapper img {
+    transform: scale(1.1);
+    filter: brightness(1.1);
+}
+
+.play-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, rgba(255, 0, 0, 0.95), rgba(204, 0, 0, 0.95));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    z-index: 2;
+    box-shadow: 0 8px 25px rgba(255, 0, 0, 0.4);
+}
+
+.play-overlay::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.play-overlay i {
+    color: white;
+    font-size: 2.2rem;
+    margin-left: 5px;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.news-video-card-large:hover .play-overlay {
+    transform: translate(-50%, -50%) scale(1.25) rotate(360deg);
+    background: linear-gradient(135deg, rgba(255, 0, 0, 1), rgba(204, 0, 0, 1));
+    box-shadow: 0 0 40px rgba(255, 0, 0, 0.8);
+}
+
+.news-video-card-large:hover .play-overlay::before {
+    transform: scale(1.2);
+    border-color: rgba(255, 255, 255, 0.6);
+}
+
+.video-duration {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    z-index: 3;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.card-content {
+    padding: 20px;
+}
+
+.category-badge {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+}
+
+.category-badge.business {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+}
+
+.category-badge.markets {
+    background: linear-gradient(135deg, #f093fb, #f5576c);
+    color: white;
+}
+
+.category-badge.technology {
+    background: linear-gradient(135deg, #4facfe, #00f2fe);
+    color: white;
+}
+
+.category-badge.industry {
+    background: linear-gradient(135deg, #43e97b, #38f9d7);
+    color: white;
+}
+
+.card-content h3 {
+    font-size: 1.15rem;
+    color: #2c3e50;
+    font-weight: 700;
+    line-height: 1.5;
+    margin-bottom: 15px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    padding-top: 12px;
+    border-top: 1px solid #e8eaed;
+}
+
+.card-footer span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #7f8c8d;
+    font-size: 0.85rem;
+}
+
+.card-footer i {
+    color: #ff0000;
+}
+
+/* ==============================================
+   INTERVIEW VIDEO CARDS
+   ============================================== */
+
+.interview-videos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 30px;
+}
+
+.interview-video-card {
+    background: #ffffff;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    position: relative;
+}
+
+.interview-video-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: 3px solid transparent;
+    border-radius: 16px;
+    transition: all 0.3s ease;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.interview-video-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 16px 40px rgba(102, 126, 234, 0.25);
+}
+
+.interview-video-card:hover::before {
+    border-color: rgba(102, 126, 234, 0.3);
+}
+
+.interview-video-card .video-thumbnail {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    overflow: hidden;
+}
+
+.interview-video-card .video-thumbnail::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, transparent 0%, transparent 50%, rgba(0,0,0,0.8) 100%);
+    z-index: 1;
+}
+
+.interview-video-card .video-thumbnail img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.interview-video-card:hover .video-thumbnail img {
+    transform: scale(1.05);
+}
+
+.interview-details {
+    padding: 20px;
+}
+
+.interview-tag {
+    display: inline-block;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+}
+
+.interview-details h3 {
+    font-size: 1.15rem;
+    color: #2c3e50;
+    font-weight: 700;
+    line-height: 1.5;
+    margin-bottom: 12px;
+}
+
+.interview-details .video-meta {
+    display: flex;
+    gap: 20px;
+    padding-top: 12px;
+    border-top: 1px solid #e8eaed;
+}
+
+.interview-details .video-meta span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #7f8c8d;
+    font-size: 0.85rem;
+}
+
+.interview-details .video-meta i {
+    color: #ff0000;
+}
+
+/* ==============================================
+   CLIENT FEATURES VIDEO CARDS
+   ============================================== */
+
+.client-videos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 25px;
+}
+
+.client-video-card {
+    background: #ffffff;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    position: relative;
+}
+
+.client-video-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: 3px solid transparent;
+    border-radius: 16px;
+    transition: all 0.3s ease;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.client-video-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 16px 40px rgba(67, 233, 123, 0.25);
+}
+
+.client-video-card:hover::before {
+    border-color: rgba(67, 233, 123, 0.3);
+}
+    cursor: pointer;
+}
+
+.client-video-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.client-video-card .video-thumbnail-wrapper {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%;
+    background: #000;
+}
+
+.client-video-card .video-thumbnail-wrapper img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.client-tag {
+    display: inline-block;
+    background: linear-gradient(135deg, #f093fb, #f5576c);
+    color: white;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+/* ==============================================
+   ANALYSIS VIDEO CARDS
+   ============================================== */
+
+.analysis-videos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 25px;
+}
+
+.analysis-video-card {
+    background: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.analysis-video-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.analysis-tag {
+    display: inline-block;
+    background: linear-gradient(135deg, #4facfe, #00f2fe);
+    color: white;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+/* ==============================================
+   RESPONSIVE DESIGN
+   ============================================== */
+
+@media (max-width: 1024px) {
+    .latest-news-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 20px;
+    }
+    
+    .interview-videos-grid {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .latest-news-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .interview-videos-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .client-videos-grid,
+    .analysis-videos-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .video-info h3 {
+        font-size: 1.3rem;
+    }
+    
+    .play-overlay {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .play-overlay i {
+        font-size: 1.6rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .card-content h3 {
+        font-size: 1rem;
+    }
+    
+    .video-stats {
+        gap: 15px;
+    }
+    
+    .card-footer {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+}
+
+/* ==============================================
+   LOADING STATE
+   ============================================== */
+
+.video-skeleton {
+    animation: shimmer 1.5s infinite;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+/* Click feedback */
+.news-video-card-large:active,
+.interview-video-card:active,
+.client-video-card:active,
+.analysis-video-card:active {
+    transform: translateY(-4px) scale(0.98);
+}

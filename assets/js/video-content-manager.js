@@ -21,14 +21,8 @@ class VideoContentManager {
     setupVideoClickHandlers() {
         // Breaking news video - already embedded, no action needed
         
-        // Latest News videos
-        document.querySelectorAll('.news-video-card').forEach(card => {
-            card.addEventListener('click', (e) => {
-                e.preventDefault();
-                const videoId = card.dataset.videoId;
-                this.openYouTubeVideo(videoId);
-            });
-        });
+        // Latest News videos (both classes)
+        document.querySelectorAll('.news-video-card, .news-video-card-large').forEach(card => {
 
         // Interview videos
         document.querySelectorAll('.interview-video-card').forEach(card => {
@@ -64,20 +58,8 @@ class VideoContentManager {
             
             if (videos && videos.length > 0) {
                 this.updateBreakingNews(videos[0]);
-                this.updateLatestNews(videos.slice(1, 5));
-                this.updateInterviews(videos.slice(5, 8));
-            }
-        } catch (error) {
-            console.info('Using placeholder videos. Real videos will load from:', this.youtubeHandle);
-        }
-    }
-
-    /**
-     * Update breaking news video
-     */
-    updateBreakingNews(video) {
-        const breakingSection = document.querySelector('.breaking-video-player');
-        if (!breakingSection || !video) return;
+                this.updateLatestNews(videos.slice(1, 9)); // 8 videos for grid
+                this.updateInterviews(videos.slice(9, 12)); // 3 interview videos
 
         const iframe = breakingSection.querySelector('iframe');
         const title = breakingSection.querySelector('h3');
@@ -122,6 +104,21 @@ class VideoContentManager {
                 const duration = card.querySelector('.video-duration');
 
                 card.dataset.videoId = video.videoId || '';
+        // Select both grid styles - smaller cards and larger wirecable grid cards
+        const newsCards = document.querySelectorAll('.news-video-card, .news-video-card-large');
+
+        videos.forEach((video, index) => {
+            if (newsCards[index] && video) {
+                const card = newsCards[index];
+                
+                // Handle both thumbnail wrapper styles
+                const thumbnail = card.querySelector('.video-thumbnail img, .video-thumbnail-wrapper img');
+                const title = card.querySelector('.video-details h3, .card-content h3');
+                const viewCount = card.querySelector('.video-meta span:first-child, .card-footer .video-stats');
+                const timeAgo = card.querySelector('.video-meta span:last-child, .card-footer .time');
+                const duration = card.querySelector('.video-duration');
+
+                card.dataset.videoId = video.videoId || '';
 
                 if (thumbnail && video.thumbnail) {
                     thumbnail.src = video.thumbnail;
@@ -133,23 +130,7 @@ class VideoContentManager {
                 }
 
                 if (viewCount && video.views) {
-                    viewCount.innerHTML = `<i class="far fa-eye"></i> ${this.formatViews(video.views)}`;
-                }
-
-                if (timeAgo && video.publishedAt) {
-                    timeAgo.innerHTML = `<i class="far fa-clock"></i> ${this.getTimeAgo(video.publishedAt)}`;
-                }
-
-                if (duration && video.duration) {
-                    duration.textContent = this.formatDuration(video.duration);
-                }
-            }
-        });
-    }
-
-    /**
-     * Update interview videos
-     */
+                    viewCount.innerHTML = `<i class="far fa-eye"></i> ${this.formatViews(video.views)} views`;
     updateInterviews(videos) {
         const interviewCards = document.querySelectorAll('.interview-video-card');
         
