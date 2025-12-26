@@ -267,19 +267,17 @@ a {
 .breaking-grid-wrapper {
     display: grid;
     grid-template-columns: 2fr 1fr;
-    gap: 25px;
-    align-items: start;
-    /* Prevent stretching */
-    padding: 24px;
-    /* Added padding to fix layout */
+    gap: 20px;
+    align-items: stretch;
+    padding: 20px;
 }
 
 .main-breaking-story {
     position: relative;
     border-radius: 12px;
     overflow: hidden;
-    /* Remove fixed height to allow content to dictate size, or match aspect ratio */
-    aspect-ratio: 16/9;
+    height: 100%;
+    min-height: 400px;
 }
 
 .news-cards-grid {
@@ -287,6 +285,8 @@ a {
     flex-direction: column;
     gap: 15px;
     padding: 0;
+    min-width: 0;
+    /* Critical for grid child */
 }
 
 .news-card {
@@ -299,17 +299,22 @@ a {
     /* Subtle border */
     padding: 12px;
     align-items: center;
-    height: 150px;
+    min-height: 120px;
+    /* Reduced from fixed height */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
     /* Clean base shadow */
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    min-width: 0;
+    /* Critical flex child constraint */
 }
 
 .news-card img {
-    width: 120px;
-    height: 100%;
+    width: 100px;
+    height: 100px;
     object-fit: cover;
-    border-radius: 6px;
+    border-radius: 8px;
+    flex-shrink: 0;
+    /* Prevent image squishing */
 }
 
 .news-card-content {
