@@ -591,7 +591,7 @@ window.buildNewsCardLarge = buildNewsCardLarge;
 // ============================================
 // BACKEND API INTEGRATION
 // ============================================
-const API_BASE = '/api'; // Relative path for production
+const API_BASE = 'https://bizzshort.onrender.com/api'; // Absolute path for production
 
 async function fetchFromBackend(endpoint) {
     try {
@@ -615,76 +615,76 @@ async function loadBackendContent() {
     ]);
 
     // Update Latest Updates (Articles)
-}
+    // Update Latest Updates (Articles)
 
-// Update Latest Updates (Articles) - Ensure thumbnails are handled correctly
-const latestGrid = document.querySelector('.latest-news-grid');
-if (latestGrid && articles.length > 0) {
-    latestGrid.innerHTML = '';
-    articles.slice(0, 8).forEach(item => {
+    // Update Latest Updates (Articles) - Ensure thumbnails are handled correctly
+    const latestGrid = document.querySelector('.latest-news-grid');
+    if (latestGrid && articles.length > 0) {
+        latestGrid.innerHTML = '';
+        articles.slice(0, 8).forEach(item => {
 
-        // Logic to prefer youtube thumbnail if it's a video article
-        let thumbnail = item.image;
-        if (!thumbnail || thumbnail.includes('via.placeholder') || thumbnail.includes('placehold.co')) {
-            // If backend didn't provide good image, check if we can extract from video URL
-            if (item.videoUrl && (item.videoUrl.includes('youtube.com') || item.videoUrl.includes('youtu.be'))) {
-                const match = item.videoUrl.match(/(?:v=|\/)([a-zA-Z0-9_-]{11}).*/);
-                if (match && match[1]) {
-                    thumbnail = `https://img.youtube.com/vi/${match[1]}/mqdefault.jpg`;
+            // Logic to prefer youtube thumbnail if it's a video article
+            let thumbnail = item.image;
+            if (!thumbnail || thumbnail.includes('via.placeholder') || thumbnail.includes('placehold.co')) {
+                // If backend didn't provide good image, check if we can extract from video URL
+                if (item.videoUrl && (item.videoUrl.includes('youtube.com') || item.videoUrl.includes('youtu.be'))) {
+                    const match = item.videoUrl.match(/(?:v=|\/)([a-zA-Z0-9_-]{11}).*/);
+                    if (match && match[1]) {
+                        thumbnail = `https://img.youtube.com/vi/${match[1]}/mqdefault.jpg`;
+                    }
                 }
             }
-        }
-        // Fallback
-        if (!thumbnail) thumbnail = 'assets/images/logo.jpeg';
+            // Fallback
+            if (!thumbnail) thumbnail = 'assets/images/logo.jpeg';
 
-        const mapped = {
-            title: item.title,
-            excerpt: item.excerpt || item.content.substring(0, 100) + '...',
-            thumbnail: thumbnail,
-            category: item.category,
-            published: item.publishedAt || item.createdAt,
-            url: `article-detail.html?id=${item.id}`,
-            source: 'bizzshort'
-        };
-        latestGrid.appendChild(buildNewsCardLarge(mapped));
-    });
-}
+            const mapped = {
+                title: item.title,
+                excerpt: item.excerpt || item.content.substring(0, 100) + '...',
+                thumbnail: thumbnail,
+                category: item.category,
+                published: item.publishedAt || item.createdAt,
+                url: `article-detail.html?id=${item.id}`,
+                source: 'bizzshort'
+            };
+            latestGrid.appendChild(buildNewsCardLarge(mapped));
+        });
+    }
 
-// Update Events
-const eventsGrid = document.querySelector('.events-grid');
-if (eventsGrid && events.length > 0) {
-    eventsGrid.innerHTML = '';
-    events.slice(0, 3).forEach(item => {
-        const mapped = {
-            title: item.name,
-            excerpt: `${item.location} • ${new Date(item.date).toLocaleDateString()}`,
-            thumbnail: item.image || 'https://placehold.co/600x400?text=Event',
-            category: 'events',
-            published: item.createdAt,
-            url: '#', // or event detail page
-            source: 'bizzshort'
-        };
-        eventsGrid.appendChild(buildArticleCard(mapped));
-    });
-}
+    // Update Events
+    const eventsGrid = document.querySelector('.events-grid');
+    if (eventsGrid && events.length > 0) {
+        eventsGrid.innerHTML = '';
+        events.slice(0, 3).forEach(item => {
+            const mapped = {
+                title: item.name,
+                excerpt: `${item.location} • ${new Date(item.date).toLocaleDateString()}`,
+                thumbnail: item.image || 'https://placehold.co/600x400?text=Event',
+                category: 'events',
+                published: item.createdAt,
+                url: '#', // or event detail page
+                source: 'bizzshort'
+            };
+            eventsGrid.appendChild(buildArticleCard(mapped));
+        });
+    }
 
-// Update Interviews
-const interviewGrid = document.querySelector('.interview-grid');
-if (interviewGrid && interviews.length > 0) {
-    interviewGrid.innerHTML = '';
-    interviews.slice(0, 2).forEach(item => {
-        const mapped = {
-            title: `${item.intervieweeName} - ${item.company}`,
-            excerpt: item.summary || item.designation,
-            thumbnail: item.image || 'https://placehold.co/600x400?text=Interview',
-            category: 'interviews',
-            published: item.publishedAt,
-            url: '#',
-            source: 'bizzshort'
-        };
-        interviewGrid.appendChild(buildArticleCard(mapped));
-    });
-}
+    // Update Interviews
+    const interviewGrid = document.querySelector('.interview-grid');
+    if (interviewGrid && interviews.length > 0) {
+        interviewGrid.innerHTML = '';
+        interviews.slice(0, 2).forEach(item => {
+            const mapped = {
+                title: `${item.intervieweeName} - ${item.company}`,
+                excerpt: item.summary || item.designation,
+                thumbnail: item.image || 'https://placehold.co/600x400?text=Interview',
+                category: 'interviews',
+                published: item.publishedAt,
+                url: '#',
+                source: 'bizzshort'
+            };
+            interviewGrid.appendChild(buildArticleCard(mapped));
+        });
+    }
 }
 
 document.addEventListener('DOMContentLoaded', loadBackendContent);

@@ -4,7 +4,7 @@
 // Example: node populate_real_data.js https://bizzshort.onrender.com/api
 
 const args = process.argv.slice(2);
-const BASE_URL = args[0] || 'http://localhost:3000/api';
+const BASE_URL = args[0] || 'https://bizzshort.onrender.com/api';
 
 console.log(`📡 Target API: ${BASE_URL}\n`);
 

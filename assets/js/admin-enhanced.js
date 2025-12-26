@@ -1,9 +1,7 @@
 // Enhanced Admin Panel JavaScript - Connected to Backend API
 
 // ============ Configuration ============
-const API_BASE_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-    ? 'http://localhost:3000'
-    : '';
+const API_BASE_URL = 'https://bizzshort.onrender.com';
 const USE_STATIC_MODE = false; // Connected to backend
 
 const MOCK_DATA = {}; // Cleared mock data to ensure we use API

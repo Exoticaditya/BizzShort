@@ -43,15 +43,8 @@ class BizzShortAPI {
     }
 
     getAPIBaseURL() {
-        // Development vs Production
-        const hostname = window.location.hostname;
-
-        if (hostname === 'localhost' || hostname === '127.0.0.1') {
-            return 'http://localhost:3000';
-        }
-
-        // In production (Render), use relative path so it works automatically
-        return '';
+        // STRICTLY use production URL as per user request
+        return 'https://bizzshort.onrender.com';
     }
 
     // Generic request method
