@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - BizzShort</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/admin.css">
+</head>
+
+<body>
+    <!-- Admin Header -->
+    <header class="admin-header">
+        <div class="admin-header-content">
+            <div class="admin-logo">
+                <img src="assets/images/logo.jpeg" alt="BizzShort Logo">
+                <h1>BizzShort Admin</h1>
+            </div>
+            <div class="admin-user">
+                <span class="user-name">Admin User</span>
+                <img src="https://ui-avatars.com/api/?name=Admin+User&background=e74c3c&color=fff" alt="Admin" class="user-avatar">
+                <button class="btn-website" onclick="window.open('index.html', '_blank')">
+                    <i class="fas fa-globe"></i> View Website
+                </button>
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <nav class="sidebar-nav">
+                <a href="#dashboard" class="nav-item active" onclick="showSection('dashboard')">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+                <a href="#videos" class="nav-item" onclick="showSection('videos')">
+                    <i class="fas fa-video"></i> Videos
+                </a>
+                <a href="#events" class="nav-item" onclick="showSection('events')">
+                    <i class="fas fa-calendar"></i> Upcoming Events
+                </a>
+                <a href="#advertisements" class="nav-item" onclick="showSection('advertisements')">
+                    <i class="fas fa-ad"></i> Advertisements
+                </a>
+                <a href="#settings" class="nav-item" onclick="showSection('settings')">
+                    <i class="fas fa-cog"></i> Settings
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="admin-section active">
+                <div class="section-header">
+                    <h2><i class="fas fa-chart-line"></i> Dashboard Overview</h2>
+                    <button class="btn-primary" onclick="refreshDashboard()">
+                        <i class="fas fa-sync"></i> Refresh
+                    </button>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon blue"><i class="fas fa-video"></i></div>
+                        <div class="stat-info">
+                            <h3>Total Videos</h3>
+                            <p class="stat-number" data-stat="videos">0</p>
+                            <span class="stat-change positive">Published</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon green"><i class="fas fa-calendar"></i></div>
+                        <div class="stat-info">
+                            <h3>Upcoming Events</h3>
+                            <p class="stat-number" data-stat="events">0</p>
+                            <span class="stat-change positive">Scheduled</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon orange"><i class="fas fa-ad"></i></div>
+                        <div class="stat-info">
+                            <h3>Active Ads</h3>
+                            <p class="stat-number" data-stat="advertisements">0</p>
+                            <span class="stat-change positive">Running</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon purple"><i class="fas fa-eye"></i></div>
+                        <div class="stat-info">
+                            <h3>Total Views</h3>
+                            <p class="stat-number" data-stat="views">0</p>
+                            <span class="stat-change positive">This Month</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-charts">
+                    <div class="chart-card">
+                        <h3><i class="fas fa-chart-bar"></i> Monthly Traffic</h3>
+                        <canvas id="trafficChart"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <h3><i class="fas fa-chart-pie"></i> Content Distribution</h3>
+                        <canvas id="contentChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="recent-activity">
+                    <h3><i class="fas fa-history"></i> Recent Activity</h3>
+                    <table class="activity-table">
+                        <thead>
+                            <tr>
+                                <th>Action</th>
+                                <th>Type</th>
+                                <th>Item</th>
+                                <th>Time</th>
+                            </tr>
+                        </thead>
+                        <tbody id="activityTableBody">
+                            <tr>
+                                <td colspan="4" style="text-align: center; padding: 30px; color: #6B7280;">
+                                    <i class="fas fa-inbox" style="font-size: 36px; margin-bottom: 10px; display: block;"></i>
+                                    No recent activity
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Videos Section -->
+            <section id="videos" class="admin-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-video"></i> Video Management</h2>
+                    <button class="btn-primary" onclick="showAddVideoModal()">
+                        <i class="fas fa-plus"></i> Add New Video
+                    </button>
+                </div>
+
+                <div class="filter-bar">
+                    <input type="text" placeholder="Search videos..." class="search-input" id="videoSearchInput" onkeyup="filterVideos()">
+                    <select class="filter-select" id="videoCategoryFilter" onchange="filterVideos()">
+                        <option value="">All Categories</option>
+                        <option value="Markets">Markets</option>
+                        <option value="Startups">Startups</option>
+                        <option value="Economy">Economy</option>
+                        <option value="Technology">Technology</option>
+                        <option value="Banking">Banking</option>
+                    </select>
+                    <select class="filter-select" id="videoSourceFilter" onchange="filterVideos()">
+                        <option value="">All Sources</option>
+                        <option value="youtube">YouTube</option>
+                        <option value="instagram">Instagram</option>
+                    </select>
+                </div>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Thumbnail</th>
+                            <th>Title</th>
+                            <th>Category</th>
+                            <th>Source</th>
+                            <th>Views</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="videosTableBody">
+                        <tr>
+                            <td colspan="7" style="text-align: center; padding: 40px;">
+                                <i class="fas fa-video" style="font-size: 48px; color: #e1e8ed; margin-bottom: 15px;"></i>
+                                <p style="color: #6B7280;">No videos yet. Click "Add New Video" to get started.</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="pagination">
+                    <button class="page-btn"><i class="fas fa-chevron-left"></i></button>
+                    <button class="page-btn active">1</button>
+                    <button class="page-btn">2</button>
+                    <button class="page-btn">3</button>
+                    <button class="page-btn"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </section>
+
+            <!-- Events Section -->
+            <section id="events" class="admin-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-calendar"></i> Upcoming Events</h2>
+                    <button class="btn-primary" onclick="openModal('addEvent')">
+                        <i class="fas fa-plus"></i> Add New Event
+                    </button>
+                </div>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Event Name</th>
+                            <th>Date</th>
+                            <th>Location</th>
+                            <th>Type</th>
+                            <th>Attendees</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="eventsTableBody">
+                        <tr>
+                            <td colspan="7" style="text-align: center; padding: 40px;">
+                                <i class="fas fa-calendar-alt" style="font-size: 48px; color: #e1e8ed; margin-bottom: 15px;"></i>
+                                <p style="color: #6B7280;">No events scheduled. Click "Add New Event" to create one.</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Advertisements Section -->
+            <section id="advertisements" class="admin-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-ad"></i> Advertisement Management</h2>
+                    <button class="btn-primary" onclick="showAddAdModal()">
+                        <i class="fas fa-plus"></i> Add New Advertisement
+                    </button>
+                </div>
+
+                <!-- Ad Stats -->
+                <div class="stats-grid" style="margin-bottom: 30px;">
+                    <div class="stat-card">
+                        <div class="stat-icon blue">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Total Impressions</h3>
+                            <div class="stat-number" id="totalImpressions">0</div>
+                            <span class="stat-change positive">This month</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon green">
+                            <i class="fas fa-mouse-pointer"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Total Clicks</h3>
+                            <div class="stat-number" id="totalClicks">0</div>
+                            <span class="stat-change positive">This month</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon orange">
+                            <i class="fas fa-percentage"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Click-Through Rate</h3>
+                            <div class="stat-number" id="avgCTR">0%</div>
+                            <span class="stat-change positive">Average</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon red">
+                            <i class="fas fa-ad"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Active Ads</h3>
+                            <div class="stat-number" id="activeAds">0</div>
+                            <span class="stat-change neutral">Currently running</span>
+                        </div>
+                    </div>
+                </div>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Preview</th>
+                            <th>Ad Name</th>
+                            <th>Position</th>
+                            <th>Status</th>
+                            <th>Impressions</th>
+                            <th>Clicks</th>
+                            <th>CTR</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="advertisementsTableBody">
+                        <tr>
+                            <td colspan="8" style="text-align: center; padding: 40px;">
+                                <i class="fas fa-ad" style="font-size: 48px; color: #e1e8ed; margin-bottom: 15px;"></i>
+                                <p style="color: #6B7280;">No advertisements. Click "Add New Advertisement" to create one.</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Settings Section -->
+            <section id="settings" class="admin-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-cog"></i> System Settings</h2>
+                </div>
+
+                <div class="settings-grid">
+                    <!-- Website Settings -->
+                    <div class="settings-card">
+                        <h3><i class="fas fa-globe"></i> Website Settings</h3>
+                        <div class="form-group">
+                            <label>Website Title</label>
+                            <input type="text" class="form-input" value="BizzShort">
+                        </div>
+                        <div class="form-group">
+                            <label>Website Description</label>
+                            <textarea class="form-input" rows="3">Business news and insights in short videos</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Contact Email</label>
+                            <input type="email" class="form-input" value="contact@bizzshort.com">
+                        </div>
+                        <button class="btn-primary"><i class="fas fa-save"></i> Save Changes</button>
+                    </div>
+
+                    <!-- Social Media Settings -->
+                    <div class="settings-card">
+                        <h3><i class="fas fa-share-alt"></i> Social Media Links</h3>
+                        <div class="form-group">
+                            <label><i class="fab fa-youtube"></i> YouTube Channel</label>
+                            <input type="text" class="form-input" value="@bizz_short">
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fab fa-instagram"></i> Instagram Handle</label>
+                            <input type="text" class="form-input" value="bizz_short">
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fab fa-twitter"></i> Twitter Handle</label>
+                            <input type="text" class="form-input" value="@bizzshort">
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fab fa-linkedin"></i> LinkedIn Profile</label>
+                            <input type="text" class="form-input" value="company/bizzshort">
+                        </div>
+                        <button class="btn-primary"><i class="fas fa-save"></i> Save Changes</button>
+                    </div>
+
+                    <!-- API Settings -->
+                    <div class="settings-card">
+                        <h3><i class="fas fa-plug"></i> API Configuration</h3>
+                        <div class="form-group">
+                            <label>YouTube API Key</label>
+                            <input type="password" class="form-input" placeholder="Enter YouTube API key">
+                        </div>
+                        <div class="form-group">
+                            <label>Instagram Access Token</label>
+                            <input type="password" class="form-input" placeholder="Enter Instagram token">
+                        </div>
+                        <div class="form-group">
+                            <label>Market Data API Key</label>
+                            <input type="password" class="form-input" placeholder="Enter market data API key">
+                        </div>
+                        <button class="btn-primary"><i class="fas fa-save"></i> Save Changes</button>
+                    </div>
+
+                    <!-- Admin Account -->
+                    <div class="settings-card">
+                        <h3><i class="fas fa-user-shield"></i> Admin Account</h3>
+                        <div class="form-group">
+                            <label>Current Password</label>
+                            <input type="password" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label>New Password</label>
+                            <input type="password" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label>Confirm New Password</label>
+                            <input type="password" class="form-input">
+                        </div>
+                        <button class="btn-primary"><i class="fas fa-key"></i> Change Password</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal for Video Add/Edit -->
+    <div id="videoModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeVideoModal()">&times;</span>
+            <h2 id="videoModalTitle"><i class="fas fa-video"></i> Add New Video</h2>
+            <form id="videoForm" onsubmit="saveVideo(event)">
+                <input type="hidden" id="videoId">
+                <div class="form-group">
+                    <label>Video Title *</label>
+                    <input type="text" class="form-input" id="videoTitle" required placeholder="Enter video title">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Category *</label>
+                        <select class="form-input" id="videoCategory" required>
+                            <option value="">Select Category</option>
+                            <option value="Markets">Markets</option>
+                            <option value="Startups">Startups</option>
+                            <option value="Economy">Economy</option>
+                            <option value="Technology">Technology</option>
+                            <option value="Banking">Banking</option>
+                            <option value="Energy">Energy</option>
+                            <option value="Cryptocurrency">Cryptocurrency</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Source *</label>
+                        <select class="form-input" id="videoSource" required>
+                            <option value="youtube">YouTube</option>
+                            <option value="instagram">Instagram</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Video URL *</label>
+                    <input type="text" class="form-input" id="videoUrl" required placeholder="https://www.youtube.com/watch?v=...">
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea class="form-input" id="videoDescription" rows="4" placeholder="Enter video description..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label style="display: flex; align-items: center; gap: 10px;">
+                        <input type="checkbox" id="videoFeatured" style="width: auto;">
+                        <span>Featured Video (Show prominently on homepage)</span>
+                    </label>
+                </div>
+                <div class="form-actions" style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button type="submit" class="btn-primary" style="flex: 1;">
+                        <i class="fas fa-save"></i> Save Video
+                    </button>
+                    <button type="button" class="btn-secondary" onclick="closeVideoModal()" style="flex: 1;">
+                        <i class="fas fa-times"></i> Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for Event Add/Edit -->
+    <div id="eventModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal()">&times;</span>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <!-- Modal for Ad Add/Edit -->
+    <div id="adModal" class="modal">
+        <div class="modal-content" style="max-width: 700px;">
+            <span class="modal-close" onclick="closeAdModal()">&times;</span>
+            <h2><i class="fas fa-ad"></i> Add New Advertisement</h2>
+            <form id="adForm" onsubmit="saveAdvertisement(event)">
+                <div class="form-group">
+                    <label>Ad Name *</label>
+                    <input type="text" class="form-input" id="adName" required placeholder="e.g., Winter Sale Banner">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Position *</label>
+                        <select class="form-input" id="adPosition" required>
+                            <option value="">Select Position</option>
+                            <option value="header">Header</option>
+                            <option value="sidebar">Sidebar</option>
+                            <option value="footer">Footer</option>
+                            <option value="inline">Inline</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Status *</label>
+                        <select class="form-input" id="adStatus" required>
+                            <option value="active">Active</option>
+                            <option value="paused">Paused</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Upload Image *</label>
+                    <input type="file" class="form-input" id="adImage" accept="image/*" required onchange="previewAdImage(event)">
+                    <small style="color: #6B7280; display: block; margin-top: 5px;">
+                        Recommended: 728x90 (Header), 300x250 (Sidebar)
+                    </small>
+                </div>
+                <div id="adImagePreview" style="display: none; margin: 20px 0;">
+                    <img id="previewImg" style="max-width: 100%; border-radius: 8px; border: 2px solid #e1e8ed;">
+                </div>
+                <div class="form-group">
+                    <label>Target URL</label>
+                    <input type="url" class="form-input" id="adUrl" placeholder="https://example.com">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Start Date</label>
+                        <input type="date" class="form-input" id="adStartDate">
+                    </div>
+                    <div class="form-group">
+                        <label>End Date</label>
+                        <input type="date" class="form-input" id="adEndDate">
+                    </div>
+                </div>
+                <div class="form-actions" style="display: flex; gap: 10px; margin-top: 25px;">
+                    <button type="submit" class="btn-primary" style="flex: 1;">
+                        <i class="fas fa-save"></i> Save Advertisement
+                    </button>
+                    <button type="button" class="btn-secondary" onclick="closeAdModal()" style="flex: 1;">
+                        <i class="fas fa-times"></i> Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <script src="assets/js/admin-streamlined.js"></script>
+    <script src="assets/js/ad-manager.js"></script>
+</body>
+</html>
