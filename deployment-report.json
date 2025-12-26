@@ -1,0 +1,75 @@
+{
+  "timestamp": "2025-12-26T08:18:26.199Z",
+  "backend": "https://bizzshort.onrender.com",
+  "frontend": "https://www.bizzshort.com",
+  "youtube": "@bizz_short",
+  "instagram": "bizz_short",
+  "tests": [
+    {
+      "name": "Backend Health Check",
+      "status": false,
+      "message": "Status 404"
+    },
+    {
+      "name": "Website Accessibility",
+      "status": true,
+      "message": "www.bizzshort.com is live"
+    },
+    {
+      "name": "Articles API",
+      "status": false,
+      "message": "0 items found"
+    },
+    {
+      "name": "Interviews API",
+      "status": false,
+      "message": "0 items found"
+    },
+    {
+      "name": "Events API",
+      "status": false,
+      "message": "0 items found"
+    },
+    {
+      "name": "Industry API",
+      "status": false,
+      "message": "0 items found"
+    },
+    {
+      "name": "Videos API",
+      "status": false,
+      "message": "0 items found"
+    },
+    {
+      "name": "News API",
+      "status": false,
+      "message": "0 items found"
+    },
+    {
+      "name": "Admin Credentials",
+      "status": true,
+      "message": "Configured correctly"
+    },
+    {
+      "name": "YouTube Integration",
+      "status": true,
+      "message": "Channel handle configured"
+    },
+    {
+      "name": "Instagram Integration",
+      "status": true,
+      "message": "Profile handle configured"
+    },
+    {
+      "name": "Market Data Integration",
+      "status": true,
+      "message": "APIs configured"
+    }
+  ],
+  "summary": {
+    "total": 12,
+    "passed": 5,
+    "failed": 7,
+    "successRate": "41.7%"
+  }
+}

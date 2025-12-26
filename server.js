@@ -178,6 +178,28 @@ const protect = async (req, res, next) => {
 };
 
 // ============ Setup Route (Emergency Seed) ============
+
+// Health Check Endpoint
+app.get('/api/health', async (req, res) => {
+    try {
+        // Check database connection
+        const dbStatus = require('mongoose').connection.readyState === 1 ? 'connected' : 'disconnected';
+        
+        res.json({
+            status: 'ok',
+            timestamp: new Date().toISOString(),
+            database: dbStatus,
+            uptime: process.uptime(),
+            environment: process.env.NODE_ENV || 'production'
+        });
+    } catch (error) {
+        res.status(500).json({
+            status: 'error',
+            error: error.message
+        });
+    }
+});
+
 app.get('/api/setup-production', async (req, res) => {
     // Basic protection using query param from environment
     const setupKey = process.env.SETUP_KEY || 'secure_setup_123';
