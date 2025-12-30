@@ -3,6 +3,7 @@
 class BizzShortAPI {
     constructor() {
         this.baseURL = this.getAPIBaseURL();
+        console.log('📡 BizzShortAPI initialized with baseURL:', this.baseURL);
         this.endpoints = {
             // Content Endpoints
             articles: '/api/articles',
@@ -43,7 +44,18 @@ class BizzShortAPI {
     }
 
     getAPIBaseURL() {
-        // STRICTLY use production URL as per user request
+        // Use dynamic URL detection for better local/production support
+        if (window.APIConfig) {
+            return window.APIConfig.baseURL;
+        }
+        
+        // Fallback logic
+        const hostname = window.location.hostname;
+        if (hostname === 'localhost' || hostname === '127.0.0.1') {
+            return `${window.location.protocol}//${hostname}:${window.location.port || 3000}`;
+        }
+        
+        // Production URL
         return 'https://bizzshort.onrender.com';
     }
 

@@ -466,10 +466,11 @@
                         <label>Position *</label>
                         <select class="form-input" id="adPosition" required>
                             <option value="">Select Position</option>
-                            <option value="header">Header</option>
-                            <option value="sidebar">Sidebar</option>
-                            <option value="footer">Footer</option>
-                            <option value="inline">Inline</option>
+                            <option value="top-banner">Top Header Banner (970x90)</option>
+                            <option value="left-sidebar-main">Left Sidebar Main (300x600)</option>
+                            <option value="left-sidebar-secondary">Left Sidebar Secondary (300x250)</option>
+                            <option value="right-sidebar-main">Right Sidebar Main (300x600)</option>
+                            <option value="right-sidebar-secondary">Right Sidebar Secondary (300x250)</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -484,7 +485,11 @@
                     <label>Upload Image *</label>
                     <input type="file" class="form-input" id="adImage" accept="image/*" required onchange="previewAdImage(event)">
                     <small style="color: #6B7280; display: block; margin-top: 5px;">
-                        Recommended: 728x90 (Header), 300x250 (Sidebar)
+                        <strong>Recommended Sizes:</strong><br>
+                        • Top Banner: 970x90px<br>
+                        • Sidebar Main: 300x600px<br>
+                        • Sidebar Secondary: 300x250px<br>
+                        Max file size: 150KB (JPG, PNG, GIF)
                     </small>
                 </div>
                 <div id="adImagePreview" style="display: none; margin: 20px 0;">
@@ -516,8 +521,81 @@
         </div>
     </div>
 
+    <!-- Modal for Video Add/Edit -->
+    <div id="videoModal" class="modal">
+        <div class="modal-content" style="max-width: 800px;">
+            <span class="modal-close" onclick="closeVideoModal()">&times;</span>
+            <h2><i class="fas fa-video"></i> Add New Video</h2>
+            <form id="videoForm" onsubmit="saveVideo(event)">
+                <div class="form-group">
+                    <label>YouTube URL or Video ID *</label>
+                    <input type="text" class="form-input" id="videoUrl" required 
+                           placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ or dQw4w9WgXcQ"
+                           onblur="extractYouTubeId()">
+                    <small style="color: #6B7280; display: block; margin-top: 5px;">
+                        Paste full YouTube URL or just the video ID
+                    </small>
+                </div>
+                <div class="form-group">
+                    <label>Video Title *</label>
+                    <input type="text" class="form-input" id="videoTitle" required placeholder="e.g., Market Update: Nifty 50 Breaks Records">
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea class="form-input" id="videoDescription" rows="3" 
+                              placeholder="Brief description of the video content..."></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Category *</label>
+                        <select class="form-input" id="videoCategory" required>
+                            <option value="">Select Category</option>
+                            <option value="business">Business</option>
+                            <option value="markets">Markets</option>
+                            <option value="technology">Technology</option>
+                            <option value="industry">Industry Update</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Featured Position</label>
+                        <select class="form-input" id="videoPosition">
+                            <option value="">Not Featured</option>
+                            <option value="breaking-news">Breaking News Main</option>
+                            <option value="breaking-news-card">Breaking News Card</option>
+                            <option value="latest-updates">Latest Updates</option>
+                            <option value="interviews">Interviews</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="videoPreview" style="display: none; margin: 20px 0;">
+                    <label>Preview:</label>
+                    <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px;">
+                        <iframe id="previewIframe" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;"
+                                frameborder="0" allowfullscreen></iframe>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="videoPublished" checked>
+                        Publish immediately
+                    </label>
+                </div>
+                <div class="form-actions" style="display: flex; gap: 10px; margin-top: 25px;">
+                    <button type="submit" class="btn-primary" style="flex: 1;">
+                        <i class="fas fa-save"></i> Save Video
+                    </button>
+                    <button type="button" class="btn-secondary" onclick="closeVideoModal()" style="flex: 1;">
+                        <i class="fas fa-times"></i> Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Load API Config First -->
+    <script src="assets/js/config.js?v=20251230"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
-    <script src="assets/js/admin-streamlined.js"></script>
+    <script src="assets/js/admin-streamlined.js?v=20251230"></script>
     <script src="assets/js/ad-manager.js"></script>
 </body>
 </html>

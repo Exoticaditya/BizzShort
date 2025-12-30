@@ -3,7 +3,13 @@
 // Fetches videos from @bizz_short YouTube channel
 // ============================================
 
-const API_BASE_URL = 'https://bizzshort.onrender.com';
+const API_BASE_URL = window.APIConfig ? window.APIConfig.baseURL : 
+                     (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+                      ? `${window.location.protocol}//${window.location.hostname}:${window.location.port || 3000}` 
+                      : 'https://bizzshort.onrender.com');
+
+console.log('📺 Latest Updates API URL:', API_BASE_URL);
+
 let currentCategory = 'all';
 
 // Initialize Latest Updates section on page load
@@ -105,8 +111,15 @@ function renderVideoCards(videos, container) {
 function setupCategoryFilters() {
     const filterButtons = document.querySelectorAll('.category-filters .filter-btn');
     
+    if (filterButtons.length === 0) {
+        console.warn('No category filter buttons found');
+        return;
+    }
+    
     filterButtons.forEach(button => {
-        button.addEventListener('click', function() {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            
             // Remove active class from all buttons
             filterButtons.forEach(btn => btn.classList.remove('active'));
             
@@ -117,10 +130,14 @@ function setupCategoryFilters() {
             const category = this.getAttribute('data-category');
             currentCategory = category;
             
+            console.log('Filter clicked:', category);
+            
             // Reload videos with filter
             loadLatestUpdates(category);
         });
     });
+    
+    console.log('Category filters initialized:', filterButtons.length, 'buttons');
 }
 
 // ============================================

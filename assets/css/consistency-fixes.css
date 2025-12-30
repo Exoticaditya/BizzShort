@@ -1,0 +1,121 @@
+/* Consistency Fixes for BizzShort */
+
+/* Fix container max-width consistency */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Ensure all buttons have consistent styling */
+button, .btn {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button:hover, .btn:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+/* Fix image loading and display */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Smooth scrolling for all anchor links */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Fix video embed responsive sizing */
+iframe {
+    max-width: 100%;
+}
+
+/* Loading state for dynamic content */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.loading::after {
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #e74c3c;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-left: 10px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Fix mobile menu visibility */
+@media (max-width: 768px) {
+    .mobile-menu-toggle {
+        display: block;
+        cursor: pointer;
+    }
+    
+    .main-nav ul {
+        display: none;
+    }
+    
+    .main-nav ul.mobile-active {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: #2c3e50;
+        padding: 20px;
+        z-index: 1000;
+    }
+}
+
+/* Error message styling */
+.error-message {
+    background-color: #fee;
+    color: #c33;
+    padding: 15px;
+    border-radius: 5px;
+    margin: 10px 0;
+    border-left: 4px solid #c33;
+}
+
+.success-message {
+    background-color: #efe;
+    color: #3c3;
+    padding: 15px;
+    border-radius: 5px;
+    margin: 10px 0;
+    border-left: 4px solid #3c3;
+}
+
+/* Fix form input consistency */
+input, textarea, select {
+    font-family: inherit;
+    font-size: inherit;
+}
+
+/* Accessibility improvements */
+a:focus, button:focus, input:focus, textarea:focus {
+    outline: 2px solid #e74c3c;
+    outline-offset: 2px;
+}
+
+/* Print styles */
+@media print {
+    .side-ad, .ad-banner-container, .advertisement {
+        display: none !important;
+    }
+}
