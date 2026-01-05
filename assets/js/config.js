@@ -7,15 +7,17 @@ const APIConfig = {
         // Check if running locally
         const hostname = window.location.hostname;
         const port = window.location.port;
+        const protocol = window.location.protocol;
         
-        // Local development
+        // Local development - try to detect if server is running on port 3000
         if (hostname === 'localhost' || hostname === '127.0.0.1') {
-            return `http://${hostname}:${port || 3000}`;
+            // If we're on a different port (e.g., live server 5500), connect to backend on 3000
+            return `http://${hostname}:3000`;
         }
         
         // Production - use the current origin if server is running on same domain
         // Otherwise use the Render deployment URL
-        if (window.location.origin.includes('bizzshort')) {
+        if (window.location.origin.includes('bizzshort') || window.location.origin.includes('render') || window.location.origin.includes('netlify') || window.location.origin.includes('vercel')) {
             return window.location.origin;
         }
         

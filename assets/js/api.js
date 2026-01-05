@@ -51,11 +51,22 @@ class BizzShortAPI {
         
         // Fallback logic
         const hostname = window.location.hostname;
+        const protocol = window.location.protocol;
+        
         if (hostname === 'localhost' || hostname === '127.0.0.1') {
-            return `${window.location.protocol}//${hostname}:${window.location.port || 3000}`;
+            // Always use port 3000 for backend in local development
+            return `http://${hostname}:3000`;
         }
         
-        // Production URL
+        // Production URL - use same origin if on hosted platform
+        if (window.location.origin.includes('bizzshort') || 
+            window.location.origin.includes('render') || 
+            window.location.origin.includes('netlify') ||
+            window.location.origin.includes('vercel')) {
+            return window.location.origin;
+        }
+        
+        // Fallback to Render deployment
         return 'https://bizzshort.onrender.com';
     }
 
@@ -80,16 +91,20 @@ class BizzShortAPI {
         }
 
         try {
+            console.log(`🌐 API Request: ${config.method} ${url}`);
             const response = await fetch(url, config);
 
             if (!response.ok) {
-                throw new Error(`API Error: ${response.status} ${response.statusText}`);
+                const errorData = await response.json().catch(() => ({ error: response.statusText }));
+                console.error(`❌ API Error: ${response.status}`, errorData);
+                throw new Error(errorData.error || `${response.status} ${response.statusText}`);
             }
 
             const data = await response.json();
+            console.log(`✅ API Success: ${endpoint}`, data);
             return { success: true, data };
         } catch (error) {
-            console.error('API Request Failed:', error);
+            console.error('❌ API Request Failed:', error);
             return { success: false, error: error.message };
         }
     }

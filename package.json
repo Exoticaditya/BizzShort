@@ -7,9 +7,9 @@
     "start": "node server.js",
     "dev": "nodemon server.js",
     "install-check": "node install.js",
-    "setup": "echo \"Visit: http://localhost:3000/api/setup-production?key=YOUR_SETUP_KEY\"",
+    "setup": "node setup.js",
     "test": "node test_mongo.js",
-    "help": "echo \"📚 Available commands:\\n  npm start - Start the server\\n  npm run dev - Start with auto-reload\\n  npm run install-check - Verify installation\\n  npm run setup - Show setup URL\\n  npm test - Test database connection\\n\\n📖 Read QUICK_START.md for detailed instructions\""
+    "help": "echo \"📚 Available commands:\\n  npm start - Start the server\\n  npm run dev - Start with auto-reload\\n  npm run install-check - Verify installation\\n  npm run setup - Interactive setup wizard\\n  npm test - Test database connection\\n\\n📖 Read START_HERE.md for complete guide\""
   },
   "keywords": [
     "bizzshort",
