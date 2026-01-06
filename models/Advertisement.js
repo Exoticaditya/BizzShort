@@ -12,7 +12,10 @@ const AdvertisementSchema = new mongoose.Schema({
         impressions: { type: Number, default: 0 },
         clicks: { type: Number, default: 0 }
     },
-    createdAt: { type: Date, default: Date.now }
+    createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    updatedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    createdAt: { type: Date, default: Date.now },
+    updatedAt: { type: Date, default: Date.now }
 });
 
 // Virtual for CTR

@@ -36,6 +36,16 @@
                 <a href="#dashboard" class="nav-item active" onclick="showSection('dashboard')">
                     <i class="fas fa-tachometer-alt"></i> Dashboard
                 </a>
+                <a href="#user-approvals" class="nav-item" onclick="showSection('user-approvals')">
+                    <i class="fas fa-user-check"></i> User Approvals
+                    <span id="pendingCount" class="badge" style="display:none;">0</span>
+                </a>
+                <a href="#employee-progress" class="nav-item" onclick="showSection('employee-progress')">
+                    <i class="fas fa-users-cog"></i> Employee Progress
+                </a>
+                <a href="#analytics" class="nav-item" onclick="showSection('analytics')">
+                    <i class="fas fa-chart-bar"></i> Analytics
+                </a>
                 <a href="#videos" class="nav-item" onclick="showSection('videos')">
                     <i class="fas fa-video"></i> Videos
                 </a>
@@ -128,6 +138,138 @@
                             </tr>
                         </tbody>
                     </table>
+                </div>
+            </section>
+
+            <!-- User Approvals Section -->
+            <section id="user-approvals" class="admin-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-user-check"></i> User Registration Approvals</h2>
+                    <button class="btn-primary" onclick="loadPendingUsers()">
+                        <i class="fas fa-sync"></i> Refresh
+                    </button>
+                </div>
+
+                <div class="stats-grid" style="margin-bottom: 30px;">
+                    <div class="stat-card">
+                        <div class="stat-icon orange"><i class="fas fa-hourglass-half"></i></div>
+                        <div class="stat-info">
+                            <h3>Pending Approvals</h3>
+                            <p class="stat-number" id="totalPending">0</p>
+                            <span class="stat-change">Awaiting Review</span>
+                        </div>
+                    </div>
+                </div>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Registered</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pendingUsersTableBody">
+                        <tr>
+                            <td colspan="6" style="text-align: center; padding: 40px;">
+                                <i class="fas fa-user-clock" style="font-size: 48px; color: #e1e8ed; margin-bottom: 15px;"></i>
+                                <p style="color: #6B7280;">No pending user approvals</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Employee Progress Section -->
+            <section id="employee-progress" class="admin-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-users-cog"></i> Employee Progress & Activity</h2>
+                    <button class="btn-primary" onclick="loadEmployeeProgress()">
+                        <i class="fas fa-sync"></i> Refresh
+                    </button>
+                </div>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Employee</th>
+                            <th>Role</th>
+                            <th>Videos</th>
+                            <th>Events</th>
+                            <th>Ads</th>
+                            <th>Total Posts</th>
+                            <th>Last Activity</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="employeeProgressTableBody">
+                        <tr>
+                            <td colspan="8" style="text-align: center; padding: 40px;">
+                                <i class="fas fa-users" style="font-size: 48px; color: #e1e8ed; margin-bottom: 15px;"></i>
+                                <p style="color: #6B7280;">Loading employee data...</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Analytics Section -->
+            <section id="analytics" class="admin-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-chart-bar"></i> Website Analytics</h2>
+                    <button class="btn-primary" onclick="loadAnalytics()">
+                        <i class="fas fa-sync"></i> Refresh
+                    </button>
+                </div>
+
+                <div class="stats-grid" style="margin-bottom: 30px;">
+                    <div class="stat-card">
+                        <div class="stat-icon blue"><i class="fas fa-video"></i></div>
+                        <div class="stat-info">
+                            <h3>Total Videos</h3>
+                            <p class="stat-number" id="analyticsVideos">0</p>
+                            <span class="stat-change positive" id="analyticsVideosMonth">0 this month</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon green"><i class="fas fa-calendar"></i></div>
+                        <div class="stat-info">
+                            <h3>Total Events</h3>
+                            <p class="stat-number" id="analyticsEvents">0</p>
+                            <span class="stat-change positive" id="analyticsEventsMonth">0 this month</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon orange"><i class="fas fa-ad"></i></div>
+                        <div class="stat-info">
+                            <h3>Total Ads</h3>
+                            <p class="stat-number" id="analyticsAds">0</p>
+                            <span class="stat-change">Active</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon purple"><i class="fas fa-users"></i></div>
+                        <div class="stat-info">
+                            <h3>Team Members</h3>
+                            <p class="stat-number" id="analyticsUsers">0</p>
+                            <span class="stat-change">Approved</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="chart-card">
+                        <h3><i class="fas fa-bullseye"></i> Advertisement Performance</h3>
+                        <div id="adAnalyticsContent">
+                            <div style="text-align: center; padding: 40px; color: #6B7280;">
+                                <i class="fas fa-chart-pie" style="font-size: 48px; margin-bottom: 15px;"></i>
+                                <p>Loading advertisement analytics...</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </section>
 

@@ -6,9 +6,12 @@ const UserSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     role: { type: String, default: 'EDITOR', enum: ['ADMIN', 'EDITOR'] },
-    status: { type: String, default: 'ACTIVE' },
+    status: { type: String, default: 'PENDING', enum: ['PENDING', 'APPROVED', 'REJECTED'] },
     avatar: { type: String, default: 'https://ui-avatars.com/api/?name=User&background=random' },
-    joinedAt: { type: Date, default: Date.now }
+    joinedAt: { type: Date, default: Date.now },
+    approvedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    approvedAt: { type: Date },
+    rejectionReason: { type: String }
 });
 
 // Encryption handled manually in controller/setup

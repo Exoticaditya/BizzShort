@@ -403,10 +403,18 @@ app.post('/api/admin/login', authLimiter, async (req, res) => {
         });
 
         if (user && (await bcrypt.compare(password, user.password))) {
+            // Check if user is approved
+            if (user.status === 'PENDING') {
+                return res.status(403).json({ success: false, error: 'Your account is pending approval. Please wait for admin approval.' });
+            }
+            if (user.status === 'REJECTED') {
+                return res.status(403).json({ success: false, error: 'Your account has been rejected. Please contact support.' });
+            }
+            
             res.json({
                 success: true,
                 sessionId: generateToken(user._id),
-                user: { id: user._id, name: user.name, role: user.role }
+                user: { id: user._id, name: user.name, role: user.role, status: user.status }
             });
         } else {
             res.status(401).json({ success: false, error: 'Invalid credentials' });
@@ -417,23 +425,14 @@ app.post('/api/admin/login', authLimiter, async (req, res) => {
     }
 });
 
-// Admin Registration (First admin only)
+// Admin Registration (First admin auto-approved, others pending)
 app.post('/api/admin/register', async (req, res) => {
     const { name, email, password, setupKey } = req.body;
     
     try {
-        // Check if any admin already exists
-        const adminExists = await User.findOne({ role: 'ADMIN' });
-        
-        if (adminExists) {
-            // Require setup key for additional admins
-            if (setupKey !== process.env.SETUP_KEY) {
-                return res.status(403).json({ 
-                    success: false, 
-                    error: 'Setup key required to create additional admins' 
-                });
-            }
-        }
+        // Check if any approved admin already exists
+        const approvedAdminCount = await User.countDocuments({ role: 'ADMIN', status: 'APPROVED' });
+        const isFirstAdmin = approvedAdminCount === 0;
         
         // Validate inputs
         if (!name || !email || !password) {
@@ -477,15 +476,26 @@ app.post('/api/admin/register', async (req, res) => {
             name: validator.escape(name.trim()),
             email: email.toLowerCase().trim(),
             password: hashedPassword,
-            role: 'ADMIN'
+            role: 'ADMIN',
+            status: isFirstAdmin ? 'APPROVED' : 'PENDING' // First admin auto-approved
         });
         
-        res.status(201).json({
-            success: true,
-            message: 'Admin account created successfully',
-            sessionId: generateToken(user._id),
-            user: { id: user._id, name: user.name, role: user.role }
-        });
+        if (isFirstAdmin) {
+            // First admin - auto-login
+            res.status(201).json({
+                success: true,
+                message: 'Admin account created and approved successfully',
+                sessionId: generateToken(user._id),
+                user: { id: user._id, name: user.name, role: user.role, status: user.status }
+            });
+        } else {
+            // Additional admin - pending approval
+            res.status(201).json({
+                success: true,
+                message: 'Registration submitted. Awaiting admin approval.',
+                requiresApproval: true
+            });
+        }
         
     } catch (err) {
         console.error('Registration error:', err);
@@ -499,7 +509,7 @@ app.post('/api/admin/register', async (req, res) => {
 // Check if first admin exists
 app.get('/api/admin/check-first-setup', async (req, res) => {
     try {
-        const adminExists = await User.findOne({ role: 'ADMIN' });
+        const adminExists = await User.findOne({ role: 'ADMIN', status: 'APPROVED' });
         res.json({ 
             success: true, 
             requiresSetup: !adminExists 
@@ -509,6 +519,285 @@ app.get('/api/admin/check-first-setup', async (req, res) => {
             success: false, 
             error: 'Server error' 
         });
+    }
+});
+
+// Get pending user registrations (admin only)
+app.get('/api/admin/pending-users', protect, async (req, res) => {
+    try {
+        if (req.user.role !== 'ADMIN' || req.user.status !== 'APPROVED') {
+            return res.status(403).json({ success: false, error: 'Access denied' });
+        }
+        
+        const pendingUsers = await User.find({ status: 'PENDING' })
+            .select('-password')
+            .sort({ joinedAt: -1 });
+        
+        res.json({
+            success: true,
+            users: pendingUsers
+        });
+    } catch (err) {
+        console.error('Error fetching pending users:', err);
+        res.status(500).json({ success: false, error: 'Server error' });
+    }
+});
+
+// Approve user registration (admin only)
+app.post('/api/admin/approve-user/:userId', protect, async (req, res) => {
+    try {
+        if (req.user.role !== 'ADMIN' || req.user.status !== 'APPROVED') {
+            return res.status(403).json({ success: false, error: 'Access denied' });
+        }
+        
+        const user = await User.findById(req.params.userId);
+        if (!user) {
+            return res.status(404).json({ success: false, error: 'User not found' });
+        }
+        
+        if (user.status !== 'PENDING') {
+            return res.status(400).json({ success: false, error: 'User is not pending approval' });
+        }
+        
+        user.status = 'APPROVED';
+        user.approvedBy = req.user._id;
+        user.approvedAt = new Date();
+        await user.save();
+        
+        res.json({
+            success: true,
+            message: 'User approved successfully',
+            user: {
+                id: user._id,
+                name: user.name,
+                email: user.email,
+                status: user.status
+            }
+        });
+    } catch (err) {
+        console.error('Error approving user:', err);
+        res.status(500).json({ success: false, error: 'Server error' });
+    }
+});
+
+// Reject user registration (admin only)
+app.post('/api/admin/reject-user/:userId', protect, async (req, res) => {
+    try {
+        if (req.user.role !== 'ADMIN' || req.user.status !== 'APPROVED') {
+            return res.status(403).json({ success: false, error: 'Access denied' });
+        }
+        
+        const { reason } = req.body;
+        const user = await User.findById(req.params.userId);
+        
+        if (!user) {
+            return res.status(404).json({ success: false, error: 'User not found' });
+        }
+        
+        if (user.status !== 'PENDING') {
+            return res.status(400).json({ success: false, error: 'User is not pending approval' });
+        }
+        
+        user.status = 'REJECTED';
+        user.rejectionReason = reason || 'No reason provided';
+        await user.save();
+        
+        res.json({
+            success: true,
+            message: 'User rejected successfully'
+        });
+    } catch (err) {
+        console.error('Error rejecting user:', err);
+        res.status(500).json({ success: false, error: 'Server error' });
+    }
+});
+
+// Get employee statistics (for employee panel)
+app.get('/api/employee/my-stats', protect, async (req, res) => {
+    try {
+        const userId = req.user._id;
+        
+        const videos = await Video.countDocuments({ createdBy: userId });
+        const events = await Event.countDocuments({ createdBy: userId });
+        const advertisements = await Advertisement.countDocuments({ createdBy: userId });
+        
+        res.json({
+            success: true,
+            stats: {
+                videos,
+                events,
+                advertisements
+            }
+        });
+    } catch (err) {
+        console.error('Error fetching employee stats:', err);
+        res.status(500).json({ success: false, error: 'Server error' });
+    }
+});
+
+// Get all employees with their activity stats (admin only)
+app.get('/api/admin/employees-progress', protect, async (req, res) => {
+    try {
+        if (req.user.role !== 'ADMIN' || req.user.status !== 'APPROVED') {
+            return res.status(403).json({ success: false, error: 'Access denied' });
+        }
+        
+        const employees = await User.find({ status: 'APPROVED' }).select('-password');
+        
+        const employeesWithStats = await Promise.all(employees.map(async (employee) => {
+            const videos = await Video.countDocuments({ createdBy: employee._id });
+            const events = await Event.countDocuments({ createdBy: employee._id });
+            const advertisements = await Advertisement.countDocuments({ createdBy: employee._id });
+            
+            // Get recent activity
+            const recentVideos = await Video.find({ createdBy: employee._id })
+                .sort({ createdAt: -1 })
+                .limit(5)
+                .select('title createdAt');
+            const recentEvents = await Event.find({ createdBy: employee._id })
+                .sort({ createdAt: -1 })
+                .limit(5)
+                .select('name createdAt');
+            const recentAds = await Advertisement.find({ createdBy: employee._id })
+                .sort({ createdAt: -1 })
+                .limit(5)
+                .select('title createdAt');
+            
+            return {
+                id: employee._id,
+                name: employee.name,
+                email: employee.email,
+                role: employee.role,
+                avatar: employee.avatar,
+                joinedAt: employee.joinedAt,
+                stats: {
+                    videos,
+                    events,
+                    advertisements,
+                    total: videos + events + advertisements
+                },
+                recentActivity: [
+                    ...recentVideos.map(v => ({ type: 'video', title: v.title, date: v.createdAt })),
+                    ...recentEvents.map(e => ({ type: 'event', title: e.name, date: e.createdAt })),
+                    ...recentAds.map(a => ({ type: 'ad', title: a.title, date: a.createdAt }))
+                ].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 10)
+            };
+        }));
+        
+        res.json({
+            success: true,
+            employees: employeesWithStats
+        });
+    } catch (err) {
+        console.error('Error fetching employee progress:', err);
+        res.status(500).json({ success: false, error: 'Server error' });
+    }
+});
+
+// Get advertisement analytics (admin only)
+app.get('/api/admin/advertisement-analytics', protect, async (req, res) => {
+    try {
+        if (req.user.role !== 'ADMIN' || req.user.status !== 'APPROVED') {
+            return res.status(403).json({ success: false, error: 'Access denied' });
+        }
+        
+        const ads = await Advertisement.find().populate('createdBy', 'name email');
+        
+        const totalImpressions = ads.reduce((sum, ad) => sum + (ad.metrics?.impressions || 0), 0);
+        const totalClicks = ads.reduce((sum, ad) => sum + (ad.metrics?.clicks || 0), 0);
+        const avgCTR = totalImpressions > 0 ? ((totalClicks / totalImpressions) * 100).toFixed(2) : 0;
+        
+        const adsByPosition = {};
+        ads.forEach(ad => {
+            if (!adsByPosition[ad.position]) {
+                adsByPosition[ad.position] = { count: 0, impressions: 0, clicks: 0 };
+            }
+            adsByPosition[ad.position].count++;
+            adsByPosition[ad.position].impressions += ad.metrics?.impressions || 0;
+            adsByPosition[ad.position].clicks += ad.metrics?.clicks || 0;
+        });
+        
+        res.json({
+            success: true,
+            analytics: {
+                totalAds: ads.length,
+                activeAds: ads.filter(ad => ad.status === 'active').length,
+                totalImpressions,
+                totalClicks,
+                avgCTR,
+                adsByPosition,
+                topPerformers: ads
+                    .map(ad => ({
+                        id: ad._id,
+                        title: ad.title,
+                        impressions: ad.metrics?.impressions || 0,
+                        clicks: ad.metrics?.clicks || 0,
+                        ctr: ad.ctr,
+                        createdBy: ad.createdBy?.name || 'Unknown'
+                    }))
+                    .sort((a, b) => parseFloat(b.ctr) - parseFloat(a.ctr))
+                    .slice(0, 10)
+            }
+        });
+    } catch (err) {
+        console.error('Error fetching ad analytics:', err);
+        res.status(500).json({ success: false, error: 'Server error' });
+    }
+});
+
+// Get website analytics (admin only)
+app.get('/api/admin/website-analytics', protect, async (req, res) => {
+    try {
+        if (req.user.role !== 'ADMIN' || req.user.status !== 'APPROVED') {
+            return res.status(403).json({ success: false, error: 'Access denied' });
+        }
+        
+        const totalVideos = await Video.countDocuments();
+        const totalEvents = await Event.countDocuments();
+        const totalAds = await Advertisement.countDocuments();
+        const totalUsers = await User.countDocuments({ status: 'APPROVED' });
+        
+        // Content by category
+        const videosByCategory = await Video.aggregate([
+            { $group: { _id: '$category', count: { $sum: 1 } } }
+        ]);
+        
+        // Recent content
+        const recentVideos = await Video.find().sort({ createdAt: -1 }).limit(10).populate('createdBy', 'name');
+        const recentEvents = await Event.find().sort({ createdAt: -1 }).limit(10).populate('createdBy', 'name');
+        
+        // Monthly stats
+        const thirtyDaysAgo = new Date();
+        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+        
+        const videosThisMonth = await Video.countDocuments({ createdAt: { $gte: thirtyDaysAgo } });
+        const eventsThisMonth = await Event.countDocuments({ createdAt: { $gte: thirtyDaysAgo } });
+        const adsThisMonth = await Advertisement.countDocuments({ createdAt: { $gte: thirtyDaysAgo } });
+        
+        res.json({
+            success: true,
+            analytics: {
+                totals: {
+                    videos: totalVideos,
+                    events: totalEvents,
+                    advertisements: totalAds,
+                    users: totalUsers
+                },
+                thisMonth: {
+                    videos: videosThisMonth,
+                    events: eventsThisMonth,
+                    advertisements: adsThisMonth
+                },
+                videosByCategory,
+                recentContent: {
+                    videos: recentVideos,
+                    events: recentEvents
+                }
+            }
+        });
+    } catch (err) {
+        console.error('Error fetching website analytics:', err);
+        res.status(500).json({ success: false, error: 'Server error' });
     }
 });
 

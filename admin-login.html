@@ -398,15 +398,23 @@
                 const result = await response.json();
 
                 if (response.ok && result.success) {
-                    // Store session token
+                    // Store session token and user data
                     const storage = rememberMe ? localStorage : sessionStorage;
                     storage.setItem('adminSession', result.sessionId || result.token);
+                    storage.setItem('adminUser', JSON.stringify(result.user));
                     
                     showSuccess('Login successful! Redirecting...');
                     
-                    // Redirect to admin panel
+                    // Redirect based on role
                     setTimeout(() => {
-                        window.location.href = 'admin.html';
+                        const userRole = result.user.role;
+                        if (userRole === 'ADMIN') {
+                            window.location.href = 'admin.html';
+                        } else if (userRole === 'EDITOR') {
+                            window.location.href = 'employee.html';
+                        } else {
+                            window.location.href = 'admin.html'; // fallback
+                        }
                     }, 1000);
                 } else {
                     showError(result.message || result.error || 'Invalid credentials. Please try again.');
@@ -424,8 +432,13 @@
         // Check if already logged in
         window.addEventListener('DOMContentLoaded', function() {
             const session = localStorage.getItem('adminSession') || sessionStorage.getItem('adminSession');
-            if (session) {
-                window.location.href = 'admin.html';
+            const user = JSON.parse(localStorage.getItem('adminUser') || sessionStorage.getItem('adminUser') || '{}');
+            if (session && user.role) {
+                if (user.role === 'ADMIN') {
+                    window.location.href = 'admin.html';
+                } else if (user.role === 'EDITOR') {
+                    window.location.href = 'employee.html';
+                }
             }
         });
 

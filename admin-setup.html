@@ -396,17 +396,29 @@
                 const data = await response.json();
                 
                 if (data.success) {
-                    successMessage.textContent = 'Admin account created successfully! Redirecting...';
-                    successMessage.style.display = 'block';
-                    
-                    // Store session
-                    localStorage.setItem('sessionId', data.sessionId);
-                    localStorage.setItem('adminUser', JSON.stringify(data.user));
-                    
-                    // Redirect to admin panel
-                    setTimeout(() => {
-                        window.location.href = 'admin.html';
-                    }, 1500);
+                    if (data.requiresApproval) {
+                        // Pending approval message
+                        successMessage.textContent = 'Registration submitted successfully! Your account is pending admin approval. You will receive access once approved.';
+                        successMessage.style.display = 'block';
+                        
+                        // Disable form
+                        setTimeout(() => {
+                            window.location.href = 'admin-login.html';
+                        }, 3000);
+                    } else {
+                        // First admin - auto-approved
+                        successMessage.textContent = 'Admin account created successfully! Redirecting...';
+                        successMessage.style.display = 'block';
+                        
+                        // Store session
+                        localStorage.setItem('sessionId', data.sessionId);
+                        localStorage.setItem('adminUser', JSON.stringify(data.user));
+                        
+                        // Redirect to admin panel
+                        setTimeout(() => {
+                            window.location.href = 'admin.html';
+                        }, 1500);
+                    }
                 } else {
                     errorMessage.textContent = data.error || 'Failed to create admin account';
                     errorMessage.style.display = 'block';

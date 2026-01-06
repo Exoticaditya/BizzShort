@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Panel - BizzShort</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/admin.css">
+</head>
+
+<body>
+    <!-- Employee Header -->
+    <header class="admin-header">
+        <div class="admin-header-content">
+            <div class="admin-logo">
+                <img src="assets/images/logo.jpeg" alt="BizzShort Logo">
+                <h1>BizzShort Employee Panel</h1>
+            </div>
+            <div class="admin-user">
+                <span class="user-name" id="employeeName">Employee</span>
+                <img src="https://ui-avatars.com/api/?name=Employee&background=3498db&color=fff" alt="Employee" class="user-avatar" id="employeeAvatar">
+                <button class="btn-website" onclick="window.open('index.html', '_blank')">
+                    <i class="fas fa-globe"></i> View Website
+                </button>
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <nav class="sidebar-nav">
+                <a href="#dashboard" class="nav-item active" onclick="showSection('dashboard')">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+                <a href="#videos" class="nav-item" onclick="showSection('videos')">
+                    <i class="fas fa-video"></i> Videos
+                </a>
+                <a href="#events" class="nav-item" onclick="showSection('events')">
+                    <i class="fas fa-calendar"></i> Events
+                </a>
+                <a href="#advertisements" class="nav-item" onclick="showSection('advertisements')">
+                    <i class="fas fa-ad"></i> Advertisements
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="admin-section active">
+                <div class="section-header">
+                    <h2><i class="fas fa-chart-line"></i> My Dashboard</h2>
+                    <button class="btn-primary" onclick="refreshDashboard()">
+                        <i class="fas fa-sync"></i> Refresh
+                    </button>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon blue"><i class="fas fa-video"></i></div>
+                        <div class="stat-info">
+                            <h3>My Videos</h3>
+                            <p class="stat-number" data-stat="myVideos">0</p>
+                            <span class="stat-change">Posted by me</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon green"><i class="fas fa-calendar"></i></div>
+                        <div class="stat-info">
+                            <h3>My Events</h3>
+                            <p class="stat-number" data-stat="myEvents">0</p>
+                            <span class="stat-change">Created by me</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon orange"><i class="fas fa-ad"></i></div>
+                        <div class="stat-info">
+                            <h3>My Ads</h3>
+                            <p class="stat-number" data-stat="myAds">0</p>
+                            <span class="stat-change">Managed by me</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon purple"><i class="fas fa-tasks"></i></div>
+                        <div class="stat-info">
+                            <h3>Total Posts</h3>
+                            <p class="stat-number" data-stat="totalPosts">0</p>
+                            <span class="stat-change">This Month</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="recent-activity">
+                    <h3><i class="fas fa-history"></i> My Recent Activity</h3>
+                    <table class="activity-table">
+                        <thead>
+                            <tr>
+                                <th>Action</th>
+                                <th>Type</th>
+                                <th>Item</th>
+                                <th>Time</th>
+                            </tr>
+                        </thead>
+                        <tbody id="activityTableBody">
+                            <tr>
+                                <td colspan="4" style="text-align: center; padding: 30px; color: #6B7280;">
+                                    <i class="fas fa-inbox" style="font-size: 36px; margin-bottom: 10px; display: block;"></i>
+                                    No recent activity
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Videos Section -->
+            <section id="videos" class="admin-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-video"></i> Video Management</h2>
+                    <button class="btn-primary" onclick="showAddVideoModal()">
+                        <i class="fas fa-plus"></i> Add New Video
+                    </button>
+                </div>
+
+                <div class="filter-bar">
+                    <input type="text" placeholder="Search videos..." class="search-input" id="videoSearchInput" onkeyup="filterVideos()">
+                    <select class="filter-select" id="videoCategoryFilter" onchange="filterVideos()">
+                        <option value="">All Categories</option>
+                        <option value="Markets">Markets</option>
+                        <option value="Startups">Startups</option>
+                        <option value="Economy">Economy</option>
+                        <option value="Technology">Technology</option>
+                        <option value="Banking">Banking</option>
+                    </select>
+                </div>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Thumbnail</th>
+                            <th>Title</th>
+                            <th>Category</th>
+                            <th>Source</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="videosTableBody">
+                        <tr>
+                            <td colspan="6" style="text-align: center; padding: 40px;">
+                                <i class="fas fa-video" style="font-size: 48px; color: #e1e8ed; margin-bottom: 15px;"></i>
+                                <p style="color: #6B7280;">No videos yet. Click "Add New Video" to get started.</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Events Section -->
+            <section id="events" class="admin-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-calendar"></i> Events Management</h2>
+                    <button class="btn-primary" onclick="openModal('addEvent')">
+                        <i class="fas fa-plus"></i> Add New Event
+                    </button>
+                </div>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Event Name</th>
+                            <th>Date</th>
+                            <th>Location</th>
+                            <th>Type</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="eventsTableBody">
+                        <tr>
+                            <td colspan="6" style="text-align: center; padding: 40px;">
+                                <i class="fas fa-calendar-alt" style="font-size: 48px; color: #e1e8ed; margin-bottom: 15px;"></i>
+                                <p style="color: #6B7280;">No events scheduled. Click "Add New Event" to create one.</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Advertisements Section -->
+            <section id="advertisements" class="admin-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-ad"></i> Advertisements Management</h2>
+                    <button class="btn-primary" onclick="openModal('addAd')">
+                        <i class="fas fa-plus"></i> Add New Advertisement
+                    </button>
+                </div>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Preview</th>
+                            <th>Company</th>
+                            <th>Type</th>
+                            <th>Status</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="advertisementsTableBody">
+                        <tr>
+                            <td colspan="7" style="text-align: center; padding: 40px;">
+                                <i class="fas fa-ad" style="font-size: 48px; color: #e1e8ed; margin-bottom: 15px;"></i>
+                                <p style="color: #6B7280;">No advertisements yet. Click "Add New Advertisement" to create one.</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Video Modal (same as admin) -->
+    <div id="videoModal" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2 id="modalTitle"><i class="fas fa-video"></i> Add New Video</h2>
+                <span class="close" onclick="closeVideoModal()">&times;</span>
+            </div>
+            <form id="videoForm">
+                <input type="hidden" id="videoId">
+                <div class="form-group">
+                    <label>Video URL *</label>
+                    <input type="url" class="form-input" id="videoUrl" 
+                           placeholder="https://youtube.com/watch?v=..." required>
+                    <small style="color: #6B7280; display: block; margin-top: 5px;">
+                        <i class="fas fa-info-circle"></i> Supports YouTube and Instagram URLs
+                    </small>
+                </div>
+                <div class="form-group">
+                    <label>Title *</label>
+                    <input type="text" class="form-input" id="videoTitle" 
+                           placeholder="Enter video title..." required>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea class="form-input" id="videoDescription" rows="3" 
+                              placeholder="Brief description of the video content..."></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Category *</label>
+                        <select class="form-input" id="videoCategory" required>
+                            <option value="">Select Category</option>
+                            <option value="business">Business</option>
+                            <option value="markets">Markets</option>
+                            <option value="technology">Technology</option>
+                            <option value="industry">Industry Update</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn-primary" style="flex: 1;">
+                        <i class="fas fa-save"></i> Save Video
+                    </button>
+                    <button type="button" class="btn-secondary" onclick="closeVideoModal()" style="flex: 1;">
+                        <i class="fas fa-times"></i> Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Load Scripts -->
+    <script src="assets/js/config.js?v=20260106"></script>
+    <script src="assets/js/employee.js?v=20260106"></script>
+</body>
+</html>

@@ -12,7 +12,10 @@ const videoSchema = new mongoose.Schema({
     duration: { type: String },
     featured: { type: Boolean, default: false },
     tags: [String],
-    createdAt: { type: Date, default: Date.now }
+    createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    updatedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    createdAt: { type: Date, default: Date.now },
+    updatedAt: { type: Date, default: Date.now }
 });
 
 module.exports = mongoose.model('Video', videoSchema);

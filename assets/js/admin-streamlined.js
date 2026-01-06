@@ -16,7 +16,13 @@ const API_ENDPOINTS = {
     advertisements: `${API_BASE_URL}/api/advertisements`,
     videos: `${API_BASE_URL}/api/videos`,
     adminLogin: `${API_BASE_URL}/api/admin/login`,
-    adminLogout: `${API_BASE_URL}/api/admin/logout`
+    adminLogout: `${API_BASE_URL}/api/admin/logout`,
+    pendingUsers: `${API_BASE_URL}/api/admin/pending-users`,
+    approveUser: `${API_BASE_URL}/api/admin/approve-user`,
+    rejectUser: `${API_BASE_URL}/api/admin/reject-user`,
+    employeeProgress: `${API_BASE_URL}/api/admin/employees-progress`,
+    adAnalytics: `${API_BASE_URL}/api/admin/advertisement-analytics`,
+    websiteAnalytics: `${API_BASE_URL}/api/admin/website-analytics`
 };
 
 // ============ API Helper Functions ============
@@ -787,6 +793,257 @@ window.onclick = function(event) {
     }
 }
 
+// ============ User Approval Management ============
+async function loadPendingUsers() {
+    try {
+        const response = await apiRequest(API_ENDPOINTS.pendingUsers);
+        
+        if (response.success) {
+            const tbody = document.getElementById('pendingUsersTableBody');
+            const pendingCount = response.users.length;
+            
+            // Update pending count badge
+            const badge = document.getElementById('pendingCount');
+            const totalPending = document.getElementById('totalPending');
+            
+            if (pendingCount > 0) {
+                badge.textContent = pendingCount;
+                badge.style.display = 'inline-block';
+                totalPending.textContent = pendingCount;
+            } else {
+                badge.style.display = 'none';
+                totalPending.textContent = '0';
+            }
+            
+            if (response.users.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 40px;">
+                            <i class="fas fa-user-check" style="font-size: 48px; color: #27ae60; margin-bottom: 15px;"></i>
+                            <p style="color: #6B7280;">No pending user approvals</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            tbody.innerHTML = response.users.map(user => `
+                <tr id="user-${user._id}">
+                    <td>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <img src="${user.avatar}" alt="${user.name}" 
+                                 style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+                            <strong>${user.name}</strong>
+                        </div>
+                    </td>
+                    <td>${user.email}</td>
+                    <td><span class="badge badge-primary">${user.role}</span></td>
+                    <td>${new Date(user.joinedAt).toLocaleDateString()}</td>
+                    <td><span class="badge badge-warning">⏳ Pending</span></td>
+                    <td>
+                        <button class="btn-success btn-sm" onclick="approveUser('${user._id}')" title="Approve">
+                            <i class="fas fa-check"></i> Approve
+                        </button>
+                        <button class="btn-danger btn-sm" onclick="rejectUser('${user._id}')" title="Reject">
+                            <i class="fas fa-times"></i> Reject
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+            
+            showNotification(`${pendingCount} pending approval(s)`, 'info');
+        }
+    } catch (error) {
+        console.error('Error loading pending users:', error);
+        showNotification('Failed to load pending users', 'error');
+    }
+}
+
+async function approveUser(userId) {
+    if (!confirm('Approve this user registration?')) return;
+    
+    try {
+        const response = await apiRequest(`${API_ENDPOINTS.approveUser}/${userId}`, 'POST');
+        
+        if (response.success) {
+            showNotification('User approved successfully', 'success');
+            // Remove from table
+            const row = document.getElementById(`user-${userId}`);
+            if (row) row.remove();
+            // Reload pending users
+            loadPendingUsers();
+        }
+    } catch (error) {
+        console.error('Error approving user:', error);
+        showNotification('Failed to approve user', 'error');
+    }
+}
+
+async function rejectUser(userId) {
+    const reason = prompt('Reason for rejection (optional):');
+    if (reason === null) return; // User cancelled
+    
+    try {
+        const response = await apiRequest(`${API_ENDPOINTS.rejectUser}/${userId}`, 'POST', { reason });
+        
+        if (response.success) {
+            showNotification('User rejected', 'success');
+            // Remove from table
+            const row = document.getElementById(`user-${userId}`);
+            if (row) row.remove();
+            // Reload pending users
+            loadPendingUsers();
+        }
+    } catch (error) {
+        console.error('Error rejecting user:', error);
+        showNotification('Failed to reject user', 'error');
+    }
+}
+
+// ============ Employee Progress Management ============
+async function loadEmployeeProgress() {
+    try {
+        const response = await apiRequest(API_ENDPOINTS.employeeProgress);
+        
+        if (response.success) {
+            const tbody = document.getElementById('employeeProgressTableBody');
+            const employees = response.employees;
+            
+            if (employees.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="8" style="text-align: center; padding: 40px;">
+                            <i class="fas fa-users" style="font-size: 48px; color: #e1e8ed; margin-bottom: 15px;"></i>
+                            <p style="color: #6B7280;">No employees found</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            tbody.innerHTML = employees.map(emp => {
+                const lastActivity = emp.recentActivity.length > 0 
+                    ? new Date(emp.recentActivity[0].date).toLocaleString() 
+                    : 'No activity';
+                    
+                return `
+                    <tr>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <img src="${emp.avatar}" alt="${emp.name}" 
+                                     style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+                                <div>
+                                    <strong>${emp.name}</strong>
+                                    <div style="font-size: 12px; color: #6B7280;">${emp.email}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td><span class="badge badge-${emp.role === 'ADMIN' ? 'danger' : 'primary'}">${emp.role}</span></td>
+                        <td><strong>${emp.stats.videos}</strong></td>
+                        <td><strong>${emp.stats.events}</strong></td>
+                        <td><strong>${emp.stats.advertisements}</strong></td>
+                        <td><strong>${emp.stats.total}</strong></td>
+                        <td style="font-size: 12px;">${lastActivity}</td>
+                        <td>
+                            <button class="btn-view btn-sm" onclick="viewEmployeeDetails('${emp.id}')" title="View Details">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+    } catch (error) {
+        console.error('Error loading employee progress:', error);
+        showNotification('Failed to load employee progress', 'error');
+    }
+}
+
+function viewEmployeeDetails(employeeId) {
+    showNotification('Employee details view coming soon', 'info');
+}
+
+// ============ Analytics Management ============
+async function loadAnalytics() {
+    try {
+        // Load website analytics
+        const websiteResponse = await apiRequest(API_ENDPOINTS.websiteAnalytics);
+        
+        if (websiteResponse.success) {
+            const analytics = websiteResponse.analytics;
+            
+            document.getElementById('analyticsVideos').textContent = analytics.totals.videos;
+            document.getElementById('analyticsVideosMonth').textContent = `${analytics.thisMonth.videos} this month`;
+            
+            document.getElementById('analyticsEvents').textContent = analytics.totals.events;
+            document.getElementById('analyticsEventsMonth').textContent = `${analytics.thisMonth.events} this month`;
+            
+            document.getElementById('analyticsAds').textContent = analytics.totals.advertisements;
+            document.getElementById('analyticsUsers').textContent = analytics.totals.users;
+        }
+        
+        // Load advertisement analytics
+        const adResponse = await apiRequest(API_ENDPOINTS.adAnalytics);
+        
+        if (adResponse.success) {
+            const adAnalytics = adResponse.analytics;
+            const adContent = document.getElementById('adAnalyticsContent');
+            
+            adContent.innerHTML = `
+                <div style="padding: 20px;">
+                    <div class="stats-grid" style="margin-bottom: 20px;">
+                        <div style="padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                            <div style="font-size: 12px; color: #6B7280; margin-bottom: 5px;">Total Impressions</div>
+                            <div style="font-size: 24px; font-weight: bold; color: #3498db;">${adAnalytics.totalImpressions.toLocaleString()}</div>
+                        </div>
+                        <div style="padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                            <div style="font-size: 12px; color: #6B7280; margin-bottom: 5px;">Total Clicks</div>
+                            <div style="font-size: 24px; font-weight: bold; color: #27ae60;">${adAnalytics.totalClicks.toLocaleString()}</div>
+                        </div>
+                        <div style="padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                            <div style="font-size: 12px; color: #6B7280; margin-bottom: 5px;">Average CTR</div>
+                            <div style="font-size: 24px; font-weight: bold; color: #e74c3c;">${adAnalytics.avgCTR}%</div>
+                        </div>
+                        <div style="padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                            <div style="font-size: 12px; color: #6B7280; margin-bottom: 5px;">Active Ads</div>
+                            <div style="font-size: 24px; font-weight: bold; color: #f39c12;">${adAnalytics.activeAds}</div>
+                        </div>
+                    </div>
+                    
+                    <h4 style="margin-top: 20px; margin-bottom: 10px;"><i class="fas fa-trophy"></i> Top Performing Ads</h4>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Impressions</th>
+                                <th>Clicks</th>
+                                <th>CTR</th>
+                                <th>Created By</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${adAnalytics.topPerformers.map(ad => `
+                                <tr>
+                                    <td><strong>${ad.title}</strong></td>
+                                    <td>${ad.impressions.toLocaleString()}</td>
+                                    <td>${ad.clicks.toLocaleString()}</td>
+                                    <td><span class="badge badge-success">${ad.ctr}%</span></td>
+                                    <td>${ad.createdBy}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        }
+        
+        showNotification('Analytics loaded successfully', 'success');
+    } catch (error) {
+        console.error('Error loading analytics:', error);
+        showNotification('Failed to load analytics', 'error');
+    }
+}
+
 // ============ Initialize on Page Load ============
 document.addEventListener('DOMContentLoaded', function() {
     // Check authentication
@@ -794,6 +1051,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Load initial dashboard
     loadDashboard();
+    
+    // Load pending users count
+    loadPendingUsers();
 
     // Setup form handler
     const videoForm = document.getElementById('videoForm');
