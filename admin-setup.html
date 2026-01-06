@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Setup - BizzShort</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .setup-container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 500px;
+            overflow: hidden;
+        }
+
+        .setup-header {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .setup-header img {
+            width: 80px;
+            height: 80px;
+            border-radius: 12px;
+            margin: 0 auto 15px;
+            background: white;
+            padding: 10px;
+        }
+
+        .setup-header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .setup-header p {
+            opacity: 0.95;
+            font-size: 14px;
+        }
+
+        .setup-body {
+            padding: 40px 30px;
+        }
+
+        .info-box {
+            background: #e8f4fd;
+            border-left: 4px solid #3498db;
+            padding: 15px 20px;
+            margin-bottom: 25px;
+            border-radius: 8px;
+        }
+
+        .info-box i {
+            color: #3498db;
+            margin-right: 10px;
+        }
+
+        .info-box p {
+            color: #2c3e50;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #2c3e50;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        label .required {
+            color: #e74c3c;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .password-requirements {
+            margin-top: 8px;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            font-size: 12px;
+        }
+
+        .password-requirements ul {
+            margin: 8px 0 0 20px;
+            color: #666;
+        }
+
+        .password-requirements li {
+            margin: 4px 0;
+        }
+
+        .password-requirements li.valid {
+            color: #27ae60;
+        }
+
+        .password-requirements li.invalid {
+            color: #95a5a6;
+        }
+
+        .btn-setup {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .btn-setup:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(52, 152, 219, 0.4);
+        }
+
+        .btn-setup:active {
+            transform: translateY(0);
+        }
+
+        .btn-setup:disabled {
+            background: #95a5a6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .error-message {
+            background: #fee;
+            border-left: 4px solid #e74c3c;
+            color: #c0392b;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .success-message {
+            background: #d4edda;
+            border-left: 4px solid #27ae60;
+            color: #155724;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .login-link a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        .setup-key-group {
+            display: none;
+        }
+
+        .setup-key-group.show {
+            display: block;
+        }
+
+        @media (max-width: 480px) {
+            .setup-container {
+                border-radius: 0;
+            }
+
+            .setup-header, .setup-body {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="setup-container">
+        <div class="setup-header">
+            <img src="assets/images/logo.jpeg" alt="BizzShort Logo" onerror="this.style.display='none'">
+            <h1><i class="fas fa-user-shield"></i> Admin Setup</h1>
+            <p id="setup-subtitle">Create Your Administrator Account</p>
+        </div>
+
+        <div class="setup-body">
+            <div class="info-box" id="first-admin-info">
+                <i class="fas fa-info-circle"></i>
+                <p>You're setting up the first admin account. This account will have full access to manage content, users, and settings.</p>
+            </div>
+
+            <div class="info-box" id="additional-admin-info" style="display: none; background: #fff3cd; border-left-color: #f39c12;">
+                <i class="fas fa-shield-alt"></i>
+                <p>An admin account already exists. You need the setup key to create additional administrators.</p>
+            </div>
+
+            <div class="error-message" id="error-message"></div>
+            <div class="success-message" id="success-message"></div>
+
+            <form id="setup-form">
+                <div class="form-group">
+                    <label for="name">Full Name <span class="required">*</span></label>
+                    <input type="text" id="name" name="name" required placeholder="Enter your full name">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address <span class="required">*</span></label>
+                    <input type="email" id="email" name="email" required placeholder="admin@example.com">
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password <span class="required">*</span></label>
+                    <input type="password" id="password" name="password" required placeholder="Enter a strong password">
+                    <div class="password-requirements">
+                        <strong>Password must contain:</strong>
+                        <ul>
+                            <li id="req-length" class="invalid">At least 8 characters</li>
+                            <li id="req-uppercase" class="invalid">One uppercase letter</li>
+                            <li id="req-lowercase" class="invalid">One lowercase letter</li>
+                            <li id="req-number" class="invalid">One number</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirm-password">Confirm Password <span class="required">*</span></label>
+                    <input type="password" id="confirm-password" name="confirm-password" required placeholder="Re-enter your password">
+                </div>
+
+                <div class="form-group setup-key-group" id="setup-key-group">
+                    <label for="setup-key">Setup Key <span class="required">*</span></label>
+                    <input type="password" id="setup-key" name="setup-key" placeholder="Enter setup key for additional admins">
+                    <small style="color: #7f8c8d; display: block; margin-top: 5px;">
+                        Find this in your .env file (SETUP_KEY variable)
+                    </small>
+                </div>
+
+                <button type="submit" class="btn-setup">
+                    <i class="fas fa-shield-alt"></i> Create Admin Account
+                </button>
+            </form>
+
+            <div class="login-link">
+                Already have an account? <a href="admin-login.html">Login here</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/config.js"></script>
+    <script>
+        const form = document.getElementById('setup-form');
+        const passwordInput = document.getElementById('password');
+        const confirmPasswordInput = document.getElementById('confirm-password');
+        const errorMessage = document.getElementById('error-message');
+        const successMessage = document.getElementById('success-message');
+
+        // Check if first admin setup is required
+        async function checkSetupStatus() {
+            try {
+                const response = await fetch(`${window.APIConfig.baseURL}/api/admin/check-first-setup`);
+                const data = await response.json();
+                
+                if (!data.requiresSetup) {
+                    // Additional admin creation
+                    document.getElementById('first-admin-info').style.display = 'none';
+                    document.getElementById('additional-admin-info').style.display = 'block';
+                    document.getElementById('setup-key-group').classList.add('show');
+                    document.getElementById('setup-subtitle').textContent = 'Create Additional Administrator';
+                }
+            } catch (error) {
+                console.error('Error checking setup status:', error);
+            }
+        }
+
+        // Password strength validation
+        passwordInput.addEventListener('input', function() {
+            const password = this.value;
+            
+            // Length check
+            const lengthValid = password.length >= 8;
+            document.getElementById('req-length').className = lengthValid ? 'valid' : 'invalid';
+            
+            // Uppercase check
+            const uppercaseValid = /[A-Z]/.test(password);
+            document.getElementById('req-uppercase').className = uppercaseValid ? 'valid' : 'invalid';
+            
+            // Lowercase check
+            const lowercaseValid = /[a-z]/.test(password);
+            document.getElementById('req-lowercase').className = lowercaseValid ? 'valid' : 'invalid';
+            
+            // Number check
+            const numberValid = /[0-9]/.test(password);
+            document.getElementById('req-number').className = numberValid ? 'valid' : 'invalid';
+        });
+
+        // Form submission
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            const setupKey = document.getElementById('setup-key').value;
+            
+            // Hide messages
+            errorMessage.style.display = 'none';
+            successMessage.style.display = 'none';
+            
+            // Validation
+            if (password !== confirmPassword) {
+                errorMessage.textContent = 'Passwords do not match!';
+                errorMessage.style.display = 'block';
+                return;
+            }
+            
+            if (password.length < 8) {
+                errorMessage.textContent = 'Password must be at least 8 characters long!';
+                errorMessage.style.display = 'block';
+                return;
+            }
+            
+            if (!/[A-Z]/.test(password) || !/[a-z]/.test(password) || !/[0-9]/.test(password)) {
+                errorMessage.textContent = 'Password must contain uppercase, lowercase, and numbers!';
+                errorMessage.style.display = 'block';
+                return;
+            }
+            
+            try {
+                const submitButton = form.querySelector('button[type="submit"]');
+                submitButton.disabled = true;
+                submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Account...';
+                
+                const response = await fetch(`${window.APIConfig.baseURL}/api/admin/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name,
+                        email,
+                        password,
+                        setupKey: setupKey || undefined
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    successMessage.textContent = 'Admin account created successfully! Redirecting...';
+                    successMessage.style.display = 'block';
+                    
+                    // Store session
+                    localStorage.setItem('sessionId', data.sessionId);
+                    localStorage.setItem('adminUser', JSON.stringify(data.user));
+                    
+                    // Redirect to admin panel
+                    setTimeout(() => {
+                        window.location.href = 'admin.html';
+                    }, 1500);
+                } else {
+                    errorMessage.textContent = data.error || 'Failed to create admin account';
+                    errorMessage.style.display = 'block';
+                    submitButton.disabled = false;
+                    submitButton.innerHTML = '<i class="fas fa-shield-alt"></i> Create Admin Account';
+                }
+            } catch (error) {
+                console.error('Setup error:', error);
+                errorMessage.textContent = 'Server error. Please try again later.';
+                errorMessage.style.display = 'block';
+                const submitButton = form.querySelector('button[type="submit"]');
+                submitButton.disabled = false;
+                submitButton.innerHTML = '<i class="fas fa-shield-alt"></i> Create Admin Account';
+            }
+        });
+
+        // Check setup status on page load
+        checkSetupStatus();
+    </script>
+</body>
+</html>

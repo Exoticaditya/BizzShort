@@ -402,18 +402,6 @@ app.post('/api/admin/login', authLimiter, async (req, res) => {
             ] 
         });
 
-        // DEV: Create default admin if DB is empty and credentials match hardcoded
-        if (!user && username === 'admin' && password === 'admin123') {
-            const salt = await bcrypt.genSalt(10);
-            const hashedPassword = await bcrypt.hash(password, salt);
-            user = await User.create({
-                name: 'admin',
-                email: 'admin@bizzshort.com',
-                password: hashedPassword,
-                role: 'ADMIN'
-            });
-        }
-
         if (user && (await bcrypt.compare(password, user.password))) {
             res.json({
                 success: true,
@@ -426,6 +414,101 @@ app.post('/api/admin/login', authLimiter, async (req, res) => {
     } catch (err) {
         console.error('Login error:', err);
         res.status(500).json({ success: false, error: 'Server error' });
+    }
+});
+
+// Admin Registration (First admin only)
+app.post('/api/admin/register', async (req, res) => {
+    const { name, email, password, setupKey } = req.body;
+    
+    try {
+        // Check if any admin already exists
+        const adminExists = await User.findOne({ role: 'ADMIN' });
+        
+        if (adminExists) {
+            // Require setup key for additional admins
+            if (setupKey !== process.env.SETUP_KEY) {
+                return res.status(403).json({ 
+                    success: false, 
+                    error: 'Setup key required to create additional admins' 
+                });
+            }
+        }
+        
+        // Validate inputs
+        if (!name || !email || !password) {
+            return res.status(400).json({ 
+                success: false, 
+                error: 'Name, email, and password are required' 
+            });
+        }
+        
+        if (!validator.isEmail(email)) {
+            return res.status(400).json({ 
+                success: false, 
+                error: 'Invalid email address' 
+            });
+        }
+        
+        if (password.length < 8) {
+            return res.status(400).json({ 
+                success: false, 
+                error: 'Password must be at least 8 characters' 
+            });
+        }
+        
+        // Check if user already exists
+        const existingUser = await User.findOne({ 
+            $or: [{ email }, { name }] 
+        });
+        
+        if (existingUser) {
+            return res.status(400).json({ 
+                success: false, 
+                error: 'User with this email or username already exists' 
+            });
+        }
+        
+        // Create new admin user
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+        
+        const user = await User.create({
+            name: validator.escape(name.trim()),
+            email: email.toLowerCase().trim(),
+            password: hashedPassword,
+            role: 'ADMIN'
+        });
+        
+        res.status(201).json({
+            success: true,
+            message: 'Admin account created successfully',
+            sessionId: generateToken(user._id),
+            user: { id: user._id, name: user.name, role: user.role }
+        });
+        
+    } catch (err) {
+        console.error('Registration error:', err);
+        res.status(500).json({ 
+            success: false, 
+            error: 'Failed to create admin account' 
+        });
+    }
+});
+
+// Check if first admin exists
+app.get('/api/admin/check-first-setup', async (req, res) => {
+    try {
+        const adminExists = await User.findOne({ role: 'ADMIN' });
+        res.json({ 
+            success: true, 
+            requiresSetup: !adminExists 
+        });
+    } catch (err) {
+        res.status(500).json({ 
+            success: false, 
+            error: 'Server error' 
+        });
     }
 });
 
