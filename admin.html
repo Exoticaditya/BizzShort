@@ -526,69 +526,10 @@
         </main>
     </div>
 
-    <!-- Modal for Video Add/Edit -->
-    <div id="videoModal" class="modal">
-        <div class="modal-content">
-            <span class="modal-close" onclick="closeVideoModal()">&times;</span>
-            <h2 id="videoModalTitle"><i class="fas fa-video"></i> Add New Video</h2>
-            <form id="videoForm" onsubmit="saveVideo(event)">
-                <input type="hidden" id="videoId">
-                <div class="form-group">
-                    <label>Video Title *</label>
-                    <input type="text" class="form-input" id="videoTitle" required placeholder="Enter video title">
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Category *</label>
-                        <select class="form-input" id="videoCategory" required>
-                            <option value="">Select Category</option>
-                            <option value="Markets">Markets</option>
-                            <option value="Startups">Startups</option>
-                            <option value="Economy">Economy</option>
-                            <option value="Technology">Technology</option>
-                            <option value="Banking">Banking</option>
-                            <option value="Energy">Energy</option>
-                            <option value="Cryptocurrency">Cryptocurrency</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Source *</label>
-                        <select class="form-input" id="videoSource" required>
-                            <option value="youtube">YouTube</option>
-                            <option value="instagram">Instagram</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Video URL *</label>
-                    <input type="text" class="form-input" id="videoUrl" required placeholder="https://www.youtube.com/watch?v=...">
-                </div>
-                <div class="form-group">
-                    <label>Description</label>
-                    <textarea class="form-input" id="videoDescription" rows="4" placeholder="Enter video description..."></textarea>
-                </div>
-                <div class="form-group">
-                    <label style="display: flex; align-items: center; gap: 10px;">
-                        <input type="checkbox" id="videoFeatured" style="width: auto;">
-                        <span>Featured Video (Show prominently on homepage)</span>
-                    </label>
-                </div>
-                <div class="form-actions" style="display: flex; gap: 10px; margin-top: 20px;">
-                    <button type="submit" class="btn-primary" style="flex: 1;">
-                        <i class="fas fa-save"></i> Save Video
-                    </button>
-                    <button type="button" class="btn-secondary" onclick="closeVideoModal()" style="flex: 1;">
-                        <i class="fas fa-times"></i> Cancel
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-
     <!-- Modal for Event Add/Edit -->
-    <div id="eventModal" class="modal">
-        <div class="modal-content">
-            <span class="modal-close" onclick="closeModal()">&times;</span>
+    <div id="eventModal" class="modal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5); justify-content: center; align-items: center;">
+        <div class="modal-content" style="background: white; padding: 30px; border-radius: 12px; max-width: 600px; width: 90%; max-height: 90vh; overflow-y: auto;">
+            <span class="modal-close" onclick="closeModal()" style="float: right; cursor: pointer; font-size: 24px;">&times;</span>
             <div id="modalBody"></div>
         </div>
     </div>

@@ -141,7 +141,8 @@ function showSection(sectionId) {
 // ============ Dashboard Functions ============
 async function loadDashboard() {
     try {
-        const stats = await apiRequest(API_ENDPOINTS.stats);
+        const response = await apiRequest(API_ENDPOINTS.stats);
+        const stats = response.data || response; // Handle both { data: {...} } and direct object
         
         // Update stat cards with fallback values
         document.querySelector('[data-stat="videos"]').textContent = stats.videos || 0;
@@ -459,78 +460,6 @@ function filterVideos() {
         </tr>
     `}).join('');
 }
-            await apiRequest(`${API_ENDPOINTS.videos}/${videoId}`, 'PUT', videoData);
-            showNotification('Video updated successfully!', 'success');
-        } else {
-            await apiRequest(API_ENDPOINTS.videos, 'POST', videoData);
-            showNotification('Video added successfully!', 'success');
-        }
-
-        closeVideoModal();
-        loadVideos();
-    } catch (error) {
-        console.error('Error saving video:', error);
-        showNotification(error.message || 'Failed to save video', 'error');
-    }
-}
-
-async function editVideo(videoId) {
-    const video = currentVideos.find(v => v._id === videoId);
-    if (!video) return;
-
-    document.getElementById('videoModalTitle').innerHTML = '<i class="fas fa-edit"></i> Edit Video';
-    document.getElementById('videoId').value = video._id;
-    document.getElementById('videoTitle').value = video.title;
-    document.getElementById('videoCategory').value = video.category;
-    document.getElementById('videoSource').value = video.source;
-    document.getElementById('videoUrl').value = video.url;
-    document.getElementById('videoDescription').value = video.description || '';
-    document.getElementById('videoFeatured').checked = video.featured || false;
-
-    document.getElementById('videoModal').style.display = 'block';
-}
-
-async function deleteVideo(videoId) {
-    if (!confirm('Are you sure you want to delete this video?')) return;
-
-    try {
-        await apiRequest(`${API_ENDPOINTS.videos}/${videoId}`, 'DELETE');
-        showNotification('Video deleted successfully!', 'success');
-        loadVideos();
-    } catch (error) {
-        console.error('Error deleting video:', error);
-        showNotification('Failed to delete video', 'error');
-    }
-}
-
-function filterVideos() {
-    const searchTerm = document.getElementById('videoSearchInput').value.toLowerCase();
-    const category = document.getElementById('videoCategoryFilter').value;
-    const source = document.getElementById('videoSourceFilter').value;
-
-    const filtered = currentVideos.filter(video => {
-        const matchesSearch = video.title.toLowerCase().includes(searchTerm);
-        const matchesCategory = !category || video.category === category;
-        const matchesSource = !source || video.source === source;
-        return matchesSearch && matchesCategory && matchesSource;
-    });
-
-    const tbody = document.getElementById('videosTableBody');
-    if (filtered.length === 0) {
-        tbody.innerHTML = `
-            <tr>
-                <td colspan="7" style="text-align: center; padding: 40px;">
-                    <i class="fas fa-search" style="font-size: 48px; color: #e1e8ed; margin-bottom: 15px;"></i>
-                    <p style="color: #6B7280;">No videos match your filters</p>
-                </td>
-            </tr>
-        `;
-    } else {
-        // Re-render with filtered data
-        currentVideos = filtered;
-        renderVideosTable();
-    }
-}
 
 // ============ Event Management ============
 let currentEvents = [];
@@ -779,11 +708,147 @@ async function deleteAd(adId) {
 // ============ Modal Functions ============
 function closeModal() {
     document.getElementById('eventModal').style.display = 'none';
+    editingEventId = null;
 }
 
+let editingEventId = null;
+
 function openModal(type) {
-    // Implementation for event modal
-    showNotification('Event management coming soon!', 'info');
+    if (type === 'addEvent') {
+        showAddEventModal();
+    }
+}
+
+function showAddEventModal() {
+    editingEventId = null;
+    const modalBody = document.getElementById('modalBody');
+    modalBody.innerHTML = `
+        <h2><i class="fas fa-calendar-plus"></i> Add New Event</h2>
+        <form id="eventForm" onsubmit="saveEvent(event)">
+            <div class="form-group">
+                <label>Event Title *</label>
+                <input type="text" class="form-input" id="eventTitle" required placeholder="e.g., Tech Summit 2026">
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Date *</label>
+                    <input type="date" class="form-input" id="eventDate" required>
+                </div>
+                <div class="form-group">
+                    <label>Type *</label>
+                    <select class="form-input" id="eventType" required>
+                        <option value="">Select Type</option>
+                        <option value="Conference">Conference</option>
+                        <option value="Summit">Summit</option>
+                        <option value="Workshop">Workshop</option>
+                        <option value="Webinar">Webinar</option>
+                        <option value="Meetup">Meetup</option>
+                        <option value="Expo">Expo</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Location *</label>
+                <input type="text" class="form-input" id="eventLocation" required placeholder="e.g., Bengaluru, India or Online">
+            </div>
+            <div class="form-group">
+                <label>Description</label>
+                <textarea class="form-input" id="eventDescription" rows="3" placeholder="Event description..."></textarea>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Expected Attendees</label>
+                    <input type="number" class="form-input" id="eventAttendees" placeholder="500">
+                </div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <select class="form-input" id="eventStatus">
+                        <option value="upcoming">Upcoming</option>
+                        <option value="ongoing">Ongoing</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Event Link</label>
+                <input type="url" class="form-input" id="eventLink" placeholder="https://...">
+            </div>
+            <div class="form-actions" style="display: flex; gap: 10px; margin-top: 20px;">
+                <button type="submit" class="btn-primary" style="flex: 1;">
+                    <i class="fas fa-save"></i> Save Event
+                </button>
+                <button type="button" class="btn-secondary" onclick="closeModal()" style="flex: 1;">
+                    <i class="fas fa-times"></i> Cancel
+                </button>
+            </div>
+        </form>
+    `;
+    document.getElementById('eventModal').style.display = 'flex';
+}
+
+async function saveEvent(event) {
+    event.preventDefault();
+    
+    const eventData = {
+        title: document.getElementById('eventTitle').value,
+        date: document.getElementById('eventDate').value,
+        type: document.getElementById('eventType').value,
+        location: document.getElementById('eventLocation').value,
+        description: document.getElementById('eventDescription').value,
+        attendees: parseInt(document.getElementById('eventAttendees').value) || 0,
+        status: document.getElementById('eventStatus').value,
+        link: document.getElementById('eventLink').value
+    };
+    
+    try {
+        if (editingEventId) {
+            await apiRequest(`${API_ENDPOINTS.events}/${editingEventId}`, 'PUT', eventData);
+            showNotification('Event updated successfully!', 'success');
+        } else {
+            await apiRequest(API_ENDPOINTS.events, 'POST', eventData);
+            showNotification('Event added successfully!', 'success');
+        }
+        
+        closeModal();
+        loadEvents();
+    } catch (error) {
+        console.error('Error saving event:', error);
+        showNotification(error.message || 'Failed to save event', 'error');
+    }
+}
+
+async function editEvent(eventId) {
+    const event = currentEvents.find(e => e._id === eventId);
+    if (!event) return;
+    
+    editingEventId = eventId;
+    showAddEventModal();
+    
+    // Wait for modal to render then populate
+    setTimeout(() => {
+        document.querySelector('#eventModal h2').innerHTML = '<i class="fas fa-edit"></i> Edit Event';
+        document.getElementById('eventTitle').value = event.title;
+        document.getElementById('eventDate').value = event.date ? event.date.split('T')[0] : '';
+        document.getElementById('eventType').value = event.type || '';
+        document.getElementById('eventLocation').value = event.location || '';
+        document.getElementById('eventDescription').value = event.description || '';
+        document.getElementById('eventAttendees').value = event.attendees || '';
+        document.getElementById('eventStatus').value = event.status || 'upcoming';
+        document.getElementById('eventLink').value = event.link || '';
+    }, 100);
+}
+
+async function deleteEvent(eventId) {
+    if (!confirm('Are you sure you want to delete this event?')) return;
+    
+    try {
+        await apiRequest(`${API_ENDPOINTS.events}/${eventId}`, 'DELETE');
+        showNotification('Event deleted successfully!', 'success');
+        loadEvents();
+    } catch (error) {
+        console.error('Error deleting event:', error);
+        showNotification('Failed to delete event', 'error');
+    }
 }
 
 // Close modals when clicking outside

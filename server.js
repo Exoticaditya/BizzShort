@@ -829,7 +829,10 @@ app.get('/api/stats', protect, async (req, res) => {
             articles: await Article.countDocuments(),
             events: await Event.countDocuments(),
             interviews: await Interview.countDocuments(),
-            users: await User.countDocuments()
+            users: await User.countDocuments(),
+            videos: await Video.countDocuments(),
+            advertisements: await Advertisement.countDocuments(),
+            totalViews: 0 // Could be calculated from video views if needed
         };
         res.json({ success: true, data: stats });
     } catch (err) {
