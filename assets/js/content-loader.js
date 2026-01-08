@@ -37,26 +37,58 @@ class ContentLoader {
                 return;
             }
             
-            const videos = await response.json();
+            const result = await response.json();
+            const videos = result.data || result; // Handle both { data: [...] } and direct array
             if (videos && videos.length > 0) {
                 this.renderVideoGrid(videos);
+                this.populateLatestUpdatesGrid(videos);
+            } else {
+                // API returned empty, use fallback
+                await this.loadYouTubeVideos();
             }
         } catch (error) {
-            console.warn('Loading videos from YouTube:', error.message);
+            console.warn('Loading videos from fallback:', error.message);
             await this.loadYouTubeVideos();
         }
     }
 
     async loadYouTubeVideos() {
         try {
-            // Use YouTube Data API v3 or fetch from video-manager.js database
-            const videoManager = window.videoDatabase;
-            if (videoManager && videoManager.length > 0) {
-                this.renderVideoGrid(videoManager);
+            // Use static database from video-manager.js
+            if (typeof videoDatabase !== 'undefined' && videoDatabase.length > 0) {
+                this.renderVideoGrid(videoDatabase);
+                this.populateLatestUpdatesGrid(videoDatabase);
             }
         } catch (error) {
             console.warn('Video loading skipped');
         }
+    }
+
+    populateLatestUpdatesGrid(videos) {
+        const grid = document.getElementById('latestUpdatesGrid');
+        if (!grid || !videos || videos.length === 0) return;
+
+        grid.innerHTML = videos.slice(0, 8).map((video, index) => `
+            <article class="news-card-large video-card" data-category="${video.category?.toLowerCase() || 'business'}">
+                <div class="video-thumbnail" onclick="window.open('https://www.youtube.com/watch?v=${video.videoId}', '_blank')" style="cursor: pointer;">
+                    <img src="https://img.youtube.com/vi/${video.videoId}/maxresdefault.jpg" alt="${video.title}" loading="lazy">
+                    <div class="play-overlay">
+                        <i class="fab fa-youtube"></i>
+                    </div>
+                    <span class="video-duration">${video.duration || '5:00'}</span>
+                </div>
+                <div class="card-content">
+                    <span class="card-category">${video.category || 'Business'}</span>
+                    <h3>${video.title}</h3>
+                    <p>${video.description?.substring(0, 100) || ''}...</p>
+                    <div class="card-meta">
+                        <span><i class="fab fa-youtube"></i> @bizz_short</span>
+                        <span><i class="far fa-eye"></i> ${video.views || '1.5K'} views</span>
+                        <span><i class="far fa-clock"></i> ${video.date || 'Recently'}</span>
+                    </div>
+                </div>
+            </article>
+        `).join('');
     }
 
     renderVideoGrid(videos) {
@@ -86,7 +118,8 @@ class ContentLoader {
             const response = await fetch('https://bizzshort.onrender.com/api/articles?limit=8');
             if (!response.ok) throw new Error('Failed to fetch articles');
             
-            const articles = await response.json();
+            const result = await response.json();
+            const articles = result.data || result;
             if (articles && articles.length > 0) {
                 this.renderLatestNews(articles);
             }
@@ -100,7 +133,8 @@ class ContentLoader {
             const response = await fetch('https://bizzshort.onrender.com/api/interviews?limit=6');
             if (!response.ok) throw new Error('Failed to fetch interviews');
             
-            const interviews = await response.json();
+            const result = await response.json();
+            const interviews = result.data || result;
             if (interviews && interviews.length > 0) {
                 this.renderInterviews(interviews);
             }
@@ -114,7 +148,8 @@ class ContentLoader {
             const response = await fetch('https://bizzshort.onrender.com/api/events?limit=6');
             if (!response.ok) throw new Error('Failed to fetch events');
             
-            const events = await response.json();
+            const result = await response.json();
+            const events = result.data || result;
             if (events && events.length > 0) {
                 this.renderEvents(events);
             }
@@ -128,7 +163,8 @@ class ContentLoader {
             const response = await fetch('https://bizzshort.onrender.com/api/industry?limit=6');
             if (!response.ok) throw new Error('Failed to fetch industry updates');
             
-            const updates = await response.json();
+            const result = await response.json();
+            const updates = result.data || result;
             if (updates && updates.length > 0) {
                 this.renderIndustryUpdates(updates);
             }

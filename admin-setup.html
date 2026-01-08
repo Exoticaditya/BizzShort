@@ -410,8 +410,8 @@
                         successMessage.textContent = 'Admin account created successfully! Redirecting...';
                         successMessage.style.display = 'block';
                         
-                        // Store session
-                        localStorage.setItem('sessionId', data.sessionId);
+                        // Store session (use correct key name)
+                        localStorage.setItem('adminSession', data.sessionId);
                         localStorage.setItem('adminUser', JSON.stringify(data.user));
                         
                         // Redirect to admin panel

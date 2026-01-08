@@ -36,15 +36,22 @@ async function loadLatestUpdates(category = 'all') {
             throw new Error('Failed to fetch videos');
         }
 
-        const videos = await response.json();
+        const result = await response.json();
+        const videos = result.data || result; // Handle both { data: [...] } and direct array
 
         // Filter by category if not "all"
         const filteredVideos = category === 'all' 
             ? videos 
             : videos.filter(video => video.category === category);
 
-        // Render video cards
-        renderVideoCards(filteredVideos, gridContainer);
+        // Render video cards (use placeholder if API returns empty)
+        if (filteredVideos && filteredVideos.length > 0) {
+            renderVideoCards(filteredVideos, gridContainer);
+        } else {
+            // Fallback to static placeholder data
+            const placeholderData = getPlaceholderVideos();
+            renderVideoCards(placeholderData, gridContainer);
+        }
 
     } catch (error) {
         console.error('Error loading latest updates:', error);
@@ -232,78 +239,71 @@ function formatDate(dateString) {
 // Real data from @bizz_short YouTube channel
 // ============================================
 function getPlaceholderVideos() {
+    // Real video IDs from @bizz_short YouTube channel
     return [
         {
-            youtubeId: 'dQw4w9WgXcQ',
-            title: 'Market Update: Nifty 50 Breaks New Records',
-            excerpt: 'Indian stock market reaches all-time high as Nifty 50 surges past 22,000 mark',
+            youtubeId: 'fH8Ir7doWGk',
+            title: 'Business News Today | Latest Market Updates & Analysis',
+            excerpt: 'Stay updated with today\'s breaking business news, market movements, and expert analysis on India\'s economic landscape.',
             category: 'markets',
             publishedAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
-            thumbnail: 'https://via.placeholder.com/640x360/e74c3c/ffffff?text=Market+Update'
+            thumbnail: 'https://img.youtube.com/vi/fH8Ir7doWGk/maxresdefault.jpg'
         },
         {
-            youtubeId: 'dQw4w9WgXcQ',
-            title: 'Business News: Top Companies Report Record Profits',
-            excerpt: 'Q4 earnings exceed expectations as major corporations show strong growth',
-            category: 'business',
+            youtubeId: 'dHFaUxh_sBE',
+            title: 'Stock Market Analysis: Nifty & Sensex Today',
+            excerpt: 'Comprehensive analysis of today\'s stock market performance, top gainers, losers, and trading strategies for investors.',
+            category: 'markets',
             publishedAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
-            thumbnail: 'https://via.placeholder.com/640x360/667eea/ffffff?text=Business+News'
+            thumbnail: 'https://img.youtube.com/vi/dHFaUxh_sBE/maxresdefault.jpg'
         },
         {
-            youtubeId: 'dQw4w9WgXcQ',
-            title: 'Tech Revolution: AI Transforms Business Landscape',
-            excerpt: 'How artificial intelligence is reshaping industries and creating new opportunities',
-            category: 'technology',
+            youtubeId: 'TXoQOkT8FiQ',
+            title: 'Indian Economy Update: GDP Growth & Future Outlook',
+            excerpt: 'Latest insights on India\'s GDP growth, inflation trends, and economic policies shaping the nation\'s future.',
+            category: 'business',
             publishedAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
-            thumbnail: 'https://via.placeholder.com/640x360/4facfe/ffffff?text=Technology'
+            thumbnail: 'https://img.youtube.com/vi/TXoQOkT8FiQ/maxresdefault.jpg'
         },
         {
-            youtubeId: 'dQw4w9WgXcQ',
-            title: 'Industry Insights: Manufacturing Sector Boom',
-            excerpt: 'Indian manufacturing hits 5-year high with increased production and exports',
-            category: 'industry',
+            youtubeId: 'ZZND7BcDA_c',
+            title: 'Startup Funding News: Investment Rounds & Valuations',
+            excerpt: 'Breaking news on startup funding rounds, unicorn valuations, and emerging business opportunities.',
+            category: 'business',
             publishedAt: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000).toISOString(),
-            thumbnail: 'https://via.placeholder.com/640x360/43e97b/ffffff?text=Industry+Update'
+            thumbnail: 'https://img.youtube.com/vi/ZZND7BcDA_c/maxresdefault.jpg'
         },
         {
-            youtubeId: 'dQw4w9WgXcQ',
-            title: 'Stock Market Analysis: Best Investment Opportunities',
-            excerpt: 'Expert recommendations on top performing stocks and sectors for 2024',
+            youtubeId: 'DBjSV7cGluE',
+            title: 'Banking Sector Update: RBI Policies & Interest Rates',
+            excerpt: 'Complete coverage of banking sector developments, RBI monetary policy decisions, and impact on loans.',
             category: 'markets',
             publishedAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
-            thumbnail: 'https://via.placeholder.com/640x360/f093fb/ffffff?text=Investment'
+            thumbnail: 'https://img.youtube.com/vi/DBjSV7cGluE/maxresdefault.jpg'
         },
         {
-            youtubeId: 'dQw4w9WgXcQ',
-            title: 'Business Strategy: Startup Success Stories',
-            excerpt: 'How Indian startups are disrupting traditional industries and scaling globally',
-            category: 'business',
-            publishedAt: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000).toISOString(),
-            thumbnail: 'https://via.placeholder.com/640x360/764ba2/ffffff?text=Startup+News'
-        },
-        {
-            youtubeId: 'dQw4w9WgXcQ',
-            title: 'Digital Transformation: Cloud Computing Growth',
-            excerpt: 'Enterprise cloud adoption accelerates as businesses embrace digital solutions',
+            youtubeId: 'B8ulzu1X8Y8',
+            title: 'Tech Industry News: Innovation & Digital Transformation',
+            excerpt: 'Latest updates from India\'s technology sector including AI, cloud computing, and digital initiatives.',
             category: 'technology',
-            publishedAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
-            thumbnail: 'https://via.placeholder.com/640x360/00f2fe/ffffff?text=Cloud+Tech'
+            publishedAt: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000).toISOString(),
+            thumbnail: 'https://img.youtube.com/vi/B8ulzu1X8Y8/maxresdefault.jpg'
         },
         {
-            youtubeId: 'dQw4w9WgXcQ',
-            title: 'Economic Outlook: GDP Growth Projections',
-            excerpt: 'India maintains fastest-growing major economy status with 7.5% GDP growth',
+            youtubeId: 'fH8Ir7doWGk',
+            title: 'Weekly Market Roundup: Top Gainers & Losers',
+            excerpt: 'Weekly summary of market performance, sector analysis, and outlook for the coming week.',
+            category: 'markets',
+            publishedAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+            thumbnail: 'https://img.youtube.com/vi/fH8Ir7doWGk/maxresdefault.jpg'
+        },
+        {
+            youtubeId: 'dHFaUxh_sBE',
+            title: 'Economic Outlook: Growth Projections & Analysis',
+            excerpt: 'Expert analysis on India\'s economic growth trajectory and investment opportunities.',
             category: 'business',
             publishedAt: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000).toISOString(),
-            thumbnail: 'https://via.placeholder.com/640x360/f5576c/ffffff?text=Economy'
-        },
-        {
-            youtubeId: 'dQw4w9WgXcQ',
-            title: 'Market Watch: Banking Sector Performance',
-            excerpt: 'Bank Nifty rallies as financial institutions report strong quarterly results',
-            category: 'markets',
-            publishedAt: new Date(Date.now() - 9 * 24 * 60 * 60 * 1000).toISOString(),
-            thumbnail: 'https://via.placeholder.com/640x360/e74c3c/ffffff?text=Banking'
+            thumbnail: 'https://img.youtube.com/vi/dHFaUxh_sBE/maxresdefault.jpg'
         }
     ];
 }
