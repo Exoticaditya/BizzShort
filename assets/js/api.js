@@ -45,7 +45,7 @@ class BizzShortAPI {
 
     getAPIBaseURL() {
         // Use dynamic URL detection for better local/production support
-        if (window.APIConfig) {
+        if (window.APIConfig && window.APIConfig.baseURL) {
             return window.APIConfig.baseURL;
         }
         
@@ -58,15 +58,12 @@ class BizzShortAPI {
             return `http://${hostname}:3000`;
         }
         
-        // Production URL - use same origin if on hosted platform
-        if (window.location.origin.includes('bizzshort') || 
-            window.location.origin.includes('render') || 
-            window.location.origin.includes('netlify') ||
-            window.location.origin.includes('vercel')) {
+        // Production on Render - same origin
+        if (window.location.origin.includes('onrender.com')) {
             return window.location.origin;
         }
         
-        // Fallback to Render deployment
+        // All other cases (bizzshort.com, netlify, vercel, etc.) - use Render backend
         return 'https://bizzshort.onrender.com';
     }
 

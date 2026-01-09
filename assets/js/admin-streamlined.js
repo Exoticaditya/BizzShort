@@ -2,10 +2,29 @@
 // Only includes: Videos, Events, Advertisements
 
 // ============ Configuration ============
-const API_BASE_URL = window.APIConfig ? window.APIConfig.baseURL : 
-                     (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
-                      ? `${window.location.protocol}//${window.location.hostname}:${window.location.port || 3000}` 
-                      : 'https://bizzshort.onrender.com');
+// Backend API is always on Render, regardless of where frontend is hosted
+const API_BASE_URL = (function() {
+    // First try to use APIConfig if available
+    if (window.APIConfig && window.APIConfig.baseURL) {
+        return window.APIConfig.baseURL;
+    }
+    
+    // Fallback logic
+    const hostname = window.location.hostname;
+    
+    // Local development
+    if (hostname === 'localhost' || hostname === '127.0.0.1') {
+        return `${window.location.protocol}//${hostname}:${window.location.port || 3000}`;
+    }
+    
+    // Production on Render - same origin
+    if (window.location.origin.includes('onrender.com')) {
+        return window.location.origin;
+    }
+    
+    // All other cases (bizzshort.com, netlify, vercel, etc.) - use Render backend
+    return 'https://bizzshort.onrender.com';
+})();
 
 console.log('🔧 Admin Streamlined API URL:', API_BASE_URL);
 

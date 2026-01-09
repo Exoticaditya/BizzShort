@@ -2,6 +2,9 @@
 // This file handles API URL configuration based on environment
 
 const APIConfig = {
+    // Backend API URL - always use Render deployment for API
+    BACKEND_URL: 'https://bizzshort.onrender.com',
+    
     // Automatically detect the API base URL
     getBaseURL: function() {
         // Check if running locally
@@ -15,14 +18,14 @@ const APIConfig = {
             return `http://${hostname}:3000`;
         }
         
-        // Production - use the current origin if server is running on same domain
-        // Otherwise use the Render deployment URL
-        if (window.location.origin.includes('bizzshort') || window.location.origin.includes('render') || window.location.origin.includes('netlify') || window.location.origin.includes('vercel')) {
+        // Production on Render - API is on the same origin
+        if (window.location.origin.includes('render.com') || window.location.origin.includes('onrender.com')) {
             return window.location.origin;
         }
         
-        // Fallback to Render URL
-        return 'https://bizzshort.onrender.com';
+        // For bizzshort.com or any other hosting (Netlify, Vercel, etc.)
+        // Always use the Render backend for API calls
+        return this.BACKEND_URL;
     },
     
     // Get the current base URL
