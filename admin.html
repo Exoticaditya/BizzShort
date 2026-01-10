@@ -33,29 +33,29 @@
         <!-- Sidebar -->
         <aside class="admin-sidebar">
             <nav class="sidebar-nav">
-                <a href="#dashboard" class="nav-item active" onclick="showSection('dashboard')">
+                <a href="#dashboard" class="nav-item active" onclick="showSection('dashboard', event); return false;">
                     <i class="fas fa-tachometer-alt"></i> Dashboard
                 </a>
-                <a href="#user-approvals" class="nav-item" onclick="showSection('user-approvals')">
+                <a href="#user-approvals" class="nav-item" onclick="showSection('user-approvals', event); return false;">
                     <i class="fas fa-user-check"></i> User Approvals
                     <span id="pendingCount" class="badge" style="display:none;">0</span>
                 </a>
-                <a href="#employee-progress" class="nav-item" onclick="showSection('employee-progress')">
+                <a href="#employee-progress" class="nav-item" onclick="showSection('employee-progress', event); return false;">
                     <i class="fas fa-users-cog"></i> Employee Progress
                 </a>
-                <a href="#analytics" class="nav-item" onclick="showSection('analytics')">
+                <a href="#analytics" class="nav-item" onclick="showSection('analytics', event); return false;">
                     <i class="fas fa-chart-bar"></i> Analytics
                 </a>
-                <a href="#videos" class="nav-item" onclick="showSection('videos')">
+                <a href="#videos" class="nav-item" onclick="showSection('videos', event); return false;">
                     <i class="fas fa-video"></i> Videos
                 </a>
-                <a href="#events" class="nav-item" onclick="showSection('events')">
+                <a href="#events" class="nav-item" onclick="showSection('events', event); return false;">
                     <i class="fas fa-calendar"></i> Upcoming Events
                 </a>
-                <a href="#advertisements" class="nav-item" onclick="showSection('advertisements')">
+                <a href="#advertisements" class="nav-item" onclick="showSection('advertisements', event); return false;">
                     <i class="fas fa-ad"></i> Advertisements
                 </a>
-                <a href="#settings" class="nav-item" onclick="showSection('settings')">
+                <a href="#settings" class="nav-item" onclick="showSection('settings', event); return false;">
                     <i class="fas fa-cog"></i> Settings
                 </a>
             </nav>
@@ -676,9 +676,9 @@
     </div>
 
     <!-- Load API Config First -->
-    <script src="assets/js/config.js?v=20260109"></script>
+    <script src="assets/js/config.js?v=20260110b"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
-    <script src="assets/js/admin-streamlined.js?v=20260109"></script>
-    <script src="assets/js/ad-manager.js?v=20260109"></script>
+    <script src="assets/js/admin-streamlined.js?v=20260110b"></script>
+    <script src="assets/js/ad-manager.js?v=20260110b"></script>
 </body>
 </html>

@@ -105,16 +105,27 @@ function showNotification(message, type = 'success') {
 
 // ============ Authentication ============
 function checkAuth() {
-    const session = localStorage.getItem('adminSession') || sessionStorage.getItem('adminSession');
+    const localSession = localStorage.getItem('adminSession');
+    const sessionSession = sessionStorage.getItem('adminSession');
+    const session = localSession || sessionSession;
+    
+    console.log('Checking authentication...');
+    console.log('localStorage adminSession:', localSession ? 'exists' : 'null');
+    console.log('sessionStorage adminSession:', sessionSession ? 'exists' : 'null');
+    
     if (!session) {
+        console.warn('No admin session found, redirecting to login');
         window.location.href = 'admin-login.html';
         return false;
     }
+    
+    console.log('Admin session found:', session.substring(0, 20) + '...');
     return true;
 }
 
 function logout() {
     if (confirm('Are you sure you want to logout?')) {
+        console.log('Logging out...');
         localStorage.removeItem('adminSession');
         sessionStorage.removeItem('adminSession');
         window.location.href = 'admin-login.html';
@@ -122,7 +133,14 @@ function logout() {
 }
 
 // ============ Navigation ============
-function showSection(sectionId) {
+function showSection(sectionId, event) {
+    // Prevent default anchor behavior if event is provided
+    if (event) {
+        event.preventDefault();
+    }
+    
+    console.log('Showing section:', sectionId);
+    
     // Hide all sections
     document.querySelectorAll('.admin-section').forEach(section => {
         section.classList.remove('active');
@@ -137,6 +155,9 @@ function showSection(sectionId) {
     const section = document.getElementById(sectionId);
     if (section) {
         section.classList.add('active');
+        console.log('Section activated:', sectionId);
+    } else {
+        console.error('Section not found:', sectionId);
     }
 
     // Highlight active nav item
@@ -146,6 +167,7 @@ function showSection(sectionId) {
     }
 
     // Load data for the section
+    console.log('Loading data for:', sectionId);
     if (sectionId === 'dashboard') {
         loadDashboard();
     } else if (sectionId === 'videos') {
@@ -154,6 +176,12 @@ function showSection(sectionId) {
         loadEvents();
     } else if (sectionId === 'advertisements') {
         loadAdvertisements();
+    } else if (sectionId === 'user-approvals') {
+        loadPendingUsers();
+    } else if (sectionId === 'employee-progress') {
+        loadEmployeeProgress();
+    } else if (sectionId === 'analytics') {
+        loadAnalytics();
     }
 }
 
@@ -878,6 +906,26 @@ window.onclick = function(event) {
 }
 
 // ============ User Approval Management ============
+async function loadPendingUsersCount() {
+    try {
+        const response = await apiRequest(API_ENDPOINTS.pendingUsers);
+        
+        if (response.success) {
+            const pendingCount = response.users.length;
+            const badge = document.getElementById('pendingCount');
+            
+            if (pendingCount > 0) {
+                badge.textContent = pendingCount;
+                badge.style.display = 'inline-block';
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+    } catch (error) {
+        console.error('Error loading pending users count:', error);
+    }
+}
+
 async function loadPendingUsers() {
     try {
         const response = await apiRequest(API_ENDPOINTS.pendingUsers);
@@ -1130,18 +1178,48 @@ async function loadAnalytics() {
 
 // ============ Initialize on Page Load ============
 document.addEventListener('DOMContentLoaded', function() {
-    // Check authentication
-    if (!checkAuth()) return;
-
-    // Load initial dashboard
-    loadDashboard();
+    console.log('🚀 Admin Panel Loading...');
     
-    // Load pending users count
-    loadPendingUsers();
+    // Check authentication
+    if (!checkAuth()) {
+        console.log('❌ Authentication failed, redirecting to login');
+        return;
+    }
+    
+    console.log('✅ Authentication successful');
+
+    // Check for hash in URL and show that section
+    const hash = window.location.hash.substring(1); // Remove the # character
+    console.log('URL Hash:', hash);
+    
+    if (hash) {
+        console.log('Loading section from hash:', hash);
+        showSection(hash);
+    } else {
+        // Load initial dashboard
+        console.log('No hash found, loading dashboard');
+        loadDashboard();
+    }
+    
+    // Load pending users count for badge
+    console.log('Loading pending users count...');
+    loadPendingUsersCount();
 
     // Setup form handler
     const videoForm = document.getElementById('videoForm');
     if (videoForm) {
+        console.log('Video form found, setting up submit handler');
         videoForm.addEventListener('submit', saveVideo);
     }
+    
+    // Listen for hash changes
+    window.addEventListener('hashchange', function() {
+        const newHash = window.location.hash.substring(1);
+        console.log('Hash changed to:', newHash);
+        if (newHash) {
+            showSection(newHash);
+        }
+    });
+    
+    console.log('✅ Admin Panel Initialized');
 });
