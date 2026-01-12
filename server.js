@@ -926,9 +926,17 @@ app.get('/api/events', async (req, res) => {
     res.json({ success: true, data: events.map(e => ({ ...e._doc, id: e._id })) });
 });
 
+app.get('/api/events/:id', async (req, res) => {
+    try {
+        const event = await Event.findById(req.params.id);
+        if (!event) return res.status(404).json({ success: false, error: 'Event not found' });
+        res.json({ success: true, data: { ...event._doc, id: event._id } });
+    } catch (err) { res.status(500).json({ success: false, error: err.message }); }
+});
+
 app.post('/api/events', protect, conditionalUpload('image'), async (req, res) => {
     try {
-        const event = await Event.create({ ...req.body, image: req.file ? `/uploads/${req.file.filename}` : undefined });
+        const event = await Event.create({ ...req.body, image: req.file ? `/uploads/${req.file.filename}` : undefined, createdBy: req.user._id });
         res.status(201).json({ success: true, data: { ...event._doc, id: event._id } });
     } catch (err) { res.status(500).json({ success: false, error: err.message }); }
 });
@@ -1089,9 +1097,30 @@ app.get('/api/advertisements', async (req, res) => {
     const ads = await Advertisement.find({});
     res.json({ success: true, data: ads.map(a => ({ ...a._doc, id: a._id })) });
 });
+
+app.get('/api/advertisements/:id', async (req, res) => {
+    try {
+        const ad = await Advertisement.findById(req.params.id);
+        if (!ad) return res.status(404).json({ success: false, error: 'Advertisement not found' });
+        res.json({ success: true, data: { ...ad._doc, id: ad._id } });
+    } catch (err) { res.status(500).json({ success: false, error: err.message }); }
+});
+
 app.post('/api/advertisements', protect, conditionalUpload('image'), async (req, res) => {
-    const ad = await Advertisement.create({ ...req.body, imageUrl: req.file ? `/uploads/${req.file.filename}` : undefined });
+    const ad = await Advertisement.create({ ...req.body, imageUrl: req.file ? `/uploads/${req.file.filename}` : undefined, createdBy: req.user._id });
     res.status(201).json({ success: true, data: { ...ad._doc, id: ad._id } });
+});
+
+app.put('/api/advertisements/:id', protect, conditionalUpload('image'), async (req, res) => {
+    try {
+        const updateData = { ...req.body };
+        if (req.file) updateData.imageUrl = `/uploads/${req.file.filename}`;
+
+        const ad = await Advertisement.findByIdAndUpdate(req.params.id, updateData, { new: true });
+        if (!ad) return res.status(404).json({ success: false, error: 'Advertisement not found' });
+
+        res.json({ success: true, data: { ...ad._doc, id: ad._id } });
+    } catch (err) { res.status(500).json({ success: false, error: err.message }); }
 });
 
 app.delete('/api/advertisements/:id', protect, async (req, res) => {
@@ -1107,9 +1136,17 @@ app.get('/api/videos', async (req, res) => {
     } catch (err) { res.status(500).json({ success: false, error: err.message }); }
 });
 
+app.get('/api/videos/:id', async (req, res) => {
+    try {
+        const video = await Video.findById(req.params.id);
+        if (!video) return res.status(404).json({ success: false, error: 'Video not found' });
+        res.json({ success: true, data: { ...video._doc, id: video._id } });
+    } catch (err) { res.status(500).json({ success: false, error: err.message }); }
+});
+
 app.post('/api/videos', protect, async (req, res) => {
     try {
-        const video = await Video.create(req.body);
+        const video = await Video.create({ ...req.body, createdBy: req.user._id });
         res.status(201).json({ success: true, data: { ...video._doc, id: video._id } });
     } catch (err) { res.status(500).json({ success: false, error: err.message }); }
 });

@@ -195,8 +195,9 @@ async function loadVideos() {
     try {
         const response = await apiRequest(API_ENDPOINTS.videos);
         const tbody = document.getElementById('videosTableBody');
+        const videos = response.data || [];
         
-        if (!response.success || !response.videos || response.videos.length === 0) {
+        if (!response.success || videos.length === 0) {
             tbody.innerHTML = `
                 <tr>
                     <td colspan="6" style="text-align: center; padding: 40px;">
@@ -208,7 +209,7 @@ async function loadVideos() {
             return;
         }
         
-        tbody.innerHTML = response.videos.map(video => `
+        tbody.innerHTML = videos.map(video => `
             <tr>
                 <td>
                     <img src="${video.thumbnail || 'assets/images/default-video.jpg'}" 
@@ -292,8 +293,9 @@ async function loadEvents() {
     try {
         const response = await apiRequest(API_ENDPOINTS.events);
         const tbody = document.getElementById('eventsTableBody');
+        const events = response.data || [];
         
-        if (!response.success || !response.events || response.events.length === 0) {
+        if (!response.success || events.length === 0) {
             tbody.innerHTML = `
                 <tr>
                     <td colspan="6" style="text-align: center; padding: 40px;">
@@ -305,7 +307,7 @@ async function loadEvents() {
             return;
         }
         
-        tbody.innerHTML = response.events.map(event => `
+        tbody.innerHTML = events.map(event => `
             <tr>
                 <td><strong>${event.title}</strong></td>
                 <td>${new Date(event.date).toLocaleDateString()}</td>
@@ -342,13 +344,74 @@ async function deleteEvent(id) {
     }
 }
 
+function showAddEventModal() {
+    document.getElementById('eventModalTitle').innerHTML = '<i class="fas fa-calendar-plus"></i> Add New Event';
+    document.getElementById('eventForm').reset();
+    document.getElementById('eventId').value = '';
+    document.getElementById('eventModal').style.display = 'block';
+}
+
+function closeEventModal() {
+    document.getElementById('eventModal').style.display = 'none';
+}
+
+async function saveEvent(e) {
+    e.preventDefault();
+    
+    const eventId = document.getElementById('eventId').value;
+    const eventData = {
+        title: document.getElementById('eventName').value,
+        date: document.getElementById('eventDate').value,
+        time: document.getElementById('eventTime').value,
+        location: document.getElementById('eventLocation').value,
+        type: document.getElementById('eventType').value,
+        description: document.getElementById('eventDescription').value
+    };
+    
+    try {
+        const method = eventId ? 'PUT' : 'POST';
+        const endpoint = eventId ? `${API_ENDPOINTS.events}/${eventId}` : API_ENDPOINTS.events;
+        
+        const response = await apiRequest(endpoint, method, eventData);
+        
+        if (response.success) {
+            showNotification(eventId ? 'Event updated successfully' : 'Event added successfully', 'success');
+            closeEventModal();
+            loadEvents();
+        }
+    } catch (error) {
+        showNotification(error.message || 'Failed to save event', 'error');
+    }
+}
+
+async function editEvent(id) {
+    try {
+        const response = await apiRequest(`${API_ENDPOINTS.events}/${id}`);
+        if (response.success && response.data) {
+            const event = response.data;
+            document.getElementById('eventModalTitle').innerHTML = '<i class="fas fa-edit"></i> Edit Event';
+            document.getElementById('eventId').value = event._id;
+            document.getElementById('eventName').value = event.title || '';
+            document.getElementById('eventDate').value = event.date ? event.date.split('T')[0] : '';
+            document.getElementById('eventTime').value = event.time || '';
+            document.getElementById('eventLocation').value = event.location || '';
+            document.getElementById('eventType').value = event.type || 'Conference';
+            document.getElementById('eventDescription').value = event.description || '';
+            document.getElementById('eventModal').style.display = 'block';
+        }
+    } catch (error) {
+        showNotification('Failed to load event details', 'error');
+    }
+}
+
 // ============ Advertisements Management ============
 async function loadAdvertisements() {
     try {
         const response = await apiRequest(API_ENDPOINTS.advertisements);
         const tbody = document.getElementById('advertisementsTableBody');
+        const ads = response.data || [];
         
-        if (!response.success || !response.advertisements || response.advertisements.length === 0) {
+        if (!response.success || ads.length === 0) {
             tbody.innerHTML = `
                 <tr>
                     <td colspan="7" style="text-align: center; padding: 40px;">
@@ -360,7 +423,7 @@ async function loadAdvertisements() {
             return;
         }
         
-        tbody.innerHTML = response.advertisements.map(ad => `
+        tbody.innerHTML = ads.map(ad => `
             <tr>
                 <td>
                     <img src="${ad.image || 'assets/images/ad-placeholder.jpg'}" 
@@ -402,21 +465,101 @@ async function deleteAd(id) {
     }
 }
 
-// Placeholder functions for modal operations
+function showAddAdModal() {
+    document.getElementById('adModalTitle').innerHTML = '<i class="fas fa-plus-circle"></i> Add New Advertisement';
+    document.getElementById('adForm').reset();
+    document.getElementById('adId').value = '';
+    document.getElementById('adModal').style.display = 'block';
+}
+
+function closeAdModal() {
+    document.getElementById('adModal').style.display = 'none';
+}
+
+async function saveAd(e) {
+    e.preventDefault();
+    
+    const adId = document.getElementById('adId').value;
+    const adData = {
+        company: document.getElementById('adCompany').value,
+        title: document.getElementById('adTitle').value,
+        type: document.getElementById('adType').value,
+        image: document.getElementById('adImage').value,
+        clickUrl: document.getElementById('adClickUrl').value,
+        startDate: document.getElementById('adStartDate').value,
+        endDate: document.getElementById('adEndDate').value
+    };
+    
+    try {
+        const method = adId ? 'PUT' : 'POST';
+        const endpoint = adId ? `${API_ENDPOINTS.advertisements}/${adId}` : API_ENDPOINTS.advertisements;
+        
+        const response = await apiRequest(endpoint, method, adData);
+        
+        if (response.success) {
+            showNotification(adId ? 'Advertisement updated successfully' : 'Advertisement added successfully', 'success');
+            closeAdModal();
+            loadAdvertisements();
+        }
+    } catch (error) {
+        showNotification(error.message || 'Failed to save advertisement', 'error');
+    }
+}
+
+async function editAd(id) {
+    try {
+        const response = await apiRequest(`${API_ENDPOINTS.advertisements}/${id}`);
+        if (response.success && response.data) {
+            const ad = response.data;
+            document.getElementById('adModalTitle').innerHTML = '<i class="fas fa-edit"></i> Edit Advertisement';
+            document.getElementById('adId').value = ad._id;
+            document.getElementById('adCompany').value = ad.company || '';
+            document.getElementById('adTitle').value = ad.title || '';
+            document.getElementById('adType').value = ad.type || 'Banner';
+            document.getElementById('adImage').value = ad.image || '';
+            document.getElementById('adClickUrl').value = ad.clickUrl || '';
+            document.getElementById('adStartDate').value = ad.startDate ? ad.startDate.split('T')[0] : '';
+            document.getElementById('adEndDate').value = ad.endDate ? ad.endDate.split('T')[0] : '';
+            document.getElementById('adModal').style.display = 'block';
+        }
+    } catch (error) {
+        showNotification('Failed to load advertisement details', 'error');
+    }
+}
+
+// Modal opening functions
 function openModal(type) {
-    showNotification('Feature coming soon', 'info');
+    switch(type) {
+        case 'addVideo':
+            showAddVideoModal();
+            break;
+        case 'addEvent':
+            showAddEventModal();
+            break;
+        case 'addAd':
+            showAddAdModal();
+            break;
+        default:
+            showNotification('Unknown modal type', 'error');
+    }
 }
 
-function editVideo(id) {
-    showNotification('Edit feature coming soon', 'info');
-}
-
-function editEvent(id) {
-    showNotification('Edit feature coming soon', 'info');
-}
-
-function editAd(id) {
-    showNotification('Edit feature coming soon', 'info');
+async function editVideo(id) {
+    try {
+        const response = await apiRequest(`${API_ENDPOINTS.videos}/${id}`);
+        if (response.success && response.data) {
+            const video = response.data;
+            document.getElementById('modalTitle').innerHTML = '<i class="fas fa-edit"></i> Edit Video';
+            document.getElementById('videoId').value = video._id;
+            document.getElementById('videoUrl').value = video.url || '';
+            document.getElementById('videoTitle').value = video.title || '';
+            document.getElementById('videoDescription').value = video.description || '';
+            document.getElementById('videoCategory').value = video.category || 'Business';
+            document.getElementById('videoModal').style.display = 'block';
+        }
+    } catch (error) {
+        showNotification('Failed to load video details', 'error');
+    }
 }
 
 function filterVideos() {
@@ -432,17 +575,47 @@ document.addEventListener('DOMContentLoaded', function() {
     // Load initial dashboard
     loadDashboard();
 
-    // Setup form handler
+    // Setup video form handler
     const videoForm = document.getElementById('videoForm');
     if (videoForm) {
         videoForm.addEventListener('submit', saveVideo);
     }
     
-    // Close modal when clicking outside
+    // Setup event form handler
+    const eventForm = document.getElementById('eventForm');
+    if (eventForm) {
+        eventForm.addEventListener('submit', saveEvent);
+    }
+    
+    // Setup ad form handler
+    const adForm = document.getElementById('adForm');
+    if (adForm) {
+        adForm.addEventListener('submit', saveAd);
+    }
+    
+    // Close modals when clicking outside
     window.onclick = function(event) {
-        const modal = document.getElementById('videoModal');
-        if (event.target == modal) {
+        const videoModal = document.getElementById('videoModal');
+        const eventModal = document.getElementById('eventModal');
+        const adModal = document.getElementById('adModal');
+        
+        if (event.target == videoModal) {
             closeVideoModal();
         }
+        if (event.target == eventModal) {
+            closeEventModal();
+        }
+        if (event.target == adModal) {
+            closeAdModal();
+        }
     };
+    
+    // Close modals with Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeVideoModal();
+            closeEventModal();
+            closeAdModal();
+        }
+    });
 });
