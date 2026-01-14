@@ -43,17 +43,18 @@
 .logo-text h1 {
     font-size: 32px;
     font-weight: 800;
-    background: linear-gradient(135deg, #2c3e50 0%, #e74c3c 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--brand-blue);
     margin: 0;
     line-height: 1.1;
 }
 
 .logo-text p {
     font-size: 10px;
-    color: #95a5a6;
+    color: #ffffff;
+    background: rgba(var(--brand-blue-rgb), 0.95);
+    padding: 4px 10px;
+    border-radius: 999px;
+    display: inline-block;
     text-transform: uppercase;
     letter-spacing: 2px;
     margin: 0;
@@ -81,19 +82,28 @@
 /* ============ NAVIGATION FIXES ============ */
 
 .navbar-section {
-    background: rgba(44, 62, 80, 0.98);
+    background: rgba(var(--brand-blue-rgb), 0.92);
     position: sticky;
     top: 0;
     z-index: 1000;
-    border-bottom: 3px solid #e74c3c;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.22);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    transition: background 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
 }
 
-.main-nav {
+.navbar-section.scrolled {
+    background: rgba(var(--brand-blue-rgb), 0.72);
+    border-bottom-color: rgba(255, 255, 255, 0.22);
+    box-shadow: 0 14px 45px rgba(0, 0, 0, 0.28);
+}
+
+.navbar-section .main-nav {
     position: relative;
 }
 
-.main-nav ul {
+.navbar-section .main-nav ul {
     display: flex;
     list-style: none;
     justify-content: center;
@@ -103,11 +113,11 @@
     gap: 0;
 }
 
-.main-nav li {
+.navbar-section .main-nav li {
     margin: 0;
 }
 
-.main-nav a {
+.navbar-section .main-nav a {
     display: block;
     padding: 18px 24px;
     color: #ecf0f1;
@@ -120,11 +130,11 @@
     margin-bottom: -3px;
 }
 
-.main-nav a:hover,
-.main-nav a.active {
+.navbar-section .main-nav a:hover,
+.navbar-section .main-nav a.active {
     color: #ffffff;
-    background: rgba(231, 76, 60, 0.2);
-    border-bottom-color: #e74c3c;
+    background: rgba(255, 255, 255, 0.12);
+    border-bottom-color: rgba(255, 255, 255, 0.55);
 }
 
 /* Mobile menu toggle */

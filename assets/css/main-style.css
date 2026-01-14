@@ -43,6 +43,12 @@ body {
     overflow-x: hidden;
 }
 
+/* Brand tokens (also defined in global-enhancements.css :root) */
+:root {
+    --brand-blue: #0b2d5b;
+    --brand-blue-rgb: 11, 45, 91;
+}
+
 img {
     max-width: 100%;
     display: block;
@@ -126,10 +132,7 @@ a {
 .logo-text h1 {
     font-size: 38px;
     font-weight: 800;
-    background: linear-gradient(135deg, #2c3e50 0%, #e74c3c 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--brand-blue);
     font-family: 'Poppins', sans-serif;
     margin: 0 0 2px 0;
     line-height: 1.1;
@@ -138,13 +141,42 @@ a {
 
 .logo-text p {
     font-size: 11px;
-    color: #95a5a6;
+    color: #ffffff;
+    background: rgba(var(--brand-blue-rgb), 0.95);
+    padding: 4px 10px;
+    border-radius: 999px;
+    display: inline-block;
     text-transform: uppercase;
     letter-spacing: 2.5px;
     font-family: 'Inter', sans-serif;
     margin: 0;
     font-weight: 700;
     line-height: 1;
+}
+
+/* About/other pages use .logo-brand/.logo-tagline inside .logo-text */
+.logo-text .logo-brand {
+    font-size: 38px;
+    font-weight: 800;
+    color: var(--brand-blue);
+    font-family: 'Poppins', sans-serif;
+    margin: 0 0 2px 0;
+    line-height: 1.1;
+    letter-spacing: -1px;
+}
+
+.logo-text .logo-tagline {
+    font-size: 11px;
+    color: #ffffff;
+    background: rgba(var(--brand-blue-rgb), 0.95);
+    padding: 4px 10px;
+    border-radius: 999px;
+    display: inline-block;
+    letter-spacing: 1px;
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    font-weight: 700;
+    line-height: 1.1;
 }
 
 .ad-banner-container {
@@ -163,12 +195,12 @@ a {
 
 /* NAVBAR - STICKY GLASSMORPHIC DESIGN */
 .navbar-section {
-    background: rgba(44, 62, 80, 0.75);
+    background: rgba(var(--brand-blue-rgb), 0.92);
     position: sticky;
     top: 0;
     z-index: 1000;
-    border-bottom: 3px solid #e74c3c;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.22);
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
     transition: all 0.3s ease;
@@ -181,16 +213,22 @@ a {
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, rgba(231, 76, 60, 0.1) 0%, rgba(192, 57, 43, 0.05) 100%);
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.10) 0%,
+        rgba(255, 255, 255, 0.02) 60%,
+        rgba(0, 0, 0, 0.06) 100%
+    );
     pointer-events: none;
 }
 
 .navbar-section.scrolled {
-    background: rgba(44, 62, 80, 0.95);
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    background: rgba(var(--brand-blue-rgb), 0.72);
+    border-bottom-color: rgba(255, 255, 255, 0.22);
+    box-shadow: 0 14px 45px rgba(0, 0, 0, 0.28);
 }
 
-.main-nav ul {
+.navbar-section .main-nav ul {
     display: flex;
     list-style: none;
     justify-content: center;
@@ -200,7 +238,7 @@ a {
     z-index: 1;
 }
 
-.main-nav a {
+.navbar-section .main-nav a {
     display: block;
     color: rgba(255, 255, 255, 0.95);
     padding: 18px 28px;
@@ -213,27 +251,27 @@ a {
     overflow: hidden;
 }
 
-.main-nav a::before {
+.navbar-section .main-nav a::before {
     content: '';
     position: absolute;
     bottom: 0;
     left: 50%;
     width: 0;
     height: 3px;
-    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.55) 100%);
     transform: translateX(-50%);
     transition: width 0.3s ease;
 }
 
-.main-nav a:hover::before,
-.main-nav a.active::before {
+.navbar-section .main-nav a:hover::before,
+.navbar-section .main-nav a.active::before {
     width: 80%;
 }
 
-.main-nav a:hover,
-.main-nav a.active {
+.navbar-section .main-nav a:hover,
+.navbar-section .main-nav a.active {
     color: #ffffff;
-    background: rgba(231, 76, 60, 0.2);
+    background: rgba(255, 255, 255, 0.12);
     transform: translateY(-2px);
 }
 
