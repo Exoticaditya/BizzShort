@@ -79,17 +79,24 @@ class BreakingNewsLoader {
                 const description = card.querySelector('.news-content p');
                 const viewCount = card.querySelector('.news-meta span:first-child');
                 const timeAgo = card.querySelector('.news-meta span:last-child');
+                const badge = card.querySelector('.news-badge');
 
-                // Update video URL for click
+                // Update video URL for click - use onclick for modal playback
                 card.dataset.videoUrl = `https://www.youtube.com/watch?v=${video.videoId}`;
-                
-                // Also add onclick for modal
                 card.setAttribute('onclick', `playVideo('${video.videoId}')`);
                 card.style.cursor = 'pointer';
 
                 if (thumbnail && video.thumbnail) {
                     thumbnail.src = video.thumbnail;
                     thumbnail.alt = video.title;
+                    // Add fallback
+                    thumbnail.onerror = function() {
+                        this.src = `https://img.youtube.com/vi/${video.videoId}/maxresdefault.jpg`;
+                    };
+                }
+
+                if (badge && video.category) {
+                    badge.textContent = video.category.toUpperCase();
                 }
 
                 if (title && video.title) {
