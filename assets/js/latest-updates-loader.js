@@ -160,8 +160,10 @@ function setupCategoryFilters() {
 // PLAY VIDEO FUNCTION (Global)
 // ============================================
 window.playVideo = function(videoId) {
+    console.log('🎬 Playing video:', videoId);
+    
     if (!videoId) {
-        console.error('No video ID provided');
+        console.error('❌ No video ID provided');
         return;
     }
     
@@ -170,6 +172,8 @@ window.playVideo = function(videoId) {
 };
 
 window.openVideoModal = function(videoId) {
+    console.log('📺 Opening video modal for:', videoId);
+    
     const modal = document.createElement('div');
     modal.className = 'video-modal';
     modal.id = 'videoModal';
@@ -196,10 +200,12 @@ window.openVideoModal = function(videoId) {
     // Animate modal in
     setTimeout(() => {
         modal.classList.add('active');
+        console.log('✅ Video modal opened');
     }, 10);
 };
 
 window.closeVideoModal = function() {
+    console.log('🔒 Closing video modal');
     const modal = document.querySelector('.video-modal');
     if (modal) {
         modal.classList.remove('active');
