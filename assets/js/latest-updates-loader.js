@@ -157,19 +157,22 @@ function setupCategoryFilters() {
 }
 
 // ============================================
-// PLAY VIDEO FUNCTION
+// PLAY VIDEO FUNCTION (Global)
 // ============================================
-function playVideo(videoId) {
-    // Option 1: Redirect to video detail page
-    // window.location.href = `video-detail.html?id=${videoId}`;
+window.playVideo = function(videoId) {
+    if (!videoId) {
+        console.error('No video ID provided');
+        return;
+    }
     
-    // Option 2: Open in modal (recommended)
+    // Open in modal
     openVideoModal(videoId);
-}
+};
 
-function openVideoModal(videoId) {
+window.openVideoModal = function(videoId) {
     const modal = document.createElement('div');
     modal.className = 'video-modal';
+    modal.id = 'videoModal';
     modal.innerHTML = `
         <div class="video-modal-overlay" onclick="closeVideoModal()"></div>
         <div class="video-modal-content">
@@ -194,9 +197,9 @@ function openVideoModal(videoId) {
     setTimeout(() => {
         modal.classList.add('active');
     }, 10);
-}
+};
 
-function closeVideoModal() {
+window.closeVideoModal = function() {
     const modal = document.querySelector('.video-modal');
     if (modal) {
         modal.classList.remove('active');
