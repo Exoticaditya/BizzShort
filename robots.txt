@@ -4,8 +4,10 @@
 User-agent: *
 Allow: /
 Allow: /index.html
-Allow: /article-detail.html
 Allow: /about.html
+Allow: /client.html
+Allow: /analysis.html
+Allow: /advertise.html
 Allow: /contact.html
 Allow: /events.html
 Allow: /assets/css/
@@ -15,9 +17,12 @@ Allow: /assets/images/
 # Disallow admin pages
 Disallow: /admin-login.html
 Disallow: /admin.html
+Disallow: /admin-setup.html
 Disallow: /admin/
+Disallow: /admin-*
 
-# Disallow API endpoints from crawling
+# Sitemap location
+Sitemap: https://bizzshort.com/sitemap.xml
 Disallow: /api/
 
 # Sitemap location

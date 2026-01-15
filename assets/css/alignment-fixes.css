@@ -1,0 +1,354 @@
+/* ============================================
+   BIZZSHORT - ALIGNMENT & LAYOUT FIXES
+   Created: January 15, 2026
+   Purpose: Fix alignment issues across the website
+============================================ */
+
+/* GLOBAL ALIGNMENT FIXES */
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    width: 100%;
+}
+
+/* Container consistency */
+.container {
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 0 30px;
+    width: 100%;
+}
+
+/* Fix header alignment */
+.header-top-section,
+.navbar-section {
+    width: 100%;
+    margin: 0;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.logo-ad-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 0 30px;
+}
+
+/* Navbar alignment */
+.navbar-section .container,
+.navbar-section .main-nav {
+    width: 100%;
+}
+
+.main-nav ul {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    flex-wrap: wrap;
+}
+
+.main-nav li {
+    margin: 0;
+}
+
+/* Content wrapper alignment */
+.main-content-wrapper,
+.page-wrapper-with-ads {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+/* Breaking news section alignment */
+.breaking-news-section {
+    width: 100%;
+    max-width: 100%;
+}
+
+.breaking-video-player {
+    width: 100%;
+    margin: 0 auto;
+}
+
+.main-video-wrapper {
+    width: 100%;
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    height: 0;
+    overflow: hidden;
+}
+
+.main-video-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* Video grid alignment */
+.breaking-news-grid,
+.latest-news-grid,
+.video-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 25px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+/* Card alignment */
+.breaking-news-card,
+.news-video-card,
+.interview-video-card,
+.video-card {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
+/* Sidebar alignment */
+.content-with-sidebar {
+    display: grid;
+    grid-template-columns: 1fr 350px;
+    gap: 40px;
+    width: 100%;
+    align-items: start;
+}
+
+.market-sidebar {
+    width: 100%;
+    position: sticky;
+    top: 20px;
+}
+
+/* Market cards alignment */
+.market-card {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+/* Image alignment */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Text alignment for centered sections */
+.section-header,
+.page-title,
+.breaking-header {
+    text-align: center;
+    width: 100%;
+}
+
+/* Footer alignment */
+footer {
+    width: 100%;
+    margin: 0;
+    padding: 40px 30px;
+    text-align: center;
+}
+
+/* Interview section alignment */
+.interview-section {
+    width: 100%;
+    margin: 0 auto;
+}
+
+.instagram-reel {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+/* Event section alignment */
+.events-section {
+    width: 100%;
+}
+
+.events-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    width: 100%;
+}
+
+/* RESPONSIVE ALIGNMENT */
+@media screen and (max-width: 1200px) {
+    .content-with-sidebar {
+        grid-template-columns: 1fr 300px;
+        gap: 30px;
+    }
+    
+    .container {
+        padding: 0 20px;
+    }
+    
+    .logo-ad-wrapper {
+        padding: 0 20px;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .content-with-sidebar {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+    
+    .market-sidebar {
+        position: relative;
+        top: 0;
+    }
+    
+    .breaking-news-grid,
+    .latest-news-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .container {
+        padding: 0 15px;
+    }
+    
+    .logo-ad-wrapper {
+        flex-direction: column;
+        gap: 15px;
+        padding: 0 15px;
+    }
+    
+    .main-nav ul {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .main-nav li {
+        width: 100%;
+    }
+    
+    .main-nav a {
+        display: block;
+        padding: 12px 20px;
+        text-align: center;
+    }
+    
+    .breaking-news-grid,
+    .latest-news-grid,
+    .events-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .container {
+        padding: 0 10px;
+    }
+    
+    .logo-ad-wrapper {
+        padding: 0 10px;
+    }
+    
+    .breaking-news-grid,
+    .latest-news-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Fix any overflow issues */
+.page-wrapper-with-ads,
+.main-content,
+.content-section,
+.breaking-news-section,
+.latest-updates-section {
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100%;
+}
+
+/* Ensure proper spacing */
+.content-section {
+    margin-bottom: 60px;
+}
+
+.content-section:last-child {
+    margin-bottom: 0;
+}
+
+/* Advertisement alignment */
+.ad-banner-container,
+.top-ad-banner {
+    width: 100%;
+    max-width: 100%;
+    text-align: center;
+    margin: 20px 0;
+}
+
+.top-ad-banner img {
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
+}
+
+/* Video info alignment */
+.video-info,
+.video-details,
+.news-content {
+    width: 100%;
+    padding: 15px;
+}
+
+.video-stats,
+.video-meta,
+.news-meta {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+/* Button alignment */
+.btn-container,
+.button-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+/* Category filter alignment */
+.category-filters {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 30px 0;
+}
+
+/* Fix sticky elements on mobile */
+@media screen and (max-width: 768px) {
+    .header,
+    .navbar-section,
+    [style*="position: sticky"],
+    [style*="position:sticky"] {
+        position: relative !important;
+    }
+}

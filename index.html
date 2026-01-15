@@ -28,6 +28,7 @@
     <link rel="stylesheet" href="assets/css/consistency-fixes.css?v=20260109">
     <link rel="stylesheet" href="assets/css/video-grid-unified.css?v=20260109">
     <link rel="stylesheet" href="assets/css/final-fixes.css?v=20260109">
+    <link rel="stylesheet" href="assets/css/alignment-fixes.css?v=20260115">
 
     <!-- Google AdSense (Replace ca-pub-XXXXXXXXXXXXXXXX with your actual AdSense publisher ID) -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX"
@@ -70,6 +71,45 @@
         function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
         gtag('config', 'G-XXXXXXXXXX');
+    </script>
+
+    <!-- Structured Data (JSON-LD) for SEO -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "NewsMediaOrganization",
+        "name": "BizzShort",
+        "alternateName": "Bizz Short",
+        "url": "https://bizzshort.com",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "https://bizzshort.com/assets/images/logo.jpeg"
+        },
+        "description": "India's premier business news platform delivering real-time market updates, startup insights, and industry analysis through engaging short-form video content.",
+        "sameAs": [
+            "https://www.youtube.com/@bizz_short",
+            "https://www.instagram.com/bizz_short"
+        ],
+        "contactPoint": {
+            "@type": "ContactPoint",
+            "contactType": "Customer Service",
+            "email": "contact@bizzshort.com"
+        }
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "BizzShort",
+        "url": "https://bizzshort.com",
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://bizzshort.com/search?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+        }
+    }
     </script>
 </head>
 
