@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Features - BizzShort</title>
+    <link rel="stylesheet" href="assets/css/main-style.css">
+    <link rel="stylesheet" href="assets/css/enhanced-design.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .client-hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 120px 0 80px;
+            text-align: center;
+            color: white;
+        }
+        .client-hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        .client-hero p {
+            font-size: 1.3rem;
+            opacity: 0.95;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            padding: 80px 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .feature-card {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border-top: 4px solid #667eea;
+        }
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+        }
+        .feature-icon {
+            font-size: 3rem;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        .feature-card p {
+            color: #7f8c8d;
+            line-height: 1.8;
+        }
+        .testimonials {
+            background: #f8f9fa;
+            padding: 80px 5%;
+        }
+        .testimonials h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 60px;
+            color: #2c3e50;
+        }
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .testimonial {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+        .testimonial-text {
+            font-style: italic;
+            color: #555;
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        .author-info h4 {
+            margin: 0;
+            color: #2c3e50;
+            font-size: 1rem;
+        }
+        .author-info p {
+            margin: 5px 0 0;
+            color: #95a5a6;
+            font-size: 0.9rem;
+        }
+        .cta-section {
+            text-align: center;
+            padding: 80px 5%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .cta-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        .cta-section p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            opacity: 0.95;
+        }
+        .cta-button {
+            display: inline-block;
+            padding: 15px 40px;
+            background: white;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">Bizz<span>Short</span></a>
+            <button class="nav-toggle" aria-label="Toggle Navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="client.html" class="active">Client Features</a></li>
+                <li><a href="analysis.html">Market Analysis</a></li>
+                <li><a href="advertise.html">Advertise</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="client-hero">
+        <h1>Empower Your Business</h1>
+        <p>Discover powerful features designed to transform your business content strategy</p>
+    </section>
+
+    <!-- Features Grid -->
+    <section class="features-grid">
+        <div class="feature-card">
+            <div class="feature-icon"><i class="fas fa-video"></i></div>
+            <h3>Premium Video Content</h3>
+            <p>Access exclusive business insights, market analysis, and industry trends through professionally curated short-form videos optimized for busy professionals.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
+            <h3>Real-Time Market Data</h3>
+            <p>Stay ahead with live market charts, trending stocks, and instant updates on major market movements affecting your business decisions.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon"><i class="fas fa-bell"></i></div>
+            <h3>Breaking News Alerts</h3>
+            <p>Never miss critical business news. Get instant notifications on breaking stories that impact your industry and investments.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon"><i class="fas fa-users"></i></div>
+            <h3>Industry Expert Interviews</h3>
+            <p>Learn from leaders across industries through exclusive interviews, insights, and actionable advice from successful entrepreneurs and executives.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon"><i class="fas fa-mobile-alt"></i></div>
+            <h3>Multi-Device Access</h3>
+            <p>Watch and learn on any device - desktop, tablet, or mobile. Your content syncs seamlessly across all platforms.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon"><i class="fas fa-bookmark"></i></div>
+            <h3>Personalized Collections</h3>
+            <p>Save your favorite videos, create custom playlists, and build your personal library of business knowledge.</p>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials">
+        <h2>What Our Clients Say</h2>
+        <div class="testimonial-grid">
+            <div class="testimonial">
+                <div class="testimonial-text">
+                    "BizzShort has revolutionized how we consume business content. The short-form format is perfect for our team's busy schedules."
+                </div>
+                <div class="testimonial-author">
+                    <div class="author-avatar">RS</div>
+                    <div class="author-info">
+                        <h4>Rajesh Sharma</h4>
+                        <p>CEO, TechVentures India</p>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial">
+                <div class="testimonial-text">
+                    "The market analysis videos are incredibly insightful. We've made better investment decisions thanks to BizzShort's expert content."
+                </div>
+                <div class="testimonial-author">
+                    <div class="author-avatar">PM</div>
+                    <div class="author-info">
+                        <h4>Priya Mehta</h4>
+                        <p>Investment Manager, Capital Growth</p>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial">
+                <div class="testimonial-text">
+                    "As an entrepreneur, staying updated is crucial. BizzShort delivers the right insights at the right time, every time."
+                </div>
+                <div class="testimonial-author">
+                    <div class="author-avatar">AK</div>
+                    <div class="author-info">
+                        <h4>Amit Kumar</h4>
+                        <p>Founder, StartupHub</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <h2>Ready to Elevate Your Business Intelligence?</h2>
+        <p>Join thousands of professionals who trust BizzShort for their daily business insights</p>
+        <a href="contact.html" class="cta-button">Get Started Today</a>
+    </section>
+
+    <!-- Footer -->
+    <footer style="background: #2c3e50; color: white; padding: 40px 5%; text-align: center;">
+        <p>&copy; 2025 BizzShort. All rights reserved.</p>
+        <div style="margin-top: 20px;">
+            <a href="index.html" style="color: #ecf0f1; margin: 0 15px; text-decoration: none;">Home</a>
+            <a href="about.html" style="color: #ecf0f1; margin: 0 15px; text-decoration: none;">About</a>
+            <a href="contact.html" style="color: #ecf0f1; margin: 0 15px; text-decoration: none;">Contact</a>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Navigation Toggle
+        const navToggle = document.querySelector('.nav-toggle');
+        const navMenu = document.querySelector('.nav-menu');
+        navToggle?.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            navToggle.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>
