@@ -23,6 +23,12 @@ class VideoContentManager {
         
         // Latest News videos (both classes)
         document.querySelectorAll('.news-video-card, .news-video-card-large').forEach(card => {
+            card.addEventListener('click', (e) => {
+                e.preventDefault();
+                const videoId = card.dataset.videoId;
+                this.openYouTubeVideo(videoId);
+            });
+        });
 
         // Interview videos
         document.querySelectorAll('.interview-video-card').forEach(card => {

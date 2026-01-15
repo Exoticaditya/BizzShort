@@ -193,11 +193,10 @@ a {
     object-fit: contain;
 }
 
-/* NAVBAR - STICKY GLASSMORPHIC DESIGN */
+/* NAVBAR - STATIC DESIGN */
 .navbar-section {
     background: rgba(var(--brand-blue-rgb), 0.92);
-    position: sticky;
-    top: 0;
+    position: relative;
     z-index: 1000;
     border-bottom: 1px solid rgba(255, 255, 255, 0.18);
     box-shadow: 0 10px 35px rgba(0, 0, 0, 0.22);
