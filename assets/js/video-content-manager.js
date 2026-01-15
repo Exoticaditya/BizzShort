@@ -66,6 +66,20 @@ class VideoContentManager {
                 this.updateBreakingNews(videos[0]);
                 this.updateLatestNews(videos.slice(1, 9)); // 8 videos for grid
                 this.updateInterviews(videos.slice(9, 12)); // 3 interview videos
+            }
+        } catch (error) {
+            console.error('Failed to load videos:', error);
+        }
+    }
+
+    /**
+     * Update breaking news section
+     */
+    updateBreakingNews(video) {
+        if (!video) return;
+        
+        const breakingSection = document.querySelector('.breaking-video-player');
+        if (!breakingSection) return;
 
         const iframe = breakingSection.querySelector('iframe');
         const title = breakingSection.querySelector('h3');
@@ -98,18 +112,6 @@ class VideoContentManager {
      * Update latest news videos
      */
     updateLatestNews(videos) {
-        const newsCards = document.querySelectorAll('.news-video-card');
-        
-        videos.forEach((video, index) => {
-            if (newsCards[index] && video) {
-                const card = newsCards[index];
-                const thumbnail = card.querySelector('.video-thumbnail img');
-                const title = card.querySelector('.video-details h3');
-                const viewCount = card.querySelector('.video-meta span:first-child');
-                const timeAgo = card.querySelector('.video-meta span:last-child');
-                const duration = card.querySelector('.video-duration');
-
-                card.dataset.videoId = video.videoId || '';
         // Select both grid styles - smaller cards and larger wirecable grid cards
         const newsCards = document.querySelectorAll('.news-video-card, .news-video-card-large');
 
@@ -137,6 +139,22 @@ class VideoContentManager {
 
                 if (viewCount && video.views) {
                     viewCount.innerHTML = `<i class="far fa-eye"></i> ${this.formatViews(video.views)} views`;
+                }
+
+                if (timeAgo && video.publishedAt) {
+                    timeAgo.innerHTML = `<i class="far fa-clock"></i> ${this.getTimeAgo(video.publishedAt)}`;
+                }
+
+                if (duration && video.duration) {
+                    duration.textContent = this.formatDuration(video.duration);
+                }
+            }
+        });
+    }
+
+    /**
+     * Update interview videos
+     */
     updateInterviews(videos) {
         const interviewCards = document.querySelectorAll('.interview-video-card');
         
