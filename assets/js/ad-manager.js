@@ -133,6 +133,8 @@ function displayAds() {
  */
 function displayActiveAds() {
     const tbody = document.getElementById('activeAdsBody');
+    if (!tbody) return; // Exit if element doesn't exist
+    
     const activeAds = advertisements.filter(ad => ad.status === 'active');
     
     if (activeAds.length === 0) {
@@ -177,6 +179,7 @@ function displayActiveAds() {
  */
 function displayAllAds() {
     const tbody = document.getElementById('allAdsBody');
+    if (!tbody) return; // Exit if element doesn't exist
     
     if (advertisements.length === 0) {
         tbody.innerHTML = `

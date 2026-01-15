@@ -40,11 +40,11 @@ app.use(helmet({
         directives: {
             defaultSrc: ["'self'"],
             styleSrc: ["'self'", "'unsafe-inline'", "https://cdnjs.cloudflare.com", "https://fonts.googleapis.com"],
-            scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://cdnjs.cloudflare.com", "https://www.googletagmanager.com", "https://pagead2.googlesyndication.com"],
+            scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", "'unsafe-hashes'", "https://cdnjs.cloudflare.com", "https://cdn.jsdelivr.net", "https://www.googletagmanager.com", "https://pagead2.googlesyndication.com"],
             imgSrc: ["'self'", "data:", "https:", "http:"],
             fontSrc: ["'self'", "https://cdnjs.cloudflare.com", "https://fonts.gstatic.com"],
             connectSrc: ["'self'", "https://bizzshort.onrender.com"],
-            frameSrc: ["'self'", "https://www.youtube.com"],
+            frameSrc: ["'self'", "https://www.youtube.com", "https://www.instagram.com"],
         }
     },
     crossOriginEmbedderPolicy: false,
@@ -525,7 +525,7 @@ app.get('/api/admin/check-first-setup', async (req, res) => {
 // Get pending user registrations (admin only)
 app.get('/api/admin/pending-users', protect, async (req, res) => {
     try {
-        if (req.user.role !== 'ADMIN' || req.user.status !== 'APPROVED') {
+        if (req.user.role !== 'ADMIN') {
             return res.status(403).json({ success: false, error: 'Access denied' });
         }
         
@@ -546,7 +546,7 @@ app.get('/api/admin/pending-users', protect, async (req, res) => {
 // Approve user registration (admin only)
 app.post('/api/admin/approve-user/:userId', protect, async (req, res) => {
     try {
-        if (req.user.role !== 'ADMIN' || req.user.status !== 'APPROVED') {
+        if (req.user.role !== 'ADMIN') {
             return res.status(403).json({ success: false, error: 'Access denied' });
         }
         
@@ -583,7 +583,7 @@ app.post('/api/admin/approve-user/:userId', protect, async (req, res) => {
 // Reject user registration (admin only)
 app.post('/api/admin/reject-user/:userId', protect, async (req, res) => {
     try {
-        if (req.user.role !== 'ADMIN' || req.user.status !== 'APPROVED') {
+        if (req.user.role !== 'ADMIN') {
             return res.status(403).json({ success: false, error: 'Access denied' });
         }
         
@@ -638,7 +638,7 @@ app.get('/api/employee/my-stats', protect, async (req, res) => {
 // Get all employees with their activity stats (admin only)
 app.get('/api/admin/employees-progress', protect, async (req, res) => {
     try {
-        if (req.user.role !== 'ADMIN' || req.user.status !== 'APPROVED') {
+        if (req.user.role !== 'ADMIN') {
             return res.status(403).json({ success: false, error: 'Access denied' });
         }
         
@@ -697,7 +697,7 @@ app.get('/api/admin/employees-progress', protect, async (req, res) => {
 // Get advertisement analytics (admin only)
 app.get('/api/admin/advertisement-analytics', protect, async (req, res) => {
     try {
-        if (req.user.role !== 'ADMIN' || req.user.status !== 'APPROVED') {
+        if (req.user.role !== 'ADMIN') {
             return res.status(403).json({ success: false, error: 'Access denied' });
         }
         
@@ -748,7 +748,7 @@ app.get('/api/admin/advertisement-analytics', protect, async (req, res) => {
 // Get website analytics (admin only)
 app.get('/api/admin/website-analytics', protect, async (req, res) => {
     try {
-        if (req.user.role !== 'ADMIN' || req.user.status !== 'APPROVED') {
+        if (req.user.role !== 'ADMIN') {
             return res.status(403).json({ success: false, error: 'Access denied' });
         }
         
