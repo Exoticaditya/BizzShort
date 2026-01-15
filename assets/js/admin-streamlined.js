@@ -1180,26 +1180,6 @@ async function loadAnalytics() {
 document.addEventListener('DOMContentLoaded', function() {
     console.log('🚀 Admin Panel Loading...');
     
-    // Set up header buttons FIRST (before auth check redirect)
-    const btnViewWebsite = document.getElementById('btnViewWebsite');
-    const btnLogout = document.getElementById('btnLogout');
-    
-    if (btnViewWebsite) {
-        btnViewWebsite.addEventListener('click', function() {
-            console.log('View Website clicked');
-            window.open('index.html', '_blank');
-        });
-        console.log('✅ View Website button initialized');
-    }
-    
-    if (btnLogout) {
-        btnLogout.addEventListener('click', function() {
-            console.log('Logout button clicked');
-            logout();
-        });
-        console.log('✅ Logout button initialized');
-    }
-    
     // Check authentication
     if (!checkAuth()) {
         console.log('❌ Authentication failed, redirecting to login');
@@ -1207,20 +1187,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     console.log('✅ Authentication successful');
-    
-    // Update user display with actual logged-in user
-    const adminUser = JSON.parse(localStorage.getItem('adminUser') || sessionStorage.getItem('adminUser') || '{}');
-    if (adminUser && adminUser.name) {
-        const userNameSpan = document.getElementById('adminUserName');
-        const userAvatar = document.getElementById('adminUserAvatar');
-        if (userNameSpan) {
-            userNameSpan.textContent = adminUser.name;
-        }
-        if (userAvatar) {
-            userAvatar.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(adminUser.name)}&background=e74c3c&color=fff`;
-            userAvatar.alt = adminUser.name;
-        }
-    }
 
     // Check for hash in URL and show that section
     const hash = window.location.hash.substring(1); // Remove the # character
