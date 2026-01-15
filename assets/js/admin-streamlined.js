@@ -1180,6 +1180,26 @@ async function loadAnalytics() {
 document.addEventListener('DOMContentLoaded', function() {
     console.log('🚀 Admin Panel Loading...');
     
+    // Initialize header buttons FIRST (before any auth redirects)
+    const btnViewWebsite = document.getElementById('btnViewWebsite');
+    const btnLogout = document.getElementById('btnLogout');
+    
+    if (btnViewWebsite) {
+        btnViewWebsite.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log('View Website button clicked');
+            window.open('index.html', '_blank');
+        });
+    }
+    
+    if (btnLogout) {
+        btnLogout.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log('Logout button clicked');
+            logout();
+        });
+    }
+    
     // Check authentication
     if (!checkAuth()) {
         console.log('❌ Authentication failed, redirecting to login');
