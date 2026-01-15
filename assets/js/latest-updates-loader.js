@@ -39,6 +39,12 @@ async function loadLatestUpdates(category = 'all') {
         const result = await response.json();
         const videos = result.data || result; // Handle both { data: [...] } and direct array
 
+        // If API returns empty array, use fallback data
+        if (!videos || videos.length === 0) {
+            console.log('📺 No videos in database, using fallback data');
+            throw new Error('No videos in database');
+        }
+
         // Filter by category if not "all"
         const filteredVideos = category === 'all' 
             ? videos 
@@ -50,7 +56,10 @@ async function loadLatestUpdates(category = 'all') {
         } else {
             // Fallback to static placeholder data
             const placeholderData = getPlaceholderVideos();
-            renderVideoCards(placeholderData, gridContainer);
+            const filteredPlaceholder = category === 'all' 
+                ? placeholderData 
+                : placeholderData.filter(v => v.category === category);
+            renderVideoCards(filteredPlaceholder, gridContainer);
         }
 
     } catch (error) {
