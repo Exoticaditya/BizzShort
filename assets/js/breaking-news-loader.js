@@ -1,0 +1,146 @@
+/**
+ * Breaking News Loader
+ * Loads real breaking news videos from API
+ */
+
+class BreakingNewsLoader {
+    constructor() {
+        this.apiBaseURL = 'https://bizzshort.onrender.com/api';
+        this.init();
+    }
+
+    async init() {
+        console.log('📰 Loading breaking news...');
+        await this.loadBreakingNews();
+    }
+
+    async loadBreakingNews() {
+        try {
+            const response = await fetch(`${this.apiBaseURL}/videos?source=youtube&limit=5&category=business`);
+            
+            if (!response.ok) {
+                throw new Error('Failed to fetch breaking news');
+            }
+
+            const videos = await response.json();
+            console.log('📰 Breaking news videos loaded:', videos.length);
+
+            if (videos && videos.length > 0) {
+                // Update main breaking news video (first video)
+                this.updateMainVideo(videos[0]);
+                
+                // Update the 3 breaking news cards (next 3 videos)
+                this.updateBreakingNewsCards(videos.slice(1, 4));
+            }
+        } catch (error) {
+            console.error('❌ Failed to load breaking news:', error);
+        }
+    }
+
+    updateMainVideo(video) {
+        if (!video) return;
+
+        const iframe = document.querySelector('.breaking-video-player iframe');
+        const title = document.querySelector('.breaking-video-player h3');
+        const description = document.querySelector('.breaking-video-player p');
+        const viewCount = document.querySelector('.video-stats span:nth-child(2)');
+        const timeAgo = document.querySelector('.video-stats span:nth-child(3)');
+
+        if (iframe && video.videoId) {
+            iframe.src = `https://www.youtube.com/embed/${video.videoId}?rel=0&modestbranding=1`;
+            console.log('✅ Main breaking news video updated:', video.videoId);
+        }
+
+        if (title && video.title) {
+            title.textContent = video.title;
+        }
+
+        if (description && video.description) {
+            description.textContent = video.description.substring(0, 120) + '...';
+        }
+
+        if (viewCount && video.views) {
+            viewCount.innerHTML = `<i class="far fa-eye"></i> ${this.formatViews(video.views)} views`;
+        }
+
+        if (timeAgo && video.publishedAt) {
+            timeAgo.innerHTML = `<i class="far fa-clock"></i> ${this.getTimeAgo(video.publishedAt)}`;
+        }
+    }
+
+    updateBreakingNewsCards(videos) {
+        const cards = document.querySelectorAll('.breaking-news-card');
+        
+        videos.forEach((video, index) => {
+            if (cards[index] && video) {
+                const card = cards[index];
+                const thumbnail = card.querySelector('.video-thumbnail img');
+                const title = card.querySelector('h4');
+                const description = card.querySelector('.news-content p');
+                const viewCount = card.querySelector('.news-meta span:first-child');
+                const timeAgo = card.querySelector('.news-meta span:last-child');
+
+                // Update video URL for click
+                card.dataset.videoUrl = `https://www.youtube.com/watch?v=${video.videoId}`;
+                
+                // Also add onclick for modal
+                card.setAttribute('onclick', `playVideo('${video.videoId}')`);
+                card.style.cursor = 'pointer';
+
+                if (thumbnail && video.thumbnail) {
+                    thumbnail.src = video.thumbnail;
+                    thumbnail.alt = video.title;
+                }
+
+                if (title && video.title) {
+                    title.textContent = video.title.substring(0, 60) + (video.title.length > 60 ? '...' : '');
+                }
+
+                if (description && video.description) {
+                    description.textContent = video.description.substring(0, 100) + '...';
+                }
+
+                if (viewCount && video.views) {
+                    viewCount.innerHTML = `<i class="far fa-eye"></i> ${this.formatViews(video.views)}`;
+                }
+
+                if (timeAgo && video.publishedAt) {
+                    timeAgo.innerHTML = `<i class="far fa-clock"></i> ${this.getTimeAgo(video.publishedAt)}`;
+                }
+
+                console.log(`✅ Breaking news card ${index + 1} updated:`, video.title.substring(0, 30));
+            }
+        });
+    }
+
+    formatViews(views) {
+        if (!views) return '0';
+        if (views >= 1000000) return (views / 1000000).toFixed(1) + 'M';
+        if (views >= 1000) return (views / 1000).toFixed(1) + 'K';
+        return views.toString();
+    }
+
+    getTimeAgo(dateString) {
+        if (!dateString) return 'recently';
+        
+        const date = new Date(dateString);
+        const now = new Date();
+        const secondsAgo = Math.floor((now - date) / 1000);
+
+        if (secondsAgo < 60) return 'just now';
+        if (secondsAgo < 3600) return `${Math.floor(secondsAgo / 60)} minutes ago`;
+        if (secondsAgo < 86400) return `${Math.floor(secondsAgo / 3600)} hours ago`;
+        if (secondsAgo < 604800) return `${Math.floor(secondsAgo / 86400)} days ago`;
+        if (secondsAgo < 2592000) return `${Math.floor(secondsAgo / 604800)} weeks ago`;
+        return `${Math.floor(secondsAgo / 2592000)} months ago`;
+    }
+}
+
+// Initialize when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        new BreakingNewsLoader();
+    });
+} else {
+    new BreakingNewsLoader();
+}
