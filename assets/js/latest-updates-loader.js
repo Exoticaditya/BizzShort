@@ -87,9 +87,12 @@ function renderVideoCards(videos, container) {
 
     container.innerHTML = videos.map(video => {
         const videoId = video.youtubeId || video.videoId;
-        const videoTitle = (video.title || '').replace(/'/g, "\\'");
+        const videoTitle = (video.title || '').replace(/"/g, '&quot;');
         return `
-        <div class="news-video-card-large" data-category="${video.category || 'business'}" onclick="playVideo('${videoId}', 'youtube', '${videoTitle}')">
+        <div class="news-video-card-large" 
+             data-category="${video.category || 'business'}" 
+             data-video-id="${videoId}"
+             data-video-title="${videoTitle}">
             <div class="video-player-wrapper">
                 <img src="${video.thumbnail || `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`}" 
                      alt="${video.title}" 
@@ -110,9 +113,24 @@ function renderVideoCards(videos, container) {
         </div>
     `}).join('');
 
-    // Add smooth fade-in animation
+    // Add event listeners after DOM insertion
     setTimeout(() => {
         container.querySelectorAll('.news-video-card-large').forEach((card, index) => {
+            const videoId = card.dataset.videoId;
+            const videoTitle = card.dataset.videoTitle;
+
+            // Add click event listener
+            card.addEventListener('click', function () {
+                console.log('🎬 Card clicked:', videoId);
+                if (typeof playVideo === 'function') {
+                    playVideo(videoId, 'youtube', videoTitle);
+                } else {
+                    console.error('❌ playVideo function not found!');
+                }
+            });
+            card.style.cursor = 'pointer';
+
+            // Add smooth fade-in animation
             card.style.opacity = '0';
             card.style.transform = 'translateY(20px)';
             setTimeout(() => {

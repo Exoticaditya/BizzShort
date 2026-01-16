@@ -82,17 +82,29 @@ class BreakingNewsLoader {
                 const timeAgo = card.querySelector('.news-meta span:last-child');
                 const badge = card.querySelector('.news-badge');
 
-                // Update video URL for click - use onclick for modal playback
-                card.dataset.videoUrl = `https://www.youtube.com/watch?v=${video.videoId}`;
-                const videoTitle = video.title.replace(/'/g, "\\'");
-                card.setAttribute('onclick', `playVideo('${video.videoId}', 'youtube', '${videoTitle}')`); card.style.cursor = 'pointer';
+                // Store video data
+                const videoId = video.videoId || video.youtubeId;
+                const videoTitle = (video.title || '').replace(/"/g, '&quot;');
+                card.dataset.videoId = videoId;
+                card.dataset.videoTitle = videoTitle;
+
+                // Add event listener for click
+                card.addEventListener('click', function () {
+                    console.log('🎬 Breaking news card clicked:', videoId);
+                    if (typeof playVideo === 'function') {
+                        playVideo(videoId, 'youtube', video.title);
+                    } else {
+                        console.error('❌ playVideo function not found!');
+                    }
+                });
+                card.style.cursor = 'pointer';
 
                 if (thumbnail && video.thumbnail) {
                     thumbnail.src = video.thumbnail;
                     thumbnail.alt = video.title;
                     // Add fallback
                     thumbnail.onerror = function () {
-                        this.src = `https://img.youtube.com/vi/${video.videoId}/maxresdefault.jpg`;
+                        this.src = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
                     };
                 }
 
