@@ -17,7 +17,7 @@ class BreakingNewsLoader {
     async loadBreakingNews() {
         try {
             const response = await fetch(`${this.apiBaseURL}/videos?source=youtube&limit=5&category=business`);
-            
+
             if (!response.ok) {
                 throw new Error('Failed to fetch breaking news');
             }
@@ -28,7 +28,7 @@ class BreakingNewsLoader {
             if (videos && videos.length > 0) {
                 // Update main breaking news video (first video)
                 this.updateMainVideo(videos[0]);
-                
+
                 // Update the 3 breaking news cards (next 3 videos)
                 this.updateBreakingNewsCards(videos.slice(1, 4));
             }
@@ -70,7 +70,7 @@ class BreakingNewsLoader {
 
     updateBreakingNewsCards(videos) {
         const cards = document.querySelectorAll('.breaking-news-card');
-        
+
         videos.forEach((video, index) => {
             if (cards[index] && video) {
                 const card = cards[index];
@@ -83,14 +83,14 @@ class BreakingNewsLoader {
 
                 // Update video URL for click - use onclick for modal playback
                 card.dataset.videoUrl = `https://www.youtube.com/watch?v=${video.videoId}`;
-                card.setAttribute('onclick', `playVideo('${video.videoId}')`);
-                card.style.cursor = 'pointer';
+                const videoTitle = video.title.replace(/'/g, "\\'");
+                card.setAttribute('onclick', `playVideo('${video.videoId}', 'youtube', '${videoTitle}')`); card.style.cursor = 'pointer';
 
                 if (thumbnail && video.thumbnail) {
                     thumbnail.src = video.thumbnail;
                     thumbnail.alt = video.title;
                     // Add fallback
-                    thumbnail.onerror = function() {
+                    thumbnail.onerror = function () {
                         this.src = `https://img.youtube.com/vi/${video.videoId}/maxresdefault.jpg`;
                     };
                 }
@@ -129,7 +129,7 @@ class BreakingNewsLoader {
 
     getTimeAgo(dateString) {
         if (!dateString) return 'recently';
-        
+
         const date = new Date(dateString);
         const now = new Date();
         const secondsAgo = Math.floor((now - date) / 1000);

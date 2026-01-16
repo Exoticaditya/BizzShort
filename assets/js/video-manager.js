@@ -279,20 +279,6 @@ let videoDatabase = [
         duration: '1:02',
         featured: false,
         tags: ['Business Tips', 'Success', 'Entrepreneurship']
-    },
-    {
-        id: '20',
-        title: 'Cryptocurrency Regulations: India\'s Digital Asset Future',
-        category: 'Cryptocurrency',
-        source: 'youtube',
-        videoId: 'YOUR_VIDEO_ID_20', // Replace with actual YouTube video ID
-        thumbnail: 'https://images.unsplash.com/photo-1621416894569-0f39ed31d241?w=800',
-        description: 'Understanding India\'s evolving cryptocurrency regulations, digital asset taxation, and the future of crypto trading.',
-        views: '19.2K',
-        date: 'Dec 1, 2025',
-        duration: '13:25',
-        featured: false,
-        tags: ['Tesla', 'EV', 'Auto Sector', 'Stocks', 'Investment']
     }
 ];
 

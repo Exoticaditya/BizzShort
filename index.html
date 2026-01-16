@@ -780,18 +780,8 @@
             }
         };
 
-        // Breaking News Card Click Handlers
-        document.addEventListener('DOMContentLoaded', () => {
-            document.querySelectorAll('.breaking-news-card[data-video-url]').forEach(card => {
-                card.style.cursor = 'pointer';
-                card.addEventListener('click', () => {
-                    const url = card.dataset.videoUrl;
-                    if (url) window.open(url, '_blank');
-                });
-            });
-
-            console.log('✅ Video player initialized');
-        });
+        // Breaking News Cards - handled by breaking-news-loader.js with playVideo() modal
+        console.log('✅ Video player initialized - using modal playback');
     </script>
 
     <!-- API Configuration (Load First) -->
