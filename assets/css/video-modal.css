@@ -1,0 +1,144 @@
+/* Video Modal Styles */
+.video-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    z-index: 10000;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.video-modal-content {
+    position: relative;
+    width: 90%;
+    max-width: 1200px;
+    background: #1a1a1a;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.video-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 25px;
+    background: #2c2c2c;
+    border-bottom: 1px solid #3a3a3a;
+}
+
+.video-modal-title {
+    margin: 0;
+    color: #ffffff;
+    font-size: 1.25rem;
+    font-weight: 600;
+    flex: 1;
+    padding-right: 20px;
+}
+
+.video-modal-close {
+    background: transparent;
+    border: none;
+    color: #ffffff;
+    font-size: 1.5rem;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.video-modal-close:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: rotate(90deg);
+}
+
+.video-modal-body {
+    padding: 0;
+    background: #000000;
+}
+
+.video-player-wrapper {
+    position: relative;
+    padding-bottom: 56.25%;
+    /* 16:9 Aspect Ratio */
+    height: 0;
+    overflow: hidden;
+}
+
+.video-player-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* Loading state */
+.video-player-wrapper:empty::after {
+    content: 'Loading video...';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #ffffff;
+    font-size: 1.2rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .video-modal-content {
+        width: 95%;
+        margin: 20px auto;
+    }
+
+    .video-modal-header {
+        padding: 15px 20px;
+    }
+
+    .video-modal-title {
+        font-size: 1rem;
+    }
+
+    .video-modal-close {
+        width: 35px;
+        height: 35px;
+        font-size: 1.25rem;
+    }
+}
+
+/* Ensure modal appears above everything else */
+.video-modal {
+    z-index: 99999 !important;
+}

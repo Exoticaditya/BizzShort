@@ -1,23 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Client Features - Empower Your Business | BizzShort</title>
-    
+
     <!-- SEO Meta Tags -->
-    <meta name="description" content="Discover BizzShort's powerful client features: premium video content, real-time market data, breaking news alerts, and expert interviews designed for business professionals.">
-    <meta name="keywords" content="BizzShort features, business video content, market data, client testimonials, business intelligence, professional insights">
+    <meta name="description"
+        content="Discover BizzShort's powerful client features: premium video content, real-time market data, breaking news alerts, and expert interviews designed for business professionals.">
+    <meta name="keywords"
+        content="BizzShort features, business video content, market data, client testimonials, business intelligence, professional insights">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://bizzshort.com/client.html">
-    
+
     <!-- Open Graph -->
     <meta property="og:title" content="Client Features - BizzShort">
-    <meta property="og:description" content="Premium features for business professionals. Video content, market data, and expert insights.">
+    <meta property="og:description"
+        content="Premium features for business professionals. Video content, market data, and expert insights.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://bizzshort.com/client.html">
     <meta property="og:image" content="https://bizzshort.com/assets/images/logo.jpeg">
-    
+
+    <!-- Unified Design System -->
+    <link rel="stylesheet" href="assets/css/unified-design-system.css?v=20260116">
     <link rel="stylesheet" href="assets/css/main-style.css">
     <link rel="stylesheet" href="assets/css/enhanced-design.css">
     <link rel="stylesheet" href="assets/css/responsive.css">
@@ -25,22 +31,25 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         .client-hero {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #3d5875 0%, #2c3e50 100%);
             padding: 120px 0 80px;
             text-align: center;
             color: white;
         }
+
         .client-hero h1 {
             font-size: 3rem;
             margin-bottom: 20px;
             font-weight: 700;
         }
+
         .client-hero p {
             font-size: 1.3rem;
             opacity: 0.95;
             max-width: 600px;
             margin: 0 auto;
         }
+
         .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -49,42 +58,50 @@
             max-width: 1400px;
             margin: 0 auto;
         }
+
         .feature-card {
             background: white;
             padding: 40px;
             border-radius: 16px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
-            border-top: 4px solid #667eea;
+            border-top: 4px solid #3d5875;
         }
+
         .feature-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
         }
+
         .feature-icon {
             font-size: 3rem;
-            color: #667eea;
+            color: #3d5875;
             margin-bottom: 20px;
         }
+
         .feature-card h3 {
             font-size: 1.5rem;
             margin-bottom: 15px;
             color: #2c3e50;
         }
+
         .feature-card p {
             color: #7f8c8d;
             line-height: 1.8;
         }
+
         .testimonials {
             background: #f8f9fa;
             padding: 80px 5%;
         }
+
         .testimonials h2 {
             text-align: center;
             font-size: 2.5rem;
             margin-bottom: 60px;
             color: #2c3e50;
         }
+
         .testimonial-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -92,28 +109,32 @@
             max-width: 1400px;
             margin: 0 auto;
         }
+
         .testimonial {
             background: white;
             padding: 30px;
             border-radius: 12px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
         }
+
         .testimonial-text {
             font-style: italic;
             color: #555;
             margin-bottom: 20px;
             line-height: 1.7;
         }
+
         .testimonial-author {
             display: flex;
             align-items: center;
             gap: 15px;
         }
+
         .author-avatar {
             width: 50px;
             height: 50px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #3d5875, #2c3e50);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -121,68 +142,104 @@
             font-weight: bold;
             font-size: 1.2rem;
         }
+
         .author-info h4 {
             margin: 0;
             color: #2c3e50;
             font-size: 1rem;
         }
+
         .author-info p {
             margin: 5px 0 0;
             color: #95a5a6;
             font-size: 0.9rem;
         }
+
         .cta-section {
             text-align: center;
             padding: 80px 5%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #3d5875 0%, #2c3e50 100%);
             color: white;
         }
+
         .cta-section h2 {
             font-size: 2.5rem;
             margin-bottom: 20px;
         }
+
         .cta-section p {
             font-size: 1.2rem;
             margin-bottom: 30px;
             opacity: 0.95;
         }
+
         .cta-button {
             display: inline-block;
             padding: 15px 40px;
             background: white;
-            color: #667eea;
+            color: #3d5875;
             text-decoration: none;
             border-radius: 50px;
             font-weight: 600;
             font-size: 1.1rem;
             transition: all 0.3s ease;
         }
+
         .cta-button:hover {
             transform: scale(1.05);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
         }
     </style>
 </head>
+
 <body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="index.html" class="logo">Bizz<span>Short</span></a>
-            <button class="nav-toggle" aria-label="Toggle Navigation">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-            <ul class="nav-menu">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="client.html" class="active">Client Features</a></li>
-                <li><a href="analysis.html">Market Analysis</a></li>
-                <li><a href="advertise.html">Advertise</a></li>
-                <li><a href="contact.html">Contact</a></li>
-            </ul>
+    <!-- Header -->
+    <header class="header">
+        <!-- Top Section: Logo & Advertisement Banner -->
+        <div class="header-top-section">
+            <div class="container">
+                <div class="logo-ad-wrapper">
+                    <!-- Logo on Left -->
+                    <a href="index.html" class="logo">
+                        <img src="assets/images/logo.jpeg" alt="BizzShort Logo" class="logo-img">
+                        <div class="logo-text">
+                            <h1>BizzShort</h1>
+                            <p>IN SECONDS, SAY WHAT MATTERS</p>
+                        </div>
+                    </a>
+
+                    <!-- Advertisement Banner on Right -->
+                    <div class="ad-banner-container">
+                        <img src="https://placehold.co/728x90/34495e/ffffff?text=Advertisement+728x90"
+                            alt="Advertisement" class="top-ad-banner">
+                    </div>
+                </div>
+            </div>
         </div>
-    </nav>
+
+        <!-- Thick Navigation Bar -->
+        <div class="navbar-section">
+            <div class="container">
+                <nav class="main-nav">
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="#latest-news">Latest News</a></li>
+                        <li><a href="client.html" class="active">Our Clients</a></li>
+                        <li><a href="#interviews">Interviews</a></li>
+                        <li><a href="events.html">Upcoming Events</a></li>
+                        <li><a href="analysis.html">Market Analysis</a></li>
+                        <li><a href="advertise.html">Advertise</a></li>
+                        <li><a href="about.html">About</a></li>
+                    </ul>
+                    <div class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
 
     <!-- Hero Section -->
     <section class="client-hero">
@@ -195,32 +252,38 @@
         <div class="feature-card">
             <div class="feature-icon"><i class="fas fa-video"></i></div>
             <h3>Premium Video Content</h3>
-            <p>Access exclusive business insights, market analysis, and industry trends through professionally curated short-form videos optimized for busy professionals.</p>
+            <p>Access exclusive business insights, market analysis, and industry trends through professionally curated
+                short-form videos optimized for busy professionals.</p>
         </div>
         <div class="feature-card">
             <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
             <h3>Real-Time Market Data</h3>
-            <p>Stay ahead with live market charts, trending stocks, and instant updates on major market movements affecting your business decisions.</p>
+            <p>Stay ahead with live market charts, trending stocks, and instant updates on major market movements
+                affecting your business decisions.</p>
         </div>
         <div class="feature-card">
             <div class="feature-icon"><i class="fas fa-bell"></i></div>
             <h3>Breaking News Alerts</h3>
-            <p>Never miss critical business news. Get instant notifications on breaking stories that impact your industry and investments.</p>
+            <p>Never miss critical business news. Get instant notifications on breaking stories that impact your
+                industry and investments.</p>
         </div>
         <div class="feature-card">
             <div class="feature-icon"><i class="fas fa-users"></i></div>
             <h3>Industry Expert Interviews</h3>
-            <p>Learn from leaders across industries through exclusive interviews, insights, and actionable advice from successful entrepreneurs and executives.</p>
+            <p>Learn from leaders across industries through exclusive interviews, insights, and actionable advice from
+                successful entrepreneurs and executives.</p>
         </div>
         <div class="feature-card">
             <div class="feature-icon"><i class="fas fa-mobile-alt"></i></div>
             <h3>Multi-Device Access</h3>
-            <p>Watch and learn on any device - desktop, tablet, or mobile. Your content syncs seamlessly across all platforms.</p>
+            <p>Watch and learn on any device - desktop, tablet, or mobile. Your content syncs seamlessly across all
+                platforms.</p>
         </div>
         <div class="feature-card">
             <div class="feature-icon"><i class="fas fa-bookmark"></i></div>
             <h3>Personalized Collections</h3>
-            <p>Save your favorite videos, create custom playlists, and build your personal library of business knowledge.</p>
+            <p>Save your favorite videos, create custom playlists, and build your personal library of business
+                knowledge.</p>
         </div>
     </section>
 
@@ -230,7 +293,8 @@
         <div class="testimonial-grid">
             <div class="testimonial">
                 <div class="testimonial-text">
-                    "BizzShort has revolutionized how we consume business content. The short-form format is perfect for our team's busy schedules."
+                    "BizzShort has revolutionized how we consume business content. The short-form format is perfect for
+                    our team's busy schedules."
                 </div>
                 <div class="testimonial-author">
                     <div class="author-avatar">RS</div>
@@ -242,7 +306,8 @@
             </div>
             <div class="testimonial">
                 <div class="testimonial-text">
-                    "The market analysis videos are incredibly insightful. We've made better investment decisions thanks to BizzShort's expert content."
+                    "The market analysis videos are incredibly insightful. We've made better investment decisions thanks
+                    to BizzShort's expert content."
                 </div>
                 <div class="testimonial-author">
                     <div class="author-avatar">PM</div>
@@ -254,7 +319,8 @@
             </div>
             <div class="testimonial">
                 <div class="testimonial-text">
-                    "As an entrepreneur, staying updated is crucial. BizzShort delivers the right insights at the right time, every time."
+                    "As an entrepreneur, staying updated is crucial. BizzShort delivers the right insights at the right
+                    time, every time."
                 </div>
                 <div class="testimonial-author">
                     <div class="author-avatar">AK</div>
@@ -275,23 +341,115 @@
     </section>
 
     <!-- Footer -->
-    <footer style="background: #2c3e50; color: white; padding: 40px 5%; text-align: center;">
-        <p>&copy; 2025 BizzShort. All rights reserved.</p>
-        <div style="margin-top: 20px;">
-            <a href="index.html" style="color: #ecf0f1; margin: 0 15px; text-decoration: none;">Home</a>
-            <a href="about.html" style="color: #ecf0f1; margin: 0 15px; text-decoration: none;">About</a>
-            <a href="contact.html" style="color: #ecf0f1; margin: 0 15px; text-decoration: none;">Contact</a>
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-top">
+                <div class="footer-grid-enhanced">
+                    <!-- About Column -->
+                    <div class="footer-col">
+                        <div class="footer-logo">
+                            <img src="assets/images/logo.jpeg" alt="BizzShort Logo">
+                            <h3>BizzShort</h3>
+                        </div>
+                        <p class="footer-description">Your trusted source for real-time business news, market
+                            insights, and financial analysis. Stay ahead with BizzShort.</p>
+                        <div class="footer-social">
+                            <a href="https://www.facebook.com/share/1JsieyAznj/?mibextid=wwXIfr" target="_blank"
+                                rel="noopener noreferrer" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                            <a href="https://twitter.com/bizzshort" target="_blank" rel="noopener noreferrer"
+                                aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                            <a href="https://www.linkedin.com/company/bizzshort" target="_blank"
+                                rel="noopener noreferrer" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="https://www.instagram.com/bizz_short?igsh=NDVwdHJza2R3dnF0" target="_blank"
+                                rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                            <a href="https://youtube.com/@bizz_short?si=FZvH5iMI2v_J4vGE" target="_blank"
+                                rel="noopener noreferrer" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                        </div>
+                    </div>
+
+                    <!-- Quick Links -->
+                    <div class="footer-col">
+                        <h4>Explore</h4>
+                        <ul class="footer-links">
+                            <li><a href="index.html">Home</a></li>
+                            <li><a href="index.html#latest-news">Latest Updates</a></li>
+                            <li><a href="index.html#breaking-news">Breaking News</a></li>
+                            <li><a href="index.html#interviews">Interviews</a></li>
+                            <li><a href="events.html">Events</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Company -->
+                    <div class="footer-col">
+                        <h4>Company</h4>
+                        <ul class="footer-links">
+                            <li><a href="about.html">About Us</a></li>
+                            <li><a href="contact.html">Contact</a></li>
+                            <li><a href="advertise.html">Advertise</a></li>
+                            <li><a href="about.html#policy">Policies</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Legal -->
+                    <div class="footer-col">
+                        <h4>Legal</h4>
+                        <ul class="footer-links">
+                            <li><a href="about.html#policy">Privacy Policy</a></li>
+                            <li><a href="about.html#policy">Terms of Service</a></li>
+                            <li><a href="about.html#policy">Cookie Policy</a></li>
+                            <li><a href="about.html#policy">Editorial Policy</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Newsletter -->
+                    <div class="footer-col">
+                        <h4>Newsletter</h4>
+                        <p class="newsletter-text">Subscribe to get the latest news and updates delivered to your
+                            inbox.</p>
+                        <form class="newsletter-form" onsubmit="subscribeNewsletter(event)">
+                            <input type="email" placeholder="Enter your email" required>
+                            <button type="submit"><i class="fas fa-paper-plane"></i></button>
+                        </form>
+                        <div class="footer-contact">
+                            <p><i class="fas fa-envelope"></i> info@bizzshort.com</p>
+                            <p><i class="fas fa-phone"></i> +91 1234567890</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div class="footer-bottom-content">
+                    <div class="footer-bottom-left">
+                        <p class="footer-copyright">&copy; 2025 BizzShort. All rights reserved.</p>
+                        <p class="footer-developed">Developed by Garvik India</p>
+                    </div>
+                    <div class="footer-bottom-right">
+                        <a href="admin-login.html" class="admin-link-clean">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>Admin</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
     </footer>
 
     <script>
-        // Mobile Navigation Toggle
-        const navToggle = document.querySelector('.nav-toggle');
-        const navMenu = document.querySelector('.nav-menu');
-        navToggle?.addEventListener('click', () => {
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            const navMenu = document.querySelector('.main-nav ul');
+            const toggle = document.querySelector('.mobile-menu-toggle');
             navMenu.classList.toggle('active');
-            navToggle.classList.toggle('active');
-        });
+            toggle.classList.toggle('active');
+        }
+
+        // Newsletter Subscribe
+        function subscribeNewsletter(event) {
+            event.preventDefault();
+            alert('Thank you for subscribing!');
+        }
     </script>
 </body>
+
 </html>

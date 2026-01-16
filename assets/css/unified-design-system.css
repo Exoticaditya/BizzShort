@@ -1,0 +1,469 @@
+/**
+ * BizzShort Unified Design System
+ * Master CSS file for consistent styling across all pages
+ */
+
+/* ============================================
+   CSS Custom Properties (Variables)
+   ============================================ */
+:root {
+    /* Color Palette - Navy Theme */
+    --color-primary: #3d5875;
+    --color-primary-dark: #2c3e50;
+    --color-primary-light: #4a6a8a;
+
+    --color-secondary: #4a90e2;
+    --color-secondary-dark: #3a7bc8;
+    --color-secondary-light: #6ba3eb;
+
+    --color-accent: #e74c3c;
+    --color-accent-dark: #c0392b;
+
+    /* Neutral Colors */
+    --color-background: #f8f9fa;
+    --color-background-dark: #ecf0f1;
+    --color-surface: #ffffff;
+
+    --color-text-primary: #2c3e50;
+    --color-text-secondary: #7f8c8d;
+    --color-text-light: #95a5a6;
+    --color-text-inverse: #ffffff;
+
+    /* Semantic Colors */
+    --color-success: #27ae60;
+    --color-warning: #f39c12;
+    --color-error: #e74c3c;
+    --color-info: #3498db;
+
+    /* Market Colors */
+    --color-market-positive: #27ae60;
+    --color-market-negative: #e74c3c;
+    --color-market-neutral: #95a5a6;
+
+    /* Typography */
+    --font-primary: 'Inter', 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-secondary: 'Poppins', 'Roboto', sans-serif;
+
+    --font-size-xs: 0.75rem;
+    /* 12px */
+    --font-size-sm: 0.875rem;
+    /* 14px */
+    --font-size-base: 1rem;
+    /* 16px */
+    --font-size-lg: 1.125rem;
+    /* 18px */
+    --font-size-xl: 1.25rem;
+    /* 20px */
+    --font-size-2xl: 1.5rem;
+    /* 24px */
+    --font-size-3xl: 1.875rem;
+    /* 30px */
+    --font-size-4xl: 2.25rem;
+    /* 36px */
+    --font-size-5xl: 3rem;
+    /* 48px */
+
+    --font-weight-light: 300;
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+    --font-weight-extrabold: 800;
+
+    --line-height-tight: 1.25;
+    --line-height-normal: 1.5;
+    --line-height-relaxed: 1.75;
+    --line-height-loose: 2;
+
+    /* Spacing Scale */
+    --spacing-xs: 0.25rem;
+    /* 4px */
+    --spacing-sm: 0.5rem;
+    /* 8px */
+    --spacing-md: 1rem;
+    /* 16px */
+    --spacing-lg: 1.5rem;
+    /* 24px */
+    --spacing-xl: 2rem;
+    /* 32px */
+    --spacing-2xl: 3rem;
+    /* 48px */
+    --spacing-3xl: 4rem;
+    /* 64px */
+    --spacing-4xl: 5rem;
+    /* 80px */
+
+    /* Border Radius */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+    --radius-2xl: 24px;
+    --radius-full: 9999px;
+
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+
+    /* Transitions */
+    --transition-fast: 150ms ease-in-out;
+    --transition-base: 300ms ease-in-out;
+    --transition-slow: 500ms ease-in-out;
+
+    /* Z-index Scale */
+    --z-dropdown: 1000;
+    --z-sticky: 1020;
+    --z-fixed: 1030;
+    --z-modal-backdrop: 1040;
+    --z-modal: 1050;
+    --z-popover: 1060;
+    --z-tooltip: 1070;
+
+    /* Breakpoints (for reference in media queries) */
+    --breakpoint-sm: 640px;
+    --breakpoint-md: 768px;
+    --breakpoint-lg: 1024px;
+    --breakpoint-xl: 1280px;
+    --breakpoint-2xl: 1536px;
+
+    /* Container Max Widths */
+    --container-sm: 640px;
+    --container-md: 768px;
+    --container-lg: 1024px;
+    --container-xl: 1280px;
+}
+
+/* ============================================
+   Base Resets & Typography
+   ============================================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    font-family: var(--font-primary);
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-normal);
+    color: var(--color-text-primary);
+    background-color: var(--color-background);
+}
+
+/* ============================================
+   Unified Header Styles
+   ============================================ */
+.header {
+    background: var(--color-surface);
+    position: relative;
+    z-index: var(--z-sticky);
+}
+
+.header-top-section {
+    background: var(--color-surface);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding: var(--spacing-md) 0;
+}
+
+.logo-ad-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--spacing-lg);
+    max-width: var(--container-xl);
+    margin: 0 auto;
+    padding: 0 var(--spacing-md);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    text-decoration: none;
+    flex-shrink: 0;
+}
+
+.logo-img {
+    width: 50px;
+    height: 50px;
+    border-radius: var(--radius-md);
+    object-fit: cover;
+}
+
+.logo-text h1 {
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-primary);
+    margin: 0;
+}
+
+.logo-text p {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.ad-banner-container {
+    flex-grow: 1;
+    display: flex;
+    justify-content: flex-end;
+    max-width: 728px;
+}
+
+.top-ad-banner {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--radius-md);
+}
+
+/* ============================================
+   Unified Navigation Styles
+   ============================================ */
+.navbar-section {
+    background: var(--color-primary);
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky);
+    transition: all var(--transition-base);
+}
+
+.navbar-section.scrolled {
+    box-shadow: var(--shadow-lg);
+    background: var(--color-primary-dark);
+}
+
+.main-nav {
+    max-width: var(--container-xl);
+    margin: 0 auto;
+    padding: 0 var(--spacing-md);
+}
+
+.main-nav ul {
+    display: flex;
+    list-style: none;
+    gap: var(--spacing-xs);
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+}
+
+.main-nav ul li {
+    margin: 0;
+}
+
+.main-nav ul li a {
+    display: block;
+    padding: var(--spacing-md) var(--spacing-lg);
+    color: var(--color-text-inverse);
+    text-decoration: none;
+    font-weight: var(--font-weight-medium);
+    font-size: var(--font-size-base);
+    transition: all var(--transition-fast);
+    border-radius: var(--radius-sm);
+    position: relative;
+}
+
+.main-nav ul li a:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+.main-nav ul li a.active {
+    background: rgba(255, 255, 255, 0.2);
+    font-weight: var(--font-weight-semibold);
+}
+
+.mobile-menu-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: var(--spacing-sm);
+}
+
+.mobile-menu-toggle span {
+    width: 25px;
+    height: 3px;
+    background: var(--color-text-inverse);
+    transition: all var(--transition-fast);
+    border-radius: var(--radius-sm);
+}
+
+/* ============================================
+   Unified Footer Styles
+   ============================================ */
+.site-footer {
+    background: var(--color-primary-dark);
+    color: var(--color-text-inverse);
+    padding-top: var(--spacing-3xl);
+}
+
+.footer-container {
+    max-width: var(--container-xl);
+    margin: 0 auto;
+    padding: 0 var(--spacing-md);
+}
+
+.footer-grid-enhanced {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--spacing-2xl);
+    margin-bottom: var(--spacing-2xl);
+}
+
+.footer-col h4 {
+    color: var(--color-text-inverse);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    margin-bottom: var(--spacing-lg);
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-links li {
+    margin-bottom: var(--spacing-sm);
+}
+
+.footer-links a {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+    display: inline-block;
+}
+
+.footer-links a:hover {
+    color: var(--color-text-inverse);
+    transform: translateX(5px);
+}
+
+.footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding: var(--spacing-lg) 0;
+    margin-top: var(--spacing-2xl);
+}
+
+.footer-bottom-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
+}
+
+/* ============================================
+   Utility Classes
+   ============================================ */
+.container {
+    max-width: var(--container-xl);
+    margin: 0 auto;
+    padding: 0 var(--spacing-md);
+}
+
+.section-title {
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-primary);
+    margin-bottom: var(--spacing-lg);
+}
+
+.btn {
+    display: inline-block;
+    padding: var(--spacing-md) var(--spacing-xl);
+    border-radius: var(--radius-md);
+    font-weight: var(--font-weight-semibold);
+    text-decoration: none;
+    transition: all var(--transition-base);
+    cursor: pointer;
+    border: none;
+    font-size: var(--font-size-base);
+}
+
+.btn-primary {
+    background: var(--color-primary);
+    color: var(--color-text-inverse);
+}
+
+.btn-primary:hover {
+    background: var(--color-primary-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.btn-secondary {
+    background: var(--color-secondary);
+    color: var(--color-text-inverse);
+}
+
+.btn-secondary:hover {
+    background: var(--color-secondary-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+/* ============================================
+   Responsive Design
+   ============================================ */
+@media (max-width: 768px) {
+    .logo-ad-wrapper {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .ad-banner-container {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .mobile-menu-toggle {
+        display: flex;
+    }
+
+    .main-nav ul {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--color-primary);
+        flex-direction: column;
+        align-items: stretch;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height var(--transition-base);
+    }
+
+    .main-nav ul.active {
+        max-height: 500px;
+        box-shadow: var(--shadow-xl);
+    }
+
+    .main-nav ul li {
+        width: 100%;
+    }
+
+    .main-nav ul li a {
+        width: 100%;
+        text-align: left;
+    }
+
+    .footer-grid-enhanced {
+        grid-template-columns: 1fr;
+    }
+}

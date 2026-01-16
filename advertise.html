@@ -1,11 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Advertise With BizzShort | Premium Business News Platform</title>
-    <meta name="description" content="Advertise with BizzShort and reach India's business community. Premium ad placements, targeted campaigns, and analytics-driven results.">
-    
+    <meta name="description"
+        content="Advertise with BizzShort and reach India's business community. Premium ad placements, targeted campaigns, and analytics-driven results.">
+
+    <!-- Unified Design System -->
+    <link rel="stylesheet" href="assets/css/unified-design-system.css?v=20260116">
     <!-- Stylesheets -->
     <link rel="stylesheet" href="assets/css/modern-design.css">
     <link rel="stylesheet" href="assets/css/style.css">
@@ -15,60 +19,61 @@
     <link rel="stylesheet" href="assets/css/main-style.css">
     <link rel="stylesheet" href="assets/css/global-enhancements.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body>
-    <!-- Header Top -->
-    <div class="header-top">
-        <div class="container">
-            <div class="header-top-content">
-                <div class="contact-info">
-                    <span><i class="fas fa-phone"></i><a href="tel:+919876543210">+91 98765-43210</a></span>
-                    <span><i class="fas fa-envelope"></i><a href="mailto:advertising@bizzshort.com">advertising@bizzshort.com</a></span>
-                    <span><i class="fas fa-map-marker-alt"></i>B-64, Sector 65, Noida</span>
-                </div>
-                <div class="social-links">
-                    <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
-                    <a href="#" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                    <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
-                    <a href="#" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+    <!-- Header -->
+    <header class="header">
+        <!-- Top Section: Logo & Advertisement Banner -->
+        <div class="header-top-section">
+            <div class="container">
+                <div class="logo-ad-wrapper">
+                    <!-- Logo on Left -->
+                    <a href="index.html" class="logo">
+                        <img src="assets/images/logo.jpeg" alt="BizzShort Logo" class="logo-img">
+                        <div class="logo-text">
+                            <h1>BizzShort</h1>
+                            <p>IN SECONDS, SAY WHAT MATTERS</p>
+                        </div>
+                    </a>
+
+                    <!-- Advertisement Banner on Right -->
+                    <div class="ad-banner-container">
+                        <img src="https://placehold.co/728x90/34495e/ffffff?text=Advertisement+728x90"
+                            alt="Advertisement" class="top-ad-banner">
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Main Header -->
-    <header class="header-main">
-        <div class="container">
-            <div class="header-content">
-                <div class="logo">
-                    <a href="index.html">
-                        <h1>BizzShort</h1>
-                        <p>Business News Simplified</p>
-                    </a>
-                </div>
-                
+        <!-- Thick Navigation Bar -->
+        <div class="navbar-section">
+            <div class="container">
                 <nav class="main-nav">
-                    <ul class="nav-menu">
+                    <ul>
                         <li><a href="index.html">Home</a></li>
-                        <li><a href="about.html">About</a></li>
-                        <li><a href="blog.html">Blog</a></li>
-                        <li><a href="contact.html">Contact</a></li>
-                        <li><a href="analytics.html">Analytics</a></li>
+                        <li><a href="index.html#latest-news">Latest News</a></li>
+                        <li><a href="client.html">Our Clients</a></li>
+                        <li><a href="index.html#interviews">Interviews</a></li>
+                        <li><a href="events.html">Upcoming Events</a></li>
+                        <li><a href="analysis.html">Market Analysis</a></li>
                         <li><a href="advertise.html" class="active">Advertise</a></li>
+                        <li><a href="about.html">About</a></li>
                     </ul>
+                    <div class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
                 </nav>
-                
-                <div class="header-actions">
-                    <button class="search-btn"><i class="fas fa-search"></i></button>
-                    <button class="menu-toggle"><i class="fas fa-bars"></i></button>
-                </div>
             </div>
         </div>
     </header>
@@ -78,7 +83,8 @@
         <div class="container">
             <div class="hero-content">
                 <h1>Advertise With BizzShort</h1>
-                <p>Reach India's business community with targeted advertising solutions. Connect with decision-makers, entrepreneurs, and industry leaders through our premium business news platform.</p>
+                <p>Reach India's business community with targeted advertising solutions. Connect with decision-makers,
+                    entrepreneurs, and industry leaders through our premium business news platform.</p>
                 <div class="hero-stats">
                     <div class="stat-item">
                         <h3>50K+</h3>
@@ -105,7 +111,7 @@
                 <h2>Advertising Solutions</h2>
                 <p>Choose the perfect advertising format to reach your target audience</p>
             </div>
-            
+
             <div class="options-grid">
                 <div class="option-card">
                     <div class="option-icon">
@@ -121,14 +127,15 @@
                     </ul>
                     <div class="price-range">Starting from ₹15,000/month</div>
                 </div>
-                
+
                 <div class="option-card featured">
                     <div class="featured-badge">Most Popular</div>
                     <div class="option-icon">
                         <i class="fas fa-newspaper"></i>
                     </div>
                     <h3>Sponsored Content</h3>
-                    <p>Native advertising through sponsored articles and business features that blend seamlessly with our content.</p>
+                    <p>Native advertising through sponsored articles and business features that blend seamlessly with
+                        our content.</p>
                     <ul>
                         <li>Sponsored Articles</li>
                         <li>Company Features</li>
@@ -137,7 +144,7 @@
                     </ul>
                     <div class="price-range">Starting from ₹25,000/article</div>
                 </div>
-                
+
                 <div class="option-card">
                     <div class="option-icon">
                         <i class="fas fa-envelope"></i>
@@ -152,13 +159,14 @@
                     </ul>
                     <div class="price-range">Starting from ₹20,000/week</div>
                 </div>
-                
+
                 <div class="option-card">
                     <div class="option-icon">
                         <i class="fas fa-chart-line"></i>
                     </div>
                     <h3>Analytics Package</h3>
-                    <p>Comprehensive advertising analytics with detailed reporting and campaign optimization insights.</p>
+                    <p>Comprehensive advertising analytics with detailed reporting and campaign optimization insights.
+                    </p>
                     <ul>
                         <li>Real-time Analytics</li>
                         <li>Audience Demographics</li>
@@ -178,7 +186,7 @@
                 <h2>Advertising Packages</h2>
                 <p>Flexible pricing options to suit your marketing budget and goals</p>
             </div>
-            
+
             <div class="pricing-grid">
                 <div class="pricing-card">
                     <div class="package-header">
@@ -195,7 +203,7 @@
                     </ul>
                     <a href="#contact" class="package-btn">Choose Starter</a>
                 </div>
-                
+
                 <div class="pricing-card popular">
                     <div class="popular-badge">Recommended</div>
                     <div class="package-header">
@@ -212,7 +220,7 @@
                     </ul>
                     <a href="#contact" class="package-btn">Choose Professional</a>
                 </div>
-                
+
                 <div class="pricing-card">
                     <div class="package-header">
                         <h3>Enterprise</h3>
@@ -229,7 +237,7 @@
                     <a href="#contact" class="package-btn">Choose Enterprise</a>
                 </div>
             </div>
-            
+
             <div class="custom-package">
                 <h3>Need a Custom Solution?</h3>
                 <p>We can create a tailored advertising package that fits your specific requirements and budget.</p>
@@ -245,7 +253,7 @@
                 <h2>Our Audience</h2>
                 <p>Understand who you'll be reaching with your advertisements</p>
             </div>
-            
+
             <div class="demographics-content">
                 <div class="demo-charts">
                     <div class="chart-container">
@@ -257,7 +265,7 @@
                         <canvas id="rolesChart"></canvas>
                     </div>
                 </div>
-                
+
                 <div class="demo-stats">
                     <h3>Key Statistics</h3>
                     <div class="stats-grid">
@@ -290,52 +298,58 @@
                 <h2>Success Stories</h2>
                 <p>See how businesses have grown with BizzShort advertising</p>
             </div>
-            
+
             <div class="stories-grid">
                 <div class="story-card">
                     <div class="story-header">
-                        <img src="https://ui-avatars.com/api/?name=TechCorp&background=3498db&color=fff&size=60" alt="TechCorp Logo" class="company-logo">
+                        <img src="https://ui-avatars.com/api/?name=TechCorp&background=3498db&color=fff&size=60"
+                            alt="TechCorp Logo" class="company-logo">
                         <div class="company-info">
                             <h4>TechCorp Solutions</h4>
                             <p>IT Services</p>
                         </div>
                     </div>
                     <div class="story-content">
-                        <p>"Our sponsored articles on BizzShort generated 300% more qualified leads than any other platform. The business-focused audience is exactly what we needed."</p>
+                        <p>"Our sponsored articles on BizzShort generated 300% more qualified leads than any other
+                            platform. The business-focused audience is exactly what we needed."</p>
                         <div class="story-metrics">
                             <span class="metric">+300% Leads</span>
                             <span class="metric">+150% Website Traffic</span>
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="story-card">
                     <div class="story-header">
-                        <img src="https://ui-avatars.com/api/?name=FinanceFirst&background=27ae60&color=fff&size=60" alt="FinanceFirst Logo" class="company-logo">
+                        <img src="https://ui-avatars.com/api/?name=FinanceFirst&background=27ae60&color=fff&size=60"
+                            alt="FinanceFirst Logo" class="company-logo">
                         <div class="company-info">
                             <h4>FinanceFirst</h4>
                             <p>Financial Services</p>
                         </div>
                     </div>
                     <div class="story-content">
-                        <p>"BizzShort's banner advertising helped us reach C-level executives across India. Our brand awareness increased significantly within 3 months."</p>
+                        <p>"BizzShort's banner advertising helped us reach C-level executives across India. Our brand
+                            awareness increased significantly within 3 months."</p>
                         <div class="story-metrics">
                             <span class="metric">+250% Brand Awareness</span>
                             <span class="metric">+180% Conversions</span>
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="story-card">
                     <div class="story-header">
-                        <img src="https://ui-avatars.com/api/?name=StartupHub&background=e74c3c&color=fff&size=60" alt="StartupHub Logo" class="company-logo">
+                        <img src="https://ui-avatars.com/api/?name=StartupHub&background=e74c3c&color=fff&size=60"
+                            alt="StartupHub Logo" class="company-logo">
                         <div class="company-info">
                             <h4>StartupHub</h4>
                             <p>Business Consulting</p>
                         </div>
                     </div>
                     <div class="story-content">
-                        <p>"The newsletter sponsorship was a game-changer for our consulting business. Direct access to business owners resulted in 5 new major contracts."</p>
+                        <p>"The newsletter sponsorship was a game-changer for our consulting business. Direct access to
+                            business owners resulted in 5 new major contracts."</p>
                         <div class="story-metrics">
                             <span class="metric">5 New Contracts</span>
                             <span class="metric">₹25L+ Revenue</span>
@@ -353,7 +367,7 @@
                 <h2>Ready to Get Started?</h2>
                 <p>Contact our advertising team to discuss your marketing goals and get a custom quote</p>
             </div>
-            
+
             <div class="contact-content">
                 <div class="contact-form">
                     <h3>Request a Quote</h3>
@@ -389,12 +403,13 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <textarea id="message" name="message" placeholder="Tell us about your advertising goals and requirements" rows="4"></textarea>
+                            <textarea id="message" name="message"
+                                placeholder="Tell us about your advertising goals and requirements" rows="4"></textarea>
                         </div>
                         <button type="submit" class="submit-btn">Request Quote</button>
                     </form>
                 </div>
-                
+
                 <div class="contact-info">
                     <h3>Get in Touch</h3>
                     <div class="info-item">
@@ -445,16 +460,13 @@
                             insights, and financial analysis. Stay ahead with BizzShort.</p>
                         <div class="footer-social">
                             <a href="https://www.facebook.com/share/1JsieyAznj/?mibextid=wwXIfr" target="_blank"
-                                rel="noopener noreferrer" aria-label="Facebook"><i
-                                    class="fab fa-facebook-f"></i></a>
+                                rel="noopener noreferrer" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
                             <a href="https://twitter.com/bizzshort" target="_blank" rel="noopener noreferrer"
                                 aria-label="Twitter"><i class="fab fa-twitter"></i></a>
                             <a href="https://www.linkedin.com/company/bizzshort" target="_blank"
-                                rel="noopener noreferrer" aria-label="LinkedIn"><i
-                                    class="fab fa-linkedin-in"></i></a>
+                                rel="noopener noreferrer" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
                             <a href="https://www.instagram.com/bizz_short?igsh=NDVwdHJza2R3dnF0" target="_blank"
-                                rel="noopener noreferrer" aria-label="Instagram"><i
-                                    class="fab fa-instagram"></i></a>
+                                rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
                             <a href="https://youtube.com/@bizz_short?si=FZvH5iMI2v_J4vGE" target="_blank"
                                 rel="noopener noreferrer" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
                         </div>
@@ -532,4 +544,5 @@
     <script src="assets/js/script.js"></script>
     <script src="assets/js/advertise.js"></script>
 </body>
+
 </html>

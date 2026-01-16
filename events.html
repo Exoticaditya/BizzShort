@@ -5,6 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Events - BizzShort | Business Events & Conferences</title>
+
+    <!-- Unified Design System -->
+    <link rel="stylesheet" href="assets/css/unified-design-system.css?v=20260116">
     <link rel="stylesheet" href="assets/css/modern-design.css">
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/additional.css">
@@ -18,7 +21,7 @@
     <link rel="stylesheet" href="assets/css/global-enhancements.css">
     <style>
         .events-hero {
-            background: linear-gradient(135deg, #0066CC 0%, #4A90E2 100%);
+            background: linear-gradient(135deg, #3d5875 0%, #2c3e50 100%);
             color: white;
             padding: 60px 0;
             text-align: center;
@@ -57,7 +60,7 @@
             border: 2px solid #E6F2FF;
             border-radius: 25px;
             background: white;
-            color: #0066CC;
+            color: #3d5875;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -65,9 +68,9 @@
 
         .filter-tab:hover,
         .filter-tab.active {
-            background: #0066CC;
+            background: #3d5875;
             color: white;
-            border-color: #0066CC;
+            border-color: #3d5875;
         }
 
         .events-grid {
@@ -88,8 +91,8 @@
 
         .event-card:hover {
             transform: translateY(-8px);
-            box-shadow: 0 12px 24px rgba(0, 102, 204, 0.2);
-            border-color: #0066CC;
+            box-shadow: 0 12px 24px rgba(61, 88, 117, 0.2);
+            border-color: #3d5875;
         }
 
         .event-image {
@@ -103,13 +106,13 @@
             position: absolute;
             top: 15px;
             left: 15px;
-            background: linear-gradient(135deg, #0066CC 0%, #4A90E2 100%);
+            background: linear-gradient(135deg, #3d5875 0%, #2c3e50 100%);
             color: white;
             padding: 8px 16px;
             border-radius: 8px;
             font-weight: 700;
             text-align: center;
-            box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+            box-shadow: 0 4px 12px rgba(61, 88, 117, 0.3);
         }
 
         .event-date-badge .day {
@@ -132,7 +135,7 @@
             display: inline-block;
             padding: 5px 12px;
             background: #E6F2FF;
-            color: #0066CC;
+            color: #3d5875;
             font-size: 12px;
             font-weight: 600;
             border-radius: 4px;
@@ -157,7 +160,7 @@
         }
 
         .event-meta i {
-            color: #0066CC;
+            color: #3d5875;
             margin-right: 6px;
         }
 
@@ -179,7 +182,7 @@
         .event-price {
             font-size: 20px;
             font-weight: 700;
-            color: #0066CC;
+            color: #3d5875;
         }
 
         .event-price.free {
@@ -188,7 +191,7 @@
 
         .register-btn {
             padding: 10px 20px;
-            background: linear-gradient(135deg, #0066CC 0%, #4A90E2 100%);
+            background: linear-gradient(135deg, #3d5875 0%, #2c3e50 100%);
             color: white;
             border: none;
             border-radius: 6px;
@@ -198,9 +201,9 @@
         }
 
         .register-btn:hover {
-            background: linear-gradient(135deg, #0052A3 0%, #0066CC 100%);
+            background: linear-gradient(135deg, #2c3e50 0%, #3d5875 100%);
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+            box-shadow: 0 4px 12px rgba(61, 88, 117, 0.3);
         }
 
         .upcoming-section {
@@ -235,7 +238,7 @@
         .featured-tag {
             display: inline-block;
             padding: 8px 16px;
-            background: linear-gradient(135deg, #0066CC 0%, #4A90E2 100%);
+            background: linear-gradient(135deg, #3d5875 0%, #2c3e50 100%);
             color: white;
             font-size: 12px;
             font-weight: 700;
@@ -281,66 +284,50 @@
 </head>
 
 <body>
-    <!-- Top Advertisement Banner -->
-    <div class="top-ad-banner">
-        <div class="ad-container">
-            <div class="ad-placeholder">
-                <i class="fas fa-ad"></i>
-                <span>Advertisement Space - 728x90</span>
-            </div>
-        </div>
-    </div>
-
     <!-- Header -->
     <header class="header">
-        <div class="header-top">
-            <div class="header-top-content">
-                <div class="contact-info">
-                    <span><i class="fas fa-phone"></i> <a href="tel:+919876543210">+91 9876543210</a></span>
-                    <span><i class="fas fa-envelope"></i> <a
-                            href="mailto:info@bizzshort.com">info@bizzshort.com</a></span>
-                    <span><i class="fas fa-map-marker-alt"></i> B-64, Sector 65, Noida</span>
-                </div>
-                <div class="social-links">
-                    <a href="https://www.instagram.com/bizz_short" target="_blank" aria-label="Instagram"><i
-                            class="fab fa-instagram"></i></a>
-                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                    <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                    <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-                </div>
-            </div>
-        </div>
-
-        <div class="header-main">
-            <div class="header-content">
-                <div class="logo">
-                    <div class="logo-container">
+        <!-- Top Section: Logo & Advertisement Banner -->
+        <div class="header-top-section">
+            <div class="container">
+                <div class="logo-ad-wrapper">
+                    <!-- Logo on Left -->
+                    <a href="index.html" class="logo">
                         <img src="assets/images/logo.jpeg" alt="BizzShort Logo" class="logo-img">
                         <div class="logo-text">
                             <h1>BizzShort</h1>
-                            <p>Business News & Market Insights</p>
+                            <p>IN SECONDS, SAY WHAT MATTERS</p>
                         </div>
+                    </a>
+
+                    <!-- Advertisement Banner on Right -->
+                    <div class="ad-banner-container">
+                        <img src="https://placehold.co/728x90/34495e/ffffff?text=Advertisement+728x90"
+                            alt="Advertisement" class="top-ad-banner">
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <!-- Thick Navigation Bar -->
+        <div class="navbar-section">
+            <div class="container">
                 <nav class="main-nav">
                     <ul>
                         <li><a href="index.html">Home</a></li>
+                        <li><a href="index.html#latest-news">Latest News</a></li>
+                        <li><a href="client.html">Our Clients</a></li>
                         <li><a href="index.html#interviews">Interviews</a></li>
-                        <li><a href="events.html" class="active">Events</a></li>
-                        <li><a href="blog.html">News</a></li>
-                        <li><a href="index.html#industry-updates">Industry Updates</a></li>
-                        <li><a href="index.html#client-features">Client Features</a></li>
-                        <li><a href="analytics.html">Analytics</a></li>
+                        <li><a href="events.html" class="active">Upcoming Events</a></li>
+                        <li><a href="analysis.html">Market Analysis</a></li>
+                        <li><a href="advertise.html">Advertise</a></li>
                         <li><a href="about.html">About</a></li>
-                        <li><a href="contact.html">Contact</a></li>
                     </ul>
+                    <div class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
                 </nav>
-                <div class="mobile-menu-toggle">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
             </div>
         </div>
     </header>
@@ -568,16 +555,13 @@
                             insights, and financial analysis. Stay ahead with BizzShort.</p>
                         <div class="footer-social">
                             <a href="https://www.facebook.com/share/1JsieyAznj/?mibextid=wwXIfr" target="_blank"
-                                rel="noopener noreferrer" aria-label="Facebook"><i
-                                    class="fab fa-facebook-f"></i></a>
+                                rel="noopener noreferrer" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
                             <a href="https://twitter.com/bizzshort" target="_blank" rel="noopener noreferrer"
                                 aria-label="Twitter"><i class="fab fa-twitter"></i></a>
                             <a href="https://www.linkedin.com/company/bizzshort" target="_blank"
-                                rel="noopener noreferrer" aria-label="LinkedIn"><i
-                                    class="fab fa-linkedin-in"></i></a>
+                                rel="noopener noreferrer" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
                             <a href="https://www.instagram.com/bizz_short?igsh=NDVwdHJza2R3dnF0" target="_blank"
-                                rel="noopener noreferrer" aria-label="Instagram"><i
-                                    class="fab fa-instagram"></i></a>
+                                rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
                             <a href="https://youtube.com/@bizz_short?si=FZvH5iMI2v_J4vGE" target="_blank"
                                 rel="noopener noreferrer" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
                         </div>
@@ -685,10 +669,18 @@
         });
 
         // Mobile Menu Toggle
-        document.querySelector('.mobile-menu-toggle').addEventListener('click', function () {
-            document.querySelector('.main-nav').classList.toggle('active');
-            this.classList.toggle('active');
-        });
+        function toggleMobileMenu() {
+            const navMenu = document.querySelector('.main-nav ul');
+            const toggle = document.querySelector('.mobile-menu-toggle');
+            navMenu.classList.toggle('active');
+            toggle.classList.toggle('active');
+        }
+
+        // Newsletter Subscribe
+        function subscribeNewsletter(event) {
+            event.preventDefault();
+            alert('Thank you for subscribing!');
+        }
     </script>
 </body>
 

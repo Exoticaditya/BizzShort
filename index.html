@@ -19,6 +19,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="assets/css/global-enhancements.css">
 
+    <!-- Unified Design System (Load First) -->
+    <link rel="stylesheet" href="assets/css/unified-design-system.css?v=20260116">
+
     <!-- Stylesheets -->
     <link rel="stylesheet" href="assets/css/main-style.css?v=20260109">
     <link rel="stylesheet" href="assets/css/wirecable-grid.css?v=20260109">
@@ -29,6 +32,7 @@
     <link rel="stylesheet" href="assets/css/video-grid-unified.css?v=20260109">
     <link rel="stylesheet" href="assets/css/final-fixes.css?v=20260109">
     <link rel="stylesheet" href="assets/css/alignment-fixes.css?v=20260115">
+    <link rel="stylesheet" href="assets/css/video-modal.css?v=20260116">
 
     <!-- Google AdSense (Replace ca-pub-XXXXXXXXXXXXXXXX with your actual AdSense publisher ID) -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX"
@@ -192,11 +196,10 @@
                             <div class="breaking-video-player">
                                 <!-- Large YouTube Video Player - Will be updated dynamically -->
                                 <div class="main-video-wrapper">
-                                    <iframe width="100%" height="450" 
-                                        src="https://www.youtube.com/embed/VIDEO_PLACEHOLDER?rel=0&modestbranding=1" 
-                                        title="BizzShort Breaking News" 
-                                        frameborder="0" 
-                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                    <iframe width="100%" height="450"
+                                        src="https://www.youtube.com/embed/VIDEO_PLACEHOLDER?rel=0&modestbranding=1"
+                                        title="BizzShort Breaking News" frameborder="0"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                         allowfullscreen>
                                     </iframe>
                                 </div>
@@ -216,7 +219,8 @@
                             <div class="breaking-news-grid">
                                 <article class="breaking-news-card" data-video-url="" style="cursor: pointer;">
                                     <div class="video-thumbnail">
-                                        <img src="https://placehold.co/600x400/e74c3c/ffffff?text=Loading..." alt="Business Update">
+                                        <img src="https://placehold.co/600x400/e74c3c/ffffff?text=Loading..."
+                                            alt="Business Update">
                                         <div class="play-overlay">
                                             <i class="fab fa-youtube"></i>
                                         </div>
@@ -234,7 +238,8 @@
 
                                 <article class="breaking-news-card" data-video-url="" style="cursor: pointer;">
                                     <div class="video-thumbnail">
-                                        <img src="https://placehold.co/600x400/667eea/ffffff?text=Loading..." alt="Economy Update">
+                                        <img src="https://placehold.co/600x400/667eea/ffffff?text=Loading..."
+                                            alt="Economy Update">
                                         <div class="play-overlay">
                                             <i class="fab fa-youtube"></i>
                                         </div>
@@ -252,7 +257,8 @@
 
                                 <article class="breaking-news-card" data-video-url="" style="cursor: pointer;">
                                     <div class="video-thumbnail">
-                                        <img src="https://placehold.co/600x400/27ae60/ffffff?text=Loading..." alt="Startup News">
+                                        <img src="https://placehold.co/600x400/27ae60/ffffff?text=Loading..."
+                                            alt="Startup News">
                                         <div class="play-overlay">
                                             <i class="fab fa-youtube"></i>
                                         </div>
@@ -335,7 +341,7 @@
                                 <button class="filter-btn" data-category="industry">Industry Update</button>
                             </div>
                         </div>
-                        
+
                         <!-- Wirecable Grid with Video Players - Full Width -->
                         <div class="news-video-grid-large" id="latestUpdatesGrid">
                             <!-- This will be populated dynamically from database with real YouTube videos -->
@@ -350,21 +356,22 @@
                     <div class="container">
                         <div class="section-header">
                             <h2 class="section-title">Exclusive Interviews</h2>
-                            <a href="https://www.instagram.com/bizz_short" target="_blank" class="view-all">View All →</a>
+                            <a href="https://www.instagram.com/bizz_short" target="_blank" class="view-all">View All
+                                →</a>
                         </div>
                         <div class="interview-videos-grid instagram-reels-grid">
                             <!-- Instagram Reel 1 -->
-                            <article class="interview-video-card instagram-reel-card" onclick="window.open('https://www.instagram.com/reel/DSRtUxpisHf/', '_blank')" style="cursor: pointer;">
+                            <article class="interview-video-card instagram-reel-card"
+                                onclick="window.open('https://www.instagram.com/reel/DSRtUxpisHf/', '_blank')"
+                                style="cursor: pointer;">
                                 <div class="video-embed-wrapper instagram-embed">
-                                    <iframe src="https://www.instagram.com/reel/DSRtUxpisHf/embed" 
-                                        frameborder="0" 
-                                        scrolling="no"
-                                        allowtransparency="true"
-                                        allowfullscreen
+                                    <iframe src="https://www.instagram.com/reel/DSRtUxpisHf/embed" frameborder="0"
+                                        scrolling="no" allowtransparency="true" allowfullscreen
                                         title="Market Analysis"></iframe>
                                 </div>
                                 <div class="interview-details">
-                                    <span class="interview-tag instagram-tag"><i class="fab fa-instagram"></i> INTERVIEW</span>
+                                    <span class="interview-tag instagram-tag"><i class="fab fa-instagram"></i>
+                                        INTERVIEW</span>
                                     <h3>Industry Leader Interview - Market Analysis</h3>
                                     <div class="video-meta">
                                         <span><i class="fab fa-instagram"></i> @bizz_short</span>
@@ -374,17 +381,17 @@
                             </article>
 
                             <!-- Instagram Reel 2 -->
-                            <article class="interview-video-card instagram-reel-card" onclick="window.open('https://www.instagram.com/reel/DSRmTi7FA-g/', '_blank')" style="cursor: pointer;">
+                            <article class="interview-video-card instagram-reel-card"
+                                onclick="window.open('https://www.instagram.com/reel/DSRmTi7FA-g/', '_blank')"
+                                style="cursor: pointer;">
                                 <div class="video-embed-wrapper instagram-embed">
-                                    <iframe src="https://www.instagram.com/reel/DSRmTi7FA-g/embed" 
-                                        frameborder="0" 
-                                        scrolling="no"
-                                        allowtransparency="true"
-                                        allowfullscreen
+                                    <iframe src="https://www.instagram.com/reel/DSRmTi7FA-g/embed" frameborder="0"
+                                        scrolling="no" allowtransparency="true" allowfullscreen
                                         title="Business News"></iframe>
                                 </div>
                                 <div class="interview-details">
-                                    <span class="interview-tag instagram-tag"><i class="fab fa-instagram"></i> INTERVIEW</span>
+                                    <span class="interview-tag instagram-tag"><i class="fab fa-instagram"></i>
+                                        INTERVIEW</span>
                                     <h3>CEO Interview - Business Growth Strategies</h3>
                                     <div class="video-meta">
                                         <span><i class="fab fa-instagram"></i> @bizz_short</span>
@@ -394,17 +401,17 @@
                             </article>
 
                             <!-- Instagram Reel 3 -->
-                            <article class="interview-video-card instagram-reel-card" onclick="window.open('https://www.instagram.com/reel/DSRfWfMjQy_/', '_blank')" style="cursor: pointer;">
+                            <article class="interview-video-card instagram-reel-card"
+                                onclick="window.open('https://www.instagram.com/reel/DSRfWfMjQy_/', '_blank')"
+                                style="cursor: pointer;">
                                 <div class="video-embed-wrapper instagram-embed">
-                                    <iframe src="https://www.instagram.com/reel/DSRfWfMjQy_/embed" 
-                                        frameborder="0" 
-                                        scrolling="no"
-                                        allowtransparency="true"
-                                        allowfullscreen
+                                    <iframe src="https://www.instagram.com/reel/DSRfWfMjQy_/embed" frameborder="0"
+                                        scrolling="no" allowtransparency="true" allowfullscreen
                                         title="Economy Update"></iframe>
                                 </div>
                                 <div class="interview-details">
-                                    <span class="interview-tag instagram-tag"><i class="fab fa-instagram"></i> INTERVIEW</span>
+                                    <span class="interview-tag instagram-tag"><i class="fab fa-instagram"></i>
+                                        INTERVIEW</span>
                                     <h3>Expert Interview - Economic Forecast 2026</h3>
                                     <div class="video-meta">
                                         <span><i class="fab fa-instagram"></i> @bizz_short</span>
@@ -414,17 +421,17 @@
                             </article>
 
                             <!-- Instagram Reel 4 -->
-                            <article class="interview-video-card instagram-reel-card" onclick="window.open('https://www.instagram.com/reel/DSRYU-bD_wU/', '_blank')" style="cursor: pointer;">
+                            <article class="interview-video-card instagram-reel-card"
+                                onclick="window.open('https://www.instagram.com/reel/DSRYU-bD_wU/', '_blank')"
+                                style="cursor: pointer;">
                                 <div class="video-embed-wrapper instagram-embed">
-                                    <iframe src="https://www.instagram.com/reel/DSRYU-bD_wU/embed" 
-                                        frameborder="0" 
-                                        scrolling="no"
-                                        allowtransparency="true"
-                                        allowfullscreen
+                                    <iframe src="https://www.instagram.com/reel/DSRYU-bD_wU/embed" frameborder="0"
+                                        scrolling="no" allowtransparency="true" allowfullscreen
                                         title="Startup News"></iframe>
                                 </div>
                                 <div class="interview-details">
-                                    <span class="interview-tag instagram-tag"><i class="fab fa-instagram"></i> INTERVIEW</span>
+                                    <span class="interview-tag instagram-tag"><i class="fab fa-instagram"></i>
+                                        INTERVIEW</span>
                                     <h3>Startup Founder Interview - Scaling Success</h3>
                                     <div class="video-meta">
                                         <span><i class="fab fa-instagram"></i> @bizz_short</span>
@@ -435,262 +442,264 @@
                         </div>
                     </div>
                 </section>
+                <div class="container">
+                    <div class="section-header">
+                        <h2 class="section-title">Upcoming Events</h2>
+                        <a href="events.html" class="view-all">View All →</a>
+                    </div>
+                    <div class="events-grid">
+                        <article class="event-card">
+                            <a href="article-detail.html?id=1" style="text-decoration: none; color: inherit;">
+                                <div class="event-date">
+                                    <span class="date-day">15</span>
+                                    <span class="date-month">DEC</span>
+                                </div>
+                                <div class="event-content">
+                                    <h3>India Business Summit 2025</h3>
+                                    <p class="event-location"><i class="fas fa-map-marker-alt"></i> Mumbai
+                                        Convention Center</p>
+                                    <p class="event-time"><i class="fas fa-clock"></i> 9:00 AM - 6:00 PM</p>
+                                    <button class="event-btn">Register Now</button>
+                                </div>
+                            </a>
+                        </article>
+                        <article class="event-card">
+                            <a href="article-detail.html?id=1" style="text-decoration: none; color: inherit;">
+                                <div class="event-date">
+                                    <span class="date-day">20</span>
+                                    <span class="date-month">DEC</span>
+                                </div>
+                                <div class="event-content">
+                                    <h3>Digital Marketing Masterclass</h3>
+                                    <p class="event-location"><i class="fas fa-map-marker-alt"></i> Virtual Event
+                                    </p>
+                                    <p class="event-time"><i class="fas fa-clock"></i> 2:00 PM - 5:00 PM</p>
+                                    <button class="event-btn">Join Online</button>
+                                </div>
+                            </a>
+                        </article>
+                        <article class="event-card">
+                            <a href="article-detail.html?id=1" style="text-decoration: none; color: inherit;">
+                                <div class="event-date">
+                                    <span class="date-day">28</span>
+                                    <span class="date-month">DEC</span>
+                                </div>
+                                <div class="event-content">
+                                    <h3>Startup Founders Meetup</h3>
+                                    <p class="event-location"><i class="fas fa-map-marker-alt"></i> Bengaluru Tech
+                                        Park</p>
+                                    <p class="event-time"><i class="fas fa-clock"></i> 6:00 PM - 9:00 PM</p>
+                                    <button class="event-btn">RSVP</button>
+                                </div>
+                            </a>
+                        </article>
+                    </div>
+                </div>
+                </section>
+
+                <!-- Company Policies Section -->
+                <section id="policy" class="content-section policy-section">
                     <div class="container">
-                        <div class="section-header">
-                            <h2 class="section-title">Upcoming Events</h2>
-                            <a href="events.html" class="view-all">View All →</a>
+                        <div class="section-header-center">
+                            <h2 class="section-title">Company Policies</h2>
+                            <p class="section-subtitle">Transparency, Trust, and Integrity in Everything We Do</p>
                         </div>
-                        <div class="events-grid">
-                            <article class="event-card">
-                                <a href="article-detail.html?id=1" style="text-decoration: none; color: inherit;">
-                                    <div class="event-date">
-                                        <span class="date-day">15</span>
-                                        <span class="date-month">DEC</span>
-                                    </div>
-                                    <div class="event-content">
-                                        <h3>India Business Summit 2025</h3>
-                                        <p class="event-location"><i class="fas fa-map-marker-alt"></i> Mumbai
-                                            Convention Center</p>
-                                        <p class="event-time"><i class="fas fa-clock"></i> 9:00 AM - 6:00 PM</p>
-                                        <button class="event-btn">Register Now</button>
-                                    </div>
+                        <div class="policy-grid-clean">
+                            <div class="policy-card-clean">
+                                <div class="policy-icon-clean">
+                                    <i class="fas fa-shield-alt"></i>
+                                </div>
+                                <h3>Privacy Policy</h3>
+                                <p>We protect your personal information with industry-leading security measures.</p>
+                                <a href="about.html#policy" class="policy-link-clean">
+                                    <span>Learn More</span>
+                                    <i class="fas fa-arrow-right"></i>
                                 </a>
-                            </article>
-                            <article class="event-card">
-                                <a href="article-detail.html?id=1" style="text-decoration: none; color: inherit;">
-                                    <div class="event-date">
-                                        <span class="date-day">20</span>
-                                        <span class="date-month">DEC</span>
-                                    </div>
-                                    <div class="event-content">
-                                        <h3>Digital Marketing Masterclass</h3>
-                                        <p class="event-location"><i class="fas fa-map-marker-alt"></i> Virtual Event
-                                        </p>
-                                        <p class="event-time"><i class="fas fa-clock"></i> 2:00 PM - 5:00 PM</p>
-                                        <button class="event-btn">Join Online</button>
-                                    </div>
+                            </div>
+                            <div class="policy-card-clean">
+                                <div class="policy-icon-clean">
+                                    <i class="fas fa-file-contract"></i>
+                                </div>
+                                <h3>Terms of Service</h3>
+                                <p>Understand your rights and responsibilities when using our platform.</p>
+                                <a href="about.html#policy" class="policy-link-clean">
+                                    <span>Learn More</span>
+                                    <i class="fas fa-arrow-right"></i>
                                 </a>
-                            </article>
-                            <article class="event-card">
-                                <a href="article-detail.html?id=1" style="text-decoration: none; color: inherit;">
-                                    <div class="event-date">
-                                        <span class="date-day">28</span>
-                                        <span class="date-month">DEC</span>
-                                    </div>
-                                    <div class="event-content">
-                                        <h3>Startup Founders Meetup</h3>
-                                        <p class="event-location"><i class="fas fa-map-marker-alt"></i> Bengaluru Tech
-                                            Park</p>
-                                        <p class="event-time"><i class="fas fa-clock"></i> 6:00 PM - 9:00 PM</p>
-                                        <button class="event-btn">RSVP</button>
-                                    </div>
+                            </div>
+                            <div class="policy-card-clean">
+                                <div class="policy-icon-clean">
+                                    <i class="fas fa-pen-fancy"></i>
+                                </div>
+                                <h3>Editorial Policy</h3>
+                                <p>Our commitment to accurate, unbiased, and ethical journalism.</p>
+                                <a href="about.html#policy" class="policy-link-clean">
+                                    <span>Learn More</span>
+                                    <i class="fas fa-arrow-right"></i>
                                 </a>
-                            </article>
+                            </div>
+                            <div class="policy-card-clean">
+                                <div class="policy-icon-clean">
+                                    <i class="fas fa-cookie-bite"></i>
+                                </div>
+                                <h3>Cookie Policy</h3>
+                                <p>How we use cookies to enhance your browsing experience.</p>
+                                <a href="about.html#policy" class="policy-link-clean">
+                                    <span>Learn More</span>
+                                    <i class="fas fa-arrow-right"></i>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </section>
+            </main>
 
-        <!-- Company Policies Section -->
-        <section id="policy" class="content-section policy-section">
-            <div class="container">
-                <div class="section-header-center">
-                    <h2 class="section-title">Company Policies</h2>
-                    <p class="section-subtitle">Transparency, Trust, and Integrity in Everything We Do</p>
-                </div>
-                <div class="policy-grid-clean">
-                    <div class="policy-card-clean">
-                        <div class="policy-icon-clean">
-                            <i class="fas fa-shield-alt"></i>
-                        </div>
-                        <h3>Privacy Policy</h3>
-                        <p>We protect your personal information with industry-leading security measures.</p>
-                        <a href="about.html#policy" class="policy-link-clean">
-                            <span>Learn More</span>
-                            <i class="fas fa-arrow-right"></i>
-                        </a>
+            <!-- Chart Modal -->
+            <div id="chart-modal" class="chart-modal">
+                <div class="chart-modal-content">
+                    <div class="chart-modal-header">
+                        <h3 id="chart-title">Stock Chart</h3>
+                        <button class="close-modal" onclick="closeChartModal()">
+                            <i class="fas fa-times"></i>
+                        </button>
                     </div>
-                    <div class="policy-card-clean">
-                        <div class="policy-icon-clean">
-                            <i class="fas fa-file-contract"></i>
-                        </div>
-                        <h3>Terms of Service</h3>
-                        <p>Understand your rights and responsibilities when using our platform.</p>
-                        <a href="about.html#policy" class="policy-link-clean">
-                            <span>Learn More</span>
-                            <i class="fas fa-arrow-right"></i>
-                        </a>
+                    <div class="chart-timeframe">
+                        <button class="timeframe-btn active" onclick="changeTimeframe('1D')">1D</button>
+                        <button class="timeframe-btn" onclick="changeTimeframe('1W')">1W</button>
+                        <button class="timeframe-btn" onclick="changeTimeframe('1M')">1M</button>
+                        <button class="timeframe-btn" onclick="changeTimeframe('3M')">3M</button>
+                        <button class="timeframe-btn" onclick="changeTimeframe('1Y')">1Y</button>
+                        <button class="timeframe-btn" onclick="changeTimeframe('5Y')">5Y</button>
                     </div>
-                    <div class="policy-card-clean">
-                        <div class="policy-icon-clean">
-                            <i class="fas fa-pen-fancy"></i>
-                        </div>
-                        <h3>Editorial Policy</h3>
-                        <p>Our commitment to accurate, unbiased, and ethical journalism.</p>
-                        <a href="about.html#policy" class="policy-link-clean">
-                            <span>Learn More</span>
-                            <i class="fas fa-arrow-right"></i>
-                        </a>
+                    <div id="chart-container" class="chart-container">
+                        <canvas id="stock-chart"></canvas>
                     </div>
-                    <div class="policy-card-clean">
-                        <div class="policy-icon-clean">
-                            <i class="fas fa-cookie-bite"></i>
-                        </div>
-                        <h3>Cookie Policy</h3>
-                        <p>How we use cookies to enhance your browsing experience.</p>
-                        <a href="about.html#policy" class="policy-link-clean">
-                            <span>Learn More</span>
-                            <i class="fas fa-arrow-right"></i>
-                        </a>
+                    <div id="chart-info" class="chart-info">
+                        <!-- Stock details will be loaded here -->
                     </div>
                 </div>
             </div>
-        </section>
-        </main>
 
-        <!-- Chart Modal -->
-        <div id="chart-modal" class="chart-modal">
-            <div class="chart-modal-content">
-                <div class="chart-modal-header">
-                    <h3 id="chart-title">Stock Chart</h3>
-                    <button class="close-modal" onclick="closeChartModal()">
-                        <i class="fas fa-times"></i>
-                    </button>
+            <!-- Footer -->
+            <footer class="site-footer">
+                <div class="footer-container">
+                    <div class="footer-top">
+                        <div class="footer-grid-enhanced">
+                            <!-- About Column -->
+                            <div class="footer-col">
+                                <div class="footer-logo">
+                                    <img src="assets/images/logo.jpeg" alt="BizzShort Logo">
+                                    <h3>BizzShort</h3>
+                                </div>
+                                <p class="footer-description">Your trusted source for real-time business news, market
+                                    insights, and financial analysis. Stay ahead with BizzShort.</p>
+                                <div class="footer-social">
+                                    <a href="https://www.facebook.com/share/1JsieyAznj/?mibextid=wwXIfr" target="_blank"
+                                        rel="noopener noreferrer" aria-label="Facebook"><i
+                                            class="fab fa-facebook-f"></i></a>
+                                    <a href="https://twitter.com/bizzshort" target="_blank" rel="noopener noreferrer"
+                                        aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                                    <a href="https://www.linkedin.com/company/bizzshort" target="_blank"
+                                        rel="noopener noreferrer" aria-label="LinkedIn"><i
+                                            class="fab fa-linkedin-in"></i></a>
+                                    <a href="https://www.instagram.com/bizz_short?igsh=NDVwdHJza2R3dnF0" target="_blank"
+                                        rel="noopener noreferrer" aria-label="Instagram"><i
+                                            class="fab fa-instagram"></i></a>
+                                    <a href="https://youtube.com/@bizz_short?si=FZvH5iMI2v_J4vGE" target="_blank"
+                                        rel="noopener noreferrer" aria-label="YouTube"><i
+                                            class="fab fa-youtube"></i></a>
+                                </div>
+                            </div>
+
+                            <!-- Quick Links -->
+                            <div class="footer-col">
+                                <h4>Explore</h4>
+                                <ul class="footer-links">
+                                    <li><a href="index.html">Home</a></li>
+                                    <li><a href="index.html#latest-news">Latest Updates</a></li>
+                                    <li><a href="index.html#breaking-news">Breaking News</a></li>
+                                    <li><a href="index.html#interviews">Interviews</a></li>
+                                    <li><a href="events.html">Events</a></li>
+                                </ul>
+                            </div>
+
+                            <!-- Company -->
+                            <div class="footer-col">
+                                <h4>Company</h4>
+                                <ul class="footer-links">
+                                    <li><a href="about.html">About Us</a></li>
+                                    <li><a href="contact.html">Contact</a></li>
+                                    <li><a href="advertise.html">Advertise</a></li>
+                                    <li><a href="about.html#policy">Policies</a></li>
+                                </ul>
+                            </div>
+
+                            <!-- Legal -->
+                            <div class="footer-col">
+                                <h4>Legal</h4>
+                                <ul class="footer-links">
+                                    <li><a href="about.html#policy">Privacy Policy</a></li>
+                                    <li><a href="about.html#policy">Terms of Service</a></li>
+                                    <li><a href="about.html#policy">Cookie Policy</a></li>
+                                    <li><a href="about.html#policy">Editorial Policy</a></li>
+                                </ul>
+                            </div>
+
+                            <!-- Newsletter -->
+                            <div class="footer-col">
+                                <h4>Newsletter</h4>
+                                <p class="newsletter-text">Subscribe to get the latest news and updates delivered to
+                                    your
+                                    inbox.</p>
+                                <form class="newsletter-form" onsubmit="subscribeNewsletter(event)">
+                                    <input type="email" placeholder="Enter your email" required>
+                                    <button type="submit"><i class="fas fa-paper-plane"></i></button>
+                                </form>
+                                <div class="footer-contact">
+                                    <p><i class="fas fa-envelope"></i> info@bizzshort.com</p>
+                                    <p><i class="fas fa-phone"></i> +91 1234567890</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="footer-bottom">
+                        <div class="footer-bottom-content">
+                            <div class="footer-bottom-left">
+                                <p class="footer-copyright">&copy; 2025 BizzShort. All rights reserved.</p>
+                                <p class="footer-developed">Developed by Garvik India</p>
+                            </div>
+                            <div class="footer-bottom-right">
+                                <a href="admin-login.html" class="admin-link-clean">
+                                    <i class="fas fa-shield-alt"></i>
+                                    <span>Admin</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="chart-timeframe">
-                    <button class="timeframe-btn active" onclick="changeTimeframe('1D')">1D</button>
-                    <button class="timeframe-btn" onclick="changeTimeframe('1W')">1W</button>
-                    <button class="timeframe-btn" onclick="changeTimeframe('1M')">1M</button>
-                    <button class="timeframe-btn" onclick="changeTimeframe('3M')">3M</button>
-                    <button class="timeframe-btn" onclick="changeTimeframe('1Y')">1Y</button>
-                    <button class="timeframe-btn" onclick="changeTimeframe('5Y')">5Y</button>
-                </div>
-                <div id="chart-container" class="chart-container">
-                    <canvas id="stock-chart"></canvas>
-                </div>
-                <div id="chart-info" class="chart-info">
-                    <!-- Stock details will be loaded here -->
-                </div>
-            </div>
+            </footer>
+
         </div>
+        <!-- End Main Content Wrapper -->
 
-        <!-- Footer -->
-        <footer class="site-footer">
-            <div class="footer-container">
-                <div class="footer-top">
-                    <div class="footer-grid-enhanced">
-                        <!-- About Column -->
-                        <div class="footer-col">
-                            <div class="footer-logo">
-                                <img src="assets/images/logo.jpeg" alt="BizzShort Logo">
-                                <h3>BizzShort</h3>
-                            </div>
-                            <p class="footer-description">Your trusted source for real-time business news, market
-                                insights, and financial analysis. Stay ahead with BizzShort.</p>
-                            <div class="footer-social">
-                                <a href="https://www.facebook.com/share/1JsieyAznj/?mibextid=wwXIfr" target="_blank"
-                                    rel="noopener noreferrer" aria-label="Facebook"><i
-                                        class="fab fa-facebook-f"></i></a>
-                                <a href="https://twitter.com/bizzshort" target="_blank" rel="noopener noreferrer"
-                                    aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                                <a href="https://www.linkedin.com/company/bizzshort" target="_blank"
-                                    rel="noopener noreferrer" aria-label="LinkedIn"><i
-                                        class="fab fa-linkedin-in"></i></a>
-                                <a href="https://www.instagram.com/bizz_short?igsh=NDVwdHJza2R3dnF0" target="_blank"
-                                    rel="noopener noreferrer" aria-label="Instagram"><i
-                                        class="fab fa-instagram"></i></a>
-                                <a href="https://youtube.com/@bizz_short?si=FZvH5iMI2v_J4vGE" target="_blank"
-                                    rel="noopener noreferrer" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
-                            </div>
-                        </div>
-
-                        <!-- Quick Links -->
-                        <div class="footer-col">
-                            <h4>Explore</h4>
-                            <ul class="footer-links">
-                                <li><a href="index.html">Home</a></li>
-                                <li><a href="index.html#latest-news">Latest Updates</a></li>
-                                <li><a href="index.html#breaking-news">Breaking News</a></li>
-                                <li><a href="index.html#interviews">Interviews</a></li>
-                                <li><a href="events.html">Events</a></li>
-                            </ul>
-                        </div>
-
-                        <!-- Company -->
-                        <div class="footer-col">
-                            <h4>Company</h4>
-                            <ul class="footer-links">
-                                <li><a href="about.html">About Us</a></li>
-                                <li><a href="contact.html">Contact</a></li>
-                                <li><a href="advertise.html">Advertise</a></li>
-                                <li><a href="about.html#policy">Policies</a></li>
-                            </ul>
-                        </div>
-
-                        <!-- Legal -->
-                        <div class="footer-col">
-                            <h4>Legal</h4>
-                            <ul class="footer-links">
-                                <li><a href="about.html#policy">Privacy Policy</a></li>
-                                <li><a href="about.html#policy">Terms of Service</a></li>
-                                <li><a href="about.html#policy">Cookie Policy</a></li>
-                                <li><a href="about.html#policy">Editorial Policy</a></li>
-                            </ul>
-                        </div>
-
-                        <!-- Newsletter -->
-                        <div class="footer-col">
-                            <h4>Newsletter</h4>
-                            <p class="newsletter-text">Subscribe to get the latest news and updates delivered to your
-                                inbox.</p>
-                            <form class="newsletter-form" onsubmit="subscribeNewsletter(event)">
-                                <input type="email" placeholder="Enter your email" required>
-                                <button type="submit"><i class="fas fa-paper-plane"></i></button>
-                            </form>
-                            <div class="footer-contact">
-                                <p><i class="fas fa-envelope"></i> info@bizzshort.com</p>
-                                <p><i class="fas fa-phone"></i> +91 1234567890</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="footer-bottom">
-                    <div class="footer-bottom-content">
-                        <div class="footer-bottom-left">
-                            <p class="footer-copyright">&copy; 2025 BizzShort. All rights reserved.</p>
-                            <p class="footer-developed">Developed by Garvik India</p>
-                        </div>
-                        <div class="footer-bottom-right">
-                            <a href="admin-login.html" class="admin-link-clean">
-                                <i class="fas fa-shield-alt"></i>
-                                <span>Admin</span>
-                            </a>
-                        </div>
-                    </div>
+        <!-- Right Side Advertisement -->
+        <aside class="side-ad right-ad">
+            <div class="ad-sticky">
+                <div class="ad-label">Advertisement</div>
+                <img src="https://placehold.co/300x600/2c3e50/ffffff?text=Ad+Space+300x600" alt="Advertisement">
+                <div class="ad-space" style="margin-top: 20px;">
+                    <img src="https://placehold.co/300x250/34495e/ffffff?text=Ad+Space+300x250" alt="Advertisement">
                 </div>
             </div>
-        </footer>
-
-    </div>
-    <!-- End Main Content Wrapper -->
-
-    <!-- Right Side Advertisement -->
-    <aside class="side-ad right-ad">
-        <div class="ad-sticky">
-            <div class="ad-label">Advertisement</div>
-            <img src="https://placehold.co/300x600/2c3e50/ffffff?text=Ad+Space+300x600" alt="Advertisement">
-            <div class="ad-space" style="margin-top: 20px;">
-                <img src="https://placehold.co/300x250/34495e/ffffff?text=Ad+Space+300x250" alt="Advertisement">
-            </div>
-        </div>
-    </aside>
+        </aside>
     </div>
     <!-- End Page Wrapper -->
 
     <!-- Core Scripts -->
     <script>
         // Sticky Navbar with Glassmorphic Effect
-        window.addEventListener('scroll', function() {
+        window.addEventListener('scroll', function () {
             const navbar = document.querySelector('.navbar-section');
             if (window.scrollY > 100) {
                 navbar.classList.add('scrolled');
@@ -728,10 +737,10 @@
         });
 
         // Active Navigation on Scroll
-        window.addEventListener('scroll', function() {
+        window.addEventListener('scroll', function () {
             const sections = document.querySelectorAll('section[id]');
             const navLinks = document.querySelectorAll('.main-nav a');
-            
+
             let current = '';
             sections.forEach(section => {
                 const sectionTop = section.offsetTop;
@@ -753,7 +762,7 @@
     <!-- Video Player Functions (Global) -->
     <script>
         // Global video player functions for breaking news cards
-        window.playVideo = window.playVideo || function(videoId) {
+        window.playVideo = window.playVideo || function (videoId) {
             if (!videoId) return;
             const modal = document.createElement('div');
             modal.id = 'videoModal';
@@ -762,15 +771,15 @@
             document.body.appendChild(modal);
             document.body.style.overflow = 'hidden';
         };
-        
-        window.closeVideoModal = window.closeVideoModal || function() {
+
+        window.closeVideoModal = window.closeVideoModal || function () {
             const modal = document.getElementById('videoModal') || document.querySelector('.video-modal');
-            if (modal) { 
-                modal.remove(); 
-                document.body.style.overflow = ''; 
+            if (modal) {
+                modal.remove();
+                document.body.style.overflow = '';
             }
         };
-        
+
         // Breaking News Card Click Handlers
         document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('.breaking-news-card[data-video-url]').forEach(card => {
@@ -780,17 +789,17 @@
                     if (url) window.open(url, '_blank');
                 });
             });
-            
+
             console.log('✅ Video player initialized');
         });
     </script>
 
     <!-- API Configuration (Load First) -->
     <script src="assets/js/config.js?v=20260109"></script>
-    
+
     <!-- Breaking News Loader -->
     <script src="assets/js/breaking-news-loader.js?v=20260115"></script>
-    
+
     <!-- API Integration -->
     <script src="assets/js/video-embed-enhancer.js?v=20260109"></script>
     <script src="assets/js/api.js?v=20251230"></script>

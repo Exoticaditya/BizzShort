@@ -320,7 +320,7 @@ function createVideoCard(video) {
 
     return `
         <article class="video-card ${featuredClass}" data-category="${video.category}">
-            <div class="video-thumbnail-container" onclick="window.open('${videoUrl}', '_blank')">
+            <div class="video-thumbnail-container" onclick="playVideo('${video.videoId}', '${video.source}', '${video.title.replace(/'/g, "\\'")}')">
                 <img src="${video.thumbnail}" alt="${video.title}" class="video-thumbnail">
                 <div class="play-overlay">
                     <div class="play-icon">
@@ -332,7 +332,7 @@ function createVideoCard(video) {
                 </span>
                 <span class="video-duration">${video.duration}</span>
             </div>
-            <div class="video-card-content" onclick="navigateToVideo('${video.id}')">
+            <div class="video-card-content">
                 <span class="video-category-label">${video.category}</span>
                 <h3 class="video-card-title">${video.title}</h3>
                 <p class="video-card-description">${video.description}</p>
@@ -431,6 +431,77 @@ function filterVideos(category) {
     // Filter and render videos
     const filteredVideos = filterVideosByCategory(category);
     renderVideos(filteredVideos);
+}
+
+// Play video in modal
+function playVideo(videoId, source, title) {
+    // Create modal if it doesn't exist
+    let modal = document.getElementById('video-modal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'video-modal';
+        modal.className = 'video-modal';
+        modal.innerHTML = `
+            <div class="video-modal-content">
+                <div class="video-modal-header">
+                    <h3 class="video-modal-title"></h3>
+                    <button class="video-modal-close" onclick="closeVideoModal()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="video-modal-body">
+                    <div class="video-player-wrapper" id="video-player-wrapper"></div>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+
+        // Close modal on background click
+        modal.addEventListener('click', function (e) {
+            if (e.target === modal) {
+                closeVideoModal();
+            }
+        });
+    }
+
+    // Update modal content
+    const titleEl = modal.querySelector('.video-modal-title');
+    const playerWrapper = modal.querySelector('#video-player-wrapper');
+
+    titleEl.textContent = title;
+
+    if (source === 'youtube') {
+        // Create YouTube iframe
+        playerWrapper.innerHTML = `
+            <iframe 
+                width="100%" 
+                height="100%" 
+                src="https://www.youtube.com/embed/${videoId}?autoplay=1" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen
+            ></iframe>
+        `;
+    } else {
+        // For Instagram, open in new tab (since embed doesn't autoplay well)
+        window.open(`https://www.instagram.com/bizz_short/`, '_blank');
+        return;
+    }
+
+    // Show modal
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
+// Close video modal
+function closeVideoModal() {
+    const modal = document.getElementById('video-modal');
+    if (modal) {
+        const playerWrapper = modal.querySelector('#video-player-wrapper');
+        playerWrapper.innerHTML = ''; // Stop video playback
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
 }
 
 // Navigate to video detail page
