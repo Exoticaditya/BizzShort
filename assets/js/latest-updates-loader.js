@@ -3,17 +3,17 @@
 // Fetches videos from @bizz_short YouTube channel
 // ============================================
 
-const API_BASE_URL = window.APIConfig ? window.APIConfig.baseURL : 
-                     (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
-                      ? `${window.location.protocol}//${window.location.hostname}:${window.location.port || 3000}` 
-                      : 'https://bizzshort.onrender.com');
+const API_BASE_URL = window.APIConfig ? window.APIConfig.baseURL :
+    (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+        ? `${window.location.protocol}//${window.location.hostname}:${window.location.port || 3000}`
+        : 'https://bizzshort.onrender.com');
 
 console.log('📺 Latest Updates API URL:', API_BASE_URL);
 
 let currentCategory = 'all';
 
 // Initialize Latest Updates section on page load
-document.addEventListener('DOMContentLoaded', async function() {
+document.addEventListener('DOMContentLoaded', async function () {
     await loadLatestUpdates();
     setupCategoryFilters();
 });
@@ -31,7 +31,7 @@ async function loadLatestUpdates(category = 'all') {
 
         // Fetch videos from backend API
         const response = await fetch(`${API_BASE_URL}/api/videos?limit=12&source=youtube`);
-        
+
         if (!response.ok) {
             throw new Error('Failed to fetch videos');
         }
@@ -46,8 +46,8 @@ async function loadLatestUpdates(category = 'all') {
         }
 
         // Filter by category if not "all"
-        const filteredVideos = category === 'all' 
-            ? videos 
+        const filteredVideos = category === 'all'
+            ? videos
             : videos.filter(video => video.category === category);
 
         // Render video cards (use placeholder if API returns empty)
@@ -56,15 +56,15 @@ async function loadLatestUpdates(category = 'all') {
         } else {
             // Fallback to static placeholder data
             const placeholderData = getPlaceholderVideos();
-            const filteredPlaceholder = category === 'all' 
-                ? placeholderData 
+            const filteredPlaceholder = category === 'all'
+                ? placeholderData
                 : placeholderData.filter(v => v.category === category);
             renderVideoCards(filteredPlaceholder, gridContainer);
         }
 
     } catch (error) {
         console.error('Error loading latest updates:', error);
-        
+
         // Fallback to static placeholder data
         const placeholderData = getPlaceholderVideos();
         renderVideoCards(placeholderData, gridContainer);
@@ -85,10 +85,13 @@ function renderVideoCards(videos, container) {
         return;
     }
 
-    container.innerHTML = videos.map(video => `
-        <div class="news-video-card-large" data-category="${video.category || 'business'}" onclick="playVideo('${video.youtubeId || video.videoId}')">
+    container.innerHTML = videos.map(video => {
+        const videoId = video.youtubeId || video.videoId;
+        const videoTitle = (video.title || '').replace(/'/g, "\\'");
+        return `
+        <div class="news-video-card-large" data-category="${video.category || 'business'}" onclick="playVideo('${videoId}', 'youtube', '${videoTitle}')">
             <div class="video-player-wrapper">
-                <img src="${video.thumbnail || `https://img.youtube.com/vi/${video.youtubeId || video.videoId}/maxresdefault.jpg`}" 
+                <img src="${video.thumbnail || `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`}" 
                      alt="${video.title}" 
                      class="video-thumbnail-img">
                 <div class="play-button-overlay">
@@ -105,7 +108,7 @@ function renderVideoCards(videos, container) {
                 </div>
             </div>
         </div>
-    `).join('');
+    `}).join('');
 
     // Add smooth fade-in animation
     setTimeout(() => {
@@ -126,100 +129,44 @@ function renderVideoCards(videos, container) {
 // ============================================
 function setupCategoryFilters() {
     const filterButtons = document.querySelectorAll('.category-filters .filter-btn');
-    
+
     if (filterButtons.length === 0) {
         console.warn('No category filter buttons found');
         return;
     }
-    
+
     filterButtons.forEach(button => {
-        button.addEventListener('click', function(e) {
+        button.addEventListener('click', function (e) {
             e.preventDefault();
-            
+
             // Remove active class from all buttons
             filterButtons.forEach(btn => btn.classList.remove('active'));
-            
+
             // Add active class to clicked button
             this.classList.add('active');
-            
+
             // Get selected category
             const category = this.getAttribute('data-category');
             currentCategory = category;
-            
+
             console.log('Filter clicked:', category);
-            
+
             // Reload videos with filter
             loadLatestUpdates(category);
         });
     });
-    
+
     console.log('Category filters initialized:', filterButtons.length, 'buttons');
 }
 
-// ============================================
-// PLAY VIDEO FUNCTION (Global)
-// ============================================
-window.playVideo = function(videoId) {
-    console.log('🎬 Playing video:', videoId);
-    
-    if (!videoId) {
-        console.error('❌ No video ID provided');
-        return;
-    }
-    
-    // Open in modal
-    openVideoModal(videoId);
-};
-
-window.openVideoModal = function(videoId) {
-    console.log('📺 Opening video modal for:', videoId);
-    
-    const modal = document.createElement('div');
-    modal.className = 'video-modal';
-    modal.id = 'videoModal';
-    modal.innerHTML = `
-        <div class="video-modal-overlay" onclick="closeVideoModal()"></div>
-        <div class="video-modal-content">
-            <button class="close-modal-btn" onclick="closeVideoModal()">
-                <i class="fas fa-times"></i>
-            </button>
-            <div class="video-embed-wrapper">
-                <iframe 
-                    src="https://www.youtube.com/embed/${videoId}?autoplay=1" 
-                    frameborder="0" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                    allowfullscreen>
-                </iframe>
-            </div>
-        </div>
-    `;
-    
-    document.body.appendChild(modal);
-    document.body.style.overflow = 'hidden';
-    
-    // Animate modal in
-    setTimeout(() => {
-        modal.classList.add('active');
-        console.log('✅ Video modal opened');
-    }, 10);
-};
-
-window.closeVideoModal = function() {
-    console.log('🔒 Closing video modal');
-    const modal = document.querySelector('.video-modal');
-    if (modal) {
-        modal.classList.remove('active');
-        setTimeout(() => {
-            modal.remove();
-            document.body.style.overflow = '';
-        }, 300);
-    }
-}
+// Note: playVideo(), openVideoModal(), closeVideoModal() are now handled by video-manager.js
 
 // Close modal on Escape key
-document.addEventListener('keydown', function(e) {
+document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') {
-        closeVideoModal();
+        if (typeof closeVideoModal !== 'undefined') {
+            closeVideoModal();
+        }
     }
 });
 
@@ -238,17 +185,17 @@ function formatCategory(category) {
 
 function formatDate(dateString) {
     if (!dateString) return 'Recent';
-    
+
     const date = new Date(dateString);
     const now = new Date();
     const diffTime = Math.abs(now - date);
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    
+
     if (diffDays === 0) return 'Today';
     if (diffDays === 1) return 'Yesterday';
     if (diffDays < 7) return `${diffDays} days ago`;
     if (diffDays < 30) return `${Math.floor(diffDays / 7)} weeks ago`;
-    
+
     return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 }
 

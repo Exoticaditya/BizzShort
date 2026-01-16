@@ -16,14 +16,15 @@ class BreakingNewsLoader {
 
     async loadBreakingNews() {
         try {
-            const response = await fetch(`${this.apiBaseURL}/videos?source=youtube&limit=5&category=business`);
+            const response = await fetch(`${this.apiBaseURL}/api/videos?source=youtube&limit=5&category=business`);
 
             if (!response.ok) {
                 throw new Error('Failed to fetch breaking news');
             }
 
-            const videos = await response.json();
-            console.log('📰 Breaking news videos loaded:', videos.length);
+            const result = await response.json();
+            const videos = result.data || result; // Handle both {data: [...]} and direct array
+            console.log('📰 Breaking news videos loaded:', videos ? videos.length : 0);
 
             if (videos && videos.length > 0) {
                 // Update main breaking news video (first video)
