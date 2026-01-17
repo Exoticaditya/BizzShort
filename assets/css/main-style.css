@@ -364,6 +364,31 @@ a {
     letter-spacing: 1px;
 }
 
+/* Main Video Player - Click to play */
+.breaking-video-player {
+    position: relative;
+    cursor: pointer;
+}
+
+.breaking-video-player:hover .video-play-btn {
+    transform: translate(-50%, -50%) scale(1.1);
+    box-shadow: 0 6px 30px rgba(230, 33, 23, 0.6);
+}
+
+.main-video-wrapper {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.main-video-wrapper img {
+    transition: transform 0.3s ease;
+}
+
+.breaking-video-player:hover .main-video-wrapper img {
+    transform: scale(1.02);
+}
+
 /* Breaking News Grid - 3 cards below main video */
 .breaking-news-grid {
     display: grid;

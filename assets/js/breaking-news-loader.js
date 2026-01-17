@@ -95,17 +95,37 @@ class BreakingNewsLoader {
     updateMainVideo(video) {
         if (!video) return;
 
+        const thumbnail = document.getElementById('mainVideoThumbnail');
         const iframe = document.querySelector('.breaking-video-player iframe');
         const title = document.querySelector('.breaking-video-player h3');
         const description = document.querySelector('.breaking-video-player p');
         const viewCount = document.querySelector('.video-stats span:nth-child(2)');
         const timeAgo = document.querySelector('.video-stats span:nth-child(3)');
+        const videoPlayer = document.querySelector('.breaking-video-player');
 
         // Get the correct video ID (handle both formats)
         const videoId = video.youtubeId || video.videoId;
         
+        if (thumbnail && videoId) {
+            thumbnail.src = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+            thumbnail.alt = video.title || 'Breaking News Video';
+            // Fallback for thumbnail
+            thumbnail.onerror = function() {
+                this.src = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+            };
+        }
+
         if (iframe && videoId) {
             iframe.src = `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1`;
+        }
+
+        // Update click handler for main video
+        if (videoPlayer && videoId) {
+            videoPlayer.onclick = function() {
+                if (typeof playVideo === 'function') {
+                    playVideo(videoId, 'youtube', video.title || 'Breaking News');
+                }
+            };
             console.log('✅ Main breaking news video updated:', videoId);
         }
 
@@ -139,29 +159,31 @@ class BreakingNewsLoader {
                 const timeAgo = card.querySelector('.news-meta span:last-child');
                 const badge = card.querySelector('.news-badge');
 
-                // Store video data
+                // Get the correct video ID
                 const videoId = video.videoId || video.youtubeId;
                 const videoTitle = (video.title || '').replace(/"/g, '&quot;');
+                
+                // Update data attribute
                 card.dataset.videoId = videoId;
-                card.dataset.videoTitle = videoTitle;
-
-                // Add event listener for click
-                card.addEventListener('click', function () {
+                
+                // Set onclick directly to ensure it works
+                card.onclick = function() {
                     console.log('🎬 Breaking news card clicked:', videoId);
                     if (typeof playVideo === 'function') {
-                        playVideo(videoId, 'youtube', video.title);
+                        playVideo(videoId, 'youtube', video.title || 'BizzShort Video');
                     } else {
-                        console.error('❌ playVideo function not found!');
+                        // Fallback - open YouTube directly
+                        window.open('https://www.youtube.com/watch?v=' + videoId, '_blank');
                     }
-                });
+                };
                 card.style.cursor = 'pointer';
 
-                if (thumbnail && video.thumbnail) {
-                    thumbnail.src = video.thumbnail;
-                    thumbnail.alt = video.title;
-                    // Add fallback
+                if (thumbnail && videoId) {
+                    thumbnail.src = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+                    thumbnail.alt = video.title || 'Video Thumbnail';
+                    // Add fallback for thumbnail
                     thumbnail.onerror = function () {
-                        this.src = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+                        this.src = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
                     };
                 }
 
@@ -181,11 +203,15 @@ class BreakingNewsLoader {
                     viewCount.innerHTML = `<i class="far fa-eye"></i> ${this.formatViews(video.views)}`;
                 }
 
-                if (timeAgo && video.publishedAt) {
-                    timeAgo.innerHTML = `<i class="far fa-clock"></i> ${this.getTimeAgo(video.publishedAt)}`;
+                if (timeAgo) {
+                    if (video.publishedAt) {
+                        timeAgo.innerHTML = `<i class="far fa-clock"></i> ${this.getTimeAgo(video.publishedAt)}`;
+                    } else if (video.date) {
+                        timeAgo.innerHTML = `<i class="far fa-clock"></i> ${video.date}`;
+                    }
                 }
 
-                console.log(`✅ Breaking news card ${index + 1} updated:`, video.title.substring(0, 30));
+                console.log(`✅ Breaking news card ${index + 1} updated:`, videoId, video.title?.substring(0, 30));
             }
         });
     }
