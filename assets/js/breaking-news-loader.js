@@ -5,26 +5,31 @@
 
 class BreakingNewsLoader {
     constructor() {
-        this.apiBaseURL = 'https://bizzshort.onrender.com';
+        // Use APIConfig if available, otherwise fallback to Render URL
+        this.apiBaseURL = window.APIConfig && window.APIConfig.baseURL 
+            ? window.APIConfig.baseURL 
+            : 'https://bizzshort.onrender.com';
         this.init();
     }
 
     async init() {
-        console.log('📰 Loading breaking news...');
+        console.log('📰 Loading breaking news from:', this.apiBaseURL);
         await this.loadBreakingNews();
     }
 
     async loadBreakingNews() {
         try {
-            const response = await fetch(`${this.apiBaseURL}/api/videos?source=youtube&limit=5&category=business`);
+            // Try to fetch videos - removed category filter for more results
+            const response = await fetch(`${this.apiBaseURL}/api/videos?source=youtube&limit=5`);
 
             if (!response.ok) {
-                throw new Error('Failed to fetch breaking news');
+                console.warn(`API returned ${response.status}, using fallback videos`);
+                throw new Error(`HTTP ${response.status}`);
             }
 
             const result = await response.json();
             const videos = result.data || result; // Handle both {data: [...]} and direct array
-            console.log('📰 Breaking news videos loaded:', videos ? videos.length : 0);
+            console.log('📰 Breaking news videos loaded:', videos ? videos.length : 0, videos);
 
             if (videos && videos.length > 0) {
                 // Update main breaking news video (first video)
@@ -32,6 +37,9 @@ class BreakingNewsLoader {
 
                 // Update the 3 breaking news cards (next 3 videos)
                 this.updateBreakingNewsCards(videos.slice(1, 4));
+            } else {
+                console.log('📺 No videos from API, using fallback');
+                this.useFallbackVideos();
             }
         } catch (error) {
             console.error('❌ Failed to load breaking news:', error);
@@ -93,9 +101,12 @@ class BreakingNewsLoader {
         const viewCount = document.querySelector('.video-stats span:nth-child(2)');
         const timeAgo = document.querySelector('.video-stats span:nth-child(3)');
 
-        if (iframe && video.videoId) {
-            iframe.src = `https://www.youtube.com/embed/${video.videoId}?rel=0&modestbranding=1`;
-            console.log('✅ Main breaking news video updated:', video.videoId);
+        // Get the correct video ID (handle both formats)
+        const videoId = video.youtubeId || video.videoId;
+        
+        if (iframe && videoId) {
+            iframe.src = `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1`;
+            console.log('✅ Main breaking news video updated:', videoId);
         }
 
         if (title && video.title) {

@@ -23,7 +23,7 @@ const APIConfig = {
             return window.location.origin;
         }
         
-        // For bizzshort.com or any other hosting (Netlify, Vercel, etc.)
+        // For bizzshort.com or any other hosting (Netlify, Vercel, GitHub Pages, etc.)
         // Always use the Render backend for API calls
         return this.BACKEND_URL;
     },

@@ -10,7 +10,7 @@
     <meta name="description"
         content="BizzShort delivers latest Indian business news, stock market updates, startup stories, and financial analysis in short, engaging video format. Stay ahead with real-time market insights.">
     <meta name="keywords"
-        content="business news India, stock market news, startup news, Nifty 50, Sensex, financial news, business videos, market analysis, Indian economy">
+        content="business news India, stock market news, startup news, Nifty 50, Sensex, BSE, NSE, financial news, business videos, market analysis, Indian economy, breaking business news, live market data, Bank Nifty, stock trading, Indian stock market, business interviews, startup funding, IPO news, corporate news, financial analysis, investment tips, market trends, business updates, economic news India, business portal, share market news, equity market, commodity market, forex news, mutual funds, business today, business insights, entrepreneurship, business strategy">
     <meta name="author" content="BizzShort Team">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://www.bizzshort.com/">
@@ -58,8 +58,7 @@
     <!-- SEO Meta Tags -->
     <meta name="description"
         content="BizzShort delivers real-time business news, market updates, startup insights, and industry analysis. Stay informed with India's trusted business news platform covering markets, economy, technology, and more.">
-    <meta name="keywords"
-        content="business news, market updates, stock market, Nifty, Sensex, startup news, Indian business, corporate news, economy, finance, investment, business analysis, market trends">
+    <!-- Keywords already defined above -->
     <meta name="author" content="BizzShort">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://bizzshort.onrender.com/">
@@ -178,10 +177,10 @@
                                 <li><a href="index.html" class="active">Home</a></li>
                                 <li><a href="#latest-news">Latest News</a></li>
                                 <li><a href="#interviews">Interviews</a></li>
-                                <li><a href="events.html">Upcoming Events</a></li>
-                                <li><a href="analysis.html">Market Analysis</a></li>
-                                <li><a href="advertise.html">Advertise</a></li>
-                                <li><a href="about.html">About</a></li>
+                                <li><a href="#upcoming-events">Upcoming Events</a></li>
+                                <li><a href="#market-analysis">Market Analysis</a></li>
+                                <li><a href="#advertise">Advertise</a></li>
+                                <li><a href="#about">About</a></li>
                             </ul>
                             <div class="mobile-menu-toggle" onclick="toggleMobileMenu()">
                                 <span></span>
@@ -209,7 +208,7 @@
                                 <!-- Large YouTube Video Player - Will be updated dynamically -->
                                 <div class="main-video-wrapper">
                                     <iframe width="100%" height="450"
-                                        src="https://www.youtube.com/embed/VIDEO_PLACEHOLDER?rel=0&modestbranding=1"
+                                        src="https://www.youtube.com/embed/wG7_1jViDRs?rel=0&modestbranding=1"
                                         title="BizzShort Breaking News" frameborder="0"
                                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                         allowfullscreen>
@@ -231,19 +230,19 @@
                             <div class="breaking-news-grid">
                                 <article class="breaking-news-card" data-video-url="" style="cursor: pointer;">
                                     <div class="video-thumbnail">
-                                        <img src="https://placehold.co/600x400/e74c3c/ffffff?text=Loading..."
+                                        <img src="https://img.youtube.com/vi/uSkTR0Q-HVQ/maxresdefault.jpg"
                                             alt="Business Update">
                                         <div class="play-overlay">
                                             <i class="fab fa-youtube"></i>
                                         </div>
                                     </div>
                                     <div class="news-content">
-                                        <span class="news-badge">LOADING...</span>
-                                        <h4>Loading breaking news...</h4>
-                                        <p>Please wait while we fetch the latest business updates.</p>
+                                        <span class="news-badge">BUSINESS</span>
+                                        <h4>Business News Today | Top Headlines</h4>
+                                        <p>Stay updated with the latest business news and market trends.</p>
                                         <div class="news-meta">
-                                            <span><i class="far fa-eye"></i> --</span>
-                                            <span><i class="far fa-clock"></i> --</span>
+                                            <span><i class="far fa-eye"></i> Loading...</span>
+                                            <span><i class="far fa-clock"></i> Latest</span>
                                         </div>
                                     </div>
                                 </article>
@@ -289,7 +288,7 @@
                         </section>
 
                         <!-- Market Today Sidebar -->
-                        <aside class="market-sidebar">
+                        <aside id="market-analysis" class="market-sidebar">
                             <div class="sidebar-header">
                                 <h3>Market Today</h3>
                             </div>
@@ -455,59 +454,153 @@
                         </div>
                     </div>
                 </section>
-                <div class="container">
-                    <div class="section-header">
-                        <h2 class="section-title">Upcoming Events</h2>
-                        <a href="events.html" class="view-all">View All →</a>
-                    </div>
-                    <div class="events-grid">
-                        <article class="event-card">
-                            <a href="article-detail.html?id=1" style="text-decoration: none; color: inherit;">
+                
+                <!-- Upcoming Events Section -->
+                <section id="upcoming-events" class="content-section events-section">
+                    <div class="container">
+                        <div class="section-header">
+                            <h2 class="section-title">Upcoming Events</h2>
+                            <p class="section-subtitle">Join industry leaders at exclusive business events</p>
+                        </div>
+                        <div class="events-grid">
+                            <article class="event-card">
                                 <div class="event-date">
                                     <span class="date-day">15</span>
-                                    <span class="date-month">DEC</span>
+                                    <span class="date-month">JAN</span>
                                 </div>
                                 <div class="event-content">
-                                    <h3>India Business Summit 2025</h3>
-                                    <p class="event-location"><i class="fas fa-map-marker-alt"></i> Mumbai
-                                        Convention Center</p>
+                                    <h3>India Business Summit 2026</h3>
+                                    <p class="event-location"><i class="fas fa-map-marker-alt"></i> Mumbai Convention Center</p>
                                     <p class="event-time"><i class="fas fa-clock"></i> 9:00 AM - 6:00 PM</p>
                                     <button class="event-btn">Register Now</button>
                                 </div>
-                            </a>
-                        </article>
-                        <article class="event-card">
-                            <a href="article-detail.html?id=1" style="text-decoration: none; color: inherit;">
+                            </article>
+                            <article class="event-card">
                                 <div class="event-date">
                                     <span class="date-day">20</span>
-                                    <span class="date-month">DEC</span>
+                                    <span class="date-month">JAN</span>
                                 </div>
                                 <div class="event-content">
                                     <h3>Digital Marketing Masterclass</h3>
-                                    <p class="event-location"><i class="fas fa-map-marker-alt"></i> Virtual Event
-                                    </p>
+                                    <p class="event-location"><i class="fas fa-map-marker-alt"></i> Virtual Event</p>
                                     <p class="event-time"><i class="fas fa-clock"></i> 2:00 PM - 5:00 PM</p>
                                     <button class="event-btn">Join Online</button>
                                 </div>
-                            </a>
-                        </article>
-                        <article class="event-card">
-                            <a href="article-detail.html?id=1" style="text-decoration: none; color: inherit;">
+                            </article>
+                            <article class="event-card">
                                 <div class="event-date">
                                     <span class="date-day">28</span>
-                                    <span class="date-month">DEC</span>
+                                    <span class="date-month">JAN</span>
                                 </div>
                                 <div class="event-content">
                                     <h3>Startup Founders Meetup</h3>
-                                    <p class="event-location"><i class="fas fa-map-marker-alt"></i> Bengaluru Tech
-                                        Park</p>
+                                    <p class="event-location"><i class="fas fa-map-marker-alt"></i> Bengaluru Tech Park</p>
                                     <p class="event-time"><i class="fas fa-clock"></i> 6:00 PM - 9:00 PM</p>
                                     <button class="event-btn">RSVP</button>
                                 </div>
-                            </a>
-                        </article>
+                            </article>
+                        </div>
                     </div>
-                </div>
+                </section>
+
+                <!-- About Us Section -->
+                <section id="about" class="content-section about-section">
+                    <div class="container">
+                        <div class="section-header-center">
+                            <h2 class="section-title">About BizzShort</h2>
+                            <p class="section-subtitle">Empowering Professionals with Bite-Sized Business Intelligence</p>
+                        </div>
+                        <div class="about-grid">
+                            <div class="about-content-box">
+                                <h3>Our Mission</h3>
+                                <p>BizzShort was founded with a vision to democratize business knowledge through engaging short-form video content. We believe that staying informed shouldn't require hours of your valuable time.</p>
+                                <p>From breaking news to in-depth interviews with industry leaders, we bring you the most relevant business intelligence - all in under a minute.</p>
+                            </div>
+                            <div class="about-stats-grid">
+                                <div class="about-stat-card">
+                                    <div class="stat-number">50K+</div>
+                                    <div class="stat-label">Active Users</div>
+                                </div>
+                                <div class="about-stat-card">
+                                    <div class="stat-number">1000+</div>
+                                    <div class="stat-label">Videos Published</div>
+                                </div>
+                                <div class="about-stat-card">
+                                    <div class="stat-number">100+</div>
+                                    <div class="stat-label">Expert Interviews</div>
+                                </div>
+                                <div class="about-stat-card">
+                                    <div class="stat-number">24/7</div>
+                                    <div class="stat-label">News Coverage</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="about-values">
+                            <div class="value-card-mini">
+                                <div class="value-icon-mini"><i class="fas fa-video"></i></div>
+                                <h4>Video-First Approach</h4>
+                                <p>Delivering complex business insights through engaging short-form videos.</p>
+                            </div>
+                            <div class="value-card-mini">
+                                <div class="value-icon-mini"><i class="fas fa-bolt"></i></div>
+                                <h4>Real-Time Updates</h4>
+                                <p>Stay ahead with instant market movements and breaking business stories.</p>
+                            </div>
+                            <div class="value-card-mini">
+                                <div class="value-icon-mini"><i class="fas fa-users"></i></div>
+                                <h4>Expert Insights</h4>
+                                <p>Learn from industry leaders and market experts through exclusive interviews.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Advertise Section -->
+                <section id="advertise" class="content-section advertise-section">
+                    <div class="container">
+                        <div class="section-header-center">
+                            <h2 class="section-title">Advertise With BizzShort</h2>
+                            <p class="section-subtitle">Reach India's business community with targeted advertising solutions</p>
+                        </div>
+                        <div class="advertise-stats-row">
+                            <div class="ad-stat-item">
+                                <h3>50K+</h3>
+                                <p>Monthly Readers</p>
+                            </div>
+                            <div class="ad-stat-item">
+                                <h3>85%</h3>
+                                <p>Business Professionals</p>
+                            </div>
+                            <div class="ad-stat-item">
+                                <h3>25+</h3>
+                                <p>Industries Covered</p>
+                            </div>
+                        </div>
+                        <div class="advertise-options">
+                            <div class="ad-option-card">
+                                <div class="ad-icon"><i class="fas fa-tv"></i></div>
+                                <h4>Banner Advertisements</h4>
+                                <p>Premium banner placements with high visibility and engagement rates.</p>
+                                <div class="ad-price">From ₹15,000/month</div>
+                            </div>
+                            <div class="ad-option-card featured-option">
+                                <div class="featured-tag">Most Popular</div>
+                                <div class="ad-icon"><i class="fas fa-newspaper"></i></div>
+                                <h4>Sponsored Content</h4>
+                                <p>Native advertising through sponsored articles and business features.</p>
+                                <div class="ad-price">From ₹25,000/article</div>
+                            </div>
+                            <div class="ad-option-card">
+                                <div class="ad-icon"><i class="fas fa-envelope"></i></div>
+                                <h4>Newsletter Sponsorship</h4>
+                                <p>Reach subscribers directly through our weekly business newsletter.</p>
+                                <div class="ad-price">From ₹20,000/week</div>
+                            </div>
+                        </div>
+                        <div class="advertise-cta">
+                            <a href="advertise.html" class="cta-button-large">Get Started Today</a>
+                        </div>
+                    </div>
                 </section>
 
                 <!-- Company Policies Section -->
@@ -816,6 +909,7 @@
     <!-- Core Functionality -->
     <script src="assets/js/api.js?v=20260117f"></script>
     <script src="assets/js/market-data.js?v=20260117f"></script>
+    <script src="assets/js/live-market-data.js?v=20260117f"></script>
     <script src="assets/js/main-functionality.js?v=20260117f"></script>
 
     <!-- Video System -->

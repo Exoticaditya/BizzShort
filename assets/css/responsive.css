@@ -1166,6 +1166,12 @@ img {
         gap: 15px;
     }
     
+    /* Instagram Reels Grid - Mobile */
+    .interview-videos-grid.instagram-reels-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
     .news-grid {
         grid-template-columns: 1fr;
         gap: 20px;
@@ -1194,6 +1200,11 @@ img {
 /* Tablet Responsive */
 @media (max-width: 1024px) and (min-width: 769px) {
     .interviews-slider {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    /* Instagram Reels Grid - Tablet */
+    .interview-videos-grid.instagram-reels-grid {
         grid-template-columns: repeat(2, 1fr);
     }
 }

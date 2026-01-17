@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Us - BizzShort</title>
+    <title>About Us - BizzShort | India's Premier Business News Platform</title>
+    <meta name="description" content="Learn about BizzShort - India's leading business news platform delivering real-time market updates, expert interviews, and industry insights through engaging short-form video content.">
+    <meta name="keywords" content="about BizzShort, business news platform, business media India, financial journalism, market news, business intelligence, short-form business content, video news platform, Indian business media, business information, corporate news platform, financial news service">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://www.bizzshort.com/about.html">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -237,42 +241,50 @@
 </head>
 <body>
     <!-- Header -->
-    <header class="site-header">
-        <div class="header-wrapper">
+    <header class="header">
+        <!-- Top Section: Logo & Advertisement Banner -->
+        <div class="header-top-section">
             <div class="container">
-                <!-- Logo and Ad Section -->
-                <div class="header-top-section">
+                <div class="logo-ad-wrapper">
+                    <!-- Logo on Left -->
                     <a href="index.html" class="logo">
-                        <div class="logo-icon"><i class="fas fa-bolt"></i></div>
+                        <img src="assets/images/logo.jpeg" alt="BizzShort Logo" class="logo-img">
                         <div class="logo-text">
-                            <div class="logo-brand">BizzShort</div>
-                            <div class="logo-tagline">In Seconds, Say What Matters</div>
+                            <h1>BizzShort</h1>
+                            <p>IN SECONDS, SAY WHAT MATTERS</p>
                         </div>
                     </a>
-                    
-                    <!-- Advertisement Banner -->
-                    <div class="ad-banner-container">
-                        <img src="https://via.placeholder.com/970x90/34495e/ffffff?text=Advertisement+970x90" alt="Advertisement" class="top-ad-banner">
+
+                    <!-- Advertisement Banner (Professional) -->
+                    <div class="ad-banner-container" style="max-width: 480px;">
+                        <a href="advertise.html"
+                            style="text-decoration: none; display: block; background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%); padding: 12px 24px; border-radius: 8px; text-align: center; transition: all 0.3s ease; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                            <span style="color: #fff; font-size: 14px; font-weight: 500;">📢 Advertise with Us -
+                                50K+ Professionals</span>
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
-        
-        <!-- Navigation Bar -->
+
+        <!-- Thick Navigation Bar -->
         <div class="navbar-section">
             <div class="container">
                 <nav class="main-nav">
                     <ul>
                         <li><a href="index.html">Home</a></li>
-                        <li><a href="index.html#interviews">Interview</a></li>
-                        <li><a href="index.html#events">Events</a></li>
-                        <li><a href="index.html#news">News</a></li>
-                        <li><a href="index.html#industry">Industry Updates</a></li>
-                        <li><a href="index.html#client">Client Feature</a></li>
-                        <li><a href="about.html" class="active">About Us</a></li>
-                        <li><a href="about.html#advertise">Advertise</a></li>
-                        <li><a href="about.html#policy">Company Policy</a></li>
+                        <li><a href="index.html#latest-news">Latest News</a></li>
+                        <li><a href="index.html#interviews">Interviews</a></li>
+                        <li><a href="index.html#upcoming-events">Upcoming Events</a></li>
+                        <li><a href="index.html#market-analysis">Market Analysis</a></li>
+                        <li><a href="index.html#advertise">Advertise</a></li>
+                        <li><a href="about.html" class="active">About</a></li>
                     </ul>
+                    <div class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
                 </nav>
             </div>
         </div>
@@ -617,6 +629,24 @@
             </div>
         </div>
     </footer>
+
+    <!-- Mobile Menu Toggle Script -->
+    <script>
+        function toggleMobileMenu() {
+            const navMenu = document.querySelector('.main-nav ul');
+            const toggle = document.querySelector('.mobile-menu-toggle');
+            if (navMenu && toggle) {
+                navMenu.classList.toggle('active');
+                toggle.classList.toggle('active');
+            }
+        }
+
+        function subscribeNewsletter(event) {
+            event.preventDefault();
+            alert('Thank you for subscribing! You will receive our newsletter soon.');
+            event.target.reset();
+        }
+    </script>
 
     <script src="assets/js/market-data.js"></script>
 </body>
