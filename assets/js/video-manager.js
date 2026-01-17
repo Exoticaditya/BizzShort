@@ -419,24 +419,32 @@ function filterVideos(category) {
     renderVideos(filteredVideos);
 }
 
-// Play video in modal
+// Play video in modal with improved embedding for Shorts
 function playVideo(videoId, source, title) {
+    if (!videoId) return;
+
+    console.log('🎬 Playing video in modal:', videoId);
+
     // Create modal if it doesn't exist
     let modal = document.getElementById('video-modal');
     if (!modal) {
         modal = document.createElement('div');
         modal.id = 'video-modal';
         modal.className = 'video-modal';
+        modal.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;z-index:100000;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.95);';
         modal.innerHTML = `
-            <div class="video-modal-content">
-                <div class="video-modal-header">
-                    <h3 class="video-modal-title"></h3>
-                    <button class="video-modal-close" onclick="closeVideoModal()">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-                <div class="video-modal-body">
-                    <div class="video-player-wrapper" id="video-player-wrapper"></div>
+            <div style="position:relative;width:90%;max-width:1000px;">
+                <button onclick="closeVideoModal()" style="position:absolute;top:-50px;right:0;background:#e74c3c;color:white;border:none;width:45px;height:45px;border-radius:50%;cursor:pointer;font-size:24px;z-index:100001;">×</button>
+                <h3 style="color:white;margin-bottom:15px;font-size:18px;" id="modal-video-title"></h3>
+                <div style="position:relative;padding-bottom:56.25%;height:0;background:#000;border-radius:12px;overflow:hidden;">
+                    <iframe id="video-iframe" 
+                        width="100%" 
+                        height="100%" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        allowfullscreen
+                        style="position:absolute;top:0;left:0;width:100%;height:100%;">
+                    </iframe>
                 </div>
             </div>
         `;
@@ -450,29 +458,15 @@ function playVideo(videoId, source, title) {
         });
     }
 
-    // Update modal content
-    const titleEl = modal.querySelector('.video-modal-title');
-    const playerWrapper = modal.querySelector('#video-player-wrapper');
+    // Update title
+    const titleEl = document.getElementById('modal-video-title');
+    if (titleEl) titleEl.textContent = title || '';
 
-    titleEl.textContent = title;
-
-    if (source === 'youtube') {
-        // Create YouTube iframe - use shorts embed URL if it's a short video
-        // Add origin parameter to fix Error 153
-        playerWrapper.innerHTML = `
-            <iframe 
-                width="100%" 
-                height="100%" 
-                src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1&origin=${window.location.origin}" 
-                frameborder="0" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                allowfullscreen
-            ></iframe>
-        `;
-    } else {
-        // For Instagram, open in new tab (since embed doesn't autoplay well)
-        window.open(`https://www.instagram.com/bizz_short/`, '_blank');
-        return;
+    // Update iframe source
+    const iframe = document.getElementById('video-iframe');
+    if (iframe && source === 'youtube') {
+        // Use youtube-nocookie.com for better privacy and shorts compatibility
+        iframe.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1&playsinline=1`;
     }
 
     // Show modal
