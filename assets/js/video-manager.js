@@ -457,14 +457,15 @@ function playVideo(videoId, source, title) {
     titleEl.textContent = title;
 
     if (source === 'youtube') {
-        // Create YouTube iframe
+        // Create YouTube iframe - use shorts embed URL if it's a short video
+        // Add origin parameter to fix Error 153
         playerWrapper.innerHTML = `
             <iframe 
                 width="100%" 
                 height="100%" 
-                src="https://www.youtube.com/embed/${videoId}?autoplay=1" 
+                src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1&origin=${window.location.origin}" 
                 frameborder="0" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
                 allowfullscreen
             ></iframe>
         `;
