@@ -390,6 +390,126 @@
             opacity: 0.9;
         }
 
+        /* Employee Management Styles */
+        .employee-sections {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .employee-section {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .employee-section h3 {
+            margin-bottom: 15px;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .employee-card {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .employee-info h4 {
+            margin: 0;
+            color: #2c3e50;
+            font-size: 16px;
+        }
+
+        .employee-info p {
+            margin: 5px 0 0;
+            color: #7f8c8d;
+            font-size: 13px;
+        }
+
+        .employee-info .role-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-top: 5px;
+        }
+
+        .role-badge.admin {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .role-badge.employee {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .employee-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .approve-btn {
+            background: linear-gradient(135deg, #43e97b, #38f9d7);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        .reject-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        .edit-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .edit-btn:hover {
+            opacity: 0.9;
+        }
+
+        .stats-row {
+            display: flex;
+            gap: 15px;
+            margin-top: 8px;
+        }
+
+        .stat-item {
+            font-size: 12px;
+            color: #7f8c8d;
+        }
+
+        .stat-item strong {
+            color: #2c3e50;
+        }
+
         @media (max-width: 768px) {
             .admin-header-content {
                 flex-direction: column;
@@ -410,6 +530,10 @@
 
             .data-table th, .data-table td {
                 padding: 10px;
+            }
+
+            .employee-sections {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -480,6 +604,9 @@
                 <button class="tab-btn" onclick="switchTab('ads')">
                     <i class="fas fa-ad"></i> Advertisements
                 </button>
+                <button class="tab-btn" onclick="switchTab('employees')">
+                    <i class="fas fa-users"></i> Employees
+                </button>
             </div>
 
             <!-- Videos Tab -->
@@ -537,6 +664,27 @@
                     <i class="fas fa-spinner fa-spin"></i> Loading advertisements...
                 </div>
             </div>
+
+            <!-- Employees Tab -->
+            <div class="tab-content" id="employees-tab">
+                <div class="action-bar">
+                    <h2>Employee Management</h2>
+                </div>
+                <div class="employee-sections">
+                    <div class="employee-section">
+                        <h3><i class="fas fa-user-clock"></i> Pending Approval</h3>
+                        <div id="pendingEmployees" class="loading">
+                            <i class="fas fa-spinner fa-spin"></i> Loading pending employees...
+                        </div>
+                    </div>
+                    <div class="employee-section">
+                        <h3><i class="fas fa-user-check"></i> Approved Employees</h3>
+                        <div id="approvedEmployees" class="loading">
+                            <i class="fas fa-spinner fa-spin"></i> Loading approved employees...
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -544,25 +692,93 @@
     <div id="videoModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>Add Video</h2>
+                <h2><i class="fas fa-video"></i> <span id="videoModalTitle">Add Video</span></h2>
                 <button class="close-modal" onclick="closeModal('videoModal')">&times;</button>
             </div>
             <form id="videoForm" onsubmit="saveVideo(event)">
+                <input type="hidden" name="videoId" id="editVideoId">
                 <div class="form-group">
                     <label>YouTube Video ID</label>
-                    <input type="text" class="form-input" name="youtubeId" placeholder="e.g., dQw4w9WgXcQ" required>
+                    <input type="text" class="form-input" name="youtubeId" id="videoYoutubeId" placeholder="e.g., dQw4w9WgXcQ" required>
                 </div>
                 <div class="form-group">
                     <label>Title</label>
-                    <input type="text" class="form-input" name="title" required>
+                    <input type="text" class="form-input" name="title" id="videoTitle" required>
                 </div>
                 <div class="form-group">
                     <label>Description</label>
-                    <textarea class="form-textarea" name="description" required></textarea>
+                    <textarea class="form-textarea" name="description" id="videoDescription" required></textarea>
                 </div>
                 <div class="form-group">
                     <label>Category</label>
-                    <select class="form-select" name="category" required>
+                    <select class="form-select" name="category" id="videoCategory" required>
+                        <option value="business">Business</option>
+                        <option value="markets">Markets</option>
+                        <option value="technology">Technology</option>
+                        <option value="startups">Startups</option>
+                        <option value="economy">Economy</option>
+                        <option value="industry">Industry</option>
+                    </select>
+                </div>
+                <button type="submit" class="submit-btn">Save Video</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Event Modal -->
+    <div id="eventModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-calendar"></i> <span id="eventModalTitle">Add Event</span></h2>
+                <button class="close-modal" onclick="closeModal('eventModal')">&times;</button>
+            </div>
+            <form id="eventForm" onsubmit="saveEvent(event)">
+                <input type="hidden" name="eventId" id="editEventId">
+                <div class="form-group">
+                    <label>Event Title</label>
+                    <input type="text" class="form-input" name="title" id="eventTitle" required>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea class="form-textarea" name="description" id="eventDescription" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Location</label>
+                    <input type="text" class="form-input" name="location" id="eventLocation" placeholder="e.g., Mumbai, India" required>
+                </div>
+                <div class="form-group">
+                    <label>Event Date</label>
+                    <input type="date" class="form-input" name="eventDate" id="eventDate" required>
+                </div>
+                <div class="form-group">
+                    <label>Event Link (optional)</label>
+                    <input type="url" class="form-input" name="eventLink" id="eventLink" placeholder="https://...">
+                </div>
+                <button type="submit" class="submit-btn">Save Event</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Article Modal -->
+    <div id="articleModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-newspaper"></i> <span id="articleModalTitle">Add Article</span></h2>
+                <button class="close-modal" onclick="closeModal('articleModal')">&times;</button>
+            </div>
+            <form id="articleForm" onsubmit="saveArticle(event)">
+                <input type="hidden" name="articleId" id="editArticleId">
+                <div class="form-group">
+                    <label>Article Title</label>
+                    <input type="text" class="form-input" name="title" id="articleTitle" required>
+                </div>
+                <div class="form-group">
+                    <label>Content</label>
+                    <textarea class="form-textarea" name="content" id="articleContent" rows="6" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <select class="form-select" name="category" id="articleCategory" required>
                         <option value="business">Business</option>
                         <option value="markets">Markets</option>
                         <option value="technology">Technology</option>
@@ -570,7 +786,66 @@
                         <option value="economy">Economy</option>
                     </select>
                 </div>
-                <button type="submit" class="submit-btn">Save Video</button>
+                <div class="form-group">
+                    <label>Image URL (optional)</label>
+                    <input type="url" class="form-input" name="imageUrl" id="articleImageUrl" placeholder="https://...">
+                </div>
+                <button type="submit" class="submit-btn">Save Article</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Advertisement Modal -->
+    <div id="adModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-ad"></i> <span id="adModalTitle">Add Advertisement</span></h2>
+                <button class="close-modal" onclick="closeModal('adModal')">&times;</button>
+            </div>
+            <form id="adForm" onsubmit="saveAd(event)">
+                <input type="hidden" name="adId" id="editAdId">
+                <div class="form-group">
+                    <label>Advertisement Title</label>
+                    <input type="text" class="form-input" name="title" id="adTitle" required>
+                </div>
+                <div class="form-group">
+                    <label>Company Name</label>
+                    <input type="text" class="form-input" name="company" id="adCompany" required>
+                </div>
+                <div class="form-group">
+                    <label>Ad Type</label>
+                    <select class="form-select" name="type" id="adType" required>
+                        <option value="banner">Banner</option>
+                        <option value="sponsored">Sponsored Content</option>
+                        <option value="newsletter">Newsletter</option>
+                        <option value="video">Video Ad</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Target URL</label>
+                    <input type="url" class="form-input" name="targetUrl" id="adTargetUrl" placeholder="https://..." required>
+                </div>
+                <div class="form-group">
+                    <label>Image URL</label>
+                    <input type="url" class="form-input" name="imageUrl" id="adImageUrl" placeholder="https://...">
+                </div>
+                <div class="form-group">
+                    <label>Start Date</label>
+                    <input type="date" class="form-input" name="startDate" id="adStartDate" required>
+                </div>
+                <div class="form-group">
+                    <label>End Date</label>
+                    <input type="date" class="form-input" name="endDate" id="adEndDate" required>
+                </div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <select class="form-select" name="status" id="adStatus" required>
+                        <option value="active">Active</option>
+                        <option value="paused">Paused</option>
+                        <option value="scheduled">Scheduled</option>
+                    </select>
+                </div>
+                <button type="submit" class="submit-btn">Save Advertisement</button>
             </form>
         </div>
     </div>
@@ -679,8 +954,11 @@
                                     <td>${new Date(video.createdAt).toLocaleDateString()}</td>
                                     <td>
                                         <div class="action-btns">
-                                            <button class="view-btn" onclick="window.open('https://youtube.com/watch?v=${video.youtubeId}', '_blank')">
+                                            <button class="view-btn" onclick="window.open('https://youtube.com/watch?v=${video.youtubeId || video.videoId}', '_blank')">
                                                 <i class="fas fa-eye"></i> View
+                                            </button>
+                                            <button class="edit-btn" onclick='openEditVideoModal(${JSON.stringify(video).replace(/'/g, "&#39;")})'>
+                                                <i class="fas fa-edit"></i> Edit
                                             </button>
                                             <button class="delete-btn" onclick="deleteVideo('${video._id || video.id}')">
                                                 <i class="fas fa-trash"></i> Delete
@@ -731,11 +1009,14 @@
                         <tbody>
                             ${events.map(event => `
                                 <tr>
-                                    <td>${event.name}</td>
+                                    <td>${event.name || event.title}</td>
                                     <td>${new Date(event.date).toLocaleDateString()}</td>
                                     <td>${event.location || 'TBA'}</td>
                                     <td>
                                         <div class="action-btns">
+                                            <button class="edit-btn" onclick='openEditEventModal(${JSON.stringify(event).replace(/'/g, "&#39;")})'>
+                                                <i class="fas fa-edit"></i> Edit
+                                            </button>
                                             <button class="delete-btn" onclick="deleteEvent('${event._id || event.id}')">
                                                 <i class="fas fa-trash"></i> Delete
                                             </button>
@@ -792,6 +1073,9 @@
                                     <td>${new Date(article.createdAt || article.date).toLocaleDateString()}</td>
                                     <td>
                                         <div class="action-btns">
+                                            <button class="edit-btn" onclick='openEditArticleModal(${JSON.stringify(article).replace(/'/g, "&#39;")})'>
+                                                <i class="fas fa-edit"></i> Edit
+                                            </button>
                                             <button class="delete-btn" onclick="deleteArticle('${article._id || article.id}')">
                                                 <i class="fas fa-trash"></i> Delete
                                             </button>
@@ -843,11 +1127,14 @@
                             ${ads.map(ad => `
                                 <tr>
                                     <td>${ad.title || 'Untitled'}</td>
-                                    <td>${ad.position || 'N/A'}</td>
-                                    <td>${ad.status || 'active'}</td>
+                                    <td>${ad.type || ad.position || 'N/A'}</td>
+                                    <td><span class="status-badge ${ad.status}">${ad.status || 'active'}</span></td>
                                     <td>${ad.metrics?.impressions || 0}</td>
                                     <td>
                                         <div class="action-btns">
+                                            <button class="edit-btn" onclick='openEditAdModal(${JSON.stringify(ad).replace(/'/g, "&#39;")})'>
+                                                <i class="fas fa-edit"></i> Edit
+                                            </button>
                                             <button class="delete-btn" onclick="deleteAd('${ad._id || ad.id}')">
                                                 <i class="fas fa-trash"></i> Delete
                                             </button>
@@ -879,52 +1166,338 @@
             else if (tabName === 'events') loadEvents();
             else if (tabName === 'articles') loadArticles();
             else if (tabName === 'ads') loadAds();
+            else if (tabName === 'employees') loadEmployees();
         }
 
+        // ==================== MODAL FUNCTIONS ====================
+        let editMode = false;
+
         function openAddVideoModal() {
+            editMode = false;
+            document.getElementById('videoModalTitle').textContent = 'Add Video';
+            document.getElementById('videoForm').reset();
+            document.getElementById('editVideoId').value = '';
+            document.getElementById('videoModal').classList.add('active');
+        }
+
+        function openEditVideoModal(video) {
+            editMode = true;
+            document.getElementById('videoModalTitle').textContent = 'Edit Video';
+            document.getElementById('editVideoId').value = video._id || video.id;
+            document.getElementById('videoYoutubeId').value = video.youtubeId || video.videoId || '';
+            document.getElementById('videoTitle').value = video.title || '';
+            document.getElementById('videoDescription').value = video.description || '';
+            document.getElementById('videoCategory').value = video.category || 'business';
             document.getElementById('videoModal').classList.add('active');
         }
 
         function openAddEventModal() {
-            alert('Event form coming soon! Use the API to add events for now.');
+            editMode = false;
+            document.getElementById('eventModalTitle').textContent = 'Add Event';
+            document.getElementById('eventForm').reset();
+            document.getElementById('editEventId').value = '';
+            document.getElementById('eventModal').classList.add('active');
+        }
+
+        function openEditEventModal(eventData) {
+            editMode = true;
+            document.getElementById('eventModalTitle').textContent = 'Edit Event';
+            document.getElementById('editEventId').value = eventData._id || eventData.id;
+            document.getElementById('eventTitle').value = eventData.name || eventData.title || '';
+            document.getElementById('eventDescription').value = eventData.description || '';
+            document.getElementById('eventLocation').value = eventData.location || '';
+            document.getElementById('eventDate').value = eventData.date ? eventData.date.split('T')[0] : '';
+            document.getElementById('eventLink').value = eventData.eventLink || '';
+            document.getElementById('eventModal').classList.add('active');
         }
 
         function openAddArticleModal() {
-            alert('Article form coming soon! Use the API to add articles for now.');
+            editMode = false;
+            document.getElementById('articleModalTitle').textContent = 'Add Article';
+            document.getElementById('articleForm').reset();
+            document.getElementById('editArticleId').value = '';
+            document.getElementById('articleModal').classList.add('active');
+        }
+
+        function openEditArticleModal(article) {
+            editMode = true;
+            document.getElementById('articleModalTitle').textContent = 'Edit Article';
+            document.getElementById('editArticleId').value = article._id || article.id;
+            document.getElementById('articleTitle').value = article.title || '';
+            document.getElementById('articleContent').value = article.content || '';
+            document.getElementById('articleCategory').value = article.category || 'business';
+            document.getElementById('articleImageUrl').value = article.imageUrl || '';
+            document.getElementById('articleModal').classList.add('active');
         }
 
         function openAddAdModal() {
-            alert('Advertisement form coming soon! Use the API to add ads for now.');
+            editMode = false;
+            document.getElementById('adModalTitle').textContent = 'Add Advertisement';
+            document.getElementById('adForm').reset();
+            document.getElementById('editAdId').value = '';
+            document.getElementById('adModal').classList.add('active');
+        }
+
+        function openEditAdModal(ad) {
+            editMode = true;
+            document.getElementById('adModalTitle').textContent = 'Edit Advertisement';
+            document.getElementById('editAdId').value = ad._id || ad.id;
+            document.getElementById('adTitle').value = ad.title || '';
+            document.getElementById('adCompany').value = ad.company || '';
+            document.getElementById('adType').value = ad.type || 'banner';
+            document.getElementById('adTargetUrl').value = ad.targetUrl || '';
+            document.getElementById('adImageUrl').value = ad.imageUrl || '';
+            document.getElementById('adStartDate').value = ad.startDate ? ad.startDate.split('T')[0] : '';
+            document.getElementById('adEndDate').value = ad.endDate ? ad.endDate.split('T')[0] : '';
+            document.getElementById('adStatus').value = ad.status || 'active';
+            document.getElementById('adModal').classList.add('active');
         }
 
         function closeModal(modalId) {
             document.getElementById(modalId).classList.remove('active');
+            editMode = false;
         }
 
+        // ==================== SAVE FUNCTIONS ====================
         async function saveVideo(event) {
             event.preventDefault();
             const formData = new FormData(event.target);
             const videoData = Object.fromEntries(formData);
+            const videoId = videoData.videoId;
+            delete videoData.videoId;
 
             try {
-                const result = await fetchAPI('/api/videos', {
-                    method: 'POST',
+                const method = videoId ? 'PUT' : 'POST';
+                const endpoint = videoId ? `/api/videos/${videoId}` : '/api/videos';
+                
+                const result = await fetchAPI(endpoint, {
+                    method: method,
                     body: JSON.stringify(videoData)
                 });
 
                 if (result.success) {
-                    alert('Video added successfully!');
+                    alert(videoId ? 'Video updated successfully!' : 'Video added successfully!');
                     closeModal('videoModal');
                     loadVideos();
                     loadDashboardStats();
                     event.target.reset();
                 } else {
-                    alert('Error: ' + (result.error || 'Failed to add video'));
+                    alert('Error: ' + (result.error || 'Failed to save video'));
                 }
             } catch (error) {
-                alert('Error adding video: ' + error.message);
+                alert('Error saving video: ' + error.message);
             }
         }
+
+        async function saveEvent(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const eventData = {
+                name: formData.get('title'),
+                description: formData.get('description'),
+                location: formData.get('location'),
+                date: formData.get('eventDate'),
+                eventLink: formData.get('eventLink')
+            };
+            const eventId = formData.get('eventId');
+
+            try {
+                const method = eventId ? 'PUT' : 'POST';
+                const endpoint = eventId ? `/api/events/${eventId}` : '/api/events';
+                
+                const result = await fetchAPI(endpoint, {
+                    method: method,
+                    body: JSON.stringify(eventData)
+                });
+
+                if (result.success) {
+                    alert(eventId ? 'Event updated successfully!' : 'Event added successfully!');
+                    closeModal('eventModal');
+                    loadEvents();
+                    loadDashboardStats();
+                    event.target.reset();
+                } else {
+                    alert('Error: ' + (result.error || 'Failed to save event'));
+                }
+            } catch (error) {
+                alert('Error saving event: ' + error.message);
+            }
+        }
+
+        async function saveArticle(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const articleData = Object.fromEntries(formData);
+            const articleId = articleData.articleId;
+            delete articleData.articleId;
+
+            try {
+                const method = articleId ? 'PUT' : 'POST';
+                const endpoint = articleId ? `/api/articles/${articleId}` : '/api/articles';
+                
+                const result = await fetchAPI(endpoint, {
+                    method: method,
+                    body: JSON.stringify(articleData)
+                });
+
+                if (result.success) {
+                    alert(articleId ? 'Article updated successfully!' : 'Article added successfully!');
+                    closeModal('articleModal');
+                    loadArticles();
+                    loadDashboardStats();
+                    event.target.reset();
+                } else {
+                    alert('Error: ' + (result.error || 'Failed to save article'));
+                }
+            } catch (error) {
+                alert('Error saving article: ' + error.message);
+            }
+        }
+
+        async function saveAd(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const adData = Object.fromEntries(formData);
+            const adId = adData.adId;
+            delete adData.adId;
+
+            try {
+                const method = adId ? 'PUT' : 'POST';
+                const endpoint = adId ? `/api/advertisements/${adId}` : '/api/advertisements';
+                
+                const result = await fetchAPI(endpoint, {
+                    method: method,
+                    body: JSON.stringify(adData)
+                });
+
+                if (result.success) {
+                    alert(adId ? 'Advertisement updated successfully!' : 'Advertisement added successfully!');
+                    closeModal('adModal');
+                    loadAds();
+                    loadDashboardStats();
+                    event.target.reset();
+                } else {
+                    alert('Error: ' + (result.error || 'Failed to save advertisement'));
+                }
+            } catch (error) {
+                alert('Error saving advertisement: ' + error.message);
+            }
+        }
+
+        // ==================== EMPLOYEE FUNCTIONS ====================
+        async function loadEmployees() {
+            loadPendingEmployees();
+            loadApprovedEmployees();
+        }
+
+        async function loadPendingEmployees() {
+            const container = document.getElementById('pendingEmployees');
+            container.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Loading...</div>';
+
+            try {
+                const data = await fetchAPI('/api/admin/pending-users');
+                const users = data?.users || [];
+
+                if (users.length === 0) {
+                    container.innerHTML = '<p style="color:#7f8c8d;text-align:center;padding:20px;">No pending approvals</p>';
+                    return;
+                }
+
+                container.innerHTML = users.map(user => `
+                    <div class="employee-card">
+                        <div class="employee-info">
+                            <h4>${user.name}</h4>
+                            <p>${user.email}</p>
+                            <span class="role-badge ${user.role.toLowerCase()}">${user.role}</span>
+                            <p style="font-size:11px;color:#95a5a6;margin-top:5px;">Registered: ${new Date(user.createdAt).toLocaleDateString()}</p>
+                        </div>
+                        <div class="employee-actions">
+                            <button class="approve-btn" onclick="approveUser('${user._id}')">
+                                <i class="fas fa-check"></i> Approve
+                            </button>
+                            <button class="reject-btn" onclick="rejectUser('${user._id}')">
+                                <i class="fas fa-times"></i> Reject
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading pending employees:', error);
+                container.innerHTML = '<p style="color:#e74c3c;">Error loading pending employees</p>';
+            }
+        }
+
+        async function loadApprovedEmployees() {
+            const container = document.getElementById('approvedEmployees');
+            container.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Loading...</div>';
+
+            try {
+                const data = await fetchAPI('/api/admin/employees');
+                const employees = data?.data || [];
+
+                if (employees.length === 0) {
+                    container.innerHTML = '<p style="color:#7f8c8d;text-align:center;padding:20px;">No approved employees yet</p>';
+                    return;
+                }
+
+                container.innerHTML = employees.map(emp => `
+                    <div class="employee-card">
+                        <div class="employee-info">
+                            <h4>${emp.name}</h4>
+                            <p>${emp.email}</p>
+                            <span class="role-badge ${emp.role.toLowerCase()}">${emp.role}</span>
+                            <div class="stats-row">
+                                <span class="stat-item">Videos: <strong>${emp.stats?.videosAdded || 0}</strong></span>
+                                <span class="stat-item">Articles: <strong>${emp.stats?.articlesWritten || 0}</strong></span>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading approved employees:', error);
+                container.innerHTML = '<p style="color:#e74c3c;">Error loading employees</p>';
+            }
+        }
+
+        async function approveUser(userId) {
+            if (!confirm('Approve this user?')) return;
+
+            try {
+                const result = await fetchAPI(`/api/admin/approve-user/${userId}`, {
+                    method: 'POST'
+                });
+
+                if (result.success) {
+                    alert('User approved successfully!');
+                    loadEmployees();
+                } else {
+                    alert('Error: ' + (result.error || 'Failed to approve user'));
+                }
+            } catch (error) {
+                alert('Error approving user: ' + error.message);
+            }
+        }
+
+        async function rejectUser(userId) {
+            if (!confirm('Reject and remove this user? This action cannot be undone.')) return;
+
+            try {
+                const result = await fetchAPI(`/api/admin/reject-user/${userId}`, {
+                    method: 'POST'
+                });
+
+                if (result.success) {
+                    alert('User rejected and removed.');
+                    loadEmployees();
+                } else {
+                    alert('Error: ' + (result.error || 'Failed to reject user'));
+                }
+            } catch (error) {
+                alert('Error rejecting user: ' + error.message);
+            }
+        }
+
+        // ==================== DELETE FUNCTIONS ====================
 
         async function deleteVideo(id) {
             if (!confirm('Are you sure you want to delete this video?')) return;

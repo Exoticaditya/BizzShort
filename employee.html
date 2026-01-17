@@ -410,33 +410,54 @@
         </div>
     </div>
 
+    <script src="assets/js/config.js"></script>
     <script>
-        const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+        const API_URL = window.APIConfig ? APIConfig.baseURL : 
+            (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
             ? `http://${window.location.hostname}:3000`
-            : 'https://bizzshort.onrender.com';
+            : 'https://bizzshort.onrender.com');
 
         let currentUser = null;
 
-        // Check authentication
+        // Check authentication - support both employee and admin tokens
         function checkAuth() {
-            const sessionId = localStorage.getItem('sessionId');
-            const user = JSON.parse(localStorage.getItem('user') || 'null');
+            // Try employee token first
+            let token = localStorage.getItem('employeeToken');
+            let user = JSON.parse(localStorage.getItem('employeeUser') || 'null');
+            
+            // Fallback to admin session if employee login not found
+            if (!token || !user) {
+                token = localStorage.getItem('sessionId');
+                user = JSON.parse(localStorage.getItem('user') || 'null');
+            }
 
-            if (!sessionId || !user) {
-                window.location.href = 'admin-login.html';
+            if (!token || !user) {
+                window.location.href = 'employee-login.html';
                 return false;
             }
 
+            // Store active token for API calls
+            localStorage.setItem('activeToken', token);
             currentUser = user;
             document.getElementById('employeeName').textContent = user.name;
             return true;
         }
 
+        // Get auth token for API calls
+        function getAuthToken() {
+            return localStorage.getItem('activeToken') || 
+                   localStorage.getItem('employeeToken') || 
+                   localStorage.getItem('sessionId');
+        }
+
         // Logout
         function logout() {
+            localStorage.removeItem('employeeToken');
+            localStorage.removeItem('employeeUser');
+            localStorage.removeItem('activeToken');
             localStorage.removeItem('sessionId');
             localStorage.removeItem('user');
-            window.location.href = 'admin-login.html';
+            window.location.href = 'employee-login.html';
         }
 
         // Show alert
@@ -455,7 +476,7 @@
             try {
                 const response = await fetch(`${API_URL}/api/employee/my-stats`, {
                     headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('sessionId')}`
+                        'Authorization': `Bearer ${getAuthToken()}`
                     }
                 });
 
@@ -475,7 +496,7 @@
             try {
                 const response = await fetch(`${API_URL}/api/videos`, {
                     headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('sessionId')}`
+                        'Authorization': `Bearer ${getAuthToken()}`
                     }
                 });
 
@@ -530,7 +551,7 @@
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${localStorage.getItem('sessionId')}`
+                        'Authorization': `Bearer ${getAuthToken()}`
                     },
                     body: JSON.stringify(videoData)
                 });
@@ -558,7 +579,7 @@
                 const response = await fetch(`${API_URL}/api/videos/${id}`, {
                     method: 'DELETE',
                     headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('sessionId')}`
+                        'Authorization': `Bearer ${getAuthToken()}`
                     }
                 });
 

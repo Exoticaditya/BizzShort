@@ -44,8 +44,8 @@ app.use(helmet({
             scriptSrcAttr: ["'self'", "'unsafe-inline'"],
             imgSrc: ["'self'", "data:", "https:", "http:"],
             fontSrc: ["'self'", "https://cdnjs.cloudflare.com", "https://fonts.gstatic.com"],
-            connectSrc: ["'self'", "https://bizzshort.onrender.com", "https://www.google-analytics.com", "https://analytics.google.com"],
-            frameSrc: ["'self'", "https://www.youtube.com", "https://www.instagram.com"],
+            connectSrc: ["'self'", "https://bizzshort.onrender.com", "https://www.bizzshort.com", "https://www.google-analytics.com", "https://analytics.google.com"],
+            frameSrc: ["'self'", "https://www.youtube.com", "https://www.youtube-nocookie.com", "https://youtube.com", "https://www.instagram.com"],
         }
     },
     crossOriginEmbedderPolicy: false,
