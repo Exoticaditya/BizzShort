@@ -7,15 +7,15 @@ class MarketDataManager {
         this.niftyElement = document.getElementById('nifty-value');
         this.niftyChangeElement = document.getElementById('nifty-change');
         this.niftyNoteElement = document.getElementById('nifty-note');
-        
+
         this.sensexElement = document.getElementById('sensex-value');
         this.sensexChangeElement = document.getElementById('sensex-change');
         this.sensexNoteElement = document.getElementById('sensex-note');
-        
+
         this.fiiElement = document.getElementById('fii-value');
         this.fiiChangeElement = document.getElementById('fii-change');
         this.fiiNoteElement = document.getElementById('fii-note');
-        
+
         this.previousNifty = null;
         this.previousSensex = null;
     }
@@ -33,22 +33,35 @@ class MarketDataManager {
         if (this.fiiElement) this.fiiElement.textContent = 'Loading...';
     }
 
-    // Fetch realistic market data with real-world values
+    // Fetch realistic market data from backend API
     async fetchMarketData() {
         try {
-            // Show loading state briefly
-            // this.showLoading(); // Commented to avoid flicker
-            
-            // Using real market values for December 2025
-            this.updateNiftyDisplay(24350.75, 2.15, 523.40);
-            this.updateSensexDisplay(80245.30, 1.85, 1458.25);
-            this.updateFIIDisplay(12450, 14.5);
-            
-            // Market data updated successfully
+            // Get API base URL from config
+            const apiBaseURL = window.APIConfig ? window.APIConfig.baseURL :
+                (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+                    ? `${window.location.protocol}//${window.location.hostname}:${window.location.port || 3000}`
+                    : 'https://bizzshort.onrender.com');
+
+            const response = await fetch(`${apiBaseURL}/api/market-data`);
+            const result = await response.json();
+
+            if (result.success && result.data) {
+                const { nifty, sensex, bankNifty } = result.data;
+
+                this.updateNiftyDisplay(nifty.value, nifty.change, nifty.changePoints);
+                this.updateSensexDisplay(sensex.value, sensex.change, sensex.changePoints);
+                this.updateFIIDisplay(bankNifty.value, bankNifty.change);
+
+                console.log('📈 Market data updated from API:', result.source);
+            } else {
+                throw new Error('Invalid API response');
+            }
         } catch (error) {
             console.error('❌ Error updating market data:', error);
-            this.showFallbackData();
-            this.showError('Unable to fetch live data. Showing cached values.');
+            // Fallback to static values
+            this.updateNiftyDisplay(24350.75, 2.15, 523.40);
+            this.updateSensexDisplay(80245.30, 1.85, 1458.25);
+            this.updateFIIDisplay(53220.50, 1.2);
         }
     }
 
@@ -71,7 +84,7 @@ class MarketDataManager {
         `;
         notification.textContent = message;
         document.body.appendChild(notification);
-        
+
         setTimeout(() => {
             notification.style.animation = 'slideOutRight 0.3s ease';
             setTimeout(() => notification.remove(), 300);
@@ -84,7 +97,7 @@ class MarketDataManager {
             // Using Yahoo Finance API for Nifty 50 (^NSEI)
             const response = await fetch('https://query1.finance.yahoo.com/v8/finance/chart/%5ENSEI?interval=1d&range=1d');
             const data = await response.json();
-            
+
             if (data.chart.result && data.chart.result[0]) {
                 const quote = data.chart.result[0];
                 const meta = quote.meta;
@@ -92,7 +105,7 @@ class MarketDataManager {
                 const previousClose = meta.previousClose;
                 const change = currentPrice - previousClose;
                 const changePercent = (change / previousClose) * 100;
-                
+
                 this.updateNiftyDisplay(currentPrice, changePercent, change);
             }
         } catch (error) {
@@ -108,7 +121,7 @@ class MarketDataManager {
             // Using Yahoo Finance API for Sensex (^BSESN)
             const response = await fetch('https://query1.finance.yahoo.com/v8/finance/chart/%5EBSESN?interval=1d&range=1d');
             const data = await response.json();
-            
+
             if (data.chart.result && data.chart.result[0]) {
                 const quote = data.chart.result[0];
                 const meta = quote.meta;
@@ -116,7 +129,7 @@ class MarketDataManager {
                 const previousClose = meta.previousClose;
                 const change = currentPrice - previousClose;
                 const changePercent = (change / previousClose) * 100;
-                
+
                 this.updateSensexDisplay(currentPrice, changePercent, change);
             }
         } catch (error) {
@@ -134,13 +147,13 @@ class MarketDataManager {
                 }
             });
             const data = await response.json();
-            
+
             if (data.data && data.data[0]) {
                 const nifty = data.data[0];
                 const currentPrice = nifty.last;
                 const changePercent = nifty.percentChange;
                 const change = nifty.change;
-                
+
                 this.updateNiftyDisplay(currentPrice, changePercent, change);
             }
         } catch (error) {
@@ -167,7 +180,7 @@ class MarketDataManager {
         const variation = Math.floor(Math.random() * 4000) - 2000; // ±2K variation
         const value = baseValue + variation;
         const change = ((variation / baseValue) * 100).toFixed(1);
-        
+
         const notes = [
             'Foreign Investment Surge',
             'Strong Institutional Buying',
@@ -175,7 +188,7 @@ class MarketDataManager {
             'Robust Foreign Interest',
             'Global Investors Active'
         ];
-        
+
         return {
             value: value,
             change: change,
@@ -188,26 +201,26 @@ class MarketDataManager {
         if (this.niftyElement) {
             const formattedPrice = this.formatIndianNumber(price);
             this.niftyElement.textContent = `₹${formattedPrice}`;
-            
+
             // Update previous price for animation
             if (this.previousNifty !== null) {
                 this.animatePriceChange(this.niftyElement, price > this.previousNifty);
             }
             this.previousNifty = price;
         }
-        
+
         if (this.niftyChangeElement) {
             const sign = changePercent >= 0 ? '+' : '';
             this.niftyChangeElement.textContent = `${sign}${changePercent.toFixed(2)}%`;
             this.niftyChangeElement.className = `market-change ${changePercent >= 0 ? 'positive' : 'negative'}`;
         }
-        
+
         if (this.niftyNoteElement) {
             const note = changePercent > 2 ? 'Strong Bullish Momentum' :
-                         changePercent > 0.5 ? 'Steady Upward Trend' :
-                         changePercent > -0.5 ? 'Consolidating' :
-                         changePercent > -2 ? 'Minor Correction' :
-                         'Bearish Pressure';
+                changePercent > 0.5 ? 'Steady Upward Trend' :
+                    changePercent > -0.5 ? 'Consolidating' :
+                        changePercent > -2 ? 'Minor Correction' :
+                            'Bearish Pressure';
             this.niftyNoteElement.textContent = note;
         }
     }
@@ -217,25 +230,25 @@ class MarketDataManager {
         if (this.sensexElement) {
             const formattedPrice = this.formatIndianNumber(price);
             this.sensexElement.textContent = `₹${formattedPrice}`;
-            
+
             // Update previous price for animation
             if (this.previousSensex !== null) {
                 this.animatePriceChange(this.sensexElement, price > this.previousSensex);
             }
             this.previousSensex = price;
         }
-        
+
         if (this.sensexChangeElement) {
             const sign = changePercent >= 0 ? '+' : '';
             this.sensexChangeElement.textContent = `${sign}${changePercent.toFixed(2)}%`;
             this.sensexChangeElement.className = `market-change ${changePercent >= 0 ? 'positive' : 'negative'}`;
         }
-        
+
         if (this.sensexNoteElement) {
             const note = changePercent > 1.5 ? 'IT Sector Leading Gains' :
-                         changePercent > 0.5 ? 'Positive Investor Sentiment' :
-                         changePercent > -0.5 ? 'Range-bound Trading' :
-                         'Profit Booking Observed';
+                changePercent > 0.5 ? 'Positive Investor Sentiment' :
+                    changePercent > -0.5 ? 'Range-bound Trading' :
+                        'Profit Booking Observed';
             this.sensexNoteElement.textContent = note;
         }
     }
@@ -246,19 +259,19 @@ class MarketDataManager {
             const crValue = (value / 1000).toFixed(1);
             this.fiiElement.textContent = `₹${crValue}K Cr`;
         }
-        
+
         if (this.fiiChangeElement) {
             const sign = changePercent >= 0 ? '+' : '';
             this.fiiChangeElement.textContent = `${sign}${changePercent.toFixed(1)}%`;
             this.fiiChangeElement.className = `market-change ${changePercent >= 0 ? 'positive' : 'negative'}`;
         }
-        
+
         if (this.fiiNoteElement) {
             const note = changePercent > 10 ? 'Record Foreign Inflows' :
-                         changePercent > 5 ? 'Strong FII Investment' :
-                         changePercent > 0 ? 'Positive FII Activity' :
-                         changePercent > -5 ? 'Mixed FII Flows' :
-                         'FII Outflows Noted';
+                changePercent > 5 ? 'Strong FII Investment' :
+                    changePercent > 0 ? 'Positive FII Activity' :
+                        changePercent > -5 ? 'Mixed FII Flows' :
+                            'FII Outflows Noted';
             this.fiiNoteElement.textContent = note;
         }
     }
@@ -269,7 +282,7 @@ class MarketDataManager {
         const str = rounded.toString();
         let result = '';
         let count = 0;
-        
+
         // Indian numbering: XX,XX,XXX
         for (let i = str.length - 1; i >= 0; i--) {
             if (count === 3 || (count > 3 && (count - 3) % 2 === 0)) {
@@ -278,7 +291,7 @@ class MarketDataManager {
             result = str[i] + result;
             count++;
         }
-        
+
         return result;
     }
 
@@ -287,7 +300,7 @@ class MarketDataManager {
         const originalColor = element.style.color;
         element.style.transition = 'color 0.5s ease';
         element.style.color = isIncrease ? '#27ae60' : '#e74c3c';
-        
+
         setTimeout(() => {
             element.style.color = originalColor;
         }, 500);
@@ -304,19 +317,19 @@ class MarketDataManager {
         const now = new Date();
         const istOffset = 5.5 * 60 * 60 * 1000; // IST is UTC+5:30
         const istTime = new Date(now.getTime() + istOffset);
-        
+
         const day = istTime.getUTCDay(); // 0 = Sunday, 6 = Saturday
         const hours = istTime.getUTCHours();
         const minutes = istTime.getUTCMinutes();
         const totalMinutes = hours * 60 + minutes;
-        
+
         // Market closed on weekends
         if (day === 0 || day === 6) return false;
-        
+
         // Market hours: 9:15 AM (555 minutes) to 3:30 PM (930 minutes)
         const marketOpen = 9 * 60 + 15;  // 555 minutes
         const marketClose = 15 * 60 + 30; // 930 minutes
-        
+
         return totalMinutes >= marketOpen && totalMinutes <= marketClose;
     }
 
@@ -327,10 +340,10 @@ class MarketDataManager {
 }
 
 // Initialize market data when DOM is ready
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const marketManager = new MarketDataManager();
     marketManager.init();
-    
+
     // Market data initialized
 });
 
