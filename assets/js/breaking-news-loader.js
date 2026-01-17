@@ -116,7 +116,7 @@ class BreakingNewsLoader {
         }
 
         if (iframe && videoId) {
-            iframe.src = `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1`;
+            iframe.src = `https://www.youtube-nocookie.com/embed/${videoId}?rel=0&modestbranding=1`;
         }
 
         // Update click handler for main video

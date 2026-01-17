@@ -368,7 +368,7 @@ function extractYouTubeId() {
         // Show preview
         const preview = document.getElementById('videoPreview');
         const iframe = document.getElementById('previewIframe');
-        iframe.src = `https://www.youtube.com/embed/${videoId}`;
+        iframe.src = `https://www.youtube-nocookie.com/embed/${videoId}`;
         preview.style.display = 'block';
         
         // Store videoId for submission
@@ -436,7 +436,7 @@ async function editVideo(videoId) {
     // Show preview
     const preview = document.getElementById('videoPreview');
     const iframe = document.getElementById('previewIframe');
-    iframe.src = `https://www.youtube.com/embed/${youtubeId}`;
+    iframe.src = `https://www.youtube-nocookie.com/embed/${youtubeId}`;
     preview.style.display = 'block';
 
     document.querySelector('#videoModal h2').innerHTML = '<i class="fas fa-edit"></i> Edit Video';

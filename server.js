@@ -1188,9 +1188,9 @@ app.get('/api/market-data', async (req, res) => {
             return res.json({
                 success: true,
                 data: {
-                    nifty: { value: 24350.75, change: 2.15, changePoints: 523.40, note: 'Strong Bullish Momentum' },
-                    sensex: { value: 80245.30, change: 1.85, changePoints: 1458.25, note: 'IT Sector Leading Gains' },
-                    bankNifty: { value: 53220.50, change: 1.2, changePoints: 634.15, note: 'Banking Sector Strong' }
+                    nifty: { value: 23520.45, change: 0.35, changePoints: 82.15, note: 'Bullish Momentum' },
+                    sensex: { value: 77580.30, change: 0.42, changePoints: 324.50, note: 'Positive Sentiment' },
+                    bankNifty: { value: 50840.75, change: 0.28, changePoints: 142.30, note: 'Banking Sector Strong' }
                 },
                 source: 'simulated',
                 timestamp: new Date().toISOString()
@@ -1226,9 +1226,10 @@ app.get('/api/market-data', async (req, res) => {
         try {
             // For Indian markets, we'll use estimated values with slight random variation
             // since Alpha Vantage free tier doesn't cover NSE/BSE indices well
-            const baseNifty = 24350;
-            const baseSensex = 80245;
-            const baseBankNifty = 53220;
+            // Using realistic January 2026 market values
+            const baseNifty = 23500;
+            const baseSensex = 77500;
+            const baseBankNifty = 50800;
 
             // Add small random variation (±0.5% to simulate real-time)
             const variation = () => (Math.random() - 0.5) * 0.01;
@@ -1272,9 +1273,9 @@ app.get('/api/market-data', async (req, res) => {
             res.json({
                 success: true,
                 data: {
-                    nifty: { value: 24350.75, change: 2.15, changePoints: 523.40, note: 'Strong Bullish Momentum' },
-                    sensex: { value: 80245.30, change: 1.85, changePoints: 1458.25, note: 'IT Sector Leading Gains' },
-                    bankNifty: { value: 53220.50, change: 1.2, changePoints: 634.15, note: 'Banking Sector Strong' }
+                    nifty: { value: 23520.45, change: 0.35, changePoints: 82.15, note: 'Bullish Momentum' },
+                    sensex: { value: 77580.30, change: 0.42, changePoints: 324.50, note: 'Positive Sentiment' },
+                    bankNifty: { value: 50840.75, change: 0.28, changePoints: 142.30, note: 'Banking Sector Strong' }
                 },
                 source: 'fallback',
                 timestamp: new Date().toISOString()

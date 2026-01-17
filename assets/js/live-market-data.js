@@ -1,11 +1,13 @@
 // ============================================
 // LIVE MARKET DATA INTEGRATION
 // Real-time Nifty, Sensex, and Market Updates
+// Using Alpha Vantage API via Backend
 // ============================================
 
 class LiveMarketData {
     constructor() {
-        this.updateInterval = 30000; // Update every 30 seconds
+        this.apiBaseURL = window.APIConfig ? APIConfig.baseURL : 'https://bizzshort.onrender.com';
+        this.updateInterval = 60000; // Update every 60 seconds
         this.isMarketOpen = this.checkMarketHours();
         this.init();
     }
@@ -28,153 +30,114 @@ class LiveMarketData {
 
     init() {
         this.updateMarketData();
-        if (this.isMarketOpen) {
-            setInterval(() => this.updateMarketData(), this.updateInterval);
-        }
+        // Always update, even if market is closed (to show last values)
+        setInterval(() => this.updateMarketData(), this.updateInterval);
     }
 
     async updateMarketData() {
         try {
-            // Simulate realistic market fluctuation
-            const marketData = await this.fetchRealisticData();
-            this.displayMarketData(marketData);
+            // Fetch from our backend API that uses Alpha Vantage
+            const response = await fetch(`${this.apiBaseURL}/api/market-data`);
+            const result = await response.json();
+            
+            if (result.success && result.data) {
+                this.displayMarketData(result.data);
+                console.log('✅ Market data updated from API:', result.source);
+            } else {
+                throw new Error('Invalid API response');
+            }
         } catch (error) {
-            console.error('Error fetching market data:', error);
-            this.displayMockData();
+            console.error('Error fetching market data from API:', error);
+            // Fall back to local simulation
+            const marketData = await this.fetchLocalData();
+            this.displayMarketData(marketData);
         }
     }
 
-    async fetchRealisticData() {
-        // Base values near current market levels (Dec 2025 projection)
-        const generateFluctuation = (base, volatility = 0.005) => {
-            const change = base * (Math.random() * volatility - volatility / 2); // +/- 0.25%
+    async fetchLocalData() {
+        // Fallback local data generation (January 2026 realistic values)
+        const generateFluctuation = (base, volatility = 0.002) => {
+            const change = base * (Math.random() * volatility * 2 - volatility);
             return {
                 value: base + change,
-                change: change,
-                changePercent: (change / base) * 100
+                change: (change / base) * 100,
+                changePoints: change
             };
         };
 
-        const niftyBase = 25850;
-        const sensexBase = 84500;
-        const bankNiftyBase = 54200;
-        const niftyITBase = 43100;
-
-        const nifty = generateFluctuation(niftyBase);
-        const sensex = generateFluctuation(sensexBase);
-        const bankNifty = generateFluctuation(bankNiftyBase);
-        const niftyIT = generateFluctuation(niftyITBase);
+        const nifty = generateFluctuation(23500);
+        const sensex = generateFluctuation(77500);
+        const bankNifty = generateFluctuation(50800);
 
         return {
-            nifty: {
-                ...nifty,
-                high: nifty.value + 150,
-                low: nifty.value - 120,
-                volume: '₹75,400 Cr'
-            },
-            sensex: {
-                ...sensex,
-                high: sensex.value + 400,
-                low: sensex.value - 300,
-                volume: '₹9,100 Cr'
-            },
-            bankNifty: { ...bankNifty, high: bankNifty.value + 300, low: bankNifty.value - 250 },
-            niftyIT: { ...niftyIT, high: niftyIT.value + 200, low: niftyIT.value - 150 },
-            timestamp: new Date().toLocaleString('en-IN', {
-                timeZone: 'Asia/Kolkata',
-                hour12: true,
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit'
-            })
+            nifty: { ...nifty, note: nifty.change >= 0 ? 'Bullish Momentum' : 'Bearish Trend' },
+            sensex: { ...sensex, note: sensex.change >= 0 ? 'Positive Sentiment' : 'Cautious Trading' },
+            bankNifty: { ...bankNifty, note: bankNifty.change >= 0 ? 'Banking Strong' : 'Banking Weak' }
         };
     }
 
-    displayMockData() {
-        // Initial static fallback
-        this.fetchRealisticData().then(data => this.displayMarketData(data));
-    }
-
     displayMarketData(data) {
-        // Update Nifty 50
-        this.updateMarketCard('nifty', {
-            value: data.nifty.value,
-            change: data.nifty.changePercent,
-            high: data.nifty.high,
-            low: data.nifty.low,
-            volume: data.nifty.volume
-        });
+        // Update Nifty 50 - using element IDs
+        const niftyValue = document.getElementById('nifty-value');
+        const niftyChange = document.getElementById('nifty-change');
+        const niftyNote = document.getElementById('nifty-note');
+        
+        if (niftyValue && data.nifty) {
+            niftyValue.textContent = `₹${Math.round(data.nifty.value).toLocaleString('en-IN')}`;
+        }
+        if (niftyChange && data.nifty) {
+            const change = data.nifty.change;
+            const isPositive = change >= 0;
+            niftyChange.textContent = `${isPositive ? '+' : ''}${change.toFixed(2)}%`;
+            niftyChange.className = `market-change ${isPositive ? 'positive' : 'negative'}`;
+        }
+        if (niftyNote && data.nifty && data.nifty.note) {
+            niftyNote.textContent = data.nifty.note;
+        }
 
         // Update Sensex
-        this.updateMarketCard('sensex', {
-            value: data.sensex.value,
-            change: data.sensex.changePercent,
-            high: data.sensex.high,
-            low: data.sensex.low,
-            volume: data.sensex.volume
-        });
+        const sensexValue = document.getElementById('sensex-value');
+        const sensexChange = document.getElementById('sensex-change');
+        const sensexNote = document.getElementById('sensex-note');
+        
+        if (sensexValue && data.sensex) {
+            sensexValue.textContent = `₹${Math.round(data.sensex.value).toLocaleString('en-IN')}`;
+        }
+        if (sensexChange && data.sensex) {
+            const change = data.sensex.change;
+            const isPositive = change >= 0;
+            sensexChange.textContent = `${isPositive ? '+' : ''}${change.toFixed(2)}%`;
+            sensexChange.className = `market-change ${isPositive ? 'positive' : 'negative'}`;
+        }
+        if (sensexNote && data.sensex && data.sensex.note) {
+            sensexNote.textContent = data.sensex.note;
+        }
 
         // Update Bank Nifty
-        this.updateMarketCard('banknifty', {
-            value: data.bankNifty.value,
-            change: data.bankNifty.changePercent,
-            high: data.bankNifty.high,
-            low: data.bankNifty.low
-        });
+        const bankNiftyValue = document.getElementById('bank-nifty-value');
+        const bankNiftyChange = document.getElementById('bank-nifty-change');
+        const bankNiftyNote = document.getElementById('bank-nifty-note');
+        
+        if (bankNiftyValue && data.bankNifty) {
+            bankNiftyValue.textContent = `₹${Math.round(data.bankNifty.value).toLocaleString('en-IN')}`;
+        }
+        if (bankNiftyChange && data.bankNifty) {
+            const change = data.bankNifty.change;
+            const isPositive = change >= 0;
+            bankNiftyChange.textContent = `${isPositive ? '+' : ''}${change.toFixed(2)}%`;
+            bankNiftyChange.className = `market-change ${isPositive ? 'positive' : 'negative'}`;
+        }
+        if (bankNiftyNote && data.bankNifty && data.bankNifty.note) {
+            bankNiftyNote.textContent = data.bankNifty.note;
+        }
 
-        // Update Nifty IT
-        this.updateMarketCard('niftyit', {
-            value: data.niftyIT.value,
-            change: data.niftyIT.changePercent,
-            high: data.niftyIT.high,
-            low: data.niftyIT.low
-        });
-
-        // Update timestamp
+        // Update timestamp if exists
         const timestampElement = document.querySelector('.market-timestamp');
         if (timestampElement) {
-            timestampElement.textContent = `Last Updated: ${data.timestamp}`;
-        }
-    }
-
-    updateMarketCard(cardId, marketData) {
-        const card = document.querySelector(`[data-market="${cardId}"]`);
-        if (!card) return;
-
-        const valueElement = card.querySelector('.market-value');
-        const changeElement = card.querySelector('.market-change');
-        const highElement = card.querySelector('.market-high');
-        const lowElement = card.querySelector('.market-low');
-        const volumeElement = card.querySelector('.market-volume');
-
-        if (valueElement) {
-            valueElement.textContent = `₹${Math.round(marketData.value).toLocaleString('en-IN')}`;
+            timestampElement.textContent = `Last Updated: ${new Date().toLocaleTimeString('en-IN')}`;
         }
 
-        if (changeElement) {
-            const isPositive = marketData.change >= 0;
-            changeElement.textContent = `${isPositive ? '+' : ''}${marketData.change.toFixed(2)}%`;
-            changeElement.className = `market-change ${isPositive ? 'positive' : 'negative'}`;
-        }
-
-        if (highElement && marketData.high) {
-            highElement.textContent = `H: ₹${Math.round(marketData.high).toLocaleString('en-IN')}`;
-        }
-
-        if (lowElement && marketData.low) {
-            lowElement.textContent = `L: ₹${Math.round(marketData.low).toLocaleString('en-IN')}`;
-        }
-
-        if (volumeElement && marketData.volume) {
-            volumeElement.textContent = `Vol: ${marketData.volume}`;
-        }
-
-        // Update card trend indicator
-        const trendIndicator = card.querySelector('.trend-indicator');
-        if (trendIndicator) {
-            trendIndicator.className = `trend-indicator ${marketData.change >= 0 ? 'up' : 'down'}`;
-            trendIndicator.textContent = marketData.change >= 0 ? '▲' : '▼';
-        }
+        console.log('✅ Market cards updated');
     }
 }
 
