@@ -97,7 +97,7 @@ const corsOptions = {
     origin: function (origin, callback) {
         // Allow requests with no origin (like mobile apps or curl requests)
         if (!origin) return callback(null, true);
-        
+
         if (allowedOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV === 'development') {
             callback(null, true);
         } else {
@@ -148,11 +148,11 @@ const protect = async (req, res, next) => {
             token = req.headers.authorization.split(' ')[1];
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
             req.user = await User.findById(decoded.id).select('-password');
-            
+
             if (!req.user) {
                 return res.status(401).json({ success: false, error: 'User not found' });
             }
-            
+
             next();
         } catch (error) {
             console.error('Token verification error:', error);
@@ -164,11 +164,11 @@ const protect = async (req, res, next) => {
             token = req.headers['session-id'];
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
             req.user = await User.findById(decoded.id).select('-password');
-            
+
             if (!req.user) {
                 return res.status(401).json({ success: false, error: 'User not found' });
             }
-            
+
             next();
         } catch (error) {
             res.status(401).json({ success: false, error: 'Not authorized, invalid session' });
@@ -185,7 +185,7 @@ app.get('/api/health', async (req, res) => {
     try {
         // Check database connection
         const dbStatus = require('mongoose').connection.readyState === 1 ? 'connected' : 'disconnected';
-        
+
         res.json({
             status: 'ok',
             timestamp: new Date().toISOString(),
@@ -204,7 +204,7 @@ app.get('/api/health', async (req, res) => {
 app.get('/api/setup-production', async (req, res) => {
     // Basic protection using query param from environment
     const setupKey = process.env.SETUP_KEY || 'secure_setup_123';
-    
+
     if (req.query.key !== setupKey) {
         return res.status(403).send('Forbidden: Invalid Setup Key. Use ?key=YOUR_SETUP_KEY');
     }
@@ -382,25 +382,25 @@ app.get('/api/setup-production', async (req, res) => {
 // Auth & Users
 app.post('/api/admin/login', authLimiter, async (req, res) => {
     const { username, password } = req.body;
-    
+
     // Input validation
     if (!username || !password) {
         return res.status(400).json({ success: false, error: 'Username and password are required' });
     }
-    
+
     // Sanitize inputs
     const sanitizedUsername = validator.escape(username.trim());
-    
+
     if (!validator.isLength(sanitizedUsername, { min: 3, max: 50 })) {
         return res.status(400).json({ success: false, error: 'Invalid username length' });
     }
-    
+
     try {
-        let user = await User.findOne({ 
+        let user = await User.findOne({
             $or: [
-                { name: sanitizedUsername }, 
+                { name: sanitizedUsername },
                 { email: sanitizedUsername }
-            ] 
+            ]
         });
 
         if (user && (await bcrypt.compare(password, user.password))) {
@@ -411,7 +411,7 @@ app.post('/api/admin/login', authLimiter, async (req, res) => {
             if (user.status === 'REJECTED') {
                 return res.status(403).json({ success: false, error: 'Your account has been rejected. Please contact support.' });
             }
-            
+
             res.json({
                 success: true,
                 sessionId: generateToken(user._id),
@@ -429,50 +429,50 @@ app.post('/api/admin/login', authLimiter, async (req, res) => {
 // Admin Registration (First admin auto-approved, others pending)
 app.post('/api/admin/register', async (req, res) => {
     const { name, email, password, setupKey } = req.body;
-    
+
     try {
         // Check if any approved admin already exists
         const approvedAdminCount = await User.countDocuments({ role: 'ADMIN', status: 'APPROVED' });
         const isFirstAdmin = approvedAdminCount === 0;
-        
+
         // Validate inputs
         if (!name || !email || !password) {
-            return res.status(400).json({ 
-                success: false, 
-                error: 'Name, email, and password are required' 
+            return res.status(400).json({
+                success: false,
+                error: 'Name, email, and password are required'
             });
         }
-        
+
         if (!validator.isEmail(email)) {
-            return res.status(400).json({ 
-                success: false, 
-                error: 'Invalid email address' 
+            return res.status(400).json({
+                success: false,
+                error: 'Invalid email address'
             });
         }
-        
+
         if (password.length < 8) {
-            return res.status(400).json({ 
-                success: false, 
-                error: 'Password must be at least 8 characters' 
+            return res.status(400).json({
+                success: false,
+                error: 'Password must be at least 8 characters'
             });
         }
-        
+
         // Check if user already exists
-        const existingUser = await User.findOne({ 
-            $or: [{ email }, { name }] 
+        const existingUser = await User.findOne({
+            $or: [{ email }, { name }]
         });
-        
+
         if (existingUser) {
-            return res.status(400).json({ 
-                success: false, 
-                error: 'User with this email or username already exists' 
+            return res.status(400).json({
+                success: false,
+                error: 'User with this email or username already exists'
             });
         }
-        
+
         // Create new admin user
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
-        
+
         const user = await User.create({
             name: validator.escape(name.trim()),
             email: email.toLowerCase().trim(),
@@ -480,7 +480,7 @@ app.post('/api/admin/register', async (req, res) => {
             role: 'ADMIN',
             status: isFirstAdmin ? 'APPROVED' : 'PENDING' // First admin auto-approved
         });
-        
+
         if (isFirstAdmin) {
             // First admin - auto-login
             res.status(201).json({
@@ -497,12 +497,12 @@ app.post('/api/admin/register', async (req, res) => {
                 requiresApproval: true
             });
         }
-        
+
     } catch (err) {
         console.error('Registration error:', err);
-        res.status(500).json({ 
-            success: false, 
-            error: 'Failed to create admin account' 
+        res.status(500).json({
+            success: false,
+            error: 'Failed to create admin account'
         });
     }
 });
@@ -511,14 +511,14 @@ app.post('/api/admin/register', async (req, res) => {
 app.get('/api/admin/check-first-setup', async (req, res) => {
     try {
         const adminExists = await User.findOne({ role: 'ADMIN', status: 'APPROVED' });
-        res.json({ 
-            success: true, 
-            requiresSetup: !adminExists 
+        res.json({
+            success: true,
+            requiresSetup: !adminExists
         });
     } catch (err) {
-        res.status(500).json({ 
-            success: false, 
-            error: 'Server error' 
+        res.status(500).json({
+            success: false,
+            error: 'Server error'
         });
     }
 });
@@ -529,11 +529,11 @@ app.get('/api/admin/pending-users', protect, async (req, res) => {
         if (req.user.role !== 'ADMIN') {
             return res.status(403).json({ success: false, error: 'Access denied' });
         }
-        
+
         const pendingUsers = await User.find({ status: 'PENDING' })
             .select('-password')
             .sort({ joinedAt: -1 });
-        
+
         res.json({
             success: true,
             users: pendingUsers
@@ -550,21 +550,21 @@ app.post('/api/admin/approve-user/:userId', protect, async (req, res) => {
         if (req.user.role !== 'ADMIN') {
             return res.status(403).json({ success: false, error: 'Access denied' });
         }
-        
+
         const user = await User.findById(req.params.userId);
         if (!user) {
             return res.status(404).json({ success: false, error: 'User not found' });
         }
-        
+
         if (user.status !== 'PENDING') {
             return res.status(400).json({ success: false, error: 'User is not pending approval' });
         }
-        
+
         user.status = 'APPROVED';
         user.approvedBy = req.user._id;
         user.approvedAt = new Date();
         await user.save();
-        
+
         res.json({
             success: true,
             message: 'User approved successfully',
@@ -587,22 +587,22 @@ app.post('/api/admin/reject-user/:userId', protect, async (req, res) => {
         if (req.user.role !== 'ADMIN') {
             return res.status(403).json({ success: false, error: 'Access denied' });
         }
-        
+
         const { reason } = req.body;
         const user = await User.findById(req.params.userId);
-        
+
         if (!user) {
             return res.status(404).json({ success: false, error: 'User not found' });
         }
-        
+
         if (user.status !== 'PENDING') {
             return res.status(400).json({ success: false, error: 'User is not pending approval' });
         }
-        
+
         user.status = 'REJECTED';
         user.rejectionReason = reason || 'No reason provided';
         await user.save();
-        
+
         res.json({
             success: true,
             message: 'User rejected successfully'
@@ -617,11 +617,11 @@ app.post('/api/admin/reject-user/:userId', protect, async (req, res) => {
 app.get('/api/employee/my-stats', protect, async (req, res) => {
     try {
         const userId = req.user._id;
-        
+
         const videos = await Video.countDocuments({ createdBy: userId });
         const events = await Event.countDocuments({ createdBy: userId });
         const advertisements = await Advertisement.countDocuments({ createdBy: userId });
-        
+
         res.json({
             success: true,
             stats: {
@@ -642,14 +642,14 @@ app.get('/api/admin/employees-progress', protect, async (req, res) => {
         if (req.user.role !== 'ADMIN') {
             return res.status(403).json({ success: false, error: 'Access denied' });
         }
-        
+
         const employees = await User.find({ status: 'APPROVED' }).select('-password');
-        
+
         const employeesWithStats = await Promise.all(employees.map(async (employee) => {
             const videos = await Video.countDocuments({ createdBy: employee._id });
             const events = await Event.countDocuments({ createdBy: employee._id });
             const advertisements = await Advertisement.countDocuments({ createdBy: employee._id });
-            
+
             // Get recent activity
             const recentVideos = await Video.find({ createdBy: employee._id })
                 .sort({ createdAt: -1 })
@@ -663,7 +663,7 @@ app.get('/api/admin/employees-progress', protect, async (req, res) => {
                 .sort({ createdAt: -1 })
                 .limit(5)
                 .select('title createdAt');
-            
+
             return {
                 id: employee._id,
                 name: employee.name,
@@ -684,7 +684,7 @@ app.get('/api/admin/employees-progress', protect, async (req, res) => {
                 ].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 10)
             };
         }));
-        
+
         res.json({
             success: true,
             employees: employeesWithStats
@@ -701,13 +701,13 @@ app.get('/api/admin/advertisement-analytics', protect, async (req, res) => {
         if (req.user.role !== 'ADMIN') {
             return res.status(403).json({ success: false, error: 'Access denied' });
         }
-        
+
         const ads = await Advertisement.find().populate('createdBy', 'name email');
-        
+
         const totalImpressions = ads.reduce((sum, ad) => sum + (ad.metrics?.impressions || 0), 0);
         const totalClicks = ads.reduce((sum, ad) => sum + (ad.metrics?.clicks || 0), 0);
         const avgCTR = totalImpressions > 0 ? ((totalClicks / totalImpressions) * 100).toFixed(2) : 0;
-        
+
         const adsByPosition = {};
         ads.forEach(ad => {
             if (!adsByPosition[ad.position]) {
@@ -717,7 +717,7 @@ app.get('/api/admin/advertisement-analytics', protect, async (req, res) => {
             adsByPosition[ad.position].impressions += ad.metrics?.impressions || 0;
             adsByPosition[ad.position].clicks += ad.metrics?.clicks || 0;
         });
-        
+
         res.json({
             success: true,
             analytics: {
@@ -752,29 +752,29 @@ app.get('/api/admin/website-analytics', protect, async (req, res) => {
         if (req.user.role !== 'ADMIN') {
             return res.status(403).json({ success: false, error: 'Access denied' });
         }
-        
+
         const totalVideos = await Video.countDocuments();
         const totalEvents = await Event.countDocuments();
         const totalAds = await Advertisement.countDocuments();
         const totalUsers = await User.countDocuments({ status: 'APPROVED' });
-        
+
         // Content by category
         const videosByCategory = await Video.aggregate([
             { $group: { _id: '$category', count: { $sum: 1 } } }
         ]);
-        
+
         // Recent content
         const recentVideos = await Video.find().sort({ createdAt: -1 }).limit(10).populate('createdBy', 'name');
         const recentEvents = await Event.find().sort({ createdAt: -1 }).limit(10).populate('createdBy', 'name');
-        
+
         // Monthly stats
         const thirtyDaysAgo = new Date();
         thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-        
+
         const videosThisMonth = await Video.countDocuments({ createdAt: { $gte: thirtyDaysAgo } });
         const eventsThisMonth = await Event.countDocuments({ createdAt: { $gte: thirtyDaysAgo } });
         const adsThisMonth = await Advertisement.countDocuments({ createdAt: { $gte: thirtyDaysAgo } });
-        
+
         res.json({
             success: true,
             analytics: {
@@ -1132,9 +1132,20 @@ app.delete('/api/advertisements/:id', protect, async (req, res) => {
 // Videos
 app.get('/api/videos', async (req, res) => {
     try {
-        const videos = await Video.find().sort({ createdAt: -1 });
+        const { source, limit, category } = req.query;
+        let query = {};
+
+        if (source) query.source = source;
+        if (category) query.category = new RegExp(category, 'i');
+
+        let videosQuery = Video.find(query).sort({ createdAt: -1 });
+        if (limit) videosQuery = videosQuery.limit(parseInt(limit));
+
+        const videos = await videosQuery;
         res.json({ success: true, data: videos.map(v => ({ ...v._doc, id: v._id })) });
-    } catch (err) { res.status(500).json({ success: false, error: err.message }); }
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
 });
 
 app.get('/api/videos/:id', async (req, res) => {

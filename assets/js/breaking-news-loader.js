@@ -5,7 +5,7 @@
 
 class BreakingNewsLoader {
     constructor() {
-        this.apiBaseURL = 'https://bizzshort.onrender.com/api';
+        this.apiBaseURL = 'https://bizzshort.onrender.com';
         this.init();
     }
 
@@ -35,7 +35,53 @@ class BreakingNewsLoader {
             }
         } catch (error) {
             console.error('❌ Failed to load breaking news:', error);
+            this.useFallbackVideos();
         }
+    }
+
+    useFallbackVideos() {
+        console.log('📺 Using fallback videos');
+        const fallbackVideos = [
+            {
+                videoId: 'wG7_1jViDRs',
+                title: 'Stock Market Today: Nifty 50 Analysis',
+                description: 'Latest stock market updates and analysis',
+                thumbnail: 'https://img.youtube.com/vi/wG7_1jViDRs/maxresdefault.jpg',
+                category: 'Markets',
+                views: 15234,
+                publishedAt: new Date().toISOString()
+            },
+            {
+                videoId: 'uSkTR0Q-HVQ',
+                title: 'Business News Today | Top Headlines',
+                description: 'Breaking business news',
+                thumbnail: 'https://img.youtube.com/vi/uSkTR0Q-HVQ/maxresdefault.jpg',
+                category: 'Business',
+                views: 12500,
+                publishedAt: new Date().toISOString()
+            },
+            {
+                videoId: 'VDOutGjKtRg',
+                title: 'Startup Funding Roundup',
+                description: 'Recent startup funding news',
+                thumbnail: 'https://img.youtube.com/vi/VDOutGjKtRg/maxresdefault.jpg',
+                category: 'Startups',
+                views: 9800,
+                publishedAt: new Date().toISOString()
+            },
+            {
+                videoId: 'UtIVXBTMw2I',
+                title: 'Economic Outlook India',
+                description: 'India economic forecast',
+                thumbnail: 'https://img.youtube.com/vi/UtIVXBTMw2I/maxresdefault.jpg',
+                category: 'Economy',
+                views: 11200,
+                publishedAt: new Date().toISOString()
+            }
+        ];
+
+        this.updateMainVideo(fallbackVideos[0]);
+        this.updateBreakingNewsCards(fallbackVideos.slice(1, 4));
     }
 
     updateMainVideo(video) {
