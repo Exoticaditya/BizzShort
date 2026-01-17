@@ -1890,6 +1890,57 @@ a {
     border: none;
 }
 
+/* Instagram thumbnail (safer than iframe embeds) */
+.instagram-thumbnail {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.instagram-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.instagram-thumbnail:hover img {
+    transform: scale(1.05);
+}
+
+.instagram-thumbnail .play-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 24px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.instagram-thumbnail:hover .play-overlay {
+    transform: translate(-50%, -50%) scale(1.1);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* Make the anchor card look like article */
+a.interview-video-card.instagram-reel-card {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
 .interview-details {
     padding: 16px;
     display: flex;
