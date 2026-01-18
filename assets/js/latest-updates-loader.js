@@ -88,15 +88,18 @@ function renderVideoCards(videos, container) {
     container.innerHTML = videos.map(video => {
         const videoId = video.youtubeId || video.videoId;
         const videoTitle = (video.title || '').replace(/"/g, '&quot;');
+        // Use hqdefault as fallback (more reliable than maxresdefault)
+        const thumbnailUrl = video.thumbnail || `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
         return `
         <div class="news-video-card-large" 
              data-category="${video.category || 'business'}" 
              data-video-id="${videoId}"
              data-video-title="${videoTitle}">
             <div class="video-player-wrapper">
-                <img src="${video.thumbnail || `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`}" 
+                <img src="${thumbnailUrl}" 
                      alt="${video.title}" 
-                     class="video-thumbnail-img">
+                     class="video-thumbnail-img"
+                     onerror="this.src='https://img.youtube.com/vi/${videoId}/mqdefault.jpg'">
                 <div class="play-button-overlay">
                     <i class="fab fa-youtube"></i>
                 </div>
@@ -230,7 +233,7 @@ function getPlaceholderVideos() {
             excerpt: 'Weekly summary of market performance, sector analysis, and outlook for the coming week.',
             category: 'markets',
             publishedAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
-            thumbnail: 'https://img.youtube.com/vi/fH8Ir7doWGk/maxresdefault.jpg'
+            thumbnail: 'https://img.youtube.com/vi/fH8Ir7doWGk/hqdefault.jpg'
         },
         {
             youtubeId: 'pK70FxjUJCY',
@@ -238,7 +241,7 @@ function getPlaceholderVideos() {
             excerpt: 'Celebrating Make in India achievements, manufacturing sector growth, and export success stories.',
             category: 'business',
             publishedAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
-            thumbnail: 'https://img.youtube.com/vi/pK70FxjUJCY/maxresdefault.jpg'
+            thumbnail: 'https://img.youtube.com/vi/pK70FxjUJCY/hqdefault.jpg'
         },
         {
             youtubeId: 'tR1ZlYUvzUo',
@@ -246,7 +249,7 @@ function getPlaceholderVideos() {
             excerpt: 'Insights into India\'s booming e-commerce sector, online retail growth, and consumer behavior.',
             category: 'technology',
             publishedAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
-            thumbnail: 'https://img.youtube.com/vi/tR1ZlYUvzUo/maxresdefault.jpg'
+            thumbnail: 'https://img.youtube.com/vi/tR1ZlYUvzUo/hqdefault.jpg'
         },
         {
             youtubeId: 'zX280yTaG_E',
@@ -254,7 +257,7 @@ function getPlaceholderVideos() {
             excerpt: 'Latest developments in energy sector including oil prices and renewable energy projects.',
             category: 'business',
             publishedAt: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000).toISOString(),
-            thumbnail: 'https://img.youtube.com/vi/zX280yTaG_E/maxresdefault.jpg'
+            thumbnail: 'https://img.youtube.com/vi/zX280yTaG_E/hqdefault.jpg'
         },
         {
             youtubeId: '47bNBV5Ca7Y',
@@ -262,7 +265,7 @@ function getPlaceholderVideos() {
             excerpt: 'Real estate market trends, property prices, and smart investment strategies.',
             category: 'markets',
             publishedAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
-            thumbnail: 'https://img.youtube.com/vi/47bNBV5Ca7Y/maxresdefault.jpg'
+            thumbnail: 'https://img.youtube.com/vi/47bNBV5Ca7Y/hqdefault.jpg'
         },
         {
             youtubeId: 'dHFaUxh_sBE',
@@ -270,7 +273,7 @@ function getPlaceholderVideos() {
             excerpt: 'Comprehensive analysis of today\'s stock market performance and trading strategies.',
             category: 'markets',
             publishedAt: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000).toISOString(),
-            thumbnail: 'https://img.youtube.com/vi/dHFaUxh_sBE/maxresdefault.jpg'
+            thumbnail: 'https://img.youtube.com/vi/dHFaUxh_sBE/hqdefault.jpg'
         },
         {
             youtubeId: 'TXoQOkT8FiQ',
@@ -278,7 +281,7 @@ function getPlaceholderVideos() {
             excerpt: 'Latest insights on India\'s GDP growth and economic policies.',
             category: 'business',
             publishedAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
-            thumbnail: 'https://img.youtube.com/vi/TXoQOkT8FiQ/maxresdefault.jpg'
+            thumbnail: 'https://img.youtube.com/vi/TXoQOkT8FiQ/hqdefault.jpg'
         },
         {
             youtubeId: 'ZZND7BcDA_c',
@@ -286,7 +289,7 @@ function getPlaceholderVideos() {
             excerpt: 'Breaking news on startup funding and emerging business opportunities.',
             category: 'business',
             publishedAt: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000).toISOString(),
-            thumbnail: 'https://img.youtube.com/vi/ZZND7BcDA_c/maxresdefault.jpg'
+            thumbnail: 'https://img.youtube.com/vi/ZZND7BcDA_c/hqdefault.jpg'
         }
     ];
 }
