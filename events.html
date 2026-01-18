@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Events - BizzShort | Industry Conferences & Summits</title>
+    <meta name="description" content="Discover upcoming business events, industry conferences, and professional summits. Stay connected with India's business community through BizzShort's event coverage.">
+    <meta name="keywords" content="business events India, industry conferences, business summits, corporate events, startup meetups, tech conferences, business networking">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://www.bizzshort.com/events.html">
+    
+    <!-- Preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="assets/css/unified-design-system.css?v=20260118">
+    <link rel="stylesheet" href="assets/css/main-style.css?v=20260118">
+    <link rel="stylesheet" href="assets/css/responsive.css?v=20260118">
+    
+    <style>
+        /* Page Hero */
+        .page-hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 100px 0 60px;
+            text-align: center;
+            color: white;
+        }
+        
+        .page-hero h1 {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+        
+        .page-hero p {
+            font-size: 18px;
+            opacity: 0.95;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* Events Content */
+        .events-content {
+            padding: 60px 0;
+            background: #f8f9fa;
+        }
+        
+        .events-filter {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            padding: 12px 28px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            color: #2c3e50;
+        }
+        
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-color: transparent;
+            color: white;
+        }
+        
+        /* Events Grid */
+        .events-grid-page {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+        }
+        
+        .event-card-large {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+        
+        .event-card-large:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.2);
+        }
+        
+        .event-image {
+            height: 200px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .event-date-badge {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .event-date-badge .day {
+            font-size: 36px;
+            font-weight: 800;
+            color: #667eea;
+            line-height: 1;
+        }
+        
+        .event-date-badge .month {
+            font-size: 14px;
+            font-weight: 600;
+            color: #2c3e50;
+            text-transform: uppercase;
+        }
+        
+        .event-details {
+            padding: 25px;
+        }
+        
+        .event-category {
+            display: inline-block;
+            padding: 5px 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .event-details h3 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+        
+        .event-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .event-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+        
+        .event-meta-item i {
+            color: #667eea;
+            width: 20px;
+        }
+        
+        .event-description {
+            color: #7f8c8d;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .event-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        
+        .event-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        /* Empty State */
+        .no-events {
+            text-align: center;
+            padding: 80px 20px;
+            color: #7f8c8d;
+        }
+        
+        .no-events i {
+            font-size: 64px;
+            color: #e0e0e0;
+            margin-bottom: 20px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .page-hero h1 {
+                font-size: 32px;
+            }
+            
+            .events-grid-page {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-top-section">
+            <div class="container">
+                <div class="logo-ad-wrapper">
+                    <a href="index.html" class="logo">
+                        <img src="assets/images/logo.jpeg" alt="BizzShort Logo" class="logo-img">
+                        <div class="logo-text">
+                            <h1>BizzShort</h1>
+                            <p>IN SECONDS, SAY WHAT MATTERS</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="navbar-section">
+            <div class="container">
+                <nav class="main-nav">
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="index.html#latest-news">Latest News</a></li>
+                        <li><a href="index.html#client-interviews">Client Interviews</a></li>
+                        <li><a href="events.html" class="active">Upcoming Events</a></li>
+                        <li><a href="index.html#market-analysis">Market Analysis</a></li>
+                        <li><a href="advertise.html">Advertise</a></li>
+                        <li><a href="about.html">About</a></li>
+                    </ul>
+                    <div class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+        <div class="container">
+            <h1>Business Events</h1>
+            <p>Discover upcoming industry conferences, summits, and networking opportunities</p>
+        </div>
+    </section>
+
+    <!-- Events Content -->
+    <section class="events-content">
+        <div class="container">
+            <!-- Filter Buttons -->
+            <div class="events-filter">
+                <button class="filter-btn active" data-filter="all">All Events</button>
+                <button class="filter-btn" data-filter="conference">Conferences</button>
+                <button class="filter-btn" data-filter="summit">Summits</button>
+                <button class="filter-btn" data-filter="meetup">Meetups</button>
+                <button class="filter-btn" data-filter="virtual">Virtual</button>
+            </div>
+
+            <!-- Events Grid -->
+            <div class="events-grid-page" id="eventsGrid">
+                <!-- Events will be loaded dynamically -->
+                <div class="loading" style="grid-column: 1/-1; text-align: center; padding: 40px;">
+                    <i class="fas fa-spinner fa-spin" style="font-size: 32px; color: #667eea;"></i>
+                    <p style="margin-top: 15px; color: #7f8c8d;">Loading events...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-top">
+                <div class="footer-grid-enhanced">
+                    <div class="footer-col">
+                        <div class="footer-logo">
+                            <img src="assets/images/logo.jpeg" alt="BizzShort Logo">
+                            <h3>BizzShort</h3>
+                        </div>
+                        <p class="footer-description">Your trusted source for real-time business news, market insights, and financial analysis.</p>
+                        <div class="footer-social">
+                            <a href="https://www.facebook.com/share/1JsieyAznj/?mibextid=wwXIfr" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                            <a href="https://twitter.com/bizzshort" target="_blank"><i class="fab fa-twitter"></i></a>
+                            <a href="https://www.linkedin.com/company/bizzshort" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="https://www.instagram.com/bizz_short" target="_blank"><i class="fab fa-instagram"></i></a>
+                            <a href="https://youtube.com/@bizz_short" target="_blank"><i class="fab fa-youtube"></i></a>
+                        </div>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Quick Links</h4>
+                        <ul class="footer-links">
+                            <li><a href="index.html">Home</a></li>
+                            <li><a href="about.html">About Us</a></li>
+                            <li><a href="contact.html">Contact</a></li>
+                            <li><a href="advertise.html">Advertise</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Legal</h4>
+                        <ul class="footer-links">
+                            <li><a href="about.html#policy">Privacy Policy</a></li>
+                            <li><a href="about.html#policy">Terms of Service</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-bottom-content">
+                    <p class="footer-copyright">&copy; 2025 BizzShort. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/config.js?v=20260118"></script>
+    <script>
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const navMenu = document.querySelector('.main-nav ul');
+            navMenu.classList.toggle('active');
+        }
+
+        // Load events from API
+        async function loadEvents() {
+            const grid = document.getElementById('eventsGrid');
+            
+            try {
+                const response = await fetch(APIConfig.endpoint('/api/events'));
+                const data = await response.json();
+                
+                if (data.success && data.data && data.data.length > 0) {
+                    grid.innerHTML = data.data.map(event => createEventCard(event)).join('');
+                } else {
+                    // Show placeholder events
+                    grid.innerHTML = getPlaceholderEvents();
+                }
+            } catch (error) {
+                console.error('Error loading events:', error);
+                grid.innerHTML = getPlaceholderEvents();
+            }
+        }
+
+        function createEventCard(event) {
+            const date = new Date(event.date);
+            const day = date.getDate();
+            const month = date.toLocaleDateString('en-US', { month: 'short' }).toUpperCase();
+            
+            return `
+                <article class="event-card-large">
+                    <div class="event-image">
+                        <div class="event-date-badge">
+                            <div class="day">${day}</div>
+                            <div class="month">${month}</div>
+                        </div>
+                    </div>
+                    <div class="event-details">
+                        <span class="event-category">${event.category || 'Business Event'}</span>
+                        <h3>${event.name || event.title}</h3>
+                        <div class="event-meta">
+                            <div class="event-meta-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>${event.location || 'Location TBA'}</span>
+                            </div>
+                            <div class="event-meta-item">
+                                <i class="fas fa-clock"></i>
+                                <span>${event.time || 'Time TBA'}</span>
+                            </div>
+                        </div>
+                        <p class="event-description">${event.description || ''}</p>
+                        <button class="event-btn" onclick="registerEvent('${event._id}')">
+                            <i class="fas fa-calendar-check"></i> Register Now
+                        </button>
+                    </div>
+                </article>
+            `;
+        }
+
+        function getPlaceholderEvents() {
+            const events = [
+                { day: 25, month: 'JAN', category: 'Summit', title: 'India Business Summit 2026', location: 'Mumbai Convention Center', time: '9:00 AM - 6:00 PM', description: 'Join industry leaders for India\'s largest business summit featuring keynotes, panels, and networking.' },
+                { day: 1, month: 'FEB', category: 'Conference', title: 'Tech Innovation Conference', location: 'Bengaluru Tech Park', time: '10:00 AM - 5:00 PM', description: 'Explore the latest in AI, blockchain, and emerging technologies with top tech leaders.' },
+                { day: 10, month: 'FEB', category: 'Meetup', title: 'Startup Founders Networking', location: 'Delhi NCR', time: '6:00 PM - 9:00 PM', description: 'Connect with fellow startup founders and investors in an informal networking session.' },
+                { day: 15, month: 'FEB', category: 'Virtual', title: 'Digital Marketing Masterclass', location: 'Online Event', time: '2:00 PM - 5:00 PM', description: 'Learn advanced digital marketing strategies from industry experts.' },
+                { day: 20, month: 'FEB', category: 'Summit', title: 'Financial Markets Summit', location: 'Mumbai', time: '9:00 AM - 4:00 PM', description: 'Insights on market trends, investment strategies, and economic outlook for 2026.' },
+                { day: 28, month: 'FEB', category: 'Conference', title: 'E-commerce Growth Conference', location: 'Hyderabad', time: '10:00 AM - 6:00 PM', description: 'Strategies for scaling e-commerce businesses in the Indian market.' }
+            ];
+            
+            return events.map(event => `
+                <article class="event-card-large">
+                    <div class="event-image">
+                        <div class="event-date-badge">
+                            <div class="day">${event.day}</div>
+                            <div class="month">${event.month}</div>
+                        </div>
+                    </div>
+                    <div class="event-details">
+                        <span class="event-category">${event.category}</span>
+                        <h3>${event.title}</h3>
+                        <div class="event-meta">
+                            <div class="event-meta-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>${event.location}</span>
+                            </div>
+                            <div class="event-meta-item">
+                                <i class="fas fa-clock"></i>
+                                <span>${event.time}</span>
+                            </div>
+                        </div>
+                        <p class="event-description">${event.description}</p>
+                        <button class="event-btn">
+                            <i class="fas fa-calendar-check"></i> Register Now
+                        </button>
+                    </div>
+                </article>
+            `).join('');
+        }
+
+        function registerEvent(eventId) {
+            alert('Registration feature coming soon! Please check back later.');
+        }
+
+        // Filter functionality
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                // Filter logic can be added here
+            });
+        });
+
+        // Load events on page load
+        document.addEventListener('DOMContentLoaded', loadEvents);
+    </script>
+</body>
+</html>
