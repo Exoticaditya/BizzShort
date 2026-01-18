@@ -1875,6 +1875,166 @@ a {
     padding: 60px 0;
 }
 
+/* Interview Videos Grid - Base Styles */
+.interview-videos-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+    margin-top: 30px;
+}
+
+@media (max-width: 1200px) {
+    .interview-videos-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .interview-videos-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Interview Video Card */
+.interview-video-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.interview-video-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Video Embed Wrapper */
+.interview-video-card .video-embed-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 9/16;
+    max-height: 350px;
+    background: linear-gradient(135deg, #833ab4 0%, #fd1d1d 50%, #fcb045 100%);
+    overflow: hidden;
+}
+
+/* Instagram Thumbnail */
+.interview-video-card .instagram-thumbnail {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Instagram Placeholder */
+.interview-video-card .instagram-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+.interview-video-card .instagram-placeholder i {
+    font-size: 48px;
+    margin-bottom: 12px;
+    opacity: 0.9;
+}
+
+.interview-video-card .instagram-placeholder span {
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.9;
+}
+
+/* Play Overlay */
+.interview-video-card .play-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 70px;
+    height: 70px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #E4405F;
+    font-size: 28px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    z-index: 2;
+}
+
+.interview-video-card:hover .play-overlay {
+    transform: translate(-50%, -50%) scale(1.1);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+
+/* Interview Details */
+.interview-details {
+    padding: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.interview-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    background: linear-gradient(135deg, #E4405F 0%, #833AB4 100%);
+    color: white;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+    width: fit-content;
+}
+
+.interview-details h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 12px;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.interview-video-card .video-meta {
+    display: flex;
+    gap: 15px;
+    font-size: 12px;
+    color: #7f8c8d;
+    margin-top: auto;
+}
+
+.interview-video-card .video-meta span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.interview-video-card .video-meta i {
+    color: #E4405F;
+}
+
 /* Interview Videos Grid - Instagram Reels */
 .interview-videos-grid.instagram-reels-grid {
     display: grid;
