@@ -312,6 +312,90 @@ window.playInstagramReel = function(reelId, title) {
     });
 };
 
+// Close video modal function
+window.closeVideoModal = function() {
+    const modal = document.getElementById('videoModal');
+    if (modal) {
+        modal.remove();
+        document.body.style.overflow = '';
+    }
+};
+
+// YouTube video player - Opens in modal
+window.playVideo = function(videoId, source, title) {
+    if (!videoId) return;
+    console.log('▶️ Playing video:', videoId, source);
+
+    // Remove existing modal
+    const existing = document.getElementById('videoModal');
+    if (existing) existing.remove();
+
+    const modal = document.createElement('div');
+    modal.id = 'videoModal';
+    modal.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;z-index:100000;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.95);padding:20px;';
+    
+    if (source === 'instagram') {
+        // Instagram reel
+        modal.innerHTML = `
+            <div style="position:relative;width:100%;max-width:420px;max-height:90vh;">
+                <button onclick="closeVideoModal()" 
+                        style="position:absolute;top:-50px;right:0;background:#e74c3c;color:white;border:none;width:45px;height:45px;
+                               border-radius:50%;cursor:pointer;font-size:24px;z-index:100001;">×</button>
+                <div style="background:#000;border-radius:16px;overflow:hidden;">
+                    <iframe src="https://www.instagram.com/reel/${videoId}/embed/" 
+                        frameborder="0" scrolling="no" allowtransparency="true" allowfullscreen="true"
+                        style="width:100%;height:700px;max-height:80vh;border:none;">
+                    </iframe>
+                </div>
+                <div style="padding:12px;background:#262626;border-radius:0 0 16px 16px;color:white;text-align:center;">
+                    <a href="https://www.instagram.com/reel/${videoId}/" target="_blank" 
+                       style="color:#e1306c;text-decoration:none;font-weight:600;">
+                        <i class="fab fa-instagram"></i> Open in Instagram
+                    </a>
+                </div>
+            </div>
+        `;
+    } else {
+        // YouTube video
+        modal.innerHTML = `
+            <div style="position:relative;width:100%;max-width:900px;">
+                <button onclick="closeVideoModal()" 
+                        style="position:absolute;top:-50px;right:0;background:#e74c3c;color:white;border:none;width:45px;height:45px;
+                               border-radius:50%;cursor:pointer;font-size:24px;z-index:100001;">×</button>
+                <div style="position:relative;padding-bottom:56.25%;height:0;background:#000;border-radius:12px;overflow:hidden;">
+                    <iframe src="https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen
+                        style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;">
+                    </iframe>
+                </div>
+                <div style="padding:16px;background:#1a1a2e;border-radius:0 0 12px 12px;color:white;">
+                    <h3 style="margin:0 0 8px 0;font-size:18px;">${title || 'BizzShort Video'}</h3>
+                    <p style="margin:0;opacity:0.7;font-size:14px;">
+                        <i class="fab fa-youtube" style="color:#ff0000;"></i> @bizz_short
+                    </p>
+                </div>
+            </div>
+        `;
+    }
+    
+    document.body.appendChild(modal);
+    document.body.style.overflow = 'hidden';
+
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) closeVideoModal();
+    });
+    
+    // ESC key to close
+    document.addEventListener('keydown', function escHandler(e) {
+        if (e.key === 'Escape') {
+            closeVideoModal();
+            document.removeEventListener('keydown', escHandler);
+        }
+    });
+};
+
 // Initialize on DOM ready
 document.addEventListener('DOMContentLoaded', function() {
     // Wait a bit to ensure other scripts are loaded
