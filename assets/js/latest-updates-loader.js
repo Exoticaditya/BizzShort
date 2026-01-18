@@ -219,74 +219,74 @@ function formatDate(dateString) {
 
 // ============================================
 // PLACEHOLDER DATA (Fallback)
-// Real video IDs that work with YouTube embed
+// Real video IDs from @bizz_short YouTube channel
 // ============================================
 function getPlaceholderVideos() {
-    // Real working video IDs for YouTube embed
+    // Real working video IDs from BizzShort YouTube channel
     return [
         {
-            youtubeId: 'GGho7BiB5_s',
-            title: 'Business News Today | Latest Market Updates & Analysis',
-            excerpt: 'Stay updated with today\'s breaking business news, market movements, and expert analysis on India\'s economic landscape.',
-            category: 'markets',
-            publishedAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
-            thumbnail: 'https://img.youtube.com/vi/GGho7BiB5_s/maxresdefault.jpg'
-        },
-        {
-            youtubeId: 'Yc-Dh5Xfx0s',
-            title: 'Stock Market Analysis: Nifty & Sensex Today',
-            excerpt: 'Comprehensive analysis of today\'s stock market performance, top gainers, losers, and trading strategies for investors.',
-            category: 'markets',
-            publishedAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
-            thumbnail: 'https://img.youtube.com/vi/Yc-Dh5Xfx0s/maxresdefault.jpg'
-        },
-        {
-            youtubeId: 'PHe0bXAIuk0',
-            title: 'Indian Economy Update: GDP Growth & Future Outlook',
-            excerpt: 'Latest insights on India\'s GDP growth, inflation trends, and economic policies shaping the nation\'s future.',
-            category: 'business',
-            publishedAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
-            thumbnail: 'https://img.youtube.com/vi/PHe0bXAIuk0/maxresdefault.jpg'
-        },
-        {
-            youtubeId: 'SWsb1mCz1FA',
-            title: 'Startup Funding News: Investment Rounds & Valuations',
-            excerpt: 'Breaking news on startup funding rounds, unicorn valuations, and emerging business opportunities.',
-            category: 'business',
-            publishedAt: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000).toISOString(),
-            thumbnail: 'https://img.youtube.com/vi/SWsb1mCz1FA/maxresdefault.jpg'
-        },
-        {
-            youtubeId: 'c5SH2q7EORE',
-            title: 'Banking Sector Update: RBI Policies & Interest Rates',
-            excerpt: 'Complete coverage of banking sector developments, RBI monetary policy decisions, and impact on loans.',
-            category: 'markets',
-            publishedAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
-            thumbnail: 'https://img.youtube.com/vi/c5SH2q7EORE/maxresdefault.jpg'
-        },
-        {
-            youtubeId: 'F9-U_QTq9T8',
-            title: 'Tech Industry News: Innovation & Digital Transformation',
-            excerpt: 'Latest updates from India\'s technology sector including AI, cloud computing, and digital initiatives.',
-            category: 'technology',
-            publishedAt: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000).toISOString(),
-            thumbnail: 'https://img.youtube.com/vi/F9-U_QTq9T8/maxresdefault.jpg'
-        },
-        {
-            youtubeId: 'rWKuNP4rEZE',
+            youtubeId: 'fH8Ir7doWGk',
             title: 'Weekly Market Roundup: Top Gainers & Losers',
             excerpt: 'Weekly summary of market performance, sector analysis, and outlook for the coming week.',
             category: 'markets',
-            publishedAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
-            thumbnail: 'https://img.youtube.com/vi/rWKuNP4rEZE/maxresdefault.jpg'
+            publishedAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+            thumbnail: 'https://img.youtube.com/vi/fH8Ir7doWGk/maxresdefault.jpg'
         },
         {
-            youtubeId: '85M1yxIcHpw',
-            title: 'Economic Outlook: Growth Projections & Analysis',
-            excerpt: 'Expert analysis on India\'s economic growth trajectory and investment opportunities.',
+            youtubeId: 'pK70FxjUJCY',
+            title: 'Manufacturing Sector: Make in India Success Stories',
+            excerpt: 'Celebrating Make in India achievements, manufacturing sector growth, and export success stories.',
+            category: 'business',
+            publishedAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+            thumbnail: 'https://img.youtube.com/vi/pK70FxjUJCY/maxresdefault.jpg'
+        },
+        {
+            youtubeId: 'tR1ZlYUvzUo',
+            title: 'E-commerce Growth: Online Retail & Consumer Trends',
+            excerpt: 'Insights into India\'s booming e-commerce sector, online retail growth, and consumer behavior.',
+            category: 'technology',
+            publishedAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+            thumbnail: 'https://img.youtube.com/vi/tR1ZlYUvzUo/maxresdefault.jpg'
+        },
+        {
+            youtubeId: 'zX280yTaG_E',
+            title: 'Energy Sector Update: Oil Prices & Renewable Energy',
+            excerpt: 'Latest developments in energy sector including oil prices and renewable energy projects.',
+            category: 'business',
+            publishedAt: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000).toISOString(),
+            thumbnail: 'https://img.youtube.com/vi/zX280yTaG_E/maxresdefault.jpg'
+        },
+        {
+            youtubeId: '47bNBV5Ca7Y',
+            title: 'Real Estate Market: Property Trends & Investment Tips',
+            excerpt: 'Real estate market trends, property prices, and smart investment strategies.',
+            category: 'markets',
+            publishedAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+            thumbnail: 'https://img.youtube.com/vi/47bNBV5Ca7Y/maxresdefault.jpg'
+        },
+        {
+            youtubeId: 'dHFaUxh_sBE',
+            title: 'Stock Market Analysis: Nifty & Sensex Today',
+            excerpt: 'Comprehensive analysis of today\'s stock market performance and trading strategies.',
+            category: 'markets',
+            publishedAt: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000).toISOString(),
+            thumbnail: 'https://img.youtube.com/vi/dHFaUxh_sBE/maxresdefault.jpg'
+        },
+        {
+            youtubeId: 'TXoQOkT8FiQ',
+            title: 'Indian Economy Update: GDP Growth & Outlook',
+            excerpt: 'Latest insights on India\'s GDP growth and economic policies.',
+            category: 'business',
+            publishedAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+            thumbnail: 'https://img.youtube.com/vi/TXoQOkT8FiQ/maxresdefault.jpg'
+        },
+        {
+            youtubeId: 'ZZND7BcDA_c',
+            title: 'Startup Funding News: Investment Rounds',
+            excerpt: 'Breaking news on startup funding and emerging business opportunities.',
             category: 'business',
             publishedAt: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000).toISOString(),
-            thumbnail: 'https://img.youtube.com/vi/85M1yxIcHpw/maxresdefault.jpg'
+            thumbnail: 'https://img.youtube.com/vi/ZZND7BcDA_c/maxresdefault.jpg'
         }
     ];
 }
