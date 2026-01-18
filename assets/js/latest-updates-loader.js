@@ -14,6 +14,15 @@ let currentCategory = 'all';
 
 // Initialize Latest Updates section on page load
 document.addEventListener('DOMContentLoaded', async function () {
+    console.log('📺 Latest Updates loader initialized');
+    const gridContainer = document.getElementById('latestUpdatesGrid');
+    if (gridContainer) {
+        console.log('📺 Grid container found');
+        // Ensure grid is visible
+        gridContainer.style.display = 'grid';
+    } else {
+        console.error('❌ latestUpdatesGrid container not found!');
+    }
     await loadLatestUpdates();
     setupCategoryFilters();
 });
@@ -23,21 +32,31 @@ document.addEventListener('DOMContentLoaded', async function () {
 // ============================================
 async function loadLatestUpdates(category = 'all') {
     const gridContainer = document.getElementById('latestUpdatesGrid');
-    if (!gridContainer) return;
+    if (!gridContainer) {
+        console.error('❌ latestUpdatesGrid not found in loadLatestUpdates');
+        return;
+    }
 
     try {
         // Show loading state
-        gridContainer.innerHTML = '<div class="loading-spinner">Loading latest updates...</div>';
+        gridContainer.innerHTML = '<div class="loading-spinner" style="grid-column:1/-1;text-align:center;padding:40px;">Loading latest updates...</div>';
+
+        console.log('📺 Fetching videos from:', `${API_BASE_URL}/api/videos?limit=12&source=youtube`);
 
         // Fetch videos from backend API
         const response = await fetch(`${API_BASE_URL}/api/videos?limit=12&source=youtube`);
 
+        console.log('📺 API Response status:', response.status);
+
         if (!response.ok) {
-            throw new Error('Failed to fetch videos');
+            throw new Error('Failed to fetch videos: ' + response.status);
         }
 
         const result = await response.json();
+        console.log('📺 API Result:', result);
+        
         const videos = result.data || result; // Handle both { data: [...] } and direct array
+        console.log('📺 Videos array:', videos?.length, 'videos');
 
         // If API returns empty array, use fallback data
         if (!videos || videos.length === 0) {
@@ -48,7 +67,7 @@ async function loadLatestUpdates(category = 'all') {
         // Filter by category if not "all"
         const filteredVideos = category === 'all'
             ? videos
-            : videos.filter(video => video.category === category);
+            : videos.filter(video => (video.category || '').toLowerCase() === category.toLowerCase());
 
         // Render video cards (use placeholder if API returns empty)
         if (filteredVideos && filteredVideos.length > 0) {
