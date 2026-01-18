@@ -2,10 +2,19 @@
  * BizzShort Video Loader
  * Populates all video sections from BizzShort YouTube channel and Instagram
  * Connects YouTube, Instagram, and Website seamlessly
+ * 
+ * Features:
+ * - Auto-fetches from /api/synced-videos (daily 8 AM sync)
+ * - Fallback to hardcoded data if API unavailable
+ * - Populates Breaking News, Latest Updates, Client Interviews
+ * - Category-wise video organization
  */
 
 const BizzShortVideoLoader = {
-    // BizzShort Channel Info
+    // API endpoint for synced videos
+    apiEndpoint: '/api/synced-videos',
+    
+    // BizzShort Channel Info (Fallback data)
     youtube: {
         handle: '@bizz_short',
         channelUrl: 'https://www.youtube.com/@bizz_short',
@@ -40,9 +49,48 @@ const BizzShortVideoLoader = {
         ]
     },
 
+    // Cached API data
+    cachedVideos: null,
+    lastFetch: null,
+
+    // Fetch videos from API with caching
+    async fetchVideos(source = null, limit = 20) {
+        // Use cache if fetched within last 5 minutes
+        if (this.cachedVideos && this.lastFetch && (Date.now() - this.lastFetch < 300000)) {
+            console.log('📦 Using cached video data');
+            const videos = source ? this.cachedVideos.filter(v => v.source === source) : this.cachedVideos;
+            return videos.slice(0, limit);
+        }
+        
+        try {
+            let url = this.apiEndpoint + '?limit=' + limit;
+            if (source) url += '&source=' + source;
+            
+            const response = await fetch(url);
+            if (response.ok) {
+                const data = await response.json();
+                if (data.success && data.data && data.data.length > 0) {
+                    console.log(`✅ Fetched ${data.data.length} videos from API (synced at 8 AM daily)`);
+                    this.cachedVideos = data.data;
+                    this.lastFetch = Date.now();
+                    return data.data;
+                }
+            }
+        } catch (error) {
+            console.log('📡 API unavailable, using fallback data');
+        }
+        
+        return null;
+    },
+
     // Initialize the loader
-    init() {
+    async init() {
         console.log('🎬 BizzShort Video Loader initializing...');
+        console.log('📅 Videos sync automatically at 8:00 AM IST daily');
+        
+        // Try to fetch from API first
+        await this.fetchVideos();
+        
         this.loadBreakingNews();
         this.loadLatestUpdates();
         this.loadClientInterviews();
@@ -111,23 +159,37 @@ const BizzShortVideoLoader = {
         const grid = document.getElementById('latestUpdatesGrid');
         if (!grid) return;
 
-        const videos = this.youtube.videos.slice(0, 8);
+        // Use API data if available, otherwise fallback
+        let videos = this.youtube.videos.slice(0, 8);
+        if (this.cachedVideos) {
+            const apiVideos = this.cachedVideos.filter(v => v.source === 'youtube').slice(0, 8);
+            if (apiVideos.length > 0) {
+                videos = apiVideos.map(v => ({
+                    id: v.videoId,
+                    title: v.title,
+                    category: v.category,
+                    views: v.views,
+                    date: v.date || v.relativeTime
+                }));
+            }
+        }
         
         grid.innerHTML = videos.map(video => `
-            <article class="news-card-large video-card" data-category="${video.category.toLowerCase()}" onclick="playVideo('${video.id}', 'youtube', '${video.title.replace(/'/g, "\\'")}')" style="cursor:pointer;">
+            <article class="news-card-large video-card" data-category="${(video.category || 'Latest').toLowerCase()}" onclick="playVideo('${video.id}', 'youtube', '${video.title.replace(/'/g, "\\'")}')" style="cursor:pointer;">
                 <div class="video-thumbnail">
                     <img src="https://img.youtube.com/vi/${video.id}/maxresdefault.jpg" alt="${video.title}" loading="lazy">
                     <div class="play-overlay">
                         <i class="fab fa-youtube"></i>
                     </div>
-                    <span class="video-duration">Short</span>
+                    <span class="video-duration">${video.duration || 'Short'}</span>
                 </div>
                 <div class="card-content">
-                    <span class="card-category">${video.category}</span>
+                    <span class="card-category">${video.category || 'Latest'}</span>
                     <h3>${video.title}</h3>
                     <div class="card-meta">
                         <span><i class="fab fa-youtube"></i> @bizz_short</span>
-                        <span><i class="far fa-clock"></i> Latest</span>
+                        <span><i class="far fa-eye"></i> ${video.views || 'New'}</span>
+                        <span><i class="far fa-clock"></i> ${video.date || 'Latest'}</span>
                     </div>
                 </div>
             </article>
@@ -141,7 +203,20 @@ const BizzShortVideoLoader = {
         const grid = document.querySelector('#client-interviews .interview-videos-grid');
         if (!grid) return;
 
-        grid.innerHTML = this.instagram.reels.map(reel => `
+        // Use API data if available, otherwise fallback
+        let reels = this.instagram.reels;
+        if (this.cachedVideos) {
+            const apiReels = this.cachedVideos.filter(v => v.source === 'instagram').slice(0, 6);
+            if (apiReels.length > 0) {
+                reels = apiReels.map(v => ({
+                    id: v.videoId,
+                    title: v.title,
+                    category: v.category
+                }));
+            }
+        }
+
+        grid.innerHTML = reels.map(reel => `
             <div class="interview-video-card" onclick="playInstagramReel('${reel.id}', '${reel.title.replace(/'/g, "\\'")}')" style="cursor:pointer;">
                 <div class="video-embed-wrapper">
                     <div class="instagram-thumbnail">

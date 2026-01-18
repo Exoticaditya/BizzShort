@@ -1288,7 +1288,74 @@ app.get('/api/market-data', async (req, res) => {
     }
 });
 
+// ============ Daily Video Sync Scheduler ============
+const videoSync = require('./utils/daily-video-sync');
+
+// API: Get synced videos (with filtering)
+app.get('/api/synced-videos', async (req, res) => {
+    try {
+        const { category, source, limit } = req.query;
+        const videos = await videoSync.getVideosForAPI(
+            category || null,
+            source || null,
+            parseInt(limit) || 20
+        );
+        res.json({ success: true, count: videos.length, data: videos });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
+// API: Manually trigger video sync (admin only)
+app.post('/api/sync-videos', protect, async (req, res) => {
+    try {
+        if (req.user.role !== 'admin') {
+            return res.status(403).json({ success: false, error: 'Admin access required' });
+        }
+        
+        console.log(`📹 Manual video sync triggered by ${req.user.email}`);
+        const result = await videoSync.runDailySync();
+        res.json({ success: true, message: 'Video sync completed', data: result });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
+// API: Get sync status
+app.get('/api/sync-status', async (req, res) => {
+    try {
+        const Video = require('./models/Video');
+        const lastVideo = await Video.findOne().sort({ updatedAt: -1 });
+        const totalVideos = await Video.countDocuments();
+        const youtubeCount = await Video.countDocuments({ source: 'youtube' });
+        const instagramCount = await Video.countDocuments({ source: 'instagram' });
+        
+        res.json({
+            success: true,
+            data: {
+                totalVideos,
+                youtube: youtubeCount,
+                instagram: instagramCount,
+                lastSync: lastVideo?.updatedAt || null,
+                nextSync: '8:00 AM IST daily'
+            }
+        });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
 // Start Server
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT} (MongoDB Mode)`);
+    
+    // Start the daily 8 AM video sync scheduler
+    console.log('\n🎬 Starting BizzShort Video Sync Scheduler...');
+    videoSync.scheduleDaily8AM();
+    
+    // Run initial sync on server start (optional - comment out if not needed)
+    if (process.env.SYNC_ON_START === 'true') {
+        console.log('📹 Running initial video sync...');
+        videoSync.runDailySync().catch(err => console.error('Initial sync error:', err));
+    }
 });
