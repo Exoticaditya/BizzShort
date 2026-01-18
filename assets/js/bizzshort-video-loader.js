@@ -18,20 +18,20 @@ const BizzShortVideoLoader = {
     youtube: {
         handle: '@bizz_short',
         channelUrl: 'https://www.youtube.com/@bizz_short',
-        // Real videos from BizzShort YouTube channel
+        // Real videos from BizzShort YouTube channel (synced from API)
         videos: [
-            { id: 'iE9HMudybyc', title: 'Breaking Business News Today', category: 'Breaking News', featured: true },
-            { id: 'SEDvD1IICfE', title: 'Manufacturing Sector: Make in India Success Stories', category: 'Industry' },
-            { id: 'd0sU0TBhBkE', title: 'E-commerce Growth: Online Retail & Consumer Trends', category: 'Technology' },
-            { id: 'EhU862ONFys', title: 'Energy Sector Update: Oil Prices & Renewable Energy', category: 'Industry' },
-            { id: 'fH8Ir7doWGk', title: 'Business News Today | Latest Market Updates', category: 'Markets' },
+            { id: 'fH8Ir7doWGk', title: 'Weekly Market Roundup: Top Gainers & Losers', category: 'Markets', featured: true },
+            { id: 'pK70FxjUJCY', title: 'Manufacturing Sector: Make in India Success Stories', category: 'Industry' },
+            { id: 'tR1ZlYUvzUo', title: 'E-commerce Growth: Online Retail & Consumer Trends', category: 'Technology' },
+            { id: 'zX280yTaG_E', title: 'Energy Sector Update: Oil Prices & Renewable Energy', category: 'Industry' },
+            { id: '47bNBV5Ca7Y', title: 'Real Estate Market: Property Trends & Investment Tips', category: 'Markets' },
             { id: 'dHFaUxh_sBE', title: 'Stock Market Analysis: Nifty & Sensex Today', category: 'Markets' },
             { id: 'TXoQOkT8FiQ', title: 'Indian Economy Update: GDP Growth & Outlook', category: 'Economy' },
             { id: 'ZZND7BcDA_c', title: 'Startup Funding News: Investment Rounds', category: 'Startups' },
             { id: 'DBjSV7cGluE', title: 'Banking Sector Update: RBI Policies', category: 'Banking' },
             { id: 'B8ulzu1X8Y8', title: 'Tech Industry News: Innovation & AI', category: 'Technology' },
             { id: 'Gx5DmLYRWrI', title: 'Corporate News: Mergers & Acquisitions', category: 'Business' },
-            { id: '47bNBV5Ca7Y', title: 'Real Estate Market: Property Trends', category: 'Markets' }
+            { id: 'iE9HMudybyc', title: 'Breaking Business News Today', category: 'Breaking News' }
         ]
     },
 
@@ -557,24 +557,33 @@ window.playVideo = function(videoId, source, title) {
     modal.id = 'videoModal';
     modal.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;z-index:100000;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.95);padding:20px;';
     
-    // YouTube video
+    // YouTube video/shorts - use regular embed with origin parameter
     modal.innerHTML = `
         <div style="position:relative;width:100%;max-width:900px;">
-            <button onclick="closeVideoModal()" 
-                    style="position:absolute;top:-50px;right:0;background:#e74c3c;color:white;border:none;width:45px;height:45px;
-                           border-radius:50%;cursor:pointer;font-size:24px;z-index:100001;">×</button>
+            <div style="position:absolute;top:-55px;right:0;display:flex;gap:10px;align-items:center;">
+                <a href="https://www.youtube.com/watch?v=${videoId}" target="_blank" 
+                   style="background:#ff0000;color:white;padding:10px 20px;border-radius:25px;text-decoration:none;font-weight:600;font-size:14px;display:flex;align-items:center;gap:8px;">
+                    <i class="fab fa-youtube"></i> Watch on YouTube
+                </a>
+                <button onclick="closeVideoModal()" 
+                        style="background:#e74c3c;color:white;border:none;width:45px;height:45px;
+                               border-radius:50%;cursor:pointer;font-size:24px;z-index:100001;">×</button>
+            </div>
             <div style="position:relative;padding-bottom:56.25%;height:0;background:#000;border-radius:12px;overflow:hidden;">
-                <iframe src="https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1" 
+                <iframe 
+                    id="youtubePlayer"
+                    src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1&playsinline=1&enablejsapi=1" 
                     frameborder="0" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
                     allowfullscreen
+                    referrerpolicy="strict-origin-when-cross-origin"
                     style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;">
                 </iframe>
             </div>
-            <div style="padding:16px;background:#1a1a2e;border-radius:0 0 12px 12px;color:white;">
+            <div style="padding:16px;background:linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);border-radius:0 0 12px 12px;color:white;">
                 <h3 style="margin:0 0 8px 0;font-size:18px;">${title || 'BizzShort Video'}</h3>
-                <p style="margin:0;opacity:0.7;font-size:14px;">
-                    <i class="fab fa-youtube" style="color:#ff0000;"></i> @bizz_short
+                <p style="margin:0;opacity:0.7;font-size:14px;display:flex;align-items:center;gap:8px;">
+                    <i class="fab fa-youtube" style="color:#ff0000;"></i> @bizz_short • Business News in 60 Seconds
                 </p>
             </div>
         </div>
