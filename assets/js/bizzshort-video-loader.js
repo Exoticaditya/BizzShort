@@ -261,56 +261,273 @@ const BizzShortVideoLoader = {
     }
 };
 
-// Instagram Reel Player - Opens in modal or redirects
+// Instagram Reel Player - Premium Modal with embedded player
 window.playInstagramReel = function(reelId, title) {
     if (!reelId) return;
     console.log('📸 Playing Instagram reel:', reelId);
 
     // Remove existing modal
-    const existing = document.getElementById('videoModal');
+    const existing = document.getElementById('instagramModal');
     if (existing) existing.remove();
 
     const modal = document.createElement('div');
-    modal.id = 'videoModal';
-    modal.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;z-index:100000;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.95);padding:20px;';
+    modal.id = 'instagramModal';
+    modal.className = 'instagram-video-modal';
     modal.innerHTML = `
-        <div style="position:relative;width:100%;max-width:420px;max-height:90vh;">
-            <div style="position:absolute;top:-50px;right:0;display:flex;gap:10px;">
-                <a href="https://www.instagram.com/reel/${reelId}/" target="_blank" 
-                   style="background:linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
-                          color:white;border:none;padding:12px 24px;border-radius:30px;cursor:pointer;
-                          font-size:14px;font-weight:600;display:flex;align-items:center;gap:8px;text-decoration:none;">
-                    <i class="fab fa-instagram"></i> Open in Instagram
-                </a>
-                <button onclick="closeVideoModal()" 
-                        style="background:#e74c3c;color:white;border:none;width:45px;height:45px;
-                               border-radius:50%;cursor:pointer;font-size:24px;">×</button>
+        <div class="instagram-modal-backdrop" onclick="closeInstagramModal()"></div>
+        <div class="instagram-modal-container">
+            <div class="instagram-modal-header">
+                <div class="instagram-brand">
+                    <i class="fab fa-instagram"></i>
+                    <span>@bizz_short</span>
+                </div>
+                <button class="instagram-close-btn" onclick="closeInstagramModal()">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
-            <div style="background:#000;border-radius:16px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.5);">
-                <iframe src="https://www.instagram.com/reel/${reelId}/embed/" 
+            <div class="instagram-video-wrapper">
+                <iframe 
+                    src="https://www.instagram.com/reel/${reelId}/embed/captioned/" 
                     frameborder="0" 
                     scrolling="no" 
                     allowtransparency="true"
                     allowfullscreen="true"
-                    style="width:100%;height:700px;max-height:80vh;border:none;">
+                    class="instagram-embed-iframe">
                 </iframe>
+                <div class="instagram-loading">
+                    <div class="instagram-spinner"></div>
+                    <p>Loading Reel...</p>
+                </div>
             </div>
-            <div style="padding:16px;background:linear-gradient(45deg, #405de6, #5851db, #833ab4, #c13584, #e1306c);
-                        border-radius:0 0 16px 16px;color:white;">
-                <h3 style="margin:0 0 8px 0;font-size:16px;font-weight:600;">${title || 'Client Interview'}</h3>
-                <p style="margin:0;opacity:0.9;font-size:13px;">
-                    <i class="fab fa-instagram"></i> @bizz_short • Client Interview Series
-                </p>
+            <div class="instagram-modal-footer">
+                <div class="instagram-video-info">
+                    <h3>${title || 'Client Interview'}</h3>
+                    <p><i class="fas fa-user-tie"></i> BizzShort Client Interview Series</p>
+                </div>
+                <div class="instagram-actions">
+                    <a href="https://www.instagram.com/reel/${reelId}/" target="_blank" class="instagram-open-btn">
+                        <i class="fab fa-instagram"></i> Open in Instagram
+                    </a>
+                    <a href="https://www.instagram.com/bizz_short" target="_blank" class="instagram-follow-btn">
+                        <i class="fas fa-user-plus"></i> Follow
+                    </a>
+                </div>
             </div>
         </div>
     `;
+    
+    // Add modal styles if not already added
+    if (!document.getElementById('instagramModalStyles')) {
+        const styles = document.createElement('style');
+        styles.id = 'instagramModalStyles';
+        styles.textContent = `
+            .instagram-video-modal {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 100000;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                animation: igModalFadeIn 0.3s ease;
+            }
+            @keyframes igModalFadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+            .instagram-modal-backdrop {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.9);
+                backdrop-filter: blur(10px);
+            }
+            .instagram-modal-container {
+                position: relative;
+                width: 100%;
+                max-width: 450px;
+                max-height: 90vh;
+                background: linear-gradient(145deg, #1a1a2e 0%, #16213e 100%);
+                border-radius: 20px;
+                overflow: hidden;
+                box-shadow: 0 25px 80px rgba(225, 48, 108, 0.3), 0 10px 40px rgba(0, 0, 0, 0.5);
+                animation: igModalSlideUp 0.4s ease;
+                margin: 20px;
+            }
+            @keyframes igModalSlideUp {
+                from { transform: translateY(50px) scale(0.95); opacity: 0; }
+                to { transform: translateY(0) scale(1); opacity: 1; }
+            }
+            .instagram-modal-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 15px 20px;
+                background: linear-gradient(135deg, #405de6, #5851db, #833ab4, #c13584, #e1306c, #fd1d1d);
+            }
+            .instagram-brand {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                color: white;
+                font-weight: 700;
+                font-size: 16px;
+            }
+            .instagram-brand i {
+                font-size: 24px;
+            }
+            .instagram-close-btn {
+                background: rgba(255, 255, 255, 0.2);
+                border: none;
+                color: white;
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                cursor: pointer;
+                font-size: 18px;
+                transition: all 0.3s ease;
+            }
+            .instagram-close-btn:hover {
+                background: rgba(255, 255, 255, 0.3);
+                transform: rotate(90deg);
+            }
+            .instagram-video-wrapper {
+                position: relative;
+                width: 100%;
+                height: 580px;
+                max-height: 60vh;
+                background: #000;
+            }
+            .instagram-embed-iframe {
+                width: 100%;
+                height: 100%;
+                border: none;
+            }
+            .instagram-loading {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                text-align: center;
+                color: white;
+                z-index: -1;
+            }
+            .instagram-spinner {
+                width: 50px;
+                height: 50px;
+                border: 3px solid rgba(255, 255, 255, 0.1);
+                border-top-color: #e1306c;
+                border-radius: 50%;
+                animation: igSpin 1s linear infinite;
+                margin: 0 auto 15px;
+            }
+            @keyframes igSpin {
+                to { transform: rotate(360deg); }
+            }
+            .instagram-modal-footer {
+                padding: 20px;
+                background: #1a1a2e;
+            }
+            .instagram-video-info h3 {
+                color: white;
+                font-size: 16px;
+                margin: 0 0 5px 0;
+                font-weight: 600;
+            }
+            .instagram-video-info p {
+                color: rgba(255, 255, 255, 0.6);
+                font-size: 13px;
+                margin: 0 0 15px 0;
+            }
+            .instagram-actions {
+                display: flex;
+                gap: 10px;
+            }
+            .instagram-open-btn {
+                flex: 1;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                padding: 12px 20px;
+                background: linear-gradient(135deg, #405de6, #5851db, #833ab4, #c13584, #e1306c);
+                color: white;
+                text-decoration: none;
+                border-radius: 10px;
+                font-weight: 600;
+                font-size: 14px;
+                transition: all 0.3s ease;
+            }
+            .instagram-open-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 5px 20px rgba(225, 48, 108, 0.4);
+            }
+            .instagram-follow-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                padding: 12px 20px;
+                background: rgba(255, 255, 255, 0.1);
+                color: white;
+                text-decoration: none;
+                border-radius: 10px;
+                font-weight: 600;
+                font-size: 14px;
+                transition: all 0.3s ease;
+            }
+            .instagram-follow-btn:hover {
+                background: rgba(255, 255, 255, 0.2);
+            }
+            @media (max-width: 480px) {
+                .instagram-modal-container {
+                    max-width: 100%;
+                    margin: 10px;
+                    border-radius: 15px;
+                }
+                .instagram-video-wrapper {
+                    height: 500px;
+                    max-height: 55vh;
+                }
+                .instagram-actions {
+                    flex-direction: column;
+                }
+            }
+        `;
+        document.head.appendChild(styles);
+    }
+    
     document.body.appendChild(modal);
     document.body.style.overflow = 'hidden';
 
-    modal.addEventListener('click', function(e) {
-        if (e.target === modal) closeVideoModal();
-    });
+    // ESC key to close
+    const escHandler = function(e) {
+        if (e.key === 'Escape') {
+            closeInstagramModal();
+            document.removeEventListener('keydown', escHandler);
+        }
+    };
+    document.addEventListener('keydown', escHandler);
 };
+
+// Close Instagram modal
+window.closeInstagramModal = function() {
+    const modal = document.getElementById('instagramModal');
+    if (modal) {
+        modal.style.animation = 'igModalFadeIn 0.2s ease reverse';
+        setTimeout(() => {
+            modal.remove();
+            document.body.style.overflow = '';
+        }, 200);
+    }
+};
+
+// Keep the old function as alias
+window.openInstagramReel = window.playInstagramReel;
 
 // Close video modal function
 window.closeVideoModal = function() {
@@ -326,6 +543,12 @@ window.playVideo = function(videoId, source, title) {
     if (!videoId) return;
     console.log('▶️ Playing video:', videoId, source);
 
+    // If Instagram, use the premium Instagram modal
+    if (source === 'instagram') {
+        playInstagramReel(videoId, title);
+        return;
+    }
+
     // Remove existing modal
     const existing = document.getElementById('videoModal');
     if (existing) existing.remove();
@@ -334,51 +557,28 @@ window.playVideo = function(videoId, source, title) {
     modal.id = 'videoModal';
     modal.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;z-index:100000;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.95);padding:20px;';
     
-    if (source === 'instagram') {
-        // Instagram reel
-        modal.innerHTML = `
-            <div style="position:relative;width:100%;max-width:420px;max-height:90vh;">
-                <button onclick="closeVideoModal()" 
-                        style="position:absolute;top:-50px;right:0;background:#e74c3c;color:white;border:none;width:45px;height:45px;
-                               border-radius:50%;cursor:pointer;font-size:24px;z-index:100001;">×</button>
-                <div style="background:#000;border-radius:16px;overflow:hidden;">
-                    <iframe src="https://www.instagram.com/reel/${videoId}/embed/" 
-                        frameborder="0" scrolling="no" allowtransparency="true" allowfullscreen="true"
-                        style="width:100%;height:700px;max-height:80vh;border:none;">
-                    </iframe>
-                </div>
-                <div style="padding:12px;background:#262626;border-radius:0 0 16px 16px;color:white;text-align:center;">
-                    <a href="https://www.instagram.com/reel/${videoId}/" target="_blank" 
-                       style="color:#e1306c;text-decoration:none;font-weight:600;">
-                        <i class="fab fa-instagram"></i> Open in Instagram
-                    </a>
-                </div>
+    // YouTube video
+    modal.innerHTML = `
+        <div style="position:relative;width:100%;max-width:900px;">
+            <button onclick="closeVideoModal()" 
+                    style="position:absolute;top:-50px;right:0;background:#e74c3c;color:white;border:none;width:45px;height:45px;
+                           border-radius:50%;cursor:pointer;font-size:24px;z-index:100001;">×</button>
+            <div style="position:relative;padding-bottom:56.25%;height:0;background:#000;border-radius:12px;overflow:hidden;">
+                <iframe src="https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen
+                    style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;">
+                </iframe>
             </div>
-        `;
-    } else {
-        // YouTube video
-        modal.innerHTML = `
-            <div style="position:relative;width:100%;max-width:900px;">
-                <button onclick="closeVideoModal()" 
-                        style="position:absolute;top:-50px;right:0;background:#e74c3c;color:white;border:none;width:45px;height:45px;
-                               border-radius:50%;cursor:pointer;font-size:24px;z-index:100001;">×</button>
-                <div style="position:relative;padding-bottom:56.25%;height:0;background:#000;border-radius:12px;overflow:hidden;">
-                    <iframe src="https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1" 
-                        frameborder="0" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                        allowfullscreen
-                        style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;">
-                    </iframe>
-                </div>
-                <div style="padding:16px;background:#1a1a2e;border-radius:0 0 12px 12px;color:white;">
-                    <h3 style="margin:0 0 8px 0;font-size:18px;">${title || 'BizzShort Video'}</h3>
-                    <p style="margin:0;opacity:0.7;font-size:14px;">
-                        <i class="fab fa-youtube" style="color:#ff0000;"></i> @bizz_short
-                    </p>
-                </div>
+            <div style="padding:16px;background:#1a1a2e;border-radius:0 0 12px 12px;color:white;">
+                <h3 style="margin:0 0 8px 0;font-size:18px;">${title || 'BizzShort Video'}</h3>
+                <p style="margin:0;opacity:0.7;font-size:14px;">
+                    <i class="fab fa-youtube" style="color:#ff0000;"></i> @bizz_short
+                </p>
             </div>
-        `;
-    }
+        </div>
+    `;
     
     document.body.appendChild(modal);
     document.body.style.overflow = 'hidden';
