@@ -94,18 +94,11 @@ if (allowedOrigins.length === 0) {
 }
 
 const corsOptions = {
-    origin: function (origin, callback) {
-        // Allow requests with no origin (like mobile apps or curl requests)
-        if (!origin) return callback(null, true);
-
-        if (allowedOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV === 'development') {
-            callback(null, true);
-        } else {
-            callback(new Error('Not allowed by CORS'));
-        }
-    },
-    credentials: true,
-    optionsSuccessStatus: 200
+    origin: '*', // Allow all origins (can be restricted later)
+    credentials: false,
+    optionsSuccessStatus: 200,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'session-id']
 };
 
 // Middleware
@@ -1546,8 +1539,8 @@ app.get('/api/market-stream', async (req, res) => {
     // Send initial data immediately
     await sendMarketUpdate();
 
-    // Then send updates every 10 seconds
-    const intervalId = setInterval(sendMarketUpdate, 10000);
+    // Then send updates every 30 seconds (to avoid rate limiting)
+    const intervalId = setInterval(sendMarketUpdate, 30000);
 
     // Clean up on client disconnect
     req.on('close', () => {

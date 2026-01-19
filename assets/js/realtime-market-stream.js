@@ -44,7 +44,7 @@ class RealTimeMarketStream {
 
             // Handle connection open
             this.eventSource.onopen = () => {
-                console.log('✅ SSE connection established - receiving real-time updates every 10 seconds');
+                console.log('✅ SSE connection established - receiving real-time updates every 30 seconds');
                 this.reconnectAttempts = 0;
             };
 
