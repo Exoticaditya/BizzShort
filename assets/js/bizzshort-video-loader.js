@@ -93,6 +93,7 @@ const BizzShortVideoLoader = {
 
         this.loadBreakingNews();
         this.loadLatestUpdates();
+        this.loadClientFeatures();
         this.loadClientInterviews();
         console.log('✅ BizzShort Video Loader ready');
     },
@@ -211,15 +212,67 @@ const BizzShortVideoLoader = {
         console.log('📊 Latest Updates section loaded with', videos.length, 'videos');
     },
 
-    // Load Client Interviews section (Instagram Reels)
+    // Load Client Features section (YouTube videos 1,2,3,4,5,7,8)
+    loadClientFeatures() {
+        const grid = document.getElementById('clientFeatureGrid');
+        if (!grid) return;
+
+        // Use API data if available, otherwise fallback
+        let videos = this.youtube.videos;
+        if (this.cachedVideos) {
+            const apiVideos = this.cachedVideos.filter(v => v.source === 'youtube');
+            if (apiVideos.length > 0) {
+                videos = apiVideos.map(v => ({
+                    id: v.videoId,
+                    title: v.title,
+                    category: v.category,
+                    views: v.views,
+                    date: v.date || v.relativeTime
+                }));
+            }
+        }
+
+        // Indices 1,2,3,4,5,7,8 (0-indexed: 0,1,2,3,4,6,7) - Request was 1,2,3,4,5,7,8 (skipping 6)
+        // User said: "remove second video from the client feature section and add video number 1,2,3,4,5,7,8 of latest update"
+        // Latest updates uses 1-8. Skipping 6 means using 1,2,3,4,5,7,8.
+        const indices = [0, 1, 2, 3, 4, 6, 7];
+        const selectedVideos = indices.map(i => videos[i]).filter(v => v);
+
+        grid.innerHTML = selectedVideos.map(video => `
+            <article class="news-card-large video-card" data-category="${(video.category || 'Client Feature').toLowerCase()}" onclick="playVideo('${video.id}', 'youtube', '${video.title.replace(/'/g, "\\'")}')" style="cursor:pointer;">
+                <div class="video-thumbnail">
+                    <img src="https://img.youtube.com/vi/${video.id}/hqdefault.jpg" 
+                         alt="${video.title}" 
+                         loading="lazy"
+                         onerror="this.onerror=null; this.src='https://img.youtube.com/vi/${video.id}/mqdefault.jpg';">
+                    <div class="play-overlay">
+                        <i class="fab fa-youtube"></i>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <span class="card-category">CLIENT FEATURE</span>
+                    <h3>${video.title}</h3>
+                    <div class="card-meta">
+                        <span><i class="fab fa-youtube"></i> @bizz_short</span>
+                        <span><i class="far fa-eye"></i> ${video.views || 'New'}</span>
+                        <span><i class="far fa-clock"></i> ${video.date || 'Latest'}</span>
+                    </div>
+                </div>
+            </article>
+        `).join('');
+
+        console.log('🌟 Client Feature section loaded with', selectedVideos.length, 'videos');
+    },
+
+    // Load Interview & Podcasts section (Instagram Reels 3,4,5,6 + 2 new)
     loadClientInterviews() {
-        const grid = document.querySelector('#client-feature .interview-videos-grid');
+        const grid = document.getElementById('podcastGrid');
         if (!grid) return;
 
         // Use API data if available, otherwise fallback
         let reels = this.instagram.reels;
         if (this.cachedVideos) {
-            const apiReels = this.cachedVideos.filter(v => v.source === 'instagram').slice(0, 6);
+            const apiReels = this.cachedVideos.filter(v => v.source === 'instagram');
             if (apiReels.length > 0) {
                 reels = apiReels.map(v => ({
                     id: v.videoId,
@@ -229,31 +282,67 @@ const BizzShortVideoLoader = {
             }
         }
 
-        grid.innerHTML = reels.map(reel => `
-            <div class="interview-video-card" onclick="playInstagramReel('${reel.id}', '${reel.title.replace(/'/g, "\\'")}')" style="cursor:pointer;">
-                <div class="video-embed-wrapper">
-                    <div class="instagram-thumbnail">
-                        <div class="instagram-placeholder">
-                            <i class="fab fa-instagram"></i>
-                            <span>Watch Reel</span>
-                        </div>
-                        <div class="play-overlay">
-                            <i class="fab fa-instagram"></i>
-                        </div>
-                    </div>
-                </div>
-                <div class="interview-details">
-                    <span class="interview-tag"><i class="fas fa-user-tie"></i> CLIENT INTERVIEW</span>
-                    <h3>${reel.title}</h3>
-                    <div class="video-meta">
-                        <span><i class="fab fa-instagram"></i> @bizz_short</span>
-                        <span><i class="far fa-clock"></i> Latest</span>
-                    </div>
-                </div>
-            </div>
-        `).join('');
+        // Indices 3,4,5,6 (0-indexed: 2,3,4,5) + 2 more (if available or placeholders)
+        const selectedReels = reels.slice(2, 6);
+        // Add 2 more if available, otherwise reuse or placeholders
+        const extraReels = reels.slice(6, 8);
+        const finalReels = [...selectedReels, ...extraReels];
 
-        console.log('🎤 Client Interviews section loaded with', this.instagram.reels.length, 'reels');
+        // Ensure we have at least 6 items for the grid
+        while (finalReels.length < 6) {
+            finalReels.push({ id: '', title: 'Coming Soon', placeholder: true });
+        }
+
+        grid.innerHTML = finalReels.map(reel => {
+            if (reel.placeholder) {
+                return `
+                    <div class="interview-video-card placeholder-card">
+                        <div class="video-embed-wrapper">
+                            <div class="instagram-thumbnail">
+                                <div class="instagram-placeholder">
+                                    <i class="fas fa-microphone-alt"></i>
+                                    <span>Podcast Coming Soon</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="interview-details">
+                            <span class="interview-tag"><i class="fas fa-podcast"></i> UPCOMING</span>
+                            <h3>BizzShort Podcast Series</h3>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Using Instagram media URL for thumbnail
+            const thumbUrl = `https://www.instagram.com/p/${reel.id}/media/?size=l`;
+
+            return `
+                <div class="interview-video-card" onclick="playInstagramReel('${reel.id}', '${reel.title.replace(/'/g, "\\'")}')" style="cursor:pointer;">
+                    <div class="video-embed-wrapper">
+                        <div class="instagram-thumbnail">
+                            <img src="${thumbUrl}" alt="${reel.title}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="instagram-placeholder" style="display:none;">
+                                <i class="fab fa-instagram"></i>
+                                <span>Watch Reel</span>
+                            </div>
+                            <div class="play-overlay">
+                                <i class="fab fa-instagram"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="interview-details">
+                        <span class="interview-tag"><i class="fas fa-user-tie"></i> INTERVIEW</span>
+                        <h3>${reel.title}</h3>
+                        <div class="video-meta">
+                            <span><i class="fab fa-instagram"></i> @bizz_short</span>
+                            <span><i class="far fa-clock"></i> Latest</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        console.log('🎤 Interview & Podcasts section loaded with', finalReels.length, 'reels');
     },
 
     // Fetch videos from API (for dynamic updates)
