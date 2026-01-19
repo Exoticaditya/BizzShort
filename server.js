@@ -108,6 +108,9 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use(express.static(path.join(__dirname))); // Serve Admin Panel
 
+// Trust proxy (required for Render deployment)
+app.set('trust proxy', true);
+
 // Configure Multer for File Uploads
 const storage = multer.diskStorage({
     destination: (req, file, cb) => cb(null, 'uploads/'),
@@ -1404,6 +1407,11 @@ app.get('/api/chart-data/:symbol', async (req, res) => {
 });
 
 // ============ Real-Time Market Data Stream (SSE) ============
+// Cache to reduce Yahoo Finance API calls
+let marketDataCache = null;
+let cacheTimestamp = 0;
+const CACHE_DURATION = 60000; // 60 seconds
+
 app.get('/api/market-stream', async (req, res) => {
     // Set headers for SSE
     res.setHeader('Content-Type', 'text/event-stream');
@@ -1416,6 +1424,15 @@ app.get('/api/market-stream', async (req, res) => {
     // Function to fetch and send market data
     const sendMarketUpdate = async () => {
         try {
+            // Check cache first
+            const now = Date.now();
+            if (marketDataCache && (now - cacheTimestamp) < CACHE_DURATION) {
+                // Use cached data
+                res.write(`data: ${JSON.stringify(marketDataCache)}\n\n`);
+                console.log('📊 Market data streamed from cache');
+                return;
+            }
+
             const https = require('https');
 
             // Fetch from Yahoo Finance
@@ -1488,16 +1505,23 @@ app.get('/api/market-stream', async (req, res) => {
                 }
             };
 
-            // Send as SSE event
-            res.write(`data: ${JSON.stringify({
+            // Prepare response
+            const responseData = {
                 success: true,
                 data: marketData,
                 source: 'yahoo_finance_stream',
                 timestamp: new Date().toISOString(),
                 marketStatus: isMarketOpen() ? 'open' : 'closed'
-            })}\n\n`);
+            };
 
-            console.log('📊 Market data streamed to client');
+            // Update cache
+            marketDataCache = responseData;
+            cacheTimestamp = Date.now();
+
+            // Send as SSE event
+            res.write(`data: ${JSON.stringify(responseData)}\n\n`);
+
+            console.log('📊 Market data streamed to client (fresh from Yahoo Finance)');
         } catch (error) {
             console.error('❌ Error streaming market data:', error.message);
 
