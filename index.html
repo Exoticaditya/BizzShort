@@ -207,14 +207,17 @@
                             <div class="breaking-video-player" onclick="playMainVideo()" style="cursor:pointer;">
                                 <!-- Large YouTube Video Player - Click to play in modal -->
                                 <div class="main-video-wrapper" style="position:relative;">
-                                    <img id="mainVideoThumbnail" src="https://img.youtube.com/vi/iE9HMudybyc/maxresdefault.jpg" 
-                                        alt="Breaking News Video" 
-                                        style="width:100%;height:450px;object-fit:cover;border-radius:12px;">
-                                    <div class="video-play-btn" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:80px;height:80px;background:rgba(230,33,23,0.9);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.3s ease;box-shadow:0 4px 20px rgba(0,0,0,0.4);">
+                                    <img id="mainVideoThumbnail"
+                                        src="https://img.youtube.com/vi/iE9HMudybyc/hqdefault.jpg"
+                                        alt="Breaking News Video"
+                                        style="width:100%;height:450px;object-fit:cover;border-radius:12px;"
+                                        onerror="this.onerror=null; this.src='https://img.youtube.com/vi/iE9HMudybyc/mqdefault.jpg';">
+                                    <div class="video-play-btn"
+                                        style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:80px;height:80px;background:rgba(230,33,23,0.9);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.3s ease;box-shadow:0 4px 20px rgba(0,0,0,0.4);">
                                         <i class="fas fa-play" style="color:white;font-size:32px;margin-left:5px;"></i>
                                     </div>
                                     <!-- Hidden iframe for video ID reference -->
-                                    <iframe style="display:none;" 
+                                    <iframe style="display:none;"
                                         src="https://www.youtube-nocookie.com/embed/iE9HMudybyc?rel=0&modestbranding=1"
                                         title="BizzShort Breaking News">
                                     </iframe>
@@ -233,10 +236,13 @@
 
                             <!-- Three Video Cards Below Main Breaking News -->
                             <div class="breaking-news-grid">
-                                <article class="breaking-news-card" data-video-id="SEDvD1IICfE" onclick="playVideo('SEDvD1IICfE', 'youtube', this.querySelector('h4').textContent)" style="cursor: pointer;">
+                                <article class="breaking-news-card" data-video-id="SEDvD1IICfE"
+                                    onclick="playVideo('SEDvD1IICfE', 'youtube', this.querySelector('h4').textContent)"
+                                    style="cursor: pointer;">
                                     <div class="video-thumbnail">
-                                        <img src="https://img.youtube.com/vi/SEDvD1IICfE/maxresdefault.jpg"
-                                            alt="Manufacturing Sector">
+                                        <img src="https://img.youtube.com/vi/SEDvD1IICfE/hqdefault.jpg"
+                                            alt="Manufacturing Sector"
+                                            onerror="this.onerror=null; this.src='https://img.youtube.com/vi/SEDvD1IICfE/mqdefault.jpg';">
                                         <div class="play-overlay">
                                             <i class="fas fa-play"></i>
                                         </div>
@@ -252,10 +258,13 @@
                                     </div>
                                 </article>
 
-                                <article class="breaking-news-card" data-video-id="d0sU0TBhBkE" onclick="playVideo('d0sU0TBhBkE', 'youtube', this.querySelector('h4').textContent)" style="cursor: pointer;">
+                                <article class="breaking-news-card" data-video-id="d0sU0TBhBkE"
+                                    onclick="playVideo('d0sU0TBhBkE', 'youtube', this.querySelector('h4').textContent)"
+                                    style="cursor: pointer;">
                                     <div class="video-thumbnail">
-                                        <img src="https://img.youtube.com/vi/d0sU0TBhBkE/maxresdefault.jpg"
-                                            alt="E-commerce Growth">
+                                        <img src="https://img.youtube.com/vi/d0sU0TBhBkE/hqdefault.jpg"
+                                            alt="E-commerce Growth"
+                                            onerror="this.onerror=null; this.src='https://img.youtube.com/vi/d0sU0TBhBkE/mqdefault.jpg';">
                                         <div class="play-overlay">
                                             <i class="fas fa-play"></i>
                                         </div>
@@ -271,10 +280,13 @@
                                     </div>
                                 </article>
 
-                                <article class="breaking-news-card" data-video-id="EhU862ONFys" onclick="playVideo('EhU862ONFys', 'youtube', this.querySelector('h4').textContent)" style="cursor: pointer;">
+                                <article class="breaking-news-card" data-video-id="EhU862ONFys"
+                                    onclick="playVideo('EhU862ONFys', 'youtube', this.querySelector('h4').textContent)"
+                                    style="cursor: pointer;">
                                     <div class="video-thumbnail">
-                                        <img src="https://img.youtube.com/vi/EhU862ONFys/maxresdefault.jpg"
-                                            alt="Energy Sector">
+                                        <img src="https://img.youtube.com/vi/EhU862ONFys/hqdefault.jpg"
+                                            alt="Energy Sector"
+                                            onerror="this.onerror=null; this.src='https://img.youtube.com/vi/EhU862ONFys/mqdefault.jpg';">
                                         <div class="play-overlay">
                                             <i class="fas fa-play"></i>
                                         </div>
@@ -372,12 +384,15 @@
                     <div class="container">
                         <div class="section-header">
                             <h2 class="section-title">Client Feature & Interview</h2>
-                            <a href="https://www.instagram.com/bizz_short" target="_blank" class="view-all">View All →</a>
+                            <a href="https://www.instagram.com/bizz_short" target="_blank" class="view-all">View All
+                                →</a>
                         </div>
                         <div class="interview-videos-grid">
                             <!-- Dynamically loaded by bizzshort-video-loader.js -->
                             <!-- Fallback content shown before JS loads -->
-                            <div class="interview-video-card" onclick="playInstagramReel('DSRtUxpisHf', 'Client Success Story - Business Growth')" style="cursor:pointer;">
+                            <div class="interview-video-card"
+                                onclick="playInstagramReel('DSRtUxpisHf', 'Client Success Story - Business Growth')"
+                                style="cursor:pointer;">
                                 <div class="video-embed-wrapper">
                                     <div class="instagram-thumbnail">
                                         <div class="instagram-placeholder">
@@ -398,7 +413,9 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="interview-video-card" onclick="playInstagramReel('DSRmTi7FA-g', 'Client Testimonial - Partnership Success')" style="cursor:pointer;">
+                            <div class="interview-video-card"
+                                onclick="playInstagramReel('DSRmTi7FA-g', 'Client Testimonial - Partnership Success')"
+                                style="cursor:pointer;">
                                 <div class="video-embed-wrapper">
                                     <div class="instagram-thumbnail">
                                         <div class="instagram-placeholder">
@@ -419,7 +436,9 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="interview-video-card" onclick="playInstagramReel('DSRfWfMjQy_', 'Industry Expert - Market Insights')" style="cursor:pointer;">
+                            <div class="interview-video-card"
+                                onclick="playInstagramReel('DSRfWfMjQy_', 'Industry Expert - Market Insights')"
+                                style="cursor:pointer;">
                                 <div class="video-embed-wrapper">
                                     <div class="instagram-thumbnail">
                                         <div class="instagram-placeholder">
@@ -440,7 +459,9 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="interview-video-card" onclick="playInstagramReel('DSRYU-bD_wU', 'CEO Spotlight - Leadership Vision')" style="cursor:pointer;">
+                            <div class="interview-video-card"
+                                onclick="playInstagramReel('DSRYU-bD_wU', 'CEO Spotlight - Leadership Vision')"
+                                style="cursor:pointer;">
                                 <div class="video-embed-wrapper">
                                     <div class="instagram-thumbnail">
                                         <div class="instagram-placeholder">
@@ -461,7 +482,9 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="interview-video-card" onclick="playInstagramReel('DTNW7RUgLeD', 'Startup Founder - Innovation Journey')" style="cursor:pointer;">
+                            <div class="interview-video-card"
+                                onclick="playInstagramReel('DTNW7RUgLeD', 'Startup Founder - Innovation Journey')"
+                                style="cursor:pointer;">
                                 <div class="video-embed-wrapper">
                                     <div class="instagram-thumbnail">
                                         <div class="instagram-placeholder">
@@ -482,7 +505,9 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="interview-video-card" onclick="playInstagramReel('DTHxue9lEFt', 'Business Leader - Strategic Growth')" style="cursor:pointer;">
+                            <div class="interview-video-card"
+                                onclick="playInstagramReel('DTHxue9lEFt', 'Business Leader - Strategic Growth')"
+                                style="cursor:pointer;">
                                 <div class="video-embed-wrapper">
                                     <div class="instagram-thumbnail">
                                         <div class="instagram-placeholder">
@@ -506,7 +531,7 @@
                         </div>
                     </div>
                 </section>
-                
+
                 <!-- Upcoming Events Section -->
                 <section id="upcoming-events" class="content-section events-section">
                     <div class="container">
@@ -522,7 +547,8 @@
                                 </div>
                                 <div class="event-content">
                                     <h3>India Business Summit 2026</h3>
-                                    <p class="event-location"><i class="fas fa-map-marker-alt"></i> Mumbai Convention Center</p>
+                                    <p class="event-location"><i class="fas fa-map-marker-alt"></i> Mumbai Convention
+                                        Center</p>
                                     <p class="event-time"><i class="fas fa-clock"></i> 9:00 AM - 6:00 PM</p>
                                     <button class="event-btn">Register Now</button>
                                 </div>
@@ -546,7 +572,8 @@
                                 </div>
                                 <div class="event-content">
                                     <h3>Startup Founders Meetup</h3>
-                                    <p class="event-location"><i class="fas fa-map-marker-alt"></i> Bengaluru Tech Park</p>
+                                    <p class="event-location"><i class="fas fa-map-marker-alt"></i> Bengaluru Tech Park
+                                    </p>
                                     <p class="event-time"><i class="fas fa-clock"></i> 6:00 PM - 9:00 PM</p>
                                     <button class="event-btn">RSVP</button>
                                 </div>
@@ -560,13 +587,17 @@
                     <div class="container">
                         <div class="section-header-center">
                             <h2 class="section-title">About BizzShort</h2>
-                            <p class="section-subtitle">Empowering Professionals with Bite-Sized Business Intelligence</p>
+                            <p class="section-subtitle">Empowering Professionals with Bite-Sized Business Intelligence
+                            </p>
                         </div>
                         <div class="about-grid">
                             <div class="about-content-box">
                                 <h3>Our Mission</h3>
-                                <p>BizzShort was founded with a vision to democratize business knowledge through engaging short-form video content. We believe that staying informed shouldn't require hours of your valuable time.</p>
-                                <p>From breaking news to in-depth interviews with industry leaders, we bring you the most relevant business intelligence - all in under a minute.</p>
+                                <p>BizzShort was founded with a vision to democratize business knowledge through
+                                    engaging short-form video content. We believe that staying informed shouldn't
+                                    require hours of your valuable time.</p>
+                                <p>From breaking news to in-depth interviews with industry leaders, we bring you the
+                                    most relevant business intelligence - all in under a minute.</p>
                             </div>
                             <div class="about-stats-grid">
                                 <div class="about-stat-card">
@@ -612,7 +643,8 @@
                     <div class="container">
                         <div class="section-header-center">
                             <h2 class="section-title">Advertise With BizzShort</h2>
-                            <p class="section-subtitle">Reach India's business community with targeted advertising solutions</p>
+                            <p class="section-subtitle">Reach India's business community with targeted advertising
+                                solutions</p>
                         </div>
                         <div class="advertise-stats-row">
                             <div class="ad-stat-item">
@@ -957,13 +989,13 @@
         };
 
         // Picture-in-Picture Mode
-        window.enterPIP = window.enterPIP || function() {
+        window.enterPIP = window.enterPIP || function () {
             if (!window.currentVideoId) return;
-            
+
             // Create PIP video player
             let pipPlayer = document.getElementById('pipPlayer');
             if (pipPlayer) pipPlayer.remove();
-            
+
             pipPlayer = document.createElement('div');
             pipPlayer.id = 'pipPlayer';
             pipPlayer.style.cssText = 'position:fixed;bottom:20px;right:20px;width:400px;height:225px;z-index:99999;border-radius:12px;overflow:hidden;box-shadow:0 10px 40px rgba(0,0,0,0.5);background:#000;transition:all 0.3s ease;';
@@ -978,19 +1010,19 @@
                 </div>
             `;
             document.body.appendChild(pipPlayer);
-            
+
             // Close the modal
             closeVideoModal();
-            
+
             console.log('📺 PIP mode activated');
         };
 
-        window.closePIP = window.closePIP || function() {
+        window.closePIP = window.closePIP || function () {
             const pipPlayer = document.getElementById('pipPlayer');
             if (pipPlayer) pipPlayer.remove();
         };
 
-        window.expandPIP = window.expandPIP || function() {
+        window.expandPIP = window.expandPIP || function () {
             if (window.currentVideoId) {
                 closePIP();
                 playVideo(window.currentVideoId, 'youtube', window.currentVideoTitle);
@@ -1014,7 +1046,7 @@
         });
 
         // Direct main video play function
-        window.playMainVideo = function() {
+        window.playMainVideo = function () {
             const iframe = document.querySelector('.breaking-video-player iframe');
             if (iframe && iframe.src) {
                 const videoId = iframe.src.match(/embed\/([^?]+)/);
@@ -1027,7 +1059,7 @@
         console.log('✅ Video player initialized - modal playback with PIP support');
 
         // Instagram Reel Player - Opens Instagram reel in modal
-        window.playInstagramReel = window.playInstagramReel || function(reelId, title) {
+        window.playInstagramReel = window.playInstagramReel || function (reelId, title) {
             if (!reelId) return;
             console.log('📸 Opening Instagram reel:', reelId);
 
@@ -1084,7 +1116,7 @@
     <script src="assets/js/video-manager.js?v=20260118"></script>
     <script src="assets/js/breaking-news-loader.js?v=20260118"></script>
     <script src="assets/js/latest-updates-loader.js?v=20260118"></script>
-    
+
     <!-- BizzShort Video Loader - Connects YouTube & Instagram -->
     <script src="assets/js/bizzshort-video-loader.js?v=20260118"></script>
 

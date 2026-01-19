@@ -39,7 +39,7 @@ class LiveMarketData {
             // Fetch from our backend API that uses Alpha Vantage
             const response = await fetch(`${this.apiBaseURL}/api/market-data`);
             const result = await response.json();
-            
+
             if (result.success && result.data) {
                 this.displayMarketData(result.data);
                 console.log('✅ Market data updated from API:', result.source);
@@ -55,7 +55,7 @@ class LiveMarketData {
     }
 
     async fetchLocalData() {
-        // Fallback local data generation (January 2026 realistic values)
+        // Fallback local data generation (January 2026 realistic values - Updated)
         const generateFluctuation = (base, volatility = 0.002) => {
             const change = base * (Math.random() * volatility * 2 - volatility);
             return {
@@ -65,9 +65,9 @@ class LiveMarketData {
             };
         };
 
-        const nifty = generateFluctuation(23500);
-        const sensex = generateFluctuation(77500);
-        const bankNifty = generateFluctuation(50800);
+        const nifty = generateFluctuation(25500); // Updated from 23500
+        const sensex = generateFluctuation(84000); // Updated from 77500
+        const bankNifty = generateFluctuation(53500); // Updated from 50800
 
         return {
             nifty: { ...nifty, note: nifty.change >= 0 ? 'Bullish Momentum' : 'Bearish Trend' },
@@ -81,7 +81,7 @@ class LiveMarketData {
         const niftyValue = document.getElementById('nifty-value');
         const niftyChange = document.getElementById('nifty-change');
         const niftyNote = document.getElementById('nifty-note');
-        
+
         if (niftyValue && data.nifty) {
             niftyValue.textContent = `₹${Math.round(data.nifty.value).toLocaleString('en-IN')}`;
         }
@@ -99,7 +99,7 @@ class LiveMarketData {
         const sensexValue = document.getElementById('sensex-value');
         const sensexChange = document.getElementById('sensex-change');
         const sensexNote = document.getElementById('sensex-note');
-        
+
         if (sensexValue && data.sensex) {
             sensexValue.textContent = `₹${Math.round(data.sensex.value).toLocaleString('en-IN')}`;
         }
@@ -117,7 +117,7 @@ class LiveMarketData {
         const bankNiftyValue = document.getElementById('bank-nifty-value');
         const bankNiftyChange = document.getElementById('bank-nifty-change');
         const bankNiftyNote = document.getElementById('bank-nifty-note');
-        
+
         if (bankNiftyValue && data.bankNifty) {
             bankNiftyValue.textContent = `₹${Math.round(data.bankNifty.value).toLocaleString('en-IN')}`;
         }

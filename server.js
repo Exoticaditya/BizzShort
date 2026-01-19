@@ -1178,123 +1178,135 @@ app.delete('/api/videos/:id', protect, async (req, res) => {
     } catch (err) { res.status(500).json({ success: false, error: err.message }); }
 });
 
-// ============ Market Data API (Real-time NSE/BSE Data) ============
+// ============ Market Data API (Real-time NSE/BSE Data via Yahoo Finance) ============
 app.get('/api/market-data', async (req, res) => {
     try {
         const https = require('https');
-        const apiKey = process.env.ALPHA_VANTAGE_API_KEY;
-        
-        // Try Alpha Vantage first if API key is available
-        if (apiKey) {
-            try {
-                // Fetch Reliance (proxy for Nifty movement) - one of the most traded stocks
-                const fetchAlphaVantage = (symbol) => {
-                    return new Promise((resolve, reject) => {
-                        const url = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${apiKey}`;
-                        https.get(url, (response) => {
-                            let data = '';
-                            response.on('data', chunk => data += chunk);
-                            response.on('end', () => {
-                                try {
-                                    resolve(JSON.parse(data));
-                                } catch (e) {
-                                    reject(e);
-                                }
-                            });
-                        }).on('error', reject);
-                    });
-                };
 
-                // Fetch BSE Sensex data
-                const sensexData = await fetchAlphaVantage('BSE:SENSEX');
-                const niftyData = await fetchAlphaVantage('NSE:NIFTY');
-                
-                // Check if we got valid data
-                if (sensexData['Global Quote'] && sensexData['Global Quote']['05. price']) {
-                    const sensexQuote = sensexData['Global Quote'];
-                    const sensexValue = parseFloat(sensexQuote['05. price']);
-                    const sensexChange = parseFloat(sensexQuote['10. change percent'].replace('%', ''));
-                    const sensexPoints = parseFloat(sensexQuote['09. change']);
-                    
-                    // Calculate Nifty from Sensex (approximate ratio)
-                    const niftyValue = sensexValue / 3.3;
-                    const niftyPoints = sensexPoints / 3.3;
-                    const bankNiftyValue = niftyValue * 2.15;
-                    
-                    return res.json({
-                        success: true,
-                        data: {
-                            nifty: {
-                                value: Math.round(niftyValue * 100) / 100,
-                                change: Math.round(sensexChange * 100) / 100,
-                                changePoints: Math.round(niftyPoints * 100) / 100,
-                                note: sensexChange > 0 ? 'Bullish Momentum' : sensexChange < 0 ? 'Bearish Trend' : 'Flat'
-                            },
-                            sensex: {
-                                value: Math.round(sensexValue * 100) / 100,
-                                change: Math.round(sensexChange * 100) / 100,
-                                changePoints: Math.round(sensexPoints * 100) / 100,
-                                note: sensexChange > 0 ? 'Positive Sentiment' : sensexChange < 0 ? 'Cautious Trading' : 'Neutral'
-                            },
-                            bankNifty: {
-                                value: Math.round(bankNiftyValue * 100) / 100,
-                                change: Math.round((sensexChange * 1.1) * 100) / 100,
-                                changePoints: Math.round((niftyPoints * 2.15) * 100) / 100,
-                                note: sensexChange > 0 ? 'Banking Strong' : sensexChange < 0 ? 'Banking Weak' : 'Stable'
+        // Yahoo Finance API - Free and supports Indian indices
+        const fetchYahooFinance = (symbol) => {
+            return new Promise((resolve, reject) => {
+                const url = `https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?interval=1d&range=1d`;
+                https.get(url, (response) => {
+                    let data = '';
+                    response.on('data', chunk => data += chunk);
+                    response.on('end', () => {
+                        try {
+                            const parsed = JSON.parse(data);
+                            if (parsed.chart && parsed.chart.result && parsed.chart.result[0]) {
+                                const result = parsed.chart.result[0];
+                                const meta = result.meta;
+                                const quote = result.indicators.quote[0];
+
+                                resolve({
+                                    symbol: meta.symbol,
+                                    price: meta.regularMarketPrice || meta.previousClose,
+                                    previousClose: meta.previousClose || meta.chartPreviousClose,
+                                    change: (meta.regularMarketPrice || meta.previousClose) - (meta.previousClose || meta.chartPreviousClose),
+                                    changePercent: ((meta.regularMarketPrice || meta.previousClose) - (meta.previousClose || meta.chartPreviousClose)) / (meta.previousClose || meta.chartPreviousClose) * 100,
+                                    high: quote.high ? quote.high[quote.high.length - 1] : meta.regularMarketPrice,
+                                    low: quote.low ? quote.low[quote.low.length - 1] : meta.regularMarketPrice,
+                                    volume: quote.volume ? quote.volume[quote.volume.length - 1] : 0
+                                });
+                            } else {
+                                reject(new Error('Invalid response structure'));
                             }
-                        },
-                        source: 'alpha_vantage',
-                        timestamp: new Date().toISOString(),
-                        marketStatus: isMarketOpen() ? 'open' : 'closed'
+                        } catch (e) {
+                            reject(e);
+                        }
                     });
-                }
-            } catch (avError) {
-                console.log('Alpha Vantage fetch failed:', avError.message);
-            }
+                }).on('error', reject);
+            });
+        };
+
+        try {
+            // Fetch real-time data from Yahoo Finance
+            const [niftyData, sensexData, bankNiftyData] = await Promise.all([
+                fetchYahooFinance('^NSEI'),      // Nifty 50
+                fetchYahooFinance('^BSESN'),     // Sensex
+                fetchYahooFinance('^NSEBANK')    // Bank Nifty
+            ]);
+
+            console.log('✅ Real market data fetched from Yahoo Finance');
+
+            return res.json({
+                success: true,
+                data: {
+                    nifty: {
+                        value: Math.round(niftyData.price * 100) / 100,
+                        change: Math.round(niftyData.changePercent * 100) / 100,
+                        changePoints: Math.round(niftyData.change * 100) / 100,
+                        high: Math.round(niftyData.high * 100) / 100,
+                        low: Math.round(niftyData.low * 100) / 100,
+                        note: niftyData.changePercent > 0 ? 'Bullish Momentum' : niftyData.changePercent < 0 ? 'Bearish Trend' : 'Flat'
+                    },
+                    sensex: {
+                        value: Math.round(sensexData.price * 100) / 100,
+                        change: Math.round(sensexData.changePercent * 100) / 100,
+                        changePoints: Math.round(sensexData.change * 100) / 100,
+                        high: Math.round(sensexData.high * 100) / 100,
+                        low: Math.round(sensexData.low * 100) / 100,
+                        note: sensexData.changePercent > 0 ? 'Positive Sentiment' : sensexData.changePercent < 0 ? 'Cautious Trading' : 'Neutral'
+                    },
+                    bankNifty: {
+                        value: Math.round(bankNiftyData.price * 100) / 100,
+                        change: Math.round(bankNiftyData.changePercent * 100) / 100,
+                        changePoints: Math.round(bankNiftyData.change * 100) / 100,
+                        high: Math.round(bankNiftyData.high * 100) / 100,
+                        low: Math.round(bankNiftyData.low * 100) / 100,
+                        note: bankNiftyData.changePercent > 0 ? 'Banking Strong' : bankNiftyData.changePercent < 0 ? 'Banking Weak' : 'Stable'
+                    }
+                },
+                source: 'yahoo_finance',
+                timestamp: new Date().toISOString(),
+                marketStatus: isMarketOpen() ? 'open' : 'closed'
+            });
+        } catch (yahooError) {
+            console.log('⚠️ Yahoo Finance fetch failed, using fallback:', yahooError.message);
+
+            // Fallback: Use realistic January 2026 values with time-based variation
+            const now = new Date();
+            const hour = now.getHours();
+            const marketOpen = hour >= 9 && hour < 16;
+
+            // Base values (realistic for Jan 2026 - Updated)
+            const baseNifty = 25500;
+            const baseSensex = 84000;
+            const baseBankNifty = 53500;
+
+            // Small intraday variation based on time
+            const timeVariation = marketOpen ? (Math.sin(now.getMinutes() / 10) * 0.002) : 0;
+
+            return res.json({
+                success: true,
+                data: {
+                    nifty: {
+                        value: Math.round(baseNifty * (1 + timeVariation) * 100) / 100,
+                        change: Math.round(timeVariation * 10000) / 100,
+                        changePoints: Math.round(baseNifty * timeVariation * 100) / 100,
+                        note: timeVariation > 0 ? 'Bullish Momentum' : 'Consolidating'
+                    },
+                    sensex: {
+                        value: Math.round(baseSensex * (1 + timeVariation) * 100) / 100,
+                        change: Math.round(timeVariation * 10000) / 100,
+                        changePoints: Math.round(baseSensex * timeVariation * 100) / 100,
+                        note: timeVariation > 0 ? 'Positive Sentiment' : 'Range Bound'
+                    },
+                    bankNifty: {
+                        value: Math.round(baseBankNifty * (1 + timeVariation * 1.1) * 100) / 100,
+                        change: Math.round(timeVariation * 1.1 * 10000) / 100,
+                        changePoints: Math.round(baseBankNifty * timeVariation * 1.1 * 100) / 100,
+                        note: timeVariation > 0 ? 'Banking Strong' : 'Banking Neutral'
+                    }
+                },
+                source: 'fallback_estimated',
+                timestamp: new Date().toISOString(),
+                marketStatus: marketOpen ? 'open' : 'closed'
+            });
         }
-        
-        // Fallback: Use realistic January 2026 values
-        const now = new Date();
-        const hour = now.getHours();
-        const marketOpen = hour >= 9 && hour < 16;
-        
-        // Base values (realistic for Jan 2026)
-        const baseNifty = 23450;
-        const baseSensex = 77350;
-        const baseBankNifty = 50200;
-        
-        // Small intraday variation based on time
-        const timeVariation = marketOpen ? (Math.sin(now.getMinutes() / 10) * 0.002) : 0;
-        
-        res.json({
-            success: true,
-            data: {
-                nifty: { 
-                    value: Math.round(baseNifty * (1 + timeVariation) * 100) / 100, 
-                    change: Math.round(timeVariation * 10000) / 100, 
-                    changePoints: Math.round(baseNifty * timeVariation * 100) / 100, 
-                    note: timeVariation > 0 ? 'Bullish Momentum' : 'Consolidating' 
-                },
-                sensex: { 
-                    value: Math.round(baseSensex * (1 + timeVariation) * 100) / 100, 
-                    change: Math.round(timeVariation * 10000) / 100, 
-                    changePoints: Math.round(baseSensex * timeVariation * 100) / 100, 
-                    note: timeVariation > 0 ? 'Positive Sentiment' : 'Range Bound' 
-                },
-                bankNifty: { 
-                    value: Math.round(baseBankNifty * (1 + timeVariation * 1.1) * 100) / 100, 
-                    change: Math.round(timeVariation * 1.1 * 10000) / 100, 
-                    changePoints: Math.round(baseBankNifty * timeVariation * 1.1 * 100) / 100, 
-                    note: timeVariation > 0 ? 'Banking Strong' : 'Banking Neutral' 
-                }
-            },
-            source: apiKey ? 'alpha_vantage_fallback' : 'estimated',
-            timestamp: new Date().toISOString(),
-            marketStatus: marketOpen ? 'open' : 'closed'
-        });
 
     } catch (err) {
-        console.error('Market data API error:', err);
+        console.error('❌ Market data API error:', err);
         res.status(500).json({ success: false, error: 'Failed to fetch market data' });
     }
 });
@@ -1307,7 +1319,7 @@ function isMarketOpen() {
     const hours = istTime.getUTCHours();
     const minutes = istTime.getUTCMinutes();
     const day = istTime.getUTCDay();
-    
+
     if (day === 0 || day === 6) return false;
     const currentMinutes = hours * 60 + minutes;
     return currentMinutes >= 555 && currentMinutes <= 930;
@@ -1337,7 +1349,7 @@ app.post('/api/sync-videos', protect, async (req, res) => {
         if (req.user.role !== 'admin') {
             return res.status(403).json({ success: false, error: 'Admin access required' });
         }
-        
+
         console.log(`📹 Manual video sync triggered by ${req.user.email}`);
         const result = await videoSync.runDailySync();
         res.json({ success: true, message: 'Video sync completed', data: result });
@@ -1354,7 +1366,7 @@ app.get('/api/sync-status', async (req, res) => {
         const totalVideos = await Video.countDocuments();
         const youtubeCount = await Video.countDocuments({ source: 'youtube' });
         const instagramCount = await Video.countDocuments({ source: 'instagram' });
-        
+
         res.json({
             success: true,
             data: {
@@ -1373,11 +1385,11 @@ app.get('/api/sync-status', async (req, res) => {
 // Start Server
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT} (MongoDB Mode)`);
-    
+
     // Start the daily 8 AM video sync scheduler
     console.log('\n🎬 Starting BizzShort Video Sync Scheduler...');
     videoSync.scheduleDaily8AM();
-    
+
     // Run initial sync on server start (optional - comment out if not needed)
     if (process.env.SYNC_ON_START === 'true') {
         console.log('📹 Running initial video sync...');

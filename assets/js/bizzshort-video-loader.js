@@ -13,7 +13,7 @@
 const BizzShortVideoLoader = {
     // API endpoint for synced videos
     apiEndpoint: '/api/synced-videos',
-    
+
     // BizzShort Channel Info (Fallback data)
     youtube: {
         handle: '@bizz_short',
@@ -61,11 +61,11 @@ const BizzShortVideoLoader = {
             const videos = source ? this.cachedVideos.filter(v => v.source === source) : this.cachedVideos;
             return videos.slice(0, limit);
         }
-        
+
         try {
             let url = this.apiEndpoint + '?limit=' + limit;
             if (source) url += '&source=' + source;
-            
+
             const response = await fetch(url);
             if (response.ok) {
                 const data = await response.json();
@@ -79,7 +79,7 @@ const BizzShortVideoLoader = {
         } catch (error) {
             console.log('📡 API unavailable, using fallback data');
         }
-        
+
         return null;
     },
 
@@ -87,10 +87,10 @@ const BizzShortVideoLoader = {
     async init() {
         console.log('🎬 BizzShort Video Loader initializing...');
         console.log('📅 Videos sync automatically at 8:00 AM IST daily');
-        
+
         // Try to fetch from API first
         await this.fetchVideos();
-        
+
         this.loadBreakingNews();
         this.loadLatestUpdates();
         this.loadClientInterviews();
@@ -102,10 +102,15 @@ const BizzShortVideoLoader = {
         const mainVideo = this.youtube.videos.find(v => v.featured) || this.youtube.videos[0];
         const thumbnail = document.getElementById('mainVideoThumbnail');
         const videoInfo = document.querySelector('.breaking-video-player .video-info');
-        
+
         if (thumbnail) {
-            thumbnail.src = `https://img.youtube.com/vi/${mainVideo.id}/maxresdefault.jpg`;
+            thumbnail.src = `https://img.youtube.com/vi/${mainVideo.id}/hqdefault.jpg`;
             thumbnail.alt = mainVideo.title;
+            // Add fallback for thumbnail
+            thumbnail.onerror = function () {
+                this.onerror = null;
+                this.src = `https://img.youtube.com/vi/${mainVideo.id}/mqdefault.jpg`;
+            };
         }
 
         if (videoInfo) {
@@ -130,22 +135,27 @@ const BizzShortVideoLoader = {
         // Update breaking news grid cards
         const breakingCards = document.querySelectorAll('.breaking-news-grid .breaking-news-card');
         const breakingVideos = this.youtube.videos.filter(v => !v.featured).slice(0, 3);
-        
+
         breakingCards.forEach((card, index) => {
             if (breakingVideos[index]) {
                 const video = breakingVideos[index];
                 card.setAttribute('data-video-id', video.id);
                 card.setAttribute('onclick', `playVideo('${video.id}', 'youtube', '${video.title.replace(/'/g, "\\'")}')`);
-                
+
                 const img = card.querySelector('.video-thumbnail img');
                 if (img) {
-                    img.src = `https://img.youtube.com/vi/${video.id}/maxresdefault.jpg`;
+                    img.src = `https://img.youtube.com/vi/${video.id}/hqdefault.jpg`;
                     img.alt = video.title;
+                    // Add fallback for thumbnail
+                    img.onerror = function () {
+                        this.onerror = null;
+                        this.src = `https://img.youtube.com/vi/${video.id}/mqdefault.jpg`;
+                    };
                 }
-                
+
                 const title = card.querySelector('h4');
                 if (title) title.textContent = video.title;
-                
+
                 const badge = card.querySelector('.news-badge');
                 if (badge) badge.textContent = video.category.toUpperCase();
             }
@@ -173,11 +183,14 @@ const BizzShortVideoLoader = {
                 }));
             }
         }
-        
+
         grid.innerHTML = videos.map(video => `
             <article class="news-card-large video-card" data-category="${(video.category || 'Latest').toLowerCase()}" onclick="playVideo('${video.id}', 'youtube', '${video.title.replace(/'/g, "\\'")}')" style="cursor:pointer;">
                 <div class="video-thumbnail">
-                    <img src="https://img.youtube.com/vi/${video.id}/maxresdefault.jpg" alt="${video.title}" loading="lazy">
+                    <img src="https://img.youtube.com/vi/${video.id}/hqdefault.jpg" 
+                         alt="${video.title}" 
+                         loading="lazy"
+                         onerror="this.onerror=null; this.src='https://img.youtube.com/vi/${video.id}/mqdefault.jpg';">
                     <div class="play-overlay">
                         <i class="fab fa-youtube"></i>
                     </div>
@@ -262,7 +275,7 @@ const BizzShortVideoLoader = {
 };
 
 // Instagram Reel Player - Premium Modal with embedded player
-window.playInstagramReel = function(reelId, title) {
+window.playInstagramReel = function (reelId, title) {
     if (!reelId) return;
     console.log('📸 Playing Instagram reel:', reelId);
 
@@ -315,7 +328,7 @@ window.playInstagramReel = function(reelId, title) {
             </div>
         </div>
     `;
-    
+
     // Add modal styles if not already added
     if (!document.getElementById('instagramModalStyles')) {
         const styles = document.createElement('style');
@@ -500,12 +513,12 @@ window.playInstagramReel = function(reelId, title) {
         `;
         document.head.appendChild(styles);
     }
-    
+
     document.body.appendChild(modal);
     document.body.style.overflow = 'hidden';
 
     // ESC key to close
-    const escHandler = function(e) {
+    const escHandler = function (e) {
         if (e.key === 'Escape') {
             closeInstagramModal();
             document.removeEventListener('keydown', escHandler);
@@ -515,7 +528,7 @@ window.playInstagramReel = function(reelId, title) {
 };
 
 // Close Instagram modal
-window.closeInstagramModal = function() {
+window.closeInstagramModal = function () {
     const modal = document.getElementById('instagramModal');
     if (modal) {
         modal.style.animation = 'igModalFadeIn 0.2s ease reverse';
@@ -530,7 +543,7 @@ window.closeInstagramModal = function() {
 window.openInstagramReel = window.playInstagramReel;
 
 // Close video modal function
-window.closeVideoModal = function() {
+window.closeVideoModal = function () {
     const modal = document.getElementById('videoModal');
     if (modal) {
         modal.remove();
@@ -539,7 +552,7 @@ window.closeVideoModal = function() {
 };
 
 // YouTube video player - Opens in modal
-window.playVideo = function(videoId, source, title) {
+window.playVideo = function (videoId, source, title) {
     if (!videoId) return;
     console.log('▶️ Playing video:', videoId, source);
 
@@ -556,7 +569,7 @@ window.playVideo = function(videoId, source, title) {
     const modal = document.createElement('div');
     modal.id = 'videoModal';
     modal.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;z-index:100000;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.95);padding:20px;';
-    
+
     // YouTube video/shorts - use regular embed with origin parameter
     modal.innerHTML = `
         <div style="position:relative;width:100%;max-width:900px;">
@@ -588,14 +601,14 @@ window.playVideo = function(videoId, source, title) {
             </div>
         </div>
     `;
-    
+
     document.body.appendChild(modal);
     document.body.style.overflow = 'hidden';
 
-    modal.addEventListener('click', function(e) {
+    modal.addEventListener('click', function (e) {
         if (e.target === modal) closeVideoModal();
     });
-    
+
     // ESC key to close
     document.addEventListener('keydown', function escHandler(e) {
         if (e.key === 'Escape') {
@@ -606,7 +619,7 @@ window.playVideo = function(videoId, source, title) {
 };
 
 // Initialize on DOM ready
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Wait a bit to ensure other scripts are loaded
     setTimeout(() => {
         BizzShortVideoLoader.init();
