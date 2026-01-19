@@ -213,7 +213,7 @@ const BizzShortVideoLoader = {
 
     // Load Client Interviews section (Instagram Reels)
     loadClientInterviews() {
-        const grid = document.querySelector('#client-interviews .interview-videos-grid');
+        const grid = document.querySelector('#client-feature .interview-videos-grid');
         if (!grid) return;
 
         // Use API data if available, otherwise fallback
