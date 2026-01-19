@@ -88,14 +88,34 @@ const BizzShortVideoLoader = {
         console.log('🎬 BizzShort Video Loader initializing...');
         console.log('📅 Videos sync automatically at 8:00 AM IST daily');
 
+        // Disable conflicting/old loaders to prevent double population
+        window.LatestUpdatesLoader = null;
+        window.BreakingNewsLoader = null;
+
         // Try to fetch from API first
         await this.fetchVideos();
 
         this.loadBreakingNews();
-        this.loadLatestUpdates();
+        this.loadLatestUpdates('all');
         this.loadClientFeatures();
         this.loadClientInterviews();
+        this.setupCategoryFilters();
+
         console.log('✅ BizzShort Video Loader ready');
+    },
+
+    // Setup Category Filters for Latest Updates
+    setupCategoryFilters() {
+        const filterButtons = document.querySelectorAll('.category-filters .filter-btn');
+        filterButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                const category = button.getAttribute('data-category');
+                this.loadLatestUpdates(category);
+            });
+        });
     },
 
     // Load Breaking News section
@@ -166,27 +186,37 @@ const BizzShortVideoLoader = {
     },
 
     // Load Latest Updates section
-    loadLatestUpdates() {
+    loadLatestUpdates(category = 'all') {
         const grid = document.getElementById('latestUpdatesGrid');
         if (!grid) return;
 
         // Use API data if available, otherwise fallback
-        let videos = this.youtube.videos.slice(0, 8);
+        let videos = this.youtube.videos;
         if (this.cachedVideos) {
-            const apiVideos = this.cachedVideos.filter(v => v.source === 'youtube').slice(0, 8);
+            const apiVideos = this.cachedVideos.filter(v => v.source === 'youtube');
             if (apiVideos.length > 0) {
                 videos = apiVideos.map(v => ({
                     id: v.videoId,
                     title: v.title,
-                    category: v.category,
+                    category: v.category || 'Latest',
                     views: v.views,
                     date: v.date || v.relativeTime
                 }));
             }
         }
 
-        grid.innerHTML = videos.map(video => `
-            <article class="news-card-large video-card" data-category="${(video.category || 'Latest').toLowerCase()}" onclick="playVideo('${video.id}', 'youtube', '${video.title.replace(/'/g, "\\'")}')" style="cursor:pointer;">
+        // Apply category filter
+        const filteredVideos = category === 'all'
+            ? videos.slice(0, 8)
+            : videos.filter(v => (v.category || '').toLowerCase() === category.toLowerCase()).slice(0, 8);
+
+        if (filteredVideos.length === 0) {
+            grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:#7f8c8d;">No videos found in this category.</div>';
+            return;
+        }
+
+        grid.innerHTML = filteredVideos.map(video => `
+            <article class="news-video-card-large video-card" data-category="${(video.category || 'Latest').toLowerCase()}" onclick="playVideo('${video.id}', 'youtube', '${video.title.replace(/'/g, "\\'")}')" style="cursor:pointer;">
                 <div class="video-thumbnail">
                     <img src="https://img.youtube.com/vi/${video.id}/hqdefault.jpg" 
                          alt="${video.title}" 
@@ -195,7 +225,6 @@ const BizzShortVideoLoader = {
                     <div class="play-overlay">
                         <i class="fab fa-youtube"></i>
                     </div>
-                    <span class="video-duration">${video.duration || 'Short'}</span>
                 </div>
                 <div class="card-content">
                     <span class="card-category">${video.category || 'Latest'}</span>
@@ -209,7 +238,7 @@ const BizzShortVideoLoader = {
             </article>
         `).join('');
 
-        console.log('📊 Latest Updates section loaded with', videos.length, 'videos');
+        console.log(`📊 Latest Updates section loaded for category "${category}"`);
     },
 
     // Load Client Features section (YouTube videos 1,2,3,4,5,7,8)
@@ -239,7 +268,7 @@ const BizzShortVideoLoader = {
         const selectedVideos = indices.map(i => videos[i]).filter(v => v);
 
         grid.innerHTML = selectedVideos.map(video => `
-            <article class="news-card-large video-card" data-category="${(video.category || 'Client Feature').toLowerCase()}" onclick="playVideo('${video.id}', 'youtube', '${video.title.replace(/'/g, "\\'")}')" style="cursor:pointer;">
+            <article class="news-video-card-large video-card" data-category="${(video.category || 'Client Feature').toLowerCase()}" onclick="playVideo('${video.id}', 'youtube', '${video.title.replace(/'/g, "\\'")}')" style="cursor:pointer;">
                 <div class="video-thumbnail">
                     <img src="https://img.youtube.com/vi/${video.id}/hqdefault.jpg" 
                          alt="${video.title}" 
@@ -306,8 +335,12 @@ const BizzShortVideoLoader = {
                             </div>
                         </div>
                         <div class="interview-details">
-                            <span class="interview-tag"><i class="fas fa-podcast"></i> UPCOMING</span>
+                            <span class="interview-tag upcoming-tag"><i class="fas fa-podcast"></i> UPCOMING</span>
                             <h3>BizzShort Podcast Series</h3>
+                            <div class="video-meta" style="visibility: hidden;">
+                                <span><i class="fab fa-instagram"></i> @bizz_short</span>
+                                <span><i class="far fa-clock"></i> Soon</span>
+                            </div>
                         </div>
                     </div>
                 `;
