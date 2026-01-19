@@ -3752,12 +3752,20 @@ a.interview-video-card.instagram-reel-card {
     color: white;
 }
 
+.news-video-card-large .video-category-badge.business {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
 .news-video-card-large .video-category-badge.markets {
     background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
 }
 
 .news-video-card-large .video-category-badge.technology {
     background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+}
+
+.news-video-card-large .video-category-badge.industry {
+    background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
 }
 
 .news-video-card-large .video-title {
