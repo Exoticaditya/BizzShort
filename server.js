@@ -1325,6 +1325,92 @@ function isMarketOpen() {
     return currentMinutes >= 555 && currentMinutes <= 930;
 }
 
+// ============ Chart Data API (Historical Data for Charts) ============
+app.get('/api/chart-data/:symbol', async (req, res) => {
+    try {
+        const https = require('https');
+        const { symbol } = req.params;
+        const { range = '1d', interval = '5m' } = req.query;
+
+        // Map symbols to Yahoo Finance format
+        const symbolMap = {
+            'nifty': '^NSEI',
+            'sensex': '^BSESN',
+            'banknifty': '^NSEBANK',
+            'nifty50': '^NSEI'
+        };
+
+        const yahooSymbol = symbolMap[symbol.toLowerCase()] || symbol;
+
+        const fetchChartData = () => {
+            return new Promise((resolve, reject) => {
+                const url = `https://query1.finance.yahoo.com/v8/finance/chart/${yahooSymbol}?interval=${interval}&range=${range}`;
+                https.get(url, (response) => {
+                    let data = '';
+                    response.on('data', chunk => data += chunk);
+                    response.on('end', () => {
+                        try {
+                            const parsed = JSON.parse(data);
+                            if (parsed.chart && parsed.chart.result && parsed.chart.result[0]) {
+                                const result = parsed.chart.result[0];
+                                const timestamps = result.timestamp || [];
+                                const quote = result.indicators.quote[0];
+
+                                const chartData = timestamps.map((timestamp, index) => ({
+                                    time: timestamp * 1000, // Convert to milliseconds
+                                    open: quote.open[index],
+                                    high: quote.high[index],
+                                    low: quote.low[index],
+                                    close: quote.close[index],
+                                    volume: quote.volume[index]
+                                })).filter(d => d.close !== null); // Remove null values
+
+                                resolve({
+                                    symbol: yahooSymbol,
+                                    data: chartData,
+                                    meta: result.meta
+                                });
+                            } else {
+                                reject(new Error('Invalid chart data response'));
+                            }
+                        } catch (e) {
+                            reject(e);
+                        }
+                    });
+                }).on('error', reject);
+            });
+        };
+
+        const chartData = await fetchChartData();
+
+        res.json({
+            success: true,
+            symbol: symbol,
+            yahooSymbol: yahooSymbol,
+            range: range,
+            interval: interval,
+            dataPoints: chartData.data.length,
+            data: chartData.data,
+            meta: {
+                currency: chartData.meta.currency,
+                exchangeName: chartData.meta.exchangeName,
+                instrumentType: chartData.meta.instrumentType,
+                regularMarketPrice: chartData.meta.regularMarketPrice,
+                previousClose: chartData.meta.previousClose
+            }
+        });
+
+    } catch (err) {
+        console.error('❌ Chart data API error:', err);
+        res.status(500).json({
+            success: false,
+            error: 'Failed to fetch chart data',
+            message: err.message
+        });
+    }
+});
+
+
 // ============ Daily Video Sync Scheduler ============
 const videoSync = require('./utils/daily-video-sync');
 
