@@ -109,20 +109,18 @@ function renderVideoCards(videos, container) {
         const videoTitle = (video.title || '').replace(/"/g, '&quot;');
         const videoCategory = (video.category || 'business').toLowerCase();
         
-        // Use sddefault for better reliability (always exists)
-        const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/sddefault.jpg`;
-        
         return `
         <div class="news-video-card-large" 
              data-category="${videoCategory}" 
              data-video-id="${videoId}"
              data-video-title="${videoTitle}">
             <div class="video-player-wrapper">
-                <img src="${thumbnailUrl}" 
+                <img src="https://img.youtube.com/vi/${videoId}/mqdefault.jpg" 
                      alt="${video.title}" 
                      class="video-thumbnail-img"
-                     onerror="this.src='https://img.youtube.com/vi/${videoId}/hqdefault.jpg'"
-                     loading="lazy">
+                     onerror="this.onerror=null; this.src='https://img.youtube.com/vi/${videoId}/default.jpg';"
+                     loading="eager"
+                     crossorigin="anonymous">
                 <div class="play-button-overlay">
                     <i class="fab fa-youtube"></i>
                 </div>
@@ -259,64 +257,56 @@ function getPlaceholderVideos() {
             title: 'Weekly Market Roundup: Top Gainers & Losers',
             excerpt: 'Weekly summary of market performance, sector analysis, and outlook for the coming week.',
             category: 'markets',
-            publishedAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
-            thumbnail: 'https://img.youtube.com/vi/fH8Ir7doWGk/sddefault.jpg'
+            publishedAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString()
         },
         {
             youtubeId: 'pK70FxjUJCY',
             title: 'Manufacturing Sector: Make in India Success Stories',
             excerpt: 'Celebrating Make in India achievements, manufacturing sector growth, and export success stories.',
             category: 'business',
-            publishedAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
-            thumbnail: 'https://img.youtube.com/vi/pK70FxjUJCY/sddefault.jpg'
+            publishedAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString()
         },
         {
             youtubeId: 'tR1ZlYUvzUo',
             title: 'E-commerce Growth: Online Retail & Consumer Trends',
             excerpt: 'Insights into India\'s booming e-commerce sector, online retail growth, and consumer behavior.',
             category: 'technology',
-            publishedAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
-            thumbnail: 'https://img.youtube.com/vi/tR1ZlYUvzUo/sddefault.jpg'
+            publishedAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString()
         },
         {
             youtubeId: 'zX280yTaG_E',
             title: 'Energy Sector Update: Oil Prices & Renewable Energy',
             excerpt: 'Latest developments in energy sector including oil prices and renewable energy projects.',
             category: 'business',
-            publishedAt: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000).toISOString(),
-            thumbnail: 'https://img.youtube.com/vi/zX280yTaG_E/sddefault.jpg'
+            publishedAt: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000).toISOString()
         },
         {
             youtubeId: '47bNBV5Ca7Y',
             title: 'Real Estate Market: Property Trends & Investment Tips',
             excerpt: 'Real estate market trends, property prices, and smart investment strategies.',
             category: 'markets',
-            publishedAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
-            thumbnail: 'https://img.youtube.com/vi/47bNBV5Ca7Y/sddefault.jpg'
+            publishedAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString()
         },
         {
             youtubeId: 'dHFaUxh_sBE',
             title: 'Stock Market Analysis: Nifty & Sensex Today',
             excerpt: 'Comprehensive analysis of today\'s stock market performance and trading strategies.',
             category: 'markets',
-            publishedAt: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000).toISOString(),
-            thumbnail: 'https://img.youtube.com/vi/dHFaUxh_sBE/sddefault.jpg'
+            publishedAt: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000).toISOString()
         },
         {
             youtubeId: 'TXoQOkT8FiQ',
             title: 'Indian Economy Update: GDP Growth & Outlook',
             excerpt: 'Latest insights on India\'s GDP growth and economic policies.',
             category: 'business',
-            publishedAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
-            thumbnail: 'https://img.youtube.com/vi/TXoQOkT8FiQ/sddefault.jpg'
+            publishedAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()
         },
         {
             youtubeId: 'ZZND7BcDA_c',
             title: 'Startup Funding News: Investment Rounds',
             excerpt: 'Breaking news on startup funding and emerging business opportunities.',
             category: 'business',
-            publishedAt: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000).toISOString(),
-            thumbnail: 'https://img.youtube.com/vi/ZZND7BcDA_c/sddefault.jpg'
+            publishedAt: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000).toISOString()
         }
     ];
 }
