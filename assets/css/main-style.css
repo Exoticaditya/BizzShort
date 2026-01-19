@@ -45,8 +45,8 @@ body {
 
 /* Brand tokens (also defined in global-enhancements.css :root) */
 :root {
-    --brand-blue: #0b2d5b;
-    --brand-blue-rgb: 11, 45, 91;
+    --brand-blue: #004de6;
+    --brand-blue-rgb: 0, 77, 230;
 }
 
 img {
@@ -389,12 +389,14 @@ a {
     transform: scale(1.02);
 }
 
-/* Breaking News Grid - 3 cards below main video */
+/* Breaking News Grid - 2 rows of 3 columns */
 .breaking-news-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, auto);
     gap: 20px;
-    padding: 24px;
+    padding: 24px 0;
+    /* Reduced horizontal padding since sidebar exists */
 }
 
 .breaking-news-card {

@@ -1321,6 +1321,10 @@ function isMarketOpen() {
     return currentMinutes >= 555 && currentMinutes <= 930;
 }
 
+// ============ Chart Data Cache ============
+const chartDataCache = new Map();
+const CHART_CACHE_DURATION = 300000; // 5 minutes
+
 // ============ Chart Data API (Historical Data for Charts) ============
 app.get('/api/chart-data/:symbol', async (req, res) => {
     try {
@@ -1336,30 +1340,57 @@ app.get('/api/chart-data/:symbol', async (req, res) => {
             'nifty50': '^NSEI'
         };
 
-        const yahooSymbol = symbolMap[symbol.toLowerCase()] || symbol;
+        const symbolKey = symbol.toLowerCase();
+        const yahooSymbol = symbolMap[symbolKey] || symbol;
+        const cacheKey = `${symbolKey}_${range}_${interval}`;
+
+        // Check cache
+        const cached = chartDataCache.get(cacheKey);
+        if (cached && (Date.now() - cached.timestamp) < CHART_CACHE_DURATION) {
+            console.log(`📊 Returning cached chart data for ${symbolKey}`);
+            return res.json(cached.data);
+        }
 
         const fetchChartData = () => {
             return new Promise((resolve, reject) => {
                 const url = `https://query1.finance.yahoo.com/v8/finance/chart/${yahooSymbol}?interval=${interval}&range=${range}`;
-                https.get(url, (response) => {
+
+                const options = {
+                    headers: {
+                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+                    }
+                };
+
+                https.get(url, options, (response) => {
                     let data = '';
                     response.on('data', chunk => data += chunk);
                     response.on('end', () => {
                         try {
+                            if (response.statusCode !== 200) {
+                                console.error(`❌ Yahoo Finance API error: ${response.statusCode} for ${yahooSymbol}`);
+                                return reject(new Error(`Yahoo Finance returned ${response.statusCode}`));
+                            }
+
                             const parsed = JSON.parse(data);
                             if (parsed.chart && parsed.chart.result && parsed.chart.result[0]) {
                                 const result = parsed.chart.result[0];
                                 const timestamps = result.timestamp || [];
-                                const quote = result.indicators.quote[0];
+                                const indicators = result.indicators;
+
+                                if (!indicators || !indicators.quote || !indicators.quote[0]) {
+                                    return reject(new Error('Missing quote data in Yahoo response'));
+                                }
+
+                                const quote = indicators.quote[0];
 
                                 const chartData = timestamps.map((timestamp, index) => ({
                                     time: timestamp * 1000, // Convert to milliseconds
-                                    open: quote.open[index],
-                                    high: quote.high[index],
-                                    low: quote.low[index],
-                                    close: quote.close[index],
-                                    volume: quote.volume[index]
-                                })).filter(d => d.close !== null); // Remove null values
+                                    open: quote.open ? quote.open[index] : null,
+                                    high: quote.high ? quote.high[index] : null,
+                                    low: quote.low ? quote.low[index] : null,
+                                    close: quote.close ? quote.close[index] : null,
+                                    volume: quote.volume ? quote.volume[index] : null
+                                })).filter(d => d.close !== null && d.close !== undefined); // Remove null values
 
                                 resolve({
                                     symbol: yahooSymbol,
@@ -1367,19 +1398,24 @@ app.get('/api/chart-data/:symbol', async (req, res) => {
                                     meta: result.meta
                                 });
                             } else {
-                                reject(new Error('Invalid chart data response'));
+                                const errorMsg = parsed.chart?.error?.description || 'Invalid chart data response';
+                                reject(new Error(errorMsg));
                             }
                         } catch (e) {
+                            console.error('❌ JSON Parse error in chart API:', e.message);
                             reject(e);
                         }
                     });
-                }).on('error', reject);
+                }).on('error', (e) => {
+                    console.error('❌ HTTPS request error in chart API:', e.message);
+                    reject(e);
+                });
             });
         };
 
         const chartData = await fetchChartData();
 
-        res.json({
+        const responseData = {
             success: true,
             symbol: symbol,
             yahooSymbol: yahooSymbol,
@@ -1394,14 +1430,23 @@ app.get('/api/chart-data/:symbol', async (req, res) => {
                 regularMarketPrice: chartData.meta.regularMarketPrice,
                 previousClose: chartData.meta.previousClose
             }
+        };
+
+        // Cache the response
+        chartDataCache.set(cacheKey, {
+            timestamp: Date.now(),
+            data: responseData
         });
 
+        res.json(responseData);
+
     } catch (err) {
-        console.error('❌ Chart data API error:', err);
-        res.status(500).json({
+        console.error('❌ Chart data API error:', err.message);
+        res.status(err.message.includes('404') ? 404 : 500).json({
             success: false,
-            error: 'Failed to fetch chart data',
-            message: err.message
+            error: err.message,
+            symbol: symbol,
+            yahooSymbol: symbolMap[symbol.toLowerCase()] || symbol
         });
     }
 });
@@ -1439,11 +1484,25 @@ app.get('/api/market-stream', async (req, res) => {
             const fetchYahooFinance = (symbol) => {
                 return new Promise((resolve, reject) => {
                     const url = `https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?interval=1d&range=1d`;
-                    https.get(url, (response) => {
+                    const options = {
+                        headers: {
+                            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+                        }
+                    };
+
+                    https.get(url, options, (response) => {
                         let data = '';
                         response.on('data', chunk => data += chunk);
                         response.on('end', () => {
                             try {
+                                if (response.statusCode === 429) {
+                                    return reject(new Error('Too Many Requests'));
+                                }
+
+                                if (response.statusCode !== 200) {
+                                    return reject(new Error(`Yahoo Finance returned ${response.statusCode}`));
+                                }
+
                                 const parsed = JSON.parse(data);
                                 if (parsed.chart && parsed.chart.result && parsed.chart.result[0]) {
                                     const result = parsed.chart.result[0];
@@ -1524,6 +1583,13 @@ app.get('/api/market-stream', async (req, res) => {
             console.log('📊 Market data streamed to client (fresh from Yahoo Finance)');
         } catch (error) {
             console.error('❌ Error streaming market data:', error.message);
+
+            // Use cache if available, even if expired, as fallback
+            if (marketDataCache) {
+                console.log('⚠️ Yahoo Finance fetch failed, using expired cache as fallback');
+                res.write(`data: ${JSON.stringify(marketDataCache)}\n\n`);
+                return;
+            }
 
             // Send fallback data
             const now = new Date();

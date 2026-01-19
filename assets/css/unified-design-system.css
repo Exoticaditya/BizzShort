@@ -8,9 +8,9 @@
    ============================================ */
 :root {
     /* Color Palette - Navy Theme */
-    --color-primary: #3d5875;
-    --color-primary-dark: #2c3e50;
-    --color-primary-light: #4a6a8a;
+    --color-primary: #004de6;
+    --color-primary-dark: #0037a3;
+    --color-primary-light: #3371eb;
 
     --color-secondary: #4a90e2;
     --color-secondary-dark: #3a7bc8;

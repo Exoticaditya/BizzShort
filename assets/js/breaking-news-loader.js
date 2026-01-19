@@ -6,8 +6,8 @@
 class BreakingNewsLoader {
     constructor() {
         // Use APIConfig if available, otherwise fallback to Render URL
-        this.apiBaseURL = window.APIConfig && window.APIConfig.baseURL 
-            ? window.APIConfig.baseURL 
+        this.apiBaseURL = window.APIConfig && window.APIConfig.baseURL
+            ? window.APIConfig.baseURL
             : 'https://bizzshort.onrender.com';
         this.init();
     }
@@ -19,8 +19,8 @@ class BreakingNewsLoader {
 
     async loadBreakingNews() {
         try {
-            // Try to fetch videos - removed category filter for more results
-            const response = await fetch(`${this.apiBaseURL}/api/videos?source=youtube&limit=5`);
+            // Try to fetch videos
+            const response = await fetch(`${this.apiBaseURL}/api/videos?source=youtube&limit=7`);
 
             if (!response.ok) {
                 console.warn(`API returned ${response.status}, using fallback videos`);
@@ -28,15 +28,12 @@ class BreakingNewsLoader {
             }
 
             const result = await response.json();
-            const videos = result.data || result; // Handle both {data: [...]} and direct array
-            console.log('📰 Breaking news videos loaded:', videos ? videos.length : 0, videos);
+            const videos = result.data || result;
+            console.log('📰 Breaking news videos loaded:', videos ? videos.length : 0);
 
             if (videos && videos.length > 0) {
-                // Update main breaking news video (first video)
-                this.updateMainVideo(videos[0]);
-
-                // Update the 3 breaking news cards (next 3 videos)
-                this.updateBreakingNewsCards(videos.slice(1, 4));
+                // Update the 6 breaking news cards
+                this.updateBreakingNewsCards(videos.slice(0, 6));
             } else {
                 console.log('📺 No videos from API, using fallback');
                 this.useFallbackVideos();
@@ -85,65 +82,33 @@ class BreakingNewsLoader {
                 category: 'Economy',
                 views: 11200,
                 publishedAt: new Date().toISOString()
+            },
+            {
+                videoId: 'SEDvD1IICfE',
+                title: 'Manufacturing Sector: Success Stories',
+                description: 'Make in India achievements',
+                thumbnail: 'https://img.youtube.com/vi/SEDvD1IICfE/maxresdefault.jpg',
+                category: 'Industry',
+                views: 3300,
+                publishedAt: new Date().toISOString()
+            },
+            {
+                videoId: 'd0sU0TBhBkE',
+                title: 'E-commerce Growth Trends',
+                description: 'Insights into India\'s e-commerce sector',
+                thumbnail: 'https://img.youtube.com/vi/d0sU0TBhBkE/maxresdefault.jpg',
+                category: 'Technology',
+                views: 5100,
+                publishedAt: new Date().toISOString()
             }
         ];
 
-        this.updateMainVideo(fallbackVideos[0]);
-        this.updateBreakingNewsCards(fallbackVideos.slice(1, 4));
+        this.updateBreakingNewsCards(fallbackVideos);
     }
 
+    // Simplified updateMainVideo (kept for backward compatibility but no longer used in main flow)
     updateMainVideo(video) {
-        if (!video) return;
-
-        const thumbnail = document.getElementById('mainVideoThumbnail');
-        const iframe = document.querySelector('.breaking-video-player iframe');
-        const title = document.querySelector('.breaking-video-player h3');
-        const description = document.querySelector('.breaking-video-player p');
-        const viewCount = document.querySelector('.video-stats span:nth-child(2)');
-        const timeAgo = document.querySelector('.video-stats span:nth-child(3)');
-        const videoPlayer = document.querySelector('.breaking-video-player');
-
-        // Get the correct video ID (handle both formats)
-        const videoId = video.youtubeId || video.videoId;
-        
-        if (thumbnail && videoId) {
-            thumbnail.src = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
-            thumbnail.alt = video.title || 'Breaking News Video';
-            // Fallback for thumbnail
-            thumbnail.onerror = function() {
-                this.src = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
-            };
-        }
-
-        if (iframe && videoId) {
-            iframe.src = `https://www.youtube-nocookie.com/embed/${videoId}?rel=0&modestbranding=1`;
-        }
-
-        // Update click handler for main video
-        if (videoPlayer && videoId) {
-            videoPlayer.onclick = function() {
-                if (typeof playVideo === 'function') {
-                    playVideo(videoId, 'youtube', video.title || 'Breaking News');
-                }
-            };
-            console.log('✅ Main breaking news video updated:', videoId);
-        }
-
-        if (title && video.title) {
-            title.textContent = video.title;
-        }
-
-        if (description && video.description) {
-            description.textContent = video.description.substring(0, 120) + '...';
-        }
-
-        if (viewCount && video.views) {
-            viewCount.innerHTML = `<i class="far fa-eye"></i> ${this.formatViews(video.views)} views`;
-        }
-
-        if (timeAgo && video.publishedAt) {
-            timeAgo.innerHTML = `<i class="far fa-clock"></i> ${this.getTimeAgo(video.publishedAt)}`;
-        }
+        // Feature removed in favor of 6-card grid
     }
 
     updateBreakingNewsCards(videos) {
@@ -162,12 +127,12 @@ class BreakingNewsLoader {
                 // Get the correct video ID
                 const videoId = video.videoId || video.youtubeId;
                 const videoTitle = (video.title || '').replace(/"/g, '&quot;');
-                
+
                 // Update data attribute
                 card.dataset.videoId = videoId;
-                
+
                 // Set onclick directly to ensure it works
-                card.onclick = function() {
+                card.onclick = function () {
                     console.log('🎬 Breaking news card clicked:', videoId);
                     if (typeof playVideo === 'function') {
                         playVideo(videoId, 'youtube', video.title || 'BizzShort Video');
