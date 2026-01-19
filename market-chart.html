@@ -1,37 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Market Chart - BizzShort</title>
-    <meta name="description" content="Live market charts and analysis for Nifty 50, Sensex, and Bank Nifty. Real-time stock market data and trends.">
-    
+    <meta name="description"
+        content="Live market charts and analysis for Nifty 50, Sensex, and Bank Nifty. Real-time stock market data and trends.">
+
     <!-- Preconnect -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
+
     <!-- CSS -->
     <link rel="stylesheet" href="assets/css/unified-design-system.css?v=20260118">
     <link rel="stylesheet" href="assets/css/main-style.css?v=20260118">
     <link rel="stylesheet" href="assets/css/responsive.css?v=20260118">
-    
+
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
+
     <style>
         .chart-page {
             min-height: 100vh;
             background: #f8f9fa;
         }
-        
+
         .chart-header {
             background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
             padding: 30px 0;
             color: white;
         }
-        
+
         .chart-header-content {
             display: flex;
             justify-content: space-between;
@@ -39,7 +43,7 @@
             flex-wrap: wrap;
             gap: 20px;
         }
-        
+
         .back-btn {
             display: inline-flex;
             align-items: center;
@@ -47,78 +51,83 @@
             color: white;
             text-decoration: none;
             padding: 10px 20px;
-            background: rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.1);
             border-radius: 25px;
             transition: all 0.3s ease;
         }
-        
+
         .back-btn:hover {
-            background: rgba(255,255,255,0.2);
+            background: rgba(255, 255, 255, 0.2);
         }
-        
+
         .market-title {
             display: flex;
             align-items: center;
             gap: 15px;
         }
-        
+
         .market-title h1 {
             font-size: 32px;
             font-weight: 700;
         }
-        
+
         .market-title .icon {
             font-size: 36px;
         }
-        
+
         .market-stats {
             display: flex;
             gap: 30px;
             flex-wrap: wrap;
         }
-        
+
         .market-stat {
             text-align: right;
         }
-        
+
         .market-stat .value {
             font-size: 28px;
             font-weight: 800;
         }
-        
+
         .market-stat .label {
             font-size: 12px;
             opacity: 0.8;
             text-transform: uppercase;
         }
-        
+
         .market-stat .change {
             font-size: 16px;
             font-weight: 600;
         }
-        
-        .market-stat .change.positive { color: #2ecc71; }
-        .market-stat .change.negative { color: #e74c3c; }
-        
+
+        .market-stat .change.positive {
+            color: #2ecc71;
+        }
+
+        .market-stat .change.negative {
+            color: #e74c3c;
+        }
+
         .chart-content {
             padding: 40px 0;
         }
-        
+
         .chart-container-wrapper {
             background: white;
             border-radius: 16px;
             padding: 30px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
             margin-bottom: 30px;
         }
-        
+
         .timeframe-buttons {
             display: flex;
             gap: 10px;
             margin-bottom: 25px;
             flex-wrap: wrap;
         }
-        
+
         .timeframe-btn {
             padding: 10px 24px;
             background: #f8f9fa;
@@ -130,65 +139,65 @@
             transition: all 0.3s ease;
             color: #2c3e50;
         }
-        
+
         .timeframe-btn:hover,
         .timeframe-btn.active {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border-color: transparent;
             color: white;
         }
-        
+
         .chart-canvas-container {
             position: relative;
             height: 400px;
         }
-        
+
         .market-details {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
         }
-        
+
         .detail-card {
             background: #f8f9fa;
             padding: 20px;
             border-radius: 12px;
             text-align: center;
         }
-        
+
         .detail-card .label {
             font-size: 12px;
             color: #7f8c8d;
             text-transform: uppercase;
             margin-bottom: 8px;
         }
-        
+
         .detail-card .value {
             font-size: 24px;
             font-weight: 700;
             color: #2c3e50;
         }
-        
+
         .related-markets {
             background: white;
             border-radius: 16px;
             padding: 30px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
         }
-        
+
         .related-markets h3 {
             font-size: 20px;
             font-weight: 700;
             margin-bottom: 20px;
             color: #2c3e50;
         }
-        
+
         .related-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
         }
-        
+
         .related-card {
             display: flex;
             justify-content: space-between;
@@ -201,48 +210,49 @@
             text-decoration: none;
             color: inherit;
         }
-        
+
         .related-card:hover {
             background: #e8f4f8;
             transform: translateY(-2px);
         }
-        
+
         .related-card .name {
             font-weight: 600;
             color: #2c3e50;
         }
-        
+
         .related-card .value {
             font-weight: 700;
             color: #2c3e50;
         }
-        
+
         .related-card .change {
             font-size: 14px;
             font-weight: 600;
         }
-        
+
         @media (max-width: 768px) {
             .chart-header-content {
                 flex-direction: column;
                 align-items: flex-start;
             }
-            
+
             .market-title h1 {
                 font-size: 24px;
             }
-            
+
             .market-stats {
                 width: 100%;
                 justify-content: space-between;
             }
-            
+
             .chart-canvas-container {
                 height: 300px;
             }
         }
     </style>
 </head>
+
 <body>
     <div class="chart-page">
         <!-- Header -->
@@ -284,14 +294,15 @@
                         <button class="timeframe-btn" data-period="1Y">1 Year</button>
                         <button class="timeframe-btn" data-period="5Y">5 Years</button>
                     </div>
-                    
+
                     <div class="chart-canvas-container">
                         <canvas id="marketChart"></canvas>
                     </div>
                 </div>
 
                 <div class="chart-container-wrapper">
-                    <h3 style="margin-bottom: 20px; font-size: 20px; font-weight: 700; color: #2c3e50;">Market Details</h3>
+                    <h3 style="margin-bottom: 20px; font-size: 20px; font-weight: 700; color: #2c3e50;">Market Details
+                    </h3>
                     <div class="market-details">
                         <div class="detail-card">
                             <div class="label">Open</div>
@@ -332,51 +343,19 @@
 
     <script src="assets/js/config.js?v=20260118"></script>
     <script>
-        // Market data
-        const marketData = {
-            nifty50: {
-                name: 'Nifty 50',
-                icon: '📈',
-                value: 23520,
-                change: '+0.35%',
-                changeNum: 82.15,
-                open: 23480,
-                high: 23585,
-                low: 23420,
-                prevClose: 23438,
-                high52w: 26277,
-                low52w: 21281
-            },
-            sensex: {
-                name: 'Sensex',
-                icon: '📊',
-                value: 77580,
-                change: '+0.42%',
-                changeNum: 325.50,
-                open: 77320,
-                high: 77650,
-                low: 77180,
-                prevClose: 77254,
-                high52w: 85978,
-                low52w: 70234
-            },
-            banknifty: {
-                name: 'Bank Nifty',
-                icon: '🏦',
-                value: 50840,
-                change: '+0.28%',
-                changeNum: 142.30,
-                open: 50720,
-                high: 50920,
-                low: 50650,
-                prevClose: 50698,
-                high52w: 54467,
-                low52w: 44900
-            }
+        // API Configuration
+        const API_BASE_URL = window.APIConfig ? APIConfig.baseURL : 'https://bizzshort.onrender.com';
+
+        // Market symbol mapping
+        const symbolMap = {
+            'nifty50': { api: 'nifty', name: 'Nifty 50', icon: '📈' },
+            'sensex': { api: 'sensex', name: 'Sensex', icon: '📊' },
+            'banknifty': { api: 'banknifty', name: 'Bank Nifty', icon: '🏦' }
         };
 
         let chart = null;
         let currentMarket = 'nifty50';
+        let marketData = {};
 
         // Get market from URL
         function getMarketFromURL() {
@@ -384,91 +363,132 @@
             return params.get('market') || 'nifty50';
         }
 
+        // Fetch real market data
+        async function fetchMarketData() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/market-data`);
+                const result = await response.json();
+
+                if (result.success) {
+                    console.log('✅ Real market data fetched:', result.source);
+                    return result.data;
+                }
+            } catch (error) {
+                console.error('❌ Error fetching market data:', error);
+            }
+            return null;
+        }
+
+        // Fetch chart data
+        async function fetchChartData(symbol, range = '1d', interval = '5m') {
+            try {
+                const apiSymbol = symbolMap[currentMarket]?.api || 'nifty';
+                const response = await fetch(`${API_BASE_URL}/api/chart-data/${apiSymbol}?range=${range}&interval=${interval}`);
+                const result = await response.json();
+
+                if (result.success) {
+                    console.log(`✅ Chart data fetched: ${result.dataPoints} points`);
+                    return result.data;
+                }
+            } catch (error) {
+                console.error('❌ Error fetching chart data:', error);
+            }
+            return null;
+        }
+
         // Initialize page
-        function initPage() {
+        async function initPage() {
             currentMarket = getMarketFromURL();
-            const data = marketData[currentMarket] || marketData.nifty50;
-            
-            // Update header
-            document.getElementById('marketIcon').textContent = data.icon;
-            document.getElementById('marketName').textContent = data.name;
-            document.getElementById('currentValue').textContent = '₹' + data.value.toLocaleString();
-            
-            const changeEl = document.getElementById('changeValue');
-            changeEl.textContent = data.change + ' (' + (data.changeNum > 0 ? '+' : '') + data.changeNum.toFixed(2) + ')';
-            changeEl.className = 'change ' + (data.changeNum >= 0 ? 'positive' : 'negative');
-            
-            // Update details
-            document.getElementById('openValue').textContent = '₹' + data.open.toLocaleString();
-            document.getElementById('highValue').textContent = '₹' + data.high.toLocaleString();
-            document.getElementById('lowValue').textContent = '₹' + data.low.toLocaleString();
-            document.getElementById('prevClose').textContent = '₹' + data.prevClose.toLocaleString();
-            document.getElementById('high52w').textContent = '₹' + data.high52w.toLocaleString();
-            document.getElementById('low52w').textContent = '₹' + data.low52w.toLocaleString();
-            
-            // Create chart
-            createChart('1D');
-            
+            const marketInfo = symbolMap[currentMarket] || symbolMap.nifty50;
+
+            // Show loading state
+            document.getElementById('marketName').textContent = `Loading ${marketInfo.name}...`;
+
+            // Fetch real market data
+            const data = await fetchMarketData();
+
+            if (data) {
+                marketData = data;
+                const currentData = data[marketInfo.api];
+
+                // Update header
+                document.getElementById('marketIcon').textContent = marketInfo.icon;
+                document.getElementById('marketName').textContent = marketInfo.name;
+                document.getElementById('currentValue').textContent = '₹' + currentData.value.toLocaleString();
+
+                const changeEl = document.getElementById('changeValue');
+                const changeText = `${currentData.change >= 0 ? '+' : ''}${currentData.change}% (${currentData.changePoints >= 0 ? '+' : ''}${currentData.changePoints.toFixed(2)})`;
+                changeEl.textContent = changeText;
+                changeEl.className = 'change ' + (currentData.change >= 0 ? 'positive' : 'negative');
+
+                // Update details (use available data)
+                document.getElementById('highValue').textContent = currentData.high ? '₹' + currentData.high.toLocaleString() : '--';
+                document.getElementById('lowValue').textContent = currentData.low ? '₹' + currentData.low.toLocaleString() : '--';
+                document.getElementById('openValue').textContent = '--'; // Not available from current API
+                document.getElementById('prevClose').textContent = '--'; // Calculate from change
+                document.getElementById('high52w').textContent = '--'; // Not available
+                document.getElementById('low52w').textContent = '--'; // Not available
+            }
+
+            // Create chart with real data
+            await createChart('1d');
+
             // Load related markets
             loadRelatedMarkets();
         }
 
-        function generateChartData(period) {
-            const data = marketData[currentMarket];
-            let points = [];
-            let labels = [];
-            const baseValue = data.value;
-            
-            const periodConfig = {
-                '1D': { count: 24, format: 'hour' },
-                '1W': { count: 7, format: 'day' },
-                '1M': { count: 30, format: 'day' },
-                '3M': { count: 90, format: 'week' },
-                '1Y': { count: 12, format: 'month' },
-                '5Y': { count: 60, format: 'month' }
-            };
-            
-            const config = periodConfig[period];
-            
-            for (let i = 0; i < config.count; i++) {
-                const variation = (Math.random() - 0.5) * baseValue * 0.02;
-                const trend = (i / config.count) * baseValue * 0.01;
-                points.push(baseValue - (baseValue * 0.02) + variation + trend);
-                
-                if (config.format === 'hour') {
-                    labels.push(`${9 + Math.floor(i * (6/24))}:${(i * 30) % 60 || '00'}`);
-                } else if (config.format === 'day') {
-                    labels.push(`Day ${i + 1}`);
-                } else if (config.format === 'week') {
-                    labels.push(`W${Math.floor(i / 7) + 1}`);
-                } else {
-                    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-                    labels.push(months[i % 12]);
-                }
-            }
-            
-            return { labels, points };
-        }
-
-        function createChart(period) {
+        async function createChart(period) {
             const ctx = document.getElementById('marketChart').getContext('2d');
-            const chartData = generateChartData(period);
-            
+
+            // Map period to API format
+            const periodMap = {
+                '1D': { range: '1d', interval: '5m' },
+                '1W': { range: '5d', interval: '30m' },
+                '1M': { range: '1mo', interval: '1d' },
+                '3M': { range: '3mo', interval: '1d' },
+                '1Y': { range: '1y', interval: '1wk' },
+                '5Y': { range: '5y', interval: '1mo' }
+            };
+
+            const config = periodMap[period] || periodMap['1D'];
+
+            // Fetch real chart data
+            const chartData = await fetchChartData(currentMarket, config.range, config.interval);
+
             if (chart) {
                 chart.destroy();
             }
-            
+
+            if (!chartData || chartData.length === 0) {
+                console.warn('No chart data available');
+                return;
+            }
+
+            // Prepare data for Chart.js
+            const labels = chartData.map(d => {
+                const date = new Date(d.time);
+                if (period === '1D') {
+                    return date.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
+                } else if (period === '1W' || period === '1M') {
+                    return date.toLocaleDateString('en-IN', { month: 'short', day: 'numeric' });
+                } else {
+                    return date.toLocaleDateString('en-IN', { month: 'short', year: '2-digit' });
+                }
+            });
+
+            const prices = chartData.map(d => d.close);
+
             const gradient = ctx.createLinearGradient(0, 0, 0, 400);
             gradient.addColorStop(0, 'rgba(102, 126, 234, 0.3)');
             gradient.addColorStop(1, 'rgba(102, 126, 234, 0)');
-            
+
             chart = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: chartData.labels,
+                    labels: labels,
                     datasets: [{
-                        label: marketData[currentMarket].name,
-                        data: chartData.points,
+                        label: symbolMap[currentMarket].name,
+                        data: prices,
                         borderColor: '#667eea',
                         backgroundColor: gradient,
                         fill: true,
@@ -490,7 +510,7 @@
                             bodyFont: { size: 16 },
                             padding: 12,
                             callbacks: {
-                                label: function(context) {
+                                label: function (context) {
                                     return '₹' + context.parsed.y.toLocaleString(undefined, { maximumFractionDigits: 2 });
                                 }
                             }
@@ -499,13 +519,16 @@
                     scales: {
                         x: {
                             grid: { display: false },
-                            ticks: { color: '#7f8c8d' }
+                            ticks: {
+                                color: '#7f8c8d',
+                                maxTicksLimit: 10
+                            }
                         },
                         y: {
                             grid: { color: 'rgba(0,0,0,0.05)' },
                             ticks: {
                                 color: '#7f8c8d',
-                                callback: function(value) {
+                                callback: function (value) {
                                     return '₹' + value.toLocaleString();
                                 }
                             }
@@ -520,28 +543,37 @@
         }
 
         function loadRelatedMarkets() {
+            if (!marketData || Object.keys(marketData).length === 0) {
+                return;
+            }
+
             const container = document.getElementById('relatedMarkets');
-            const html = Object.entries(marketData)
+            const html = Object.entries(symbolMap)
                 .filter(([key]) => key !== currentMarket)
-                .map(([key, data]) => `
-                    <a href="market-chart.html?market=${key}" class="related-card">
-                        <div>
-                            <span style="font-size: 24px; margin-right: 10px;">${data.icon}</span>
-                            <span class="name">${data.name}</span>
-                        </div>
-                        <div style="text-align: right;">
-                            <div class="value">₹${data.value.toLocaleString()}</div>
-                            <div class="change ${data.changeNum >= 0 ? 'positive' : 'negative'}">${data.change}</div>
-                        </div>
-                    </a>
-                `).join('');
-            
+                .map(([key, info]) => {
+                    const data = marketData[info.api];
+                    if (!data) return '';
+
+                    return `
+                        <a href="market-chart.html?market=${key}" class="related-card">
+                            <div>
+                                <span style="font-size: 24px; margin-right: 10px;">${info.icon}</span>
+                                <span class="name">${info.name}</span>
+                            </div>
+                            <div style="text-align: right;">
+                                <div class="value">₹${data.value.toLocaleString()}</div>
+                                <div class="change ${data.change >= 0 ? 'positive' : 'negative'}">${data.change >= 0 ? '+' : ''}${data.change}%</div>
+                            </div>
+                        </a>
+                    `;
+                }).join('');
+
             container.innerHTML = html;
         }
 
         // Timeframe button handlers
         document.querySelectorAll('.timeframe-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
+            btn.addEventListener('click', function () {
                 document.querySelectorAll('.timeframe-btn').forEach(b => b.classList.remove('active'));
                 this.classList.add('active');
                 createChart(this.dataset.period);
@@ -552,4 +584,5 @@
         document.addEventListener('DOMContentLoaded', initPage);
     </script>
 </body>
+
 </html>
