@@ -346,20 +346,27 @@ const BizzShortVideoLoader = {
                 `;
             }
 
-            // Using Instagram media URL for thumbnail
-            const thumbUrl = `https://www.instagram.com/p/${reel.id}/media/?size=l`;
+            // Create beautiful gradient thumbnails with play button
+            // Instagram blocks direct media access, so we use stylish placeholders
+            const gradients = [
+                'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+                'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+                'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+                'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
+                'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)'
+            ];
+            const gradient = gradients[finalReels.indexOf(reel) % gradients.length];
 
             return `
                 <div class="interview-video-card" onclick="playInstagramReel('${reel.id}', '${reel.title.replace(/'/g, "\\'")}')" style="cursor:pointer;">
                     <div class="video-embed-wrapper">
-                        <div class="instagram-thumbnail">
-                            <img src="${thumbUrl}" alt="${reel.title}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                            <div class="instagram-placeholder" style="display:none;">
+                        <div class="instagram-thumbnail" style="background:${gradient};">
+                            <div class="instagram-play-btn">
                                 <i class="fab fa-instagram"></i>
-                                <span>Watch Reel</span>
                             </div>
-                            <div class="play-overlay">
-                                <i class="fab fa-instagram"></i>
+                            <div class="instagram-reel-icon">
+                                <i class="fas fa-play"></i>
                             </div>
                         </div>
                     </div>
