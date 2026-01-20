@@ -422,7 +422,7 @@
                     </div>
                 </section>
 
-                <!-- Interview & Podcasts Section (Instagram Reels) -->
+                <!-- Interview & Podcasts Section -->
                 <section id="interview-podcasts" class="content-section podcasts-section">
                     <div class="container">
                         <div class="section-header">
@@ -431,8 +431,63 @@
                                 →</a>
                         </div>
 
-                        <div class="interview-videos-grid" id="podcastGrid">
-                            <!-- Populated with Instagram Reels 3,4,5,6 + 2 new by bizzshort-video-loader.js -->
+                        <!-- Featured Row: 1.5fr Podcast + 1fr Interview + Ad Banner -->
+                        <div class="podcasts-three-column-grid">
+                            <!-- Large Podcast Card (1.5fr) -->
+                            <div class="podcast-card-large"
+                                onclick="playInstagramReel('DSRfWfMjQy_', 'Industry Expert - Market Insights')"
+                                style="cursor:pointer;">
+                                <div class="podcast-embed-container"
+                                    style="display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                                    <div style="text-align:center;color:white;padding:40px;">
+                                        <i class="fab fa-instagram" style="font-size:80px;opacity:0.8;"></i>
+                                        <p style="margin-top:20px;font-size:16px;font-weight:500;">Click to Play</p>
+                                    </div>
+                                </div>
+                                <div class="podcast-info-overlay">
+                                    <span class="podcast-badge"><i class="fas fa-podcast"></i> PODCAST</span>
+                                    <h3>Industry Expert - Market Insights</h3>
+                                    <p><i class="fab fa-instagram"></i> @bizz_short</p>
+                                </div>
+                            </div>
+
+                            <!-- Interview Card (1fr) -->
+                            <div class="interview-card-medium"
+                                onclick="playInstagramReel('DTHxue9lEFt', 'Business Leader - Strategic Growth')"
+                                style="cursor:pointer;">
+                                <div class="interview-embed-container"
+                                    style="display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);">
+                                    <div style="text-align:center;color:white;padding:40px;">
+                                        <i class="fas fa-user-tie" style="font-size:60px;opacity:0.8;"></i>
+                                        <p style="margin-top:20px;font-size:14px;font-weight:500;">Click to Play</p>
+                                    </div>
+                                </div>
+                                <div class="interview-info-overlay">
+                                    <span class="interview-badge"><i class="fas fa-user-tie"></i> INTERVIEW</span>
+                                    <h3>Business Leader - Strategic Growth</h3>
+                                    <p><i class="fab fa-instagram"></i> @bizz_short</p>
+                                </div>
+                            </div>
+
+                            <!-- Ad Banner Area -->
+                            <div class="podcasts-ad-sidebar">
+                                <div class="ad-banner-vertical">
+                                    <a href="https://garvikadvertising.com" target="_blank" rel="noopener noreferrer"
+                                        class="vertical-ad-link">
+                                        <div class="vertical-ad-content">
+                                            <span class="ad-brand">GARVIK INDIA</span>
+                                            <span class="ad-tagline">360° Digital Marketing</span>
+                                            <span class="ad-cta">Visit Now →</span>
+                                        </div>
+                                    </a>
+                                </div>
+                                <p class="ad-label">Advertisement</p>
+                            </div>
+                        </div>
+
+                        <!-- More Interview Videos Grid (Populated by JavaScript) -->
+                        <div class="interview-videos-grid" id="podcastGrid" style="margin-top:30px;">
+                            <!-- Populated with remaining Instagram Reels by bizzshort-video-loader.js -->
                         </div>
                     </div>
                 </section>
