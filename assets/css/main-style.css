@@ -826,21 +826,19 @@ a {
     align-items: center;
     margin-bottom: 35px;
     padding-bottom: 15px;
-    border-bottom: 3px solid transparent;
-    background: linear-gradient(to right, #e74c3c 0%, #c0392b 50%, #e74c3c 100%) left bottom no-repeat;
-    background-size: 100% 3px;
+    border-bottom: none;
     position: relative;
 }
 
 .section-header::after {
     content: '';
     position: absolute;
-    bottom: -3px;
+    bottom: 0;
     left: 0;
     width: 100px;
     height: 3px;
-    background: #e74c3c;
-    box-shadow: 0 0 10px rgba(231, 76, 60, 0.5);
+    background: linear-gradient(to right, #e74c3c 0%, #c0392b 100%);
+    border-radius: 2px;
 }
 
 .section-title {
@@ -897,6 +895,32 @@ a {
 .latest-news-section {
     background: #f8f9fa;
     padding: 60px 0;
+}
+
+/* News Video Grid - 4 column responsive layout */
+.news-video-grid-large {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+    margin-top: 30px;
+}
+
+@media (max-width: 1200px) {
+    .news-video-grid-large {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 992px) {
+    .news-video-grid-large {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 576px) {
+    .news-video-grid-large {
+        grid-template-columns: 1fr;
+    }
 }
 
 /* Section Header with Filters */
@@ -1271,11 +1295,6 @@ a {
 .market-change.down {
     background: rgba(214, 48, 49, 0.1);
     color: #d63031;
-}
-
-border-radius: 8px;
-overflow: hidden;
-box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
 }
 
 /* Skeleton Loader */
@@ -3915,13 +3934,6 @@ a.interview-video-card.instagram-reel-card {
     transition: all 0.3s ease;
     pointer-events: none;
     z-index: 2;
-}
-
-border-radius: 50%;
-display: flex;
-align-items: center;
-justify-content: center;
-transition: all 0.3s ease;
 }
 
 .news-video-card-large:hover .play-button-overlay {
