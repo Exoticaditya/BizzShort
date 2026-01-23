@@ -917,6 +917,50 @@ app.delete('/api/articles/:id', protect, async (req, res) => {
     }
 });
 
+// Get single article by ID or slug
+app.get('/api/articles/:id', async (req, res) => {
+    try {
+        const article = await Article.findOne({
+            $or: [
+                { _id: mongoose.Types.ObjectId.isValid(req.params.id) ? req.params.id : null },
+                { slug: req.params.id }
+            ]
+        });
+
+        if (!article) {
+            return res.status(404).json({ success: false, error: 'Article not found' });
+        }
+
+        res.json({ ...article._doc, id: article._id });
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
+
+// Track article view
+app.post('/api/articles/:id/view', async (req, res) => {
+    try {
+        const article = await Article.findOneAndUpdate(
+            {
+                $or: [
+                    { _id: mongoose.Types.ObjectId.isValid(req.params.id) ? req.params.id : null },
+                    { slug: req.params.id }
+                ]
+            },
+            { $inc: { views: 1 } },
+            { new: true }
+        );
+
+        if (!article) {
+            return res.status(404).json({ success: false, error: 'Article not found' });
+        }
+
+        res.json({ success: true, views: article.views });
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
+
 // Events
 app.get('/api/events', async (req, res) => {
     const events = await Event.find().sort({ date: 1 });
@@ -1173,6 +1217,60 @@ app.delete('/api/videos/:id', protect, async (req, res) => {
         res.json({ success: true, message: 'Video deleted' });
     } catch (err) { res.status(500).json({ success: false, error: err.message }); }
 });
+
+// Synced Videos API - Public endpoint for frontend video loader
+// Returns videos in format expected by bizzshort-video-loader.js
+app.get('/api/synced-videos', async (req, res) => {
+    try {
+        const { source, limit = 20, category } = req.query;
+        let query = {};
+
+        if (source) query.source = source;
+        if (category) query.category = new RegExp(category, 'i');
+
+        const videos = await Video.find(query)
+            .sort({ createdAt: -1 })
+            .limit(parseInt(limit));
+
+        // Transform to format expected by frontend
+        const formattedVideos = videos.map(v => ({
+            videoId: v.videoId,
+            title: v.title,
+            category: v.category,
+            source: v.source,
+            thumbnail: v.thumbnail || (v.source === 'youtube'
+                ? `https://img.youtube.com/vi/${v.videoId}/hqdefault.jpg`
+                : null),
+            views: v.views || '0',
+            date: v.date || new Date(v.createdAt).toLocaleDateString(),
+            relativeTime: getRelativeTime(v.createdAt),
+            featured: v.featured
+        }));
+
+        res.json({
+            success: true,
+            data: formattedVideos,
+            count: formattedVideos.length,
+            syncedAt: new Date().toISOString()
+        });
+    } catch (err) {
+        console.error('Synced videos error:', err);
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
+
+// Helper function for relative time
+function getRelativeTime(date) {
+    const now = new Date();
+    const diffMs = now - new Date(date);
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+    if (diffDays === 0) return 'Today';
+    if (diffDays === 1) return 'Yesterday';
+    if (diffDays < 7) return `${diffDays} days ago`;
+    if (diffDays < 30) return `${Math.floor(diffDays / 7)} weeks ago`;
+    return `${Math.floor(diffDays / 30)} months ago`;
+}
 
 // ============ Market Data API (Real-time NSE/BSE Data via Yahoo Finance) ============
 app.get('/api/market-data', async (req, res) => {

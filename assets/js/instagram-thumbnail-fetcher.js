@@ -1,11 +1,15 @@
 /**
  * Instagram oEmbed Thumbnail Fetcher
  * Fetches real thumbnails for Instagram Reels using the oEmbed API
+ * Note: Instagram's public oEmbed API may have rate limits and restrictions
  */
 
 const InstagramThumbnailFetcher = {
     // Cache for oEmbed data
     cache: new Map(),
+
+    // Flag to disable API calls if they consistently fail
+    apiDisabled: false,
 
     /**
      * Fetch Instagram oEmbed data for a reel
@@ -13,16 +17,23 @@ const InstagramThumbnailFetcher = {
      * @returns {Promise<object>} oEmbed data with thumbnail_url
      */
     async fetchOEmbedData(reelId) {
+        // If API has been disabled due to failures, skip
+        if (this.apiDisabled) {
+            return null;
+        }
+
         // Check cache first
         if (this.cache.has(reelId)) {
             return this.cache.get(reelId);
         }
 
         const reelUrl = `https://www.instagram.com/reel/${reelId}/`;
-        const oEmbedUrl = `https://graph.facebook.com/v12.0/instagram_oembed?url=${encodeURIComponent(reelUrl)}&access_token=YOUR_TOKEN`; // Note: Requires Facebook app token
+
+        // Note: The Facebook Graph API version requires an access token
+        // which should be handled server-side, not in client code.
+        // Using public oEmbed endpoint only (with limitations)
 
         try {
-            // Using public oEmbed endpoint (may have limitations)
             const publicOEmbedUrl = `https://api.instagram.com/oembed?url=${encodeURIComponent(reelUrl)}`;
 
             const response = await fetch(publicOEmbedUrl);
@@ -31,8 +42,13 @@ const InstagramThumbnailFetcher = {
                 this.cache.set(reelId, data);
                 console.log(`✅ Fetched Instagram thumbnail for ${reelId}`);
                 return data;
+            } else if (response.status === 429) {
+                // Rate limited - disable further API calls
+                console.warn('⚠️ Instagram API rate limited, disabling thumbnail fetcher');
+                this.apiDisabled = true;
+                return null;
             } else {
-                console.warn(`⚠️ Instagram oEmbed failed for ${reelId}:`, response.status);
+                console.warn(`⚠️ Instagram oEmbed failed for ${reelId}: ${response.status}`);
                 return null;
             }
         } catch (error) {

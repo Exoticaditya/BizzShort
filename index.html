@@ -13,9 +13,9 @@
 
     <!-- SEO Meta Tags -->
     <meta name="description"
-        content="BizzShort delivers latest Indian business news, stock market updates, startup stories, and financial analysis in short, engaging video format. Stay ahead with real-time market insights.">
+        content="BizzShort delivers latest Indian business news, stock market updates, startup stories, financial analysis, and in-depth articles in short, engaging format. Stay ahead with real-time market insights.">
     <meta name="keywords"
-        content="business news India, stock market news, startup news, Nifty 50, Sensex, BSE, NSE, financial news, business videos, market analysis, Indian economy, breaking business news, live market data, Bank Nifty, stock trading, Indian stock market, business interviews, startup funding, IPO news, corporate news, financial analysis, investment tips, market trends, business updates, economic news India, business portal, share market news, equity market, commodity market, forex news, mutual funds, business today, business insights, entrepreneurship, business strategy">
+        content="business news India, stock market news, startup news, Nifty 50, Sensex, BSE, NSE, financial news, business videos, market analysis, Indian economy, breaking business news, live market data, Bank Nifty, stock trading, Indian stock market, business interviews, startup funding, IPO news, corporate news, financial analysis, investment tips, market trends, business updates, economic news India, business portal, share market news, equity market, commodity market, forex news, mutual funds, business today, business insights, entrepreneurship, business strategy, business articles, expert opinions, industry analysis">
     <meta name="author" content="BizzShort Team">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://www.bizzshort.com/">
@@ -60,36 +60,9 @@
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX"
         crossorigin="anonymous"></script>
 
-    <!-- SEO Meta Tags -->
-    <meta name="description"
-        content="BizzShort delivers real-time business news, market updates, startup insights, and industry analysis. Stay informed with India's trusted business news platform covering markets, economy, technology, and more.">
-    <!-- Keywords already defined above -->
-    <meta name="author" content="BizzShort">
-    <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://bizzshort.onrender.com/">
-
-    <!-- Open Graph Meta Tags -->
-    <meta property="og:site_name" content="BizzShort">
-    <meta property="og:title" content="BizzShort - Business News Simplified | Latest Market Updates">
-    <meta property="og:description"
-        content="Your premier source for business news, market insights, and industry analysis. Real-time updates on Nifty, Sensex, startups, and economy.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://bizzshort.onrender.com/">
-    <meta property="og:image" content="https://bizzshort.onrender.com/assets/images/logo.jpeg">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta property="og:locale" content="en_IN">
-
-    <!-- Twitter Card Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@bizzshort">
-    <meta name="twitter:creator" content="@bizzshort">
-    <meta name="twitter:title" content="BizzShort - Business News Simplified">
-    <meta name="twitter:description"
-        content="Latest business news, market updates, and industry insights. Stay ahead with BizzShort.">
-    <meta name="twitter:image" content="https://bizzshort.onrender.com/assets/images/logo.jpeg">
 
     <!-- Google Analytics (Replace G-XXXXXXXXXX with your actual GA4 Measurement ID) -->
+    <!-- TODO: Add your Google Analytics ID below -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -97,6 +70,7 @@
         gtag('js', new Date());
         gtag('config', 'G-XXXXXXXXXX');
     </script>
+
 
     <!-- Structured Data (JSON-LD) for SEO -->
     <script type="application/ld+json">
@@ -196,11 +170,11 @@
                                 <li><a href="index.html" class="active">Home</a></li>
                                 <li><a href="#latest-news">Latest News</a></li>
                                 <li class="nav-item"><a href="#client-feature" class="nav-link">Client Feature</a></li>
+                                <li class="nav-item"><a href="#article-news" class="nav-link">Featured Articles</a></li>
                                 <li class="nav-item"><a href="#interview-podcasts" class="nav-link">Interview &
                                         Podcast</a></li>
                                 <li class="nav-item"><a href="#market-today" class="nav-link">Market Today</a></li>
                                 <li><a href="#upcoming-events">Upcoming Events</a></li>
-                                <li><a href="#market-analysis">Market Analysis</a></li>
                                 <li><a href="advertise.html">Advertise</a></li>
                                 <li><a href="about.html">About</a></li>
                             </ul>
@@ -418,6 +392,114 @@
                         </div>
                         <div class="news-video-grid-large" id="clientFeatureGrid">
                             <!-- Populated with YouTube videos 1,2,3,4,5,7,8 by bizzshort-video-loader.js -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Article News Section -->
+                <section id="article-news" class="content-section article-news-section">
+                    <div class="container">
+                        <div class="section-header">
+                            <h2 class="section-title">Featured Articles</h2>
+                            <a href="#" class="view-all" id="viewAllArticles">View All →</a>
+                        </div>
+                        <div class="breaking-news-grid" id="articleNewsGrid">
+                            <!-- Populated dynamically by article-loader.js -->
+                            <article class="breaking-news-card article-card" data-article-id="1">
+                                <div class="video-thumbnail article-thumbnail">
+                                    <img src="https://img.youtube.com/vi/wG7_1jViDRs/hqdefault.jpg" alt="Article Image">
+                                    <div class="read-overlay"><i class="fas fa-book-open"></i></div>
+                                </div>
+                                <div class="news-content article-content">
+                                    <span class="news-badge">BUSINESS</span>
+                                    <h4>Understanding India's Economic Growth in 2026</h4>
+                                    <p>Detailed analysis of economic indicators and market trends shaping India's growth...</p>
+                                    <div class="news-meta">
+                                        <span><i class="far fa-eye"></i> 5.2K</span>
+                                        <span><i class="far fa-clock"></i> 5 min read</span>
+                                    </div>
+                                </div>
+                            </article>
+
+                            <article class="breaking-news-card article-card" data-article-id="2">
+                                <div class="video-thumbnail article-thumbnail">
+                                    <img src="https://img.youtube.com/vi/uSkTR0Q-HVQ/hqdefault.jpg" alt="Article Image">
+                                    <div class="read-overlay"><i class="fas fa-book-open"></i></div>
+                                </div>
+                                <div class="news-content article-content">
+                                    <span class="news-badge">STARTUPS</span>
+                                    <h4>Rise of Indian Unicorns: 2026 Edition</h4>
+                                    <p>How Indian startups are revolutionizing global markets with innovative solutions...</p>
+                                    <div class="news-meta">
+                                        <span><i class="far fa-eye"></i> 8.1K</span>
+                                        <span><i class="far fa-clock"></i> 7 min read</span>
+                                    </div>
+                                </div>
+                            </article>
+
+                            <article class="breaking-news-card article-card" data-article-id="3">
+                                <div class="video-thumbnail article-thumbnail">
+                                    <img src="https://img.youtube.com/vi/VDOutGjKtRg/hqdefault.jpg" alt="Article Image">
+                                    <div class="read-overlay"><i class="fas fa-book-open"></i></div>
+                                </div>
+                                <div class="news-content article-content">
+                                    <span class="news-badge">MARKETS</span>
+                                    <h4>Stock Market Strategies for Long-Term Investors</h4>
+                                    <p>Expert insights on building a robust investment portfolio in volatile markets...</p>
+                                    <div class="news-meta">
+                                        <span><i class="far fa-eye"></i> 12.3K</span>
+                                        <span><i class="far fa-clock"></i> 6 min read</span>
+                                    </div>
+                                </div>
+                            </article>
+
+                            <article class="breaking-news-card article-card" data-article-id="4">
+                                <div class="video-thumbnail article-thumbnail">
+                                    <img src="https://img.youtube.com/vi/UtIVXBTMw2I/hqdefault.jpg" alt="Article Image">
+                                    <div class="read-overlay"><i class="fas fa-book-open"></i></div>
+                                </div>
+                                <div class="news-content article-content">
+                                    <span class="news-badge">TECHNOLOGY</span>
+                                    <h4>AI Transformation in Indian Businesses</h4>
+                                    <p>Exploring how artificial intelligence is reshaping traditional business models...</p>
+                                    <div class="news-meta">
+                                        <span><i class="far fa-eye"></i> 6.7K</span>
+                                        <span><i class="far fa-clock"></i> 8 min read</span>
+                                    </div>
+                                </div>
+                            </article>
+
+                            <article class="breaking-news-card article-card" data-article-id="5">
+                                <div class="video-thumbnail article-thumbnail">
+                                    <img src="https://img.youtube.com/vi/SEDvD1IICfE/hqdefault.jpg" alt="Article Image">
+                                    <div class="read-overlay"><i class="fas fa-book-open"></i></div>
+                                </div>
+                                <div class="news-content article-content">
+                                    <span class="news-badge">FINANCE</span>
+                                    <h4>Banking Sector Reforms and Digital Finance</h4>
+                                    <p>Comprehensive guide to understanding recent banking reforms and digital payment trends...</p>
+                                    <div class="news-meta">
+                                        <span><i class="far fa-eye"></i> 9.4K</span>
+                                        <span><i class="far fa-clock"></i> 5 min read</span>
+                                    </div>
+                                </div>
+                            </article>
+
+                            <article class="breaking-news-card article-card" data-article-id="6">
+                                <div class="video-thumbnail article-thumbnail">
+                                    <img src="https://img.youtube.com/vi/d0sU0TBhBkE/hqdefault.jpg" alt="Article Image">
+                                    <div class="read-overlay"><i class="fas fa-book-open"></i></div>
+                                </div>
+                                <div class="news-content article-content">
+                                    <span class="news-badge">ECONOMY</span>
+                                    <h4>Export Growth and Trade Opportunities</h4>
+                                    <p>Analysis of India's export performance and emerging global trade partnerships...</p>
+                                    <div class="news-meta">
+                                        <span><i class="far fa-eye"></i> 4.8K</span>
+                                        <span><i class="far fa-clock"></i> 6 min read</span>
+                                    </div>
+                                </div>
+                            </article>
                         </div>
                     </div>
                 </section>
@@ -1077,6 +1159,9 @@
     <script src="assets/js/video-manager.js?v=20260118"></script>
     <script src="assets/js/breaking-news-loader.js?v=20260118"></script>
     <script src="assets/js/latest-updates-loader.js?v=20260118"></script>
+
+    <!-- Article Loader -->
+    <script src="assets/js/article-loader.js?v=20260123"></script>
 
     <!-- BizzShort Video Loader - Connects YouTube & Instagram -->
     <script src="assets/js/bizzshort-video-loader.js?v=20260118"></script>
