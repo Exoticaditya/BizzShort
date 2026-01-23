@@ -105,9 +105,12 @@ class RealTimeMarketStream {
     }
 
     updateCard(market, data) {
-        const valueEl = document.getElementById(`${market}-value`);
-        const changeEl = document.getElementById(`${market}-change`);
-        const noteEl = document.getElementById(`${market}-note`);
+        // Convert camelCase to kebab-case for element IDs
+        const elementId = market === 'bankNifty' ? 'bank-nifty' : market;
+        
+        const valueEl = document.getElementById(`${elementId}-value`);
+        const changeEl = document.getElementById(`${elementId}-change`);
+        const noteEl = document.getElementById(`${elementId}-note`);
 
         if (valueEl && data) {
             // Animate value change
