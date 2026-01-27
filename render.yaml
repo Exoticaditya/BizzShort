@@ -4,6 +4,16 @@ services:
     env: node
     buildCommand: npm install
     startCommand: npm start
+    healthCheckPath: /api/health
     envVars:
       - key: NODE_ENV
         value: production
+      - key: MONGO_URI
+        value: mongodb+srv://BizzShort-admin:VWmXkYaxaHZCyelR@bizzshort.l4c87om.mongodb.net/bizzshort?retryWrites=true&w=majority&appName=BizzShort
+      - key: JWT_SECRET
+        value: bizzshort_super_secret_jwt_key_change_this_in_production_min_32_chars_12345678
+      - key: JWT_EXPIRE
+        value: 30d
+      - key: CORS_ORIGIN
+        value: https://bizzshort.com,https://www.bizzshort.com,https://bizzshort.onrender.com
+

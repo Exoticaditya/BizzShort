@@ -15,8 +15,9 @@ const validator = require('validator');
 // Load env vars
 dotenv.config();
 
-// Connect to Database
-connectDB();
+// Connect to Database (non-blocking for faster server startup)
+// This allows the server to start and respond to health checks while DB connects
+connectDB().catch(err => console.error('Initial DB connection error:', err));
 
 // Models
 const Article = require('./models/Article');
