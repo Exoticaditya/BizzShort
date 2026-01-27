@@ -112,7 +112,12 @@ class RealTimeMarketStream {
         const changeEl = document.getElementById(`${elementId}-change`);
         const noteEl = document.getElementById(`${elementId}-note`);
 
-        if (valueEl && data) {
+        if (!valueEl || !data) {
+            console.warn(`⚠️ Element or data missing for ${market}`);
+            return;
+        }
+
+        try {
             // Animate value change
             const newValue = `₹${Math.round(data.value).toLocaleString('en-IN')}`;
             if (valueEl.textContent !== newValue) {
@@ -120,17 +125,19 @@ class RealTimeMarketStream {
                 setTimeout(() => valueEl.classList.remove('value-updating'), 500);
             }
             valueEl.textContent = newValue;
-        }
 
-        if (changeEl && data) {
-            const change = data.change;
-            const isPositive = change >= 0;
-            changeEl.textContent = `${isPositive ? '+' : ''}${change.toFixed(2)}%`;
-            changeEl.className = `market-change ${isPositive ? 'positive' : 'negative'}`;
-        }
+            if (changeEl) {
+                const change = data.change;
+                const isPositive = change >= 0;
+                changeEl.textContent = `${isPositive ? '+' : ''}${change.toFixed(2)}%`;
+                changeEl.className = `market-change ${isPositive ? 'positive' : 'negative'}`;
+            }
 
-        if (noteEl && data && data.note) {
-            noteEl.textContent = data.note;
+            if (noteEl && data.note) {
+                noteEl.textContent = data.note;
+            }
+        } catch (error) {
+            console.error(`❌ Error updating ${market} card:`, error);
         }
     }
 

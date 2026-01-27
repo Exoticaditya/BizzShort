@@ -171,7 +171,7 @@ body {
 .header-top-section {
     background: var(--color-surface);
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    padding: 6px 0;
+    padding: 12px 0;
 }
 
 .logo-ad-wrapper {
@@ -193,10 +193,11 @@ body {
 }
 
 .logo-img {
-    width: 110px;
-    height: 110px;
-    border-radius: 0;
+    width: 90px;
+    height: 90px;
+    border-radius: 8px;
     object-fit: cover;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .logo-text h1 {
@@ -232,7 +233,8 @@ body {
    Unified Navigation Styles
    ============================================ */
 .navbar-section {
-    background: var(--color-primary);
+    background: var(--color-surface);
+    border-bottom: 2px solid #ddd;
     position: sticky;
     top: 0;
     z-index: var(--z-sticky);
@@ -240,8 +242,8 @@ body {
 }
 
 .navbar-section.scrolled {
-    box-shadow: var(--shadow-lg);
-    background: var(--color-primary-dark);
+    box-shadow: var(--shadow-md);
+    border-bottom-color: #ccc;
 }
 
 .main-nav {
@@ -266,24 +268,34 @@ body {
 
 .main-nav ul li a {
     display: block;
-    padding: 10px var(--spacing-md);
-    color: var(--color-text-inverse);
+    padding: 16px 20px;
+    color: var(--color-text-primary);
     text-decoration: none;
-    font-weight: var(--font-weight-medium);
-    font-size: 14px;
+    font-weight: var(--font-weight-semibold);
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
     transition: all var(--transition-fast);
-    border-radius: var(--radius-sm);
     position: relative;
 }
 
 .main-nav ul li a:hover {
-    background: rgba(255, 255, 255, 0.1);
-    transform: translateY(-2px);
+    color: var(--color-primary);
 }
 
 .main-nav ul li a.active {
-    background: rgba(255, 255, 255, 0.2);
-    font-weight: var(--font-weight-semibold);
+    color: var(--color-primary);
+    font-weight: var(--font-weight-bold);
+}
+
+.main-nav ul li a.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 20px;
+    right: 20px;
+    height: 3px;
+    background: var(--color-primary);
 }
 
 .mobile-menu-toggle {
