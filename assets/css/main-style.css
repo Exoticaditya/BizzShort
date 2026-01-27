@@ -738,14 +738,12 @@ a {
     background: linear-gradient(135deg, #004de6 0%, #0037a3 100%);
     padding: 18px 20px;
     position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
-.sidebar-header::after {
-    content: '● LIVE';
-    position: absolute;
-    top: 50%;
-    right: 20px;
-    transform: translateY(-50%);
+.market-live-badge {
     background: #e74c3c;
     color: white;
     font-size: 10px;
@@ -754,6 +752,13 @@ a {
     border-radius: 12px;
     letter-spacing: 0.5px;
     animation: pulse 2s infinite;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.market-live-badge::before {
+    content: '●';
 }
 
 .sidebar-header h3 {
