@@ -110,17 +110,17 @@ a {
 }
 
 .logo-img {
-    height: 80px !important;
-    /* Approximately 1px more than the 78.6px text block */
+    height: 100px !important;
     width: auto;
-    border-radius: 8px;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
     object-fit: contain;
     transition: all 0.3s ease;
 }
 
 .logo:hover .logo-img {
-    box-shadow: 0 6px 20px rgba(231, 76, 60, 0.3);
-    transform: rotate(-2deg);
+    transform: scale(1.02);
 }
 
 .logo-text {
@@ -806,9 +806,18 @@ a {
 
 /* Market value update animation */
 @keyframes valueUpdate {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); color: #004de6; }
-    100% { transform: scale(1); }
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+        color: #004de6;
+    }
+
+    100% {
+        transform: scale(1);
+    }
 }
 
 .market-value.value-updating {
@@ -3966,8 +3975,8 @@ a.interview-video-card.instagram-reel-card {
     }
 
     .logo-img {
-        width: 55px;
-        height: 55px;
+        width: auto;
+        height: 70px;
     }
 
     .ad-banner-container {
@@ -4728,15 +4737,15 @@ a.interview-video-card.instagram-reel-card {
     .article-news-section {
         padding: 40px 0;
     }
-    
+
     .article-modal-content {
         padding: 20px;
     }
-    
+
     .article-modal-content h1 {
         font-size: 1.5em;
     }
-    
+
     .read-overlay i {
         font-size: 36px;
     }
