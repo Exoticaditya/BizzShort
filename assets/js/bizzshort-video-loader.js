@@ -346,8 +346,8 @@ const BizzShortVideoLoader = {
                 `;
             }
 
-            // Create beautiful gradient thumbnails with play button
-            // Instagram blocks direct media access, so we use stylish placeholders
+            // Try to use real Instagram image, fallback to stylish gradient
+            // Instagram blocks direct access, but media url sometimes works or we use gradient
             const gradients = [
                 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
                 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
@@ -357,15 +357,19 @@ const BizzShortVideoLoader = {
                 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)'
             ];
             const gradient = gradients[finalReels.indexOf(reel) % gradients.length];
+            const realThumbUrl = `https://www.instagram.com/p/${reel.id}/media/?size=l`;
 
             return `
                 <div class="interview-video-card" onclick="playInstagramReel('${reel.id}', '${reel.title.replace(/'/g, "\\'")}')" style="cursor:pointer;">
                     <div class="video-embed-wrapper">
-                        <div class="instagram-thumbnail" style="background:${gradient};">
-                            <div class="instagram-play-btn">
+                        <div class="instagram-thumbnail" style="background:${gradient}; position: relative; overflow: hidden;">
+                            <img src="${realThumbUrl}" alt="${reel.title}" 
+                                 style="width:100%; height:100%; object-fit:cover; position:absolute; top:0; left:0; z-index:1;"
+                                 onerror="this.style.display='none'">
+                            <div class="instagram-play-btn" style="z-index:2;">
                                 <i class="fab fa-instagram"></i>
                             </div>
-                            <div class="instagram-reel-icon">
+                            <div class="instagram-reel-icon" style="z-index:2;">
                                 <i class="fas fa-play"></i>
                             </div>
                         </div>

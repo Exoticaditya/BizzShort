@@ -1282,7 +1282,12 @@ app.get('/api/market-data', async (req, res) => {
         const fetchYahooFinance = (symbol) => {
             return new Promise((resolve, reject) => {
                 const url = `https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?interval=1d&range=1d`;
-                https.get(url, (response) => {
+                const options = {
+                    headers: {
+                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+                    }
+                };
+                https.get(url, options, (response) => {
                     let data = '';
                     response.on('data', chunk => data += chunk);
                     response.on('end', () => {
@@ -1419,6 +1424,59 @@ function isMarketOpen() {
     const currentMinutes = hours * 60 + minutes;
     return currentMinutes >= 555 && currentMinutes <= 930;
 }
+
+// ============ News Scraping API (The Economic Times) ============
+app.get('/api/latest-news', async (req, res) => {
+    try {
+        const axios = require('axios');
+        const cheerio = require('cheerio');
+
+        // Scrape Economic Times Top News
+        const response = await axios.get('https://economictimes.indiatimes.com/news/latest-news', {
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+            }
+        });
+
+        const $ = cheerio.load(response.data);
+        const articles = [];
+
+        // Select news items (ET specific selectors)
+        $('.eachStory').each((i, el) => {
+            if (i >= 8) return false; // Limit to 8 items
+
+            const title = $(el).find('h3 a').text().trim();
+            const link = 'https://economictimes.indiatimes.com' + $(el).find('h3 a').attr('href');
+            // Get description or use title as fallback
+            const description = $(el).find('p').text().trim() || title;
+            // ET uses data-original for lazy loaded images
+            const image = $(el).find('img').attr('data-original') || $(el).find('img').attr('src');
+            const time = $(el).find('time').text().trim();
+
+            if (title && image) {
+                articles.push({
+                    id: 'et-' + i,
+                    category: 'LATEST NEWS', // Default category
+                    title: title,
+                    description: description.substring(0, 100) + '...', // Truncate description
+                    image: image,
+                    url: link,
+                    views: Math.floor(Math.random() * (15000 - 5000) + 5000) + 'K', // Simulated views
+                    readTime: '3 min read',
+                    time: time
+                });
+            }
+        });
+
+        console.log(`✅ Scraped ${articles.length} news articles from Economic Times`);
+        res.json({ success: true, data: articles });
+
+    } catch (error) {
+        console.error('❌ News scraping error:', error.message);
+        // Fallback to empty list or static data if needed (frontend handles empty)
+        res.status(500).json({ success: false, error: 'Failed to fetch news' });
+    }
+});
 
 // ============ Chart Data Cache ============
 const chartDataCache = new Map();

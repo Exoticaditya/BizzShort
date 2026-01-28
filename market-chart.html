@@ -482,10 +482,18 @@
             });
 
             const prices = chartData.map(d => d.close);
+            
+            // Determine trend color
+            const startPrice = prices[0];
+            const endPrice = prices[prices.length - 1];
+            const isPositive = endPrice >= startPrice;
+            const trendColor = isPositive ? '#2ecc71' : '#e74c3c'; // Green or Red
+            const trendGradientStart = isPositive ? 'rgba(46, 204, 113, 0.4)' : 'rgba(231, 76, 60, 0.4)';
+            const trendGradientEnd = isPositive ? 'rgba(46, 204, 113, 0)' : 'rgba(231, 76, 60, 0)';
 
             const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-            gradient.addColorStop(0, 'rgba(102, 126, 234, 0.3)');
-            gradient.addColorStop(1, 'rgba(102, 126, 234, 0)');
+            gradient.addColorStop(0, trendGradientStart);
+            gradient.addColorStop(1, trendGradientEnd);
 
             chart = new Chart(ctx, {
                 type: 'line',
@@ -494,14 +502,16 @@
                     datasets: [{
                         label: symbolMap[currentMarket].name,
                         data: prices,
-                        borderColor: '#667eea',
+                        borderColor: trendColor,
                         backgroundColor: gradient,
                         fill: true,
                         tension: 0.4,
                         pointRadius: 0,
                         pointHoverRadius: 6,
-                        pointHoverBackgroundColor: '#667eea',
-                        borderWidth: 3
+                        pointHoverBackgroundColor: trendColor,
+                        pointHoverBorderColor: '#fff',
+                        pointHoverBorderWidth: 2,
+                        borderWidth: 2.5
                     }]
                 },
                 options: {
@@ -511,9 +521,11 @@
                         legend: { display: false },
                         tooltip: {
                             backgroundColor: '#2c3e50',
-                            titleFont: { size: 14 },
-                            bodyFont: { size: 16 },
+                            titleFont: { size: 13, family: "'Inter', sans-serif" },
+                            bodyFont: { size: 16, weight: 'bold', family: "'Inter', sans-serif" },
                             padding: 12,
+                            cornerRadius: 8,
+                            displayColors: false,
                             callbacks: {
                                 label: function (context) {
                                     return '₹' + context.parsed.y.toLocaleString(undefined, { maximumFractionDigits: 2 });
@@ -525,14 +537,19 @@
                         x: {
                             grid: { display: false },
                             ticks: {
-                                color: '#7f8c8d',
-                                maxTicksLimit: 10
+                                color: '#95a5a6',
+                                maxTicksLimit: 8,
+                                font: { size: 11 }
                             }
                         },
                         y: {
-                            grid: { color: 'rgba(0,0,0,0.05)' },
+                            grid: { 
+                                color: 'rgba(0,0,0,0.03)',
+                                borderDash: [5, 5]
+                            },
                             ticks: {
-                                color: '#7f8c8d',
+                                color: '#95a5a6',
+                                font: { size: 11 },
                                 callback: function (value) {
                                     return '₹' + value.toLocaleString();
                                 }
@@ -542,6 +559,12 @@
                     interaction: {
                         intersect: false,
                         mode: 'index'
+                    },
+                    elements: {
+                        line: {
+                            borderCapStyle: 'round',
+                            borderJoinStyle: 'round'
+                        }
                     }
                 }
             });
