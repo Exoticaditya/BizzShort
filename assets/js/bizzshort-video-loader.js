@@ -346,8 +346,7 @@ const BizzShortVideoLoader = {
                 `;
             }
 
-            // Try to use real Instagram image, fallback to stylish gradient
-            // Instagram blocks direct access, but media url sometimes works or we use gradient
+            // Try to use real Instagram image via server proxy, fallback to stylish gradient
             const gradients = [
                 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
                 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
@@ -357,14 +356,17 @@ const BizzShortVideoLoader = {
                 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)'
             ];
             const gradient = gradients[finalReels.indexOf(reel) % gradients.length];
-            const realThumbUrl = `https://www.instagram.com/p/${reel.id}/media/?size=l`;
+
+            // Use server-side proxy for thumbnail
+            const proxyThumbUrl = APIConfig.endpoint(`/api/instagram-thumbnail/${reel.id}`);
 
             return `
-                <div class="interview-video-card" onclick="playInstagramReel('${reel.id}', '${reel.title.replace(/'/g, "\\'")}')" style="cursor:pointer;">
+                <div class="interview-video-card" onclick="playInstagramReel('${reel.id}', '${reel.title.replace(/'/g, "\\'")}')" style="cursor:pointer;" data-reel-id="${reel.id}">
                     <div class="video-embed-wrapper">
-                        <div class="instagram-thumbnail" style="background:${gradient}; position: relative; overflow: hidden;">
-                            <img src="${realThumbUrl}" alt="${reel.title}" 
-                                 style="width:100%; height:100%; object-fit:cover; position:absolute; top:0; left:0; z-index:1;"
+                        <div class="instagram-thumbnail" style="background:${gradient}; position: relative; overflow: hidden;" id="thumb-${reel.id}">
+                            <img class="insta-thumb-img" data-proxy-url="${proxyThumbUrl}" 
+                                 alt="${reel.title}" 
+                                 style="width:100%; height:100%; object-fit:cover; position:absolute; top:0; left:0; z-index:1; display:none;"
                                  onerror="this.style.display='none'">
                             <div class="instagram-play-btn" style="z-index:2;">
                                 <i class="fab fa-instagram"></i>
@@ -384,6 +386,7 @@ const BizzShortVideoLoader = {
                     </div>
                 </div>
             `;
+
         }).join('');
 
         console.log('🎤 Interview & Podcasts section loaded with', finalReels.length, 'reels');

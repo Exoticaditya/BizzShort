@@ -198,7 +198,185 @@ app.get('/api/health', async (req, res) => {
     }
 });
 
+// ============ Instagram Thumbnail Proxy ============
+// Cache for Instagram thumbnails (24 hour TTL)
+const instagramCache = new Map();
+const INSTAGRAM_CACHE_TTL = 24 * 60 * 60 * 1000; // 24 hours
+
+app.get('/api/instagram-thumbnail/:reelId', async (req, res) => {
+    const { reelId } = req.params;
+
+    if (!reelId || reelId.length < 5) {
+        return res.status(400).json({ success: false, error: 'Invalid reel ID' });
+    }
+
+    // Check cache first
+    const cached = instagramCache.get(reelId);
+    if (cached && (Date.now() - cached.timestamp) < INSTAGRAM_CACHE_TTL) {
+        return res.json({ success: true, data: cached.data });
+    }
+
+    try {
+        const reelUrl = `https://www.instagram.com/reel/${reelId}/`;
+        const oEmbedUrl = `https://api.instagram.com/oembed?url=${encodeURIComponent(reelUrl)}`;
+
+        const response = await fetch(oEmbedUrl, {
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+            }
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            const result = {
+                thumbnailUrl: data.thumbnail_url || null,
+                title: data.title || null,
+                authorName: data.author_name || 'bizz_short'
+            };
+
+            // Cache the result
+            instagramCache.set(reelId, { data: result, timestamp: Date.now() });
+
+            return res.json({ success: true, data: result });
+        } else {
+            console.log(`Instagram oEmbed failed for ${reelId}: ${response.status}`);
+            return res.json({
+                success: false,
+                error: 'Instagram API unavailable',
+                usePlaceholder: true
+            });
+        }
+    } catch (error) {
+        console.error(`Instagram thumbnail error for ${reelId}:`, error.message);
+        return res.json({
+            success: false,
+            error: 'Failed to fetch thumbnail',
+            usePlaceholder: true
+        });
+    }
+});
+
+// ============ News with Photos API (Currents API - Free) ============
+// Cache for news articles (1 hour TTL)  
+const newsCache = { data: null, timestamp: 0 };
+const NEWS_CACHE_TTL = 60 * 60 * 1000; // 1 hour
+
+app.get('/api/news-with-images', async (req, res) => {
+    // Check cache first
+    if (newsCache.data && (Date.now() - newsCache.timestamp) < NEWS_CACHE_TTL) {
+        console.log('📰 Returning cached news');
+        return res.json({ success: true, data: newsCache.data, cached: true });
+    }
+
+    try {
+        // Using Currents API (free tier - 600 requests/day)
+        const apiKey = process.env.CURRENTS_API_KEY || 'bkG7YBkB8bS1TaIMbWHFzD8bDh4VcRnJWILU11YTEWAMpGW2';
+
+        const apiUrl = `https://api.currentsapi.services/v1/search?` +
+            `keywords=business,finance,economy,stock market,startup` +
+            `&language=en` +
+            `&country=IN` +
+            `&apiKey=${apiKey}`;
+
+        const response = await fetch(apiUrl);
+
+        if (!response.ok) {
+            throw new Error(`Currents API error: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        if (data.status === 'ok' && data.news && data.news.length > 0) {
+            const articlesWithImages = data.news
+                .filter(article => article.image && article.image !== 'None' && article.image.startsWith('http'))
+                .slice(0, 12)
+                .map(article => ({
+                    title: article.title,
+                    description: article.description,
+                    image: article.image,
+                    url: article.url,
+                    source: article.author || 'News Source',
+                    category: article.category && article.category.length > 0 ? article.category[0] : 'Business',
+                    publishedAt: article.published
+                }));
+
+            if (articlesWithImages.length > 0) {
+                newsCache.data = articlesWithImages;
+                newsCache.timestamp = Date.now();
+
+                console.log(`📰 Fetched ${articlesWithImages.length} news articles with images`);
+                return res.json({ success: true, data: articlesWithImages });
+            }
+        }
+
+        const fallbackNews = getFallbackNewsArticles();
+        newsCache.data = fallbackNews;
+        newsCache.timestamp = Date.now();
+
+        return res.json({ success: true, data: fallbackNews, fallback: true });
+
+    } catch (error) {
+        console.error('News API error:', error.message);
+        const fallbackNews = getFallbackNewsArticles();
+        return res.json({ success: true, data: fallbackNews, fallback: true, error: error.message });
+    }
+});
+
+function getFallbackNewsArticles() {
+    return [
+        {
+            title: "India's Economic Growth Surpasses Expectations in Q4 2025",
+            description: "GDP growth reaches 7.8% driven by strong manufacturing and services sectors.",
+            image: "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=800",
+            source: "Economic Times",
+            category: "ECONOMY",
+            publishedAt: new Date().toISOString()
+        },
+        {
+            title: "Sensex Hits All-Time High Amid Global Market Rally",
+            description: "Indian markets surge as foreign investors pour billions into equities.",
+            image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800",
+            source: "Business Standard",
+            category: "MARKETS",
+            publishedAt: new Date().toISOString()
+        },
+        {
+            title: "Tech Startups Raise Record $15 Billion in 2025",
+            description: "Indian startup ecosystem sees unprecedented funding growth.",
+            image: "https://images.unsplash.com/photo-1556761175-b413da4baf72?w=800",
+            source: "Inc42",
+            category: "STARTUPS",
+            publishedAt: new Date().toISOString()
+        },
+        {
+            title: "RBI Maintains Interest Rates, Signals Stable Outlook",
+            description: "Central bank keeps repo rate unchanged citing inflation concerns.",
+            image: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=800",
+            source: "Mint",
+            category: "FINANCE",
+            publishedAt: new Date().toISOString()
+        },
+        {
+            title: "AI Revolution Transforms Indian Banking Sector",
+            description: "Major banks adopt artificial intelligence for customer service and fraud detection.",
+            image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800",
+            source: "Financial Express",
+            category: "TECHNOLOGY",
+            publishedAt: new Date().toISOString()
+        },
+        {
+            title: "Make in India: Manufacturing Exports Hit Record High",
+            description: "Electronics and pharmaceuticals lead India's export boom.",
+            image: "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=800",
+            source: "Business Today",
+            category: "INDUSTRY",
+            publishedAt: new Date().toISOString()
+        }
+    ];
+}
+
 app.get('/api/setup-production', async (req, res) => {
+
     // Basic protection using query param from environment
     const setupKey = process.env.SETUP_KEY || 'secure_setup_123';
 

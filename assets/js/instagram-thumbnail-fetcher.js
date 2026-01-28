@@ -1,137 +1,93 @@
 /**
- * Instagram oEmbed Thumbnail Fetcher
- * Fetches real thumbnails for Instagram Reels using the oEmbed API
- * Note: Instagram's public oEmbed API may have rate limits and restrictions
+ * Instagram Thumbnail Fetcher (Server-Side Proxy Version)
+ * Fetches real thumbnails for Instagram Reels via our server-side proxy
+ * This avoids CORS issues and rate limiting faced by client-side requests
  */
 
 const InstagramThumbnailFetcher = {
-    // Cache for oEmbed data
+    // Cache for fetched data
     cache: new Map(),
 
-    // Flag to disable API calls if they consistently fail
-    apiDisabled: false,
+    // API base URL
+    getApiBase() {
+        return window.APIConfig && window.APIConfig.baseURL
+            ? window.APIConfig.baseURL
+            : 'https://bizzshort.onrender.com';
+    },
 
     /**
-     * Fetch Instagram oEmbed data for a reel
+     * Fetch Instagram thumbnail via server-side proxy
      * @param {string} reelId - Instagram reel ID
-     * @returns {Promise<object>} oEmbed data with thumbnail_url
+     * @returns {Promise<object>} Thumbnail data with thumbnailUrl
      */
-    async fetchOEmbedData(reelId) {
-        // If API has been disabled due to failures, skip
-        if (this.apiDisabled) {
-            return null;
-        }
-
+    async fetchThumbnail(reelId) {
         // Check cache first
         if (this.cache.has(reelId)) {
             return this.cache.get(reelId);
         }
 
-        const reelUrl = `https://www.instagram.com/reel/${reelId}/`;
-
-        // Note: The Facebook Graph API version requires an access token
-        // which should be handled server-side, not in client code.
-        // Using public oEmbed endpoint only (with limitations)
-
         try {
-            const publicOEmbedUrl = `https://api.instagram.com/oembed?url=${encodeURIComponent(reelUrl)}`;
+            const response = await fetch(`${this.getApiBase()}/api/instagram-thumbnail/${reelId}`);
+            const result = await response.json();
 
-            const response = await fetch(publicOEmbedUrl);
-            if (response.ok) {
-                const data = await response.json();
-                this.cache.set(reelId, data);
+            if (result.success && result.data && result.data.thumbnailUrl) {
+                this.cache.set(reelId, result.data);
                 console.log(`✅ Fetched Instagram thumbnail for ${reelId}`);
-                return data;
-            } else if (response.status === 429) {
-                // Rate limited - disable further API calls
-                console.warn('⚠️ Instagram API rate limited, disabling thumbnail fetcher');
-                this.apiDisabled = true;
-                return null;
+                return result.data;
             } else {
-                console.warn(`⚠️ Instagram oEmbed failed for ${reelId}: ${response.status}`);
+                console.log(`📷 Using gradient placeholder for ${reelId} (thumbnail unavailable)`);
                 return null;
             }
         } catch (error) {
-            console.warn(`⚠️ Instagram oEmbed error for ${reelId}:`, error.message);
+            console.warn(`⚠️ Instagram thumbnail fetch error for ${reelId}:`, error.message);
             return null;
         }
     },
 
     /**
-     * Update interview card with real thumbnail
-     * @param {string} reelId - Instagram reel ID
-     * @param {HTMLElement} cardElement - Card DOM element
+     * Update all Instagram thumbnail images on the page
+     * Looks for images with data-proxy-url attribute
      */
-    async updateCardThumbnail(reelId, cardElement) {
-        const data = await this.fetchOEmbedData(reelId);
-        if (!data || !data.thumbnail_url) {
-            console.log(`📷 Using gradient placeholder for ${reelId} (oEmbed unavailable)`);
-            return;
+    async updateAllThumbnails() {
+        const cards = document.querySelectorAll('.interview-video-card[data-reel-id]');
+        console.log(`🎬 Found ${cards.length} Instagram reel cards to update`);
+
+        for (const card of cards) {
+            const reelId = card.getAttribute('data-reel-id');
+            const img = card.querySelector('.insta-thumb-img');
+
+            if (!reelId || !img) continue;
+
+            const data = await this.fetchThumbnail(reelId);
+
+            if (data && data.thumbnailUrl) {
+                img.src = data.thumbnailUrl;
+                img.style.display = 'block';
+                console.log(`📸 Updated thumbnail for ${reelId}`);
+            }
         }
-
-        // Find the thumbnail container
-        const thumbnailContainer = cardElement.querySelector('.instagram-thumbnail');
-        if (!thumbnailContainer) return;
-
-        // Replace gradient with real thumbnail
-        thumbnailContainer.style.background = 'none';
-        thumbnailContainer.innerHTML = `
-            <img src="${data.thumbnail_url}" 
-                 alt="${data.title || 'Instagram Reel'}" 
-                 style="width:100%;height:100%;object-fit:cover;border-radius:12px;">
-            <div class="instagram-play-btn">
-                <i class="fab fa-instagram"></i>
-            </div>
-            <div class="instagram-reel-icon">
-                <i class="fas fa-play"></i>
-            </div>
-        `;
-
-        console.log(`✅ Updated thumbnail for ${reelId}`);
     },
 
     /**
-     * Initialize thumbnail fetching for all interview cards
+     * Initialize and update thumbnails after DOM is ready
      */
-    async initializeAll() {
-        const cards = document.querySelectorAll('.interview-video-card[onclick*="playInstagramReel"]');
-
-        console.log(`📸 Found ${cards.length} Instagram video cards`);
-
-        for (const card of cards) {
-            const onclickAttr = card.getAttribute('onclick');
-            if (!onclickAttr) continue;
-
-            // Extract reel ID from onclick="playInstagramReel('REEL_ID', 'Title')"
-            const match = onclickAttr.match(/playInstagramReel\('([^']+)'/);
-            if (match && match[1]) {
-                const reelId = match[1];
-                // Add slight delay to avoid rate limiting
-                await new Promise(resolve => setTimeout(resolve, 200));
-                await this.updateCardThumbnail(reelId, card);
-            }
-        }
-
-        console.log('✅ Instagram thumbnail initialization complete');
+    init() {
+        // Wait for video loader to finish, then update thumbnails
+        setTimeout(() => {
+            this.updateAllThumbnails();
+        }, 2000); // Wait 2 seconds for video cards to load
     }
 };
 
-// Auto-initialize when DOM is ready and after video loader completes
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-        // Wait for BizzShortVideoLoader to finish
-        setTimeout(() => {
-            if (typeof InstagramThumbnailFetcher !== 'undefined') {
-                InstagramThumbnailFetcher.initializeAll();
-            }
-        }, 2000); // 2 second delay to let other scripts load
-    });
-} else {
-    // Already loaded
+// Auto-initialize after DOM ready
+document.addEventListener('DOMContentLoaded', () => {
+    // Delayed initialization to ensure video cards are loaded first
     setTimeout(() => {
-        InstagramThumbnailFetcher.initializeAll();
-    }, 2000);
-}
+        InstagramThumbnailFetcher.init();
+    }, 1500);
+});
 
-// Export for manual use
+// Export for external use
 window.InstagramThumbnailFetcher = InstagramThumbnailFetcher;
+
+console.log('✅ Instagram Thumbnail Fetcher (Server Proxy) loaded');
