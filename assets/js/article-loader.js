@@ -9,7 +9,7 @@ class ArticleLoader {
 
     async init() {
         if (this.initialized) return;
-        
+
         // Wait for API config to be ready
         if (typeof APIConfig !== 'undefined') {
             this.apiBaseURL = APIConfig.endpoint('/api/articles');
@@ -25,14 +25,14 @@ class ArticleLoader {
         try {
             console.log('📰 Loading articles from API...');
             const response = await fetch(`${this.apiBaseURL}?limit=6&status=PUBLISHED`);
-            
+
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-            
+
             const result = await response.json();
             this.articles = result.data || result || [];
-            
+
             if (this.articles.length > 0) {
                 console.log(`✅ Loaded ${this.articles.length} articles`);
                 this.renderArticles();
@@ -63,7 +63,7 @@ class ArticleLoader {
         articleCard.className = 'breaking-news-card article-card';
         articleCard.dataset.articleId = article._id || article.id;
         articleCard.style.cursor = 'pointer';
-        
+
         // Determine badge color based on category
         const badgeColors = {
             'BUSINESS': '#2563eb',
@@ -75,19 +75,19 @@ class ArticleLoader {
             'INDUSTRY': '#4338ca',
             'DEFAULT': '#667eea'
         };
-        
+
         const badgeColor = badgeColors[article.category?.toUpperCase()] || badgeColors.DEFAULT;
-        
+
         // Get image URL or use placeholder
         const imageUrl = article.image || `https://img.youtube.com/vi/wG7_1jViDRs/hqdefault.jpg`;
-        
+
         // Format views with K/M suffix
         const formatViews = (views) => {
             if (views >= 1000000) return (views / 1000000).toFixed(1) + 'M';
             if (views >= 1000) return (views / 1000).toFixed(1) + 'K';
             return views.toString();
         };
-        
+
         // Create card HTML
         articleCard.innerHTML = `
             <div class="video-thumbnail article-thumbnail">
@@ -104,12 +104,12 @@ class ArticleLoader {
                 </div>
             </div>
         `;
-        
+
         // Add click handler to open article
         articleCard.addEventListener('click', () => {
             this.openArticle(article);
         });
-        
+
         return articleCard;
     }
 
@@ -117,10 +117,14 @@ class ArticleLoader {
         // Navigate to dedicated article page with SEO-friendly structure
         const articleId = article._id || article.id;
         const slug = article.slug || articleId;
-        
+
         // Option 1: Navigate to dedicated article page (SEO-friendly)
-        window.location.href = `article.html?id=${slug}`;
-        
+        const encodedTitle = encodeURIComponent(article.title);
+        const encodedContent = encodeURIComponent(article.content || article.excerpt || '');
+        const encodedImage = encodeURIComponent(article.image || '');
+
+        window.location.href = `article.html?id=${articleId}&source=article&mode=read&title=${encodedTitle}&content=${encodedContent}&image=${encodedImage}`;
+
         // Option 2: Open in modal (uncomment below if you prefer modal)
         // this.showArticleModal(article);
     }
@@ -136,11 +140,11 @@ class ArticleLoader {
         }
 
         // Format publish date
-        const publishDate = article.publishedAt 
-            ? new Date(article.publishedAt).toLocaleDateString('en-IN', { 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
+        const publishDate = article.publishedAt
+            ? new Date(article.publishedAt).toLocaleDateString('en-IN', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
             })
             : 'Recently';
 
@@ -175,7 +179,7 @@ class ArticleLoader {
         document.body.style.overflow = 'hidden';
 
         // Close on background click
-        modal.addEventListener('click', function(e) {
+        modal.addEventListener('click', function (e) {
             if (e.target === modal) {
                 closeArticleModal();
             }
@@ -187,7 +191,7 @@ class ArticleLoader {
 
     formatArticleContent(content) {
         if (!content) return '<p>Content not available.</p>';
-        
+
         // Simple formatting: split by newlines and wrap in paragraphs
         return content
             .split('\n\n')
@@ -198,7 +202,7 @@ class ArticleLoader {
 
     async trackArticleView(articleId) {
         if (!articleId) return;
-        
+
         try {
             // Send view tracking request
             const response = await fetch(`${this.apiBaseURL}/${articleId}/view`, {
@@ -212,7 +216,7 @@ class ArticleLoader {
 }
 
 // Global function to close article modal
-window.closeArticleModal = function() {
+window.closeArticleModal = function () {
     const modal = document.getElementById('articleModal');
     if (modal) {
         modal.style.display = 'none';
@@ -224,7 +228,7 @@ window.closeArticleModal = function() {
 document.addEventListener('DOMContentLoaded', async () => {
     const articleLoader = new ArticleLoader();
     await articleLoader.init();
-    
+
     // Store globally for debugging
     window.articleLoader = articleLoader;
 });

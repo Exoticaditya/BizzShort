@@ -96,7 +96,7 @@ function renderVideoCards(videos, container) {
         const videoId = video.youtubeId || video.videoId;
         const videoTitle = (video.title || '').replace(/"/g, '&quot;');
         const videoCategory = (video.category || 'business').toLowerCase();
-        
+
         return `
         <div class="news-video-card-large" 
              data-category="${videoCategory}" 
@@ -133,11 +133,10 @@ function renderVideoCards(videos, container) {
 
             // Add click event listener
             card.addEventListener('click', function () {
-                if (typeof playVideo === 'function') {
-                    playVideo(videoId, 'youtube', videoTitle);
-                } else {
-                    console.error('❌ playVideo function not found!');
-                }
+                // Redirect to article page
+                const encodedTitle = encodeURIComponent(videoTitle);
+                const encodedDesc = encodeURIComponent(video.excerpt || video.description || '');
+                window.location.href = `article.html?id=${videoId}&source=youtube&title=${encodedTitle}&desc=${encodedDesc}`;
             });
             card.style.cursor = 'pointer';
 
@@ -199,7 +198,7 @@ document.addEventListener('keydown', function (e) {
 // ============================================
 function formatCategory(category) {
     if (!category) return 'Business';
-    
+
     const categoryLower = category.toLowerCase();
     const categories = {
         'business': 'BUSINESS',

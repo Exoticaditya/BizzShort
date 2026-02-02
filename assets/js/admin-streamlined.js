@@ -796,7 +796,7 @@ async function createArticleFromVideo(event) {
 
     const articleData = {
         title,
-        content: transcription, // Use transcription as main content
+        content: transcription, // Use transcription as main content (Manual entry for now)
         category,
         source: source,
         videoId: videoId,

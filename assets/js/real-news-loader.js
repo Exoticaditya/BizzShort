@@ -71,7 +71,7 @@ class RealNewsLoader {
 
             return `
                 <article class="breaking-news-card article-card" data-article-index="${index}" 
-                         onclick="window.open('${article.url || '#'}', '_blank')" style="cursor:pointer;">
+                         onclick="window.location.href='article.html?id=${article.id || index}&mode=read&title=${encodeURIComponent(article.title)}&content=${encodeURIComponent(description)}&source=news'" style="cursor:pointer;">
                     <div class="video-thumbnail article-thumbnail">
                         <img src="${article.image}" 
                              alt="${article.title}" 

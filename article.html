@@ -217,60 +217,90 @@
     <!-- Header -->
     <header class="header">
         <div class="container">
-            <div class="logo-ad-wrapper">
-                <a href="index.html" class="logo">
+            <div class="logo-ad-wrapper"
+                style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0;">
+                <!-- Logo -->
+                <a href="index.html" class="logo"
+                    style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
                     <img src="assets/images/logo.jpeg" alt="BizzShort Logo" class="logo-img"
-                        style="width:50px;height:50px;">
+                        style="width: 50px; height: 50px; border-radius: 8px;">
                     <div class="logo-text">
-                        <h1>BizzShort</h1>
+                        <h1 style="color: var(--color-primary); font-size: 1.5rem; margin: 0;">BizzShort</h1>
                     </div>
                 </a>
+
+                <!-- Ad Banner (Garvik India) -->
+                <div class="ad-banner-container" style="display: none; md:display: block;">
+                    <a href="https://garvikadvertising.com" target="_blank" rel="noopener noreferrer"
+                        style="text-decoration: none; display: flex; align-items: center; background: linear-gradient(135deg, #0b2d5b 0%, #1a4570 50%, #0b2d5b 100%); padding: 8px 20px; border-radius: 8px; gap: 15px; border: 1px solid rgba(255,215,0,0.2);">
+                        <div style="display: flex; flex-direction: column;">
+                            <span style="color: #ffd700; font-size: 14px; font-weight: 700;">GARVIK INDIA</span>
+                            <span style="color: rgba(255,255,255,0.85); font-size: 10px;">360° Digital Marketing</span>
+                        </div>
+                    </a>
+                </div>
             </div>
         </div>
     </header>
 
     <main class="article-page-container">
-        <div class="back-nav">
-            <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Feed</a>
-        </div>
 
         <article>
-            <!-- Header Card -->
-            <div class="article-header-card">
-                <span class="category-badge" id="categoryBadge">Business</span>
-                <h1 class="article-title" id="articleTitle">Loading Article...</h1>
-                <div class="article-meta">
-                    <span id="publishDate"><i class="far fa-clock"></i> ...</span>
-                    <span id="viewCount"><i class="far fa-eye"></i> ...</span>
+            <!-- Video Section -->
+            <div class="video-section-container" style="margin-bottom: 40px;">
+                <h3
+                    style="color: var(--color-text-secondary); margin-bottom: 15px; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">
+                    <i class="fas fa-play-circle"></i> Watch Now
+                </h3>
+
+                <div id="videoSection" class="media-container">
+                    <!-- YouTube Wrapper -->
+                    <div id="youtubeWrapper" class="video-wrapper">
+                        <iframe id="youtubePlayer" frameborder="0" allowfullscreen allow="autoplay"></iframe>
+                    </div>
+                    <!-- Instagram Wrapper -->
+                    <div id="instagramWrapper" class="reel-wrapper">
+                        <iframe id="instagramPlayer" frameborder="0" scrolling="no" allowtransparency="true"></iframe>
+                    </div>
                 </div>
             </div>
 
-            <!-- Toggle Controls -->
-            <div class="toggle-container">
-                <button class="toggle-btn active" onclick="switchMode('video')">
-                    <i class="fas fa-play-circle"></i> Watch Video
-                </button>
-                <button class="toggle-btn" onclick="switchMode('read')">
+            <!-- Article Content Section -->
+            <div class="article-content-wrapper">
+                <h3
+                    style="color: var(--color-text-secondary); margin-bottom: 15px; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">
                     <i class="fas fa-align-left"></i> Read Article
-                </button>
+                </h3>
+
+                <div class="article-header-card"
+                    style="margin-bottom: 20px; padding: 0; background: transparent; box-shadow: none;">
+                    <span class="category-badge" id="categoryBadge">Business</span>
+                    <h1 class="article-title" id="articleTitle" style="font-size: 2rem; margin-top: 15px;">Loading
+                        Article...</h1>
+                    <div class="article-meta">
+                        <span id="publishDate"><i class="far fa-clock"></i> ...</span>
+                        <span id="viewCount"><i class="far fa-eye"></i> ...</span>
+                    </div>
+                </div>
+
+                <div id="readSection" class="article-content active"
+                    style="display: block; box-shadow: none; padding: 0; background: transparent;">
+                    <div class="article-body" id="articleBody">
+                        <p>Loading article content...</p>
+                    </div>
+                </div>
             </div>
 
-            <!-- Video/Media Section -->
-            <div id="videoSection" class="media-container">
-                <!-- YouTube Wrapper -->
-                <div id="youtubeWrapper" class="video-wrapper">
-                    <iframe id="youtubePlayer" frameborder="0" allowfullscreen allow="autoplay"></iframe>
-                </div>
-                <!-- Instagram Wrapper -->
-                <div id="instagramWrapper" class="reel-wrapper">
-                    <iframe id="instagramPlayer" frameborder="0" scrolling="no" allowtransparency="true"></iframe>
-                </div>
-            </div>
+            <!-- Suggested News Section -->
+            <div class="suggested-news-section"
+                style="margin-top: 60px; padding-top: 40px; border-top: 1px solid rgba(255,255,255,0.1);">
+                <h3 style="color: var(--color-text-secondary); margin-bottom: 25px; font-size: 1.1rem;">
+                    <i class="fas fa-newspaper"></i> Suggested News
+                </h3>
 
-            <!-- Text Content Section -->
-            <div id="readSection" class="article-content">
-                <div class="article-body" id="articleBody">
-                    <p>Loading article content...</p>
+                <div class="breaking-news-grid" id="suggestedNewsGrid"
+                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+                    <!-- Populated via JS -->
                 </div>
             </div>
         </article>
@@ -279,47 +309,35 @@
 
     <!-- Script to Handle URL Params and Data -->
     <script>
-        const API_BASE = 'https://bizzshort.onrender.com'; // Or your config
+        const API_BASE = 'https://bizzshort.onrender.com';
 
         function getQueryParam(param) {
             const urlParams = new URLSearchParams(window.location.search);
             return urlParams.get(param);
         }
 
-        function switchMode(mode) {
-            const videoBtn = document.querySelector('button[onclick="switchMode(\'video\')"]');
-            const readBtn = document.querySelector('button[onclick="switchMode(\'read\')"]');
-            const videoSection = document.getElementById('videoSection');
-            const readSection = document.getElementById('readSection');
-
-            if (mode === 'video') {
-                videoBtn.classList.add('active');
-                readBtn.classList.remove('active');
-                videoSection.style.display = 'block';
-                readSection.classList.remove('active');
-            } else {
-                readBtn.classList.add('active');
-                videoBtn.classList.remove('active');
-                videoSection.style.display = 'none';
-                readSection.classList.add('active');
-            }
-        }
-
         async function loadContent() {
             const id = getQueryParam('id');
-            const type = getQueryParam('type') || 'video'; // 'video' (YouTube) or 'reel' (Instagram)
             const source = getQueryParam('source'); // 'youtube' or 'instagram'
 
             if (!id) return;
 
-            // Mock Data or Fetch from API
-            // Ideally URL params carry title too, or we fetch by ID
+            // Get metadata from URL if available (faster)
             const title = getQueryParam('title') || 'Business Update';
-            const description = getQueryParam('desc') || 'Full detailed analysis and transcription of this news update is coming soon.';
+            // Try to extract content from URL param if passed, otherwise use default
+            const contentParam = getQueryParam('content');
+            let description = 'Detailed transcription coming soon.';
+
+            if (contentParam) {
+                description = decodeURIComponent(contentParam);
+            } else {
+                // Fallback prompt or fetch from API if we had an endpoint
+                description = "This article provides the textual coverage of the video topic. <br><br> (Admin Note: Use the 'Create Article from Video' feature to populate this text automatically in the future.)";
+            }
 
             // Update UI
             document.getElementById('articleTitle').textContent = decodeURIComponent(title);
-            document.getElementById('articleBody').innerHTML = `<p>${decodeURIComponent(description)}</p><p><em>This article is a transcription/summary of the video content.</em></p>`;
+            document.getElementById('articleBody').innerHTML = `<p>${description}</p>`;
             document.getElementById('publishDate').innerHTML = `<i class="far fa-clock"></i> ${new Date().toLocaleDateString()}`;
             document.getElementById('viewCount').innerHTML = `<i class="far fa-eye"></i> ${Math.floor(Math.random() * 5000) + 1000}`;
 
@@ -335,10 +353,29 @@
                 document.getElementById('youtubePlayer').src = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0`;
             }
 
-            // If user explicitly asked for 'read' mode via URL
-            if (getQueryParam('mode') === 'read') {
-                switchMode('read');
-            }
+            loadSuggestedNews();
+        }
+
+        function loadSuggestedNews() {
+            const grid = document.getElementById('suggestedNewsGrid');
+            // Mock suggested news items
+            const suggestions = [
+                { title: "Market Rally Continues", img: "https://img.youtube.com/vi/wG7_1jViDRs/mqdefault.jpg" },
+                { title: "Tech Sector Boom", img: "https://img.youtube.com/vi/d0sU0TBhBkE/mqdefault.jpg" },
+                { title: "Startup Funding News", img: "https://img.youtube.com/vi/VDOutGjKtRg/mqdefault.jpg" }
+            ];
+
+            grid.innerHTML = suggestions.map(item => `
+                <article class="breaking-news-card" style="background: var(--color-surface); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-md);">
+                    <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+                        <img src="${item.img}" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div style="padding: 15px;">
+                        <h4 style="font-size: 1rem; margin-bottom: 10px;">${item.title}</h4>
+                        <span style="font-size: 0.8rem; color: var(--color-text-secondary);">Read More →</span>
+                    </div>
+                </article>
+            `).join('');
         }
 
         document.addEventListener('DOMContentLoaded', loadContent);

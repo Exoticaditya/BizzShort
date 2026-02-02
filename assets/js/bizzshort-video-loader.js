@@ -161,7 +161,15 @@ const BizzShortVideoLoader = {
             if (breakingVideos[index]) {
                 const video = breakingVideos[index];
                 card.setAttribute('data-video-id', video.id);
-                card.setAttribute('onclick', `playVideo('${video.id}', 'youtube', '${video.title.replace(/'/g, "\\'")}')`);
+                card.onclick = () => {
+                    const params = new URLSearchParams({
+                        id: video.id,
+                        source: 'youtube',
+                        title: video.title,
+                        desc: 'Watch this latest breaking news update.'
+                    });
+                    window.location.href = `article.html?${params.toString()}`;
+                };
 
                 const img = card.querySelector('.video-thumbnail img');
                 if (img) {
@@ -216,7 +224,7 @@ const BizzShortVideoLoader = {
         }
 
         grid.innerHTML = filteredVideos.map(video => `
-            <article class="news-video-card-large video-card" data-category="${(video.category || 'Latest').toLowerCase()}" onclick="playVideo('${video.id}', 'youtube', '${video.title.replace(/'/g, "\\'")}')" style="cursor:pointer;">
+            <article class="news-video-card-large video-card" data-category="${(video.category || 'Latest').toLowerCase()}" onclick="window.location.href='article.html?id=${video.id}&source=youtube&title=${encodeURIComponent(video.title.replace(/'/g, ''))}'" style="cursor:pointer;">
                 <div class="video-thumbnail">
                     <img src="https://img.youtube.com/vi/${video.id}/hqdefault.jpg" 
                          alt="${video.title}" 
@@ -268,7 +276,7 @@ const BizzShortVideoLoader = {
         const selectedVideos = indices.map(i => videos[i]).filter(v => v);
 
         grid.innerHTML = selectedVideos.map(video => `
-            <article class="news-video-card-large video-card" data-category="${(video.category || 'Client Feature').toLowerCase()}" onclick="playVideo('${video.id}', 'youtube', '${video.title.replace(/'/g, "\\'")}')" style="cursor:pointer;">
+            <article class="news-video-card-large video-card" data-category="${(video.category || 'Client Feature').toLowerCase()}" onclick="window.location.href='article.html?id=${video.id}&source=youtube&title=${encodeURIComponent(video.title.replace(/'/g, ''))}'" style="cursor:pointer;">
                 <div class="video-thumbnail">
                     <img src="https://img.youtube.com/vi/${video.id}/hqdefault.jpg" 
                          alt="${video.title}" 
@@ -361,7 +369,7 @@ const BizzShortVideoLoader = {
             const proxyThumbUrl = APIConfig.endpoint(`/api/instagram-thumbnail/${reel.id}`);
 
             return `
-                <div class="interview-video-card" onclick="playInstagramReel('${reel.id}', '${reel.title.replace(/'/g, "\\'")}')" style="cursor:pointer;" data-reel-id="${reel.id}">
+                <div class="interview-video-card" onclick="window.location.href='article.html?id=${reel.id}&source=instagram&title=${encodeURIComponent(reel.title.replace(/'/g, ''))}'" style="cursor:pointer;" data-reel-id="${reel.id}">
                     <div class="video-embed-wrapper">
                         <div class="instagram-thumbnail" style="background:${gradient}; position: relative; overflow: hidden;" id="thumb-${reel.id}">
                             <img class="insta-thumb-img" data-proxy-url="${proxyThumbUrl}" 
@@ -426,262 +434,7 @@ window.playInstagramReel = function (reelId, title) {
     window.location.href = `article.html?${params.toString()}`;
 };
 
-// Add modal styles if not already added
-if (!document.getElementById('instagramModalStyles')) {
-    const styles = document.createElement('style');
-    styles.id = 'instagramModalStyles';
-    styles.textContent = `
-            .instagram-video-modal {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                z-index: 100000;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                animation: igModalFadeIn 0.3s ease;
-            }
-            @keyframes igModalFadeIn {
-                from { opacity: 0; }
-                to { opacity: 1; }
-            }
-            .instagram-modal-backdrop {
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.9);
-                backdrop-filter: blur(10px);
-            }
-            .instagram-modal-container {
-                position: relative;
-                width: 100%;
-                max-width: 450px;
-                max-height: 90vh;
-                background: linear-gradient(145deg, #1a1a2e 0%, #16213e 100%);
-                border-radius: 20px;
-                overflow: hidden;
-                box-shadow: 0 25px 80px rgba(225, 48, 108, 0.3), 0 10px 40px rgba(0, 0, 0, 0.5);
-                animation: igModalSlideUp 0.4s ease;
-                margin: 20px;
-            }
-            @keyframes igModalSlideUp {
-                from { transform: translateY(50px) scale(0.95); opacity: 0; }
-                to { transform: translateY(0) scale(1); opacity: 1; }
-            }
-            .instagram-modal-header {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                padding: 15px 20px;
-                background: linear-gradient(135deg, #405de6, #5851db, #833ab4, #c13584, #e1306c, #fd1d1d);
-            }
-            .instagram-brand {
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                color: white;
-                font-weight: 700;
-                font-size: 16px;
-            }
-            .instagram-brand i {
-                font-size: 24px;
-            }
-            .instagram-close-btn {
-                background: rgba(255, 255, 255, 0.2);
-                border: none;
-                color: white;
-                width: 40px;
-                height: 40px;
-                border-radius: 50%;
-                cursor: pointer;
-                font-size: 18px;
-                transition: all 0.3s ease;
-            }
-            .instagram-close-btn:hover {
-                background: rgba(255, 255, 255, 0.3);
-                transform: rotate(90deg);
-            }
-            .instagram-video-wrapper {
-                position: relative;
-                width: 100%;
-                height: 580px;
-                max-height: 60vh;
-                background: #000;
-            }
-            .instagram-embed-iframe {
-                width: 100%;
-                height: 100%;
-                border: none;
-            }
-            .instagram-loading {
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                text-align: center;
-                color: white;
-                z-index: -1;
-            }
-            .instagram-spinner {
-                width: 50px;
-                height: 50px;
-                border: 3px solid rgba(255, 255, 255, 0.1);
-                border-top-color: #e1306c;
-                border-radius: 50%;
-                animation: igSpin 1s linear infinite;
-                margin: 0 auto 15px;
-            }
-            @keyframes igSpin {
-                to { transform: rotate(360deg); }
-            }
-            .instagram-modal-footer {
-                padding: 20px;
-                background: #1a1a2e;
-            }
-            .instagram-video-info h3 {
-                color: white;
-                font-size: 16px;
-                margin: 0 0 5px 0;
-                font-weight: 600;
-            }
-            .instagram-video-info p {
-                color: rgba(255, 255, 255, 0.6);
-                font-size: 13px;
-                margin: 0 0 15px 0;
-            }
-            .instagram-actions {
-                display: flex;
-                gap: 10px;
-            }
-            .instagram-open-btn {
-                flex: 1;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                gap: 8px;
-                padding: 12px 20px;
-                background: linear-gradient(135deg, #405de6, #5851db, #833ab4, #c13584, #e1306c);
-                color: white;
-                text-decoration: none;
-                border-radius: 10px;
-                font-weight: 600;
-                font-size: 14px;
-                transition: all 0.3s ease;
-            }
-            .instagram-open-btn:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 5px 20px rgba(225, 48, 108, 0.4);
-            }
-            .instagram-follow-btn {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                gap: 8px;
-                padding: 12px 20px;
-                background: rgba(255, 255, 255, 0.1);
-                color: white;
-                text-decoration: none;
-                border-radius: 10px;
-                font-weight: 600;
-                font-size: 14px;
-                transition: all 0.3s ease;
-            }
-            .instagram-follow-btn:hover {
-                background: rgba(255, 255, 255, 0.2);
-            }
-            @media (max-width: 480px) {
-                .instagram-modal-container {
-                    max-width: 100%;
-                    margin: 10px;
-                    border-radius: 15px;
-                }
-                .instagram-video-wrapper {
-                    height: 500px;
-                    max-height: 55vh;
-                }
-                .instagram-actions {
-                    flex-direction: column;
-                }
-            }
-        `;
-    document.head.appendChild(styles);
-}
 
-document.body.appendChild(modal);
-document.body.style.overflow = 'hidden';
-
-// ESC key to close
-const escHandler = function (e) {
-    if (e.key === 'Escape') {
-        closeInstagramModal();
-        document.removeEventListener('keydown', escHandler);
-    }
-};
-document.addEventListener('keydown', escHandler);
-};
-
-// Close Instagram modal
-window.closeInstagramModal = function () {
-    const modal = document.getElementById('instagramModal');
-    if (modal) {
-        modal.style.animation = 'igModalFadeIn 0.2s ease reverse';
-        setTimeout(() => {
-            modal.remove();
-            document.body.style.overflow = '';
-        }, 200);
-    }
-};
-
-// Keep the old function as alias
-window.openInstagramReel = window.playInstagramReel;
-
-// Close video modal function
-window.closeVideoModal = function () {
-    const modal = document.getElementById('videoModal');
-    if (modal) {
-        modal.remove();
-        document.body.style.overflow = '';
-    }
-};
-
-// YouTube video redirect
-window.playVideo = function (videoId, source, title) {
-    if (!videoId) return;
-    console.log('▶️ Redirecting to article:', videoId, source);
-
-    // If Instagram, use the Instagram handler
-    if (source === 'instagram') {
-        playInstagramReel(videoId, title);
-        return;
-    }
-
-    // Redirect to article page
-    const params = new URLSearchParams({
-        id: videoId,
-        source: 'youtube',
-        title: title || 'BizzShort Video',
-        mode: 'watch'
-    });
-
-    window.location.href = `article.html?${params.toString()}`;
-};
-
-modal.addEventListener('click', function (e) {
-    if (e.target === modal) closeVideoModal();
-});
-
-// ESC key to close
-document.addEventListener('keydown', function escHandler(e) {
-    if (e.key === 'Escape') {
-        closeVideoModal();
-        document.removeEventListener('keydown', escHandler);
-    }
-});
-};
 
 // Initialize on DOM ready
 document.addEventListener('DOMContentLoaded', function () {

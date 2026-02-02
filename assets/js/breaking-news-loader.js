@@ -132,14 +132,12 @@ class BreakingNewsLoader {
                 card.dataset.videoId = videoId;
 
                 // Set onclick directly to ensure it works
+                // Set onclick directly to ensure it works
                 card.onclick = function () {
                     console.log('🎬 Breaking news card clicked:', videoId);
-                    if (typeof playVideo === 'function') {
-                        playVideo(videoId, 'youtube', video.title || 'BizzShort Video');
-                    } else {
-                        // Fallback - open YouTube directly
-                        window.open('https://www.youtube.com/watch?v=' + videoId, '_blank');
-                    }
+                    const encodedTitle = encodeURIComponent(video.title || 'BizzShort Video');
+                    const encodedDesc = encodeURIComponent(video.description || 'Full analysis coming soon.');
+                    window.location.href = `article.html?id=${videoId}&source=youtube&title=${encodedTitle}&desc=${encodedDesc}`;
                 };
                 card.style.cursor = 'pointer';
 
