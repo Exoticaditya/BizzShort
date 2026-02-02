@@ -3,25 +3,25 @@
 
 // ============ Configuration ============
 // Backend API is always on Render, regardless of where frontend is hosted
-const API_BASE_URL = (function() {
+const API_BASE_URL = (function () {
     // First try to use APIConfig if available
     if (window.APIConfig && window.APIConfig.baseURL) {
         return window.APIConfig.baseURL;
     }
-    
+
     // Fallback logic
     const hostname = window.location.hostname;
-    
+
     // Local development
     if (hostname === 'localhost' || hostname === '127.0.0.1') {
         return `${window.location.protocol}//${hostname}:${window.location.port || 3000}`;
     }
-    
+
     // Production on Render - same origin
     if (window.location.origin.includes('onrender.com')) {
         return window.location.origin;
     }
-    
+
     // All other cases (bizzshort.com, netlify, vercel, etc.) - use Render backend
     return 'https://bizzshort.onrender.com';
 })();
@@ -108,17 +108,17 @@ function checkAuth() {
     const localSession = localStorage.getItem('adminSession');
     const sessionSession = sessionStorage.getItem('adminSession');
     const session = localSession || sessionSession;
-    
+
     console.log('Checking authentication...');
     console.log('localStorage adminSession:', localSession ? 'exists' : 'null');
     console.log('sessionStorage adminSession:', sessionSession ? 'exists' : 'null');
-    
+
     if (!session) {
         console.warn('No admin session found, redirecting to login');
         window.location.href = 'admin-login.html';
         return false;
     }
-    
+
     console.log('Admin session found:', session.substring(0, 20) + '...');
     return true;
 }
@@ -138,9 +138,9 @@ function showSection(sectionId, event) {
     if (event) {
         event.preventDefault();
     }
-    
+
     console.log('Showing section:', sectionId);
-    
+
     // Hide all sections
     document.querySelectorAll('.admin-section').forEach(section => {
         section.classList.remove('active');
@@ -190,7 +190,7 @@ async function loadDashboard() {
     try {
         const response = await apiRequest(API_ENDPOINTS.stats);
         const stats = response.data || response; // Handle both { data: {...} } and direct object
-        
+
         // Update stat cards with fallback values
         document.querySelector('[data-stat="videos"]').textContent = stats.videos || 0;
         document.querySelector('[data-stat="events"]').textContent = stats.events || 0;
@@ -202,17 +202,17 @@ async function loadDashboard() {
         loadContentChart();
     } catch (error) {
         console.error('Error loading dashboard:', error);
-        
+
         // Display fallback values when API fails
         document.querySelector('[data-stat="videos"]').textContent = '0';
         document.querySelector('[data-stat="events"]').textContent = '0';
         document.querySelector('[data-stat="advertisements"]').textContent = '0';
         document.querySelector('[data-stat="views"]').textContent = '0';
-        
+
         // Still load charts with default data
         loadTrafficChart();
         loadContentChart();
-        
+
         showNotification('Dashboard stats unavailable. Using default values.', 'warning');
     }
 }
@@ -349,13 +349,13 @@ function closeVideoModal() {
 function extractYouTubeId() {
     const input = document.getElementById('videoUrl').value.trim();
     let videoId = '';
-    
+
     // Extract from various YouTube URL formats
     const patterns = [
         /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/,
         /^([a-zA-Z0-9_-]{11})$/ // Direct video ID
     ];
-    
+
     for (const pattern of patterns) {
         const match = input.match(pattern);
         if (match && match[1]) {
@@ -363,14 +363,14 @@ function extractYouTubeId() {
             break;
         }
     }
-    
+
     if (videoId) {
         // Show preview
         const preview = document.getElementById('videoPreview');
         const iframe = document.getElementById('previewIframe');
         iframe.src = `https://www.youtube-nocookie.com/embed/${videoId}`;
         preview.style.display = 'block';
-        
+
         // Store videoId for submission
         document.getElementById('videoUrl').setAttribute('data-video-id', videoId);
     }
@@ -381,7 +381,7 @@ async function saveVideo(event) {
 
     const urlInput = document.getElementById('videoUrl');
     const videoId = urlInput.getAttribute('data-video-id') || '';
-    
+
     if (!videoId) {
         showNotification('Please enter a valid YouTube URL or Video ID', 'error');
         return;
@@ -423,7 +423,7 @@ async function editVideo(videoId) {
     if (!video) return;
 
     editingVideoId = videoId;
-    
+
     const youtubeId = video.youtubeId || video.videoId;
     document.getElementById('videoUrl').value = youtubeId;
     document.getElementById('videoUrl').setAttribute('data-video-id', youtubeId);
@@ -432,7 +432,7 @@ async function editVideo(videoId) {
     document.getElementById('videoCategory').value = video.category || '';
     document.getElementById('videoPosition').value = video.position || '';
     document.getElementById('videoPublished').checked = video.published !== false;
-    
+
     // Show preview
     const preview = document.getElementById('videoPreview');
     const iframe = document.getElementById('previewIframe');
@@ -460,14 +460,14 @@ function filterVideos() {
     const searchTerm = document.getElementById('videoSearchInput').value.toLowerCase();
     const categoryFilter = document.getElementById('videoCategoryFilter').value;
     const sourceFilter = document.getElementById('videoSourceFilter').value;
-    
+
     const filtered = currentVideos.filter(video => {
         const matchesSearch = video.title.toLowerCase().includes(searchTerm);
         const matchesCategory = !categoryFilter || video.category === categoryFilter;
         const matchesSource = !sourceFilter || video.source === sourceFilter;
         return matchesSearch && matchesCategory && matchesSource;
     });
-    
+
     // Re-render with filtered results
     const tbody = document.getElementById('videosTableBody');
     if (filtered.length === 0) {
@@ -481,7 +481,7 @@ function filterVideos() {
         `;
         return;
     }
-    
+
     tbody.innerHTML = filtered.map(video => {
         const thumbnail = video.thumbnail || `https://img.youtube.com/vi/${video.youtubeId || video.videoId}/maxresdefault.jpg`;
         return `
@@ -647,7 +647,7 @@ function previewAdImage(event) {
     const file = event.target.files[0];
     if (file) {
         const reader = new FileReader();
-        reader.onload = function(e) {
+        reader.onload = function (e) {
             const preview = document.getElementById('adImagePreview');
             const img = document.getElementById('previewImg');
             img.src = e.target.result;
@@ -659,7 +659,7 @@ function previewAdImage(event) {
 
 async function saveAdvertisement(event) {
     event.preventDefault();
-    
+
     const name = document.getElementById('adName').value;
     const position = document.getElementById('adPosition').value;
     const status = document.getElementById('adStatus').value;
@@ -671,11 +671,11 @@ async function saveAdvertisement(event) {
     // For now, use a placeholder or uploaded image URL
     // In production, you'd upload to cloud storage
     let imageUrl = 'https://placehold.co/728x90/e74c3c/ffffff?text=Advertisement';
-    
+
     if (imageFile) {
         // Convert to base64 for demonstration
         const reader = new FileReader();
-        reader.onload = async function(e) {
+        reader.onload = async function (e) {
             imageUrl = e.target.result;
             await submitAd(name, position, status, url, startDate, endDate, imageUrl);
         };
@@ -720,14 +720,14 @@ async function editAd(adId) {
     if (!ad) return;
 
     editingAdId = adId;
-    
+
     document.getElementById('adName').value = ad.name;
     document.getElementById('adPosition').value = ad.position || '';
     document.getElementById('adStatus').value = ad.status || 'active';
     document.getElementById('adUrl').value = ad.targetUrl || '';
     document.getElementById('adStartDate').value = ad.startDate ? ad.startDate.split('T')[0] : '';
     document.getElementById('adEndDate').value = ad.endDate ? ad.endDate.split('T')[0] : '';
-    
+
     if (ad.imageUrl || ad.image) {
         const preview = document.getElementById('adImagePreview');
         const img = document.getElementById('previewImg');
@@ -739,6 +739,88 @@ async function editAd(adId) {
     document.getElementById('adModal').style.display = 'flex';
 }
 
+// ============ Article Management ============
+// Fetch Video Metadata for Article Creation
+async function fetchVideoMetadata(url) {
+    if (!url) return;
+
+    // Simple regex for YouTube ID
+    const youtubeRegex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
+    const ytMatch = url.match(youtubeRegex);
+
+    if (ytMatch && ytMatch[1]) {
+        const videoId = ytMatch[1];
+        const thumbUrl = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+
+        document.getElementById('v2aThumbnail').src = thumbUrl;
+        document.getElementById('v2aPreview').style.display = 'block';
+
+        // Auto-fill title if empty (simulated)
+        if (!document.getElementById('v2aTitle').value) {
+            document.getElementById('v2aTitle').value = `Video Analysis: ${videoId}`;
+        }
+        showNotification('Video metadata fetched!', 'success');
+    } else if (url.includes('instagram.com/reel')) {
+        // Basic Instagram support (can't easily fetch metadata client-side without API)
+        document.getElementById('v2aPreview').style.display = 'none';
+        showNotification('Instagram Reel linked. Please add details manually.', 'info');
+    }
+}
+
+function openVideoToArticleModal() {
+    document.getElementById('videoToArticleForm').reset();
+    document.getElementById('v2aPreview').style.display = 'none';
+    document.getElementById('videoToArticleModal').style.display = 'flex';
+}
+
+async function createArticleFromVideo(event) {
+    event.preventDefault();
+
+    const url = document.getElementById('v2aVideoUrl').value;
+    const title = document.getElementById('v2aTitle').value;
+    const transcription = document.getElementById('v2atranscription').value;
+    const category = document.getElementById('v2aCategory').value;
+
+    // Determine source and ID
+    let source = 'youtube';
+    let videoId = '';
+
+    const ytMatch = url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/);
+    if (ytMatch) {
+        videoId = ytMatch[1];
+    } else if (url.includes('instagram.com/reel')) {
+        source = 'instagram';
+        const parts = url.split('/reel/');
+        if (parts[1]) videoId = parts[1].split('/')[0];
+    }
+
+    const articleData = {
+        title,
+        content: transcription, // Use transcription as main content
+        category,
+        source: source,
+        videoId: videoId,
+        videoUrl: url,
+        published: true,
+        image: source === 'youtube' ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg` : null,
+        author: { name: 'BizzShort Team' }
+    };
+
+    try {
+        await apiRequest(`${API_BASE_URL}/api/articles`, 'POST', articleData);
+        showNotification('Article created from video successfully!', 'success');
+        closeModal('videoToArticleModal');
+        // Refresh articles if on articles tab
+        if (document.getElementById('articles-tab').classList.contains('active')) {
+            loadArticles();
+        }
+    } catch (error) {
+        console.error('Failed to create article:', error);
+        showNotification('Failed to create article', 'error');
+    }
+}
+
+// ============ Advertisements (Legacy wrapper) ============
 async function deleteAd(adId) {
     if (!confirm('Are you sure you want to delete this advertisement?')) return;
 
@@ -835,7 +917,7 @@ function showAddEventModal() {
 
 async function saveEvent(event) {
     event.preventDefault();
-    
+
     const eventData = {
         title: document.getElementById('eventTitle').value,
         date: document.getElementById('eventDate').value,
@@ -846,7 +928,7 @@ async function saveEvent(event) {
         status: document.getElementById('eventStatus').value,
         link: document.getElementById('eventLink').value
     };
-    
+
     try {
         if (editingEventId) {
             await apiRequest(`${API_ENDPOINTS.events}/${editingEventId}`, 'PUT', eventData);
@@ -855,7 +937,7 @@ async function saveEvent(event) {
             await apiRequest(API_ENDPOINTS.events, 'POST', eventData);
             showNotification('Event added successfully!', 'success');
         }
-        
+
         closeModal();
         loadEvents();
     } catch (error) {
@@ -867,10 +949,10 @@ async function saveEvent(event) {
 async function editEvent(eventId) {
     const event = currentEvents.find(e => e._id === eventId);
     if (!event) return;
-    
+
     editingEventId = eventId;
     showAddEventModal();
-    
+
     // Wait for modal to render then populate
     setTimeout(() => {
         document.querySelector('#eventModal h2').innerHTML = '<i class="fas fa-edit"></i> Edit Event';
@@ -887,7 +969,7 @@ async function editEvent(eventId) {
 
 async function deleteEvent(eventId) {
     if (!confirm('Are you sure you want to delete this event?')) return;
-    
+
     try {
         await apiRequest(`${API_ENDPOINTS.events}/${eventId}`, 'DELETE');
         showNotification('Event deleted successfully!', 'success');
@@ -899,7 +981,7 @@ async function deleteEvent(eventId) {
 }
 
 // Close modals when clicking outside
-window.onclick = function(event) {
+window.onclick = function (event) {
     if (event.target.classList.contains('modal')) {
         event.target.style.display = 'none';
     }
@@ -909,11 +991,11 @@ window.onclick = function(event) {
 async function loadPendingUsersCount() {
     try {
         const response = await apiRequest(API_ENDPOINTS.pendingUsers);
-        
+
         if (response.success) {
             const pendingCount = response.users.length;
             const badge = document.getElementById('pendingCount');
-            
+
             if (pendingCount > 0) {
                 badge.textContent = pendingCount;
                 badge.style.display = 'inline-block';
@@ -929,15 +1011,15 @@ async function loadPendingUsersCount() {
 async function loadPendingUsers() {
     try {
         const response = await apiRequest(API_ENDPOINTS.pendingUsers);
-        
+
         if (response.success) {
             const tbody = document.getElementById('pendingUsersTableBody');
             const pendingCount = response.users.length;
-            
+
             // Update pending count badge
             const badge = document.getElementById('pendingCount');
             const totalPending = document.getElementById('totalPending');
-            
+
             if (pendingCount > 0) {
                 badge.textContent = pendingCount;
                 badge.style.display = 'inline-block';
@@ -946,7 +1028,7 @@ async function loadPendingUsers() {
                 badge.style.display = 'none';
                 totalPending.textContent = '0';
             }
-            
+
             if (response.users.length === 0) {
                 tbody.innerHTML = `
                     <tr>
@@ -958,7 +1040,7 @@ async function loadPendingUsers() {
                 `;
                 return;
             }
-            
+
             tbody.innerHTML = response.users.map(user => `
                 <tr id="user-${user._id}">
                     <td>
@@ -982,7 +1064,7 @@ async function loadPendingUsers() {
                     </td>
                 </tr>
             `).join('');
-            
+
             showNotification(`${pendingCount} pending approval(s)`, 'info');
         }
     } catch (error) {
@@ -993,10 +1075,10 @@ async function loadPendingUsers() {
 
 async function approveUser(userId) {
     if (!confirm('Approve this user registration?')) return;
-    
+
     try {
         const response = await apiRequest(`${API_ENDPOINTS.approveUser}/${userId}`, 'POST');
-        
+
         if (response.success) {
             showNotification('User approved successfully', 'success');
             // Remove from table
@@ -1014,10 +1096,10 @@ async function approveUser(userId) {
 async function rejectUser(userId) {
     const reason = prompt('Reason for rejection (optional):');
     if (reason === null) return; // User cancelled
-    
+
     try {
         const response = await apiRequest(`${API_ENDPOINTS.rejectUser}/${userId}`, 'POST', { reason });
-        
+
         if (response.success) {
             showNotification('User rejected', 'success');
             // Remove from table
@@ -1036,11 +1118,11 @@ async function rejectUser(userId) {
 async function loadEmployeeProgress() {
     try {
         const response = await apiRequest(API_ENDPOINTS.employeeProgress);
-        
+
         if (response.success) {
             const tbody = document.getElementById('employeeProgressTableBody');
             const employees = response.employees;
-            
+
             if (employees.length === 0) {
                 tbody.innerHTML = `
                     <tr>
@@ -1052,12 +1134,12 @@ async function loadEmployeeProgress() {
                 `;
                 return;
             }
-            
+
             tbody.innerHTML = employees.map(emp => {
-                const lastActivity = emp.recentActivity.length > 0 
-                    ? new Date(emp.recentActivity[0].date).toLocaleString() 
+                const lastActivity = emp.recentActivity.length > 0
+                    ? new Date(emp.recentActivity[0].date).toLocaleString()
                     : 'No activity';
-                    
+
                 return `
                     <tr>
                         <td>
@@ -1100,27 +1182,27 @@ async function loadAnalytics() {
     try {
         // Load website analytics
         const websiteResponse = await apiRequest(API_ENDPOINTS.websiteAnalytics);
-        
+
         if (websiteResponse.success) {
             const analytics = websiteResponse.analytics;
-            
+
             document.getElementById('analyticsVideos').textContent = analytics.totals.videos;
             document.getElementById('analyticsVideosMonth').textContent = `${analytics.thisMonth.videos} this month`;
-            
+
             document.getElementById('analyticsEvents').textContent = analytics.totals.events;
             document.getElementById('analyticsEventsMonth').textContent = `${analytics.thisMonth.events} this month`;
-            
+
             document.getElementById('analyticsAds').textContent = analytics.totals.advertisements;
             document.getElementById('analyticsUsers').textContent = analytics.totals.users;
         }
-        
+
         // Load advertisement analytics
         const adResponse = await apiRequest(API_ENDPOINTS.adAnalytics);
-        
+
         if (adResponse.success) {
             const adAnalytics = adResponse.analytics;
             const adContent = document.getElementById('adAnalyticsContent');
-            
+
             adContent.innerHTML = `
                 <div style="padding: 20px;">
                     <div class="stats-grid" style="margin-bottom: 20px;">
@@ -1168,7 +1250,7 @@ async function loadAnalytics() {
                 </div>
             `;
         }
-        
+
         showNotification('Analytics loaded successfully', 'success');
     } catch (error) {
         console.error('Error loading analytics:', error);
@@ -1177,41 +1259,41 @@ async function loadAnalytics() {
 }
 
 // ============ Initialize on Page Load ============
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     console.log('🚀 Admin Panel Loading...');
-    
+
     // Initialize header buttons FIRST (before any auth redirects)
     const btnViewWebsite = document.getElementById('btnViewWebsite');
     const btnLogout = document.getElementById('btnLogout');
-    
+
     if (btnViewWebsite) {
-        btnViewWebsite.addEventListener('click', function(e) {
+        btnViewWebsite.addEventListener('click', function (e) {
             e.preventDefault();
             console.log('View Website button clicked');
             window.open('index.html', '_blank');
         });
     }
-    
+
     if (btnLogout) {
-        btnLogout.addEventListener('click', function(e) {
+        btnLogout.addEventListener('click', function (e) {
             e.preventDefault();
             console.log('Logout button clicked');
             logout();
         });
     }
-    
+
     // Check authentication
     if (!checkAuth()) {
         console.log('❌ Authentication failed, redirecting to login');
         return;
     }
-    
+
     console.log('✅ Authentication successful');
 
     // Check for hash in URL and show that section
     const hash = window.location.hash.substring(1); // Remove the # character
     console.log('URL Hash:', hash);
-    
+
     if (hash) {
         console.log('Loading section from hash:', hash);
         showSection(hash);
@@ -1220,7 +1302,7 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('No hash found, loading dashboard');
         loadDashboard();
     }
-    
+
     // Load pending users count for badge
     console.log('Loading pending users count...');
     loadPendingUsersCount();
@@ -1231,15 +1313,15 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('Video form found, setting up submit handler');
         videoForm.addEventListener('submit', saveVideo);
     }
-    
+
     // Listen for hash changes
-    window.addEventListener('hashchange', function() {
+    window.addEventListener('hashchange', function () {
         const newHash = window.location.hash.substring(1);
         console.log('Hash changed to:', newHash);
         if (newHash) {
             showSection(newHash);
         }
     });
-    
+
     console.log('✅ Admin Panel Initialized');
 });

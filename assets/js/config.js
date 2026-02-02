@@ -34,7 +34,6 @@ const APIConfig = {
     // Initialize the config
     init: function() {
         this.baseURL = this.getBaseURL();
-        console.log('🔧 API Base URL:', this.baseURL);
         return this.baseURL;
     },
     

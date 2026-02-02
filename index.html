@@ -54,15 +54,16 @@
     <link rel="stylesheet" href="assets/css/unified-design-system.css?v=20260117g">
     <link rel="stylesheet" href="assets/css/main-style.css?v=20260127">
     <link rel="stylesheet" href="assets/css/responsive.css?v=20260117g">
-    <link rel="stylesheet" href="assets/css/video-modal.css?v=20260117g">
+    <link rel="stylesheet" href="assets/css/responsive.css?v=20260117g">
 
-    <!-- Google AdSense (Replace ca-pub-XXXXXXXXXXXXXXXX with your actual AdSense publisher ID) -->
+    <!-- Google AdSense - Disabled until publisher ID is configured -->
+    <!-- Uncomment and add your AdSense publisher ID when ready:
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX"
         crossorigin="anonymous"></script>
+    -->
 
-
-    <!-- Google Analytics (Replace G-XXXXXXXXXX with your actual GA4 Measurement ID) -->
-    <!-- TODO: Add your Google Analytics ID below -->
+    <!-- Google Analytics - Disabled until Measurement ID is configured -->
+    <!-- Uncomment and add your GA4 Measurement ID when ready:
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -70,6 +71,7 @@
         gtag('js', new Date());
         gtag('config', 'G-XXXXXXXXXX');
     </script>
+    -->
 
 
     <!-- Structured Data (JSON-LD) for SEO -->
@@ -1142,45 +1144,42 @@
                             </a>
                         </div>
                     </blockquote>
-                    <script async src="//www.instagram.com/embed.js"></script>
-    </div>
-    <div
-        style="padding:15px;background:linear-gradient(45deg, #405de6, #5851db, #833ab4, #c13584, #e1306c, #fd1d1d);border-radius:0 0 12px 12px;color:white;">
-        <h3 style="margin:0 0 8px 0;font-size:18px;">${title || 'Client Interview'}</h3>
-        <p style="margin:0;opacity:0.9;font-size:14px;"><i class="fab fa-instagram"></i> @bizz_short | Client Interview
-            Series</p>
-    </div>
-    </div>`;
-    document.body.appendChild(modal);
-    document.body.style.overflow = 'hidden';
+                </div>
+                <div style="padding:15px;background:linear-gradient(45deg, #405de6, #5851db, #833ab4, #c13584, #e1306c, #fd1d1d);border-radius:0 0 12px 12px;color:white;">
+                                <h3 style="margin:0 0 8px 0;font-size:18px;">${title || 'Client Interview'}</h3>
+                    <p style="margin:0;opacity:0.9;font-size:14px;"><i class="fab fa-instagram"></i> @bizz_short | Client Interview Series</p>
+                </div>
+            </div>`;
+            document.body.appendChild(modal);
+            document.body.style.overflow = 'hidden';
 
-    // Load Instagram embed script if not already loaded
-    if (!window.instgrm) {
-    const script = document.createElement('script');
-    script.src = 'https://www.instagram.com/embed.js';
-    script.async = true;
-    script.onload = () => {
-    if (window.instgrm) {
-    window.instgrm.Embeds.process();
-    }
-    };
-    document.body.appendChild(script);
-    } else {
-    // If already loaded, just process embeds
-    setTimeout(() => {
-    if (window.instgrm) {
-    window.instgrm.Embeds.process();
-    }
-    }, 100);
-    }
+            // Load Instagram embed script if not already loaded
+            if (!window.instgrm) {
+                const script = document.createElement('script');
+                script.src = 'https://www.instagram.com/embed.js';
+                script.async = true;
+                script.onload = () => {
+                    if (window.instgrm) {
+                        window.instgrm.Embeds.process();
+                    }
+                };
+                document.body.appendChild(script);
+            } else {
+                // If already loaded, just process embeds
+                setTimeout(() => {
+                    if (window.instgrm) {
+                        window.instgrm.Embeds.process();
+                    }
+                }, 100);
+            }
 
-    // Close on background click
-    modal.addEventListener('click', function (e) {
-    if (e.target === modal) closeVideoModal();
-    });
-    };
+            // Close on background click
+            modal.addEventListener('click', function (e) {
+                if (e.target === modal) closeVideoModal();
+            });
+        };
 
-    console.log('✅ Instagram reel player initialized');
+        console.log('✅ Instagram reel player initialized');
     </script>
 
     <!-- API Configuration -->

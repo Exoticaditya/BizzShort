@@ -410,66 +410,27 @@ const BizzShortVideoLoader = {
     }
 };
 
-// Instagram Reel Player - Premium Modal with embedded player
+// Instagram Reel redirect
 window.playInstagramReel = function (reelId, title) {
     if (!reelId) return;
-    console.log('📸 Playing Instagram reel:', reelId);
+    console.log('📸 Redirecting to article for reel:', reelId);
 
-    // Remove existing modal
-    const existing = document.getElementById('instagramModal');
-    if (existing) existing.remove();
+    // Encode parameters
+    const params = new URLSearchParams({
+        id: reelId,
+        source: 'instagram',
+        title: title || 'Instagram Reel',
+        mode: 'watch'
+    });
 
-    const modal = document.createElement('div');
-    modal.id = 'instagramModal';
-    modal.className = 'instagram-video-modal';
-    modal.innerHTML = `
-        <div class="instagram-modal-backdrop" onclick="closeInstagramModal()"></div>
-        <div class="instagram-modal-container">
-            <div class="instagram-modal-header">
-                <div class="instagram-brand">
-                    <i class="fab fa-instagram"></i>
-                    <span>@bizz_short</span>
-                </div>
-                <button class="instagram-close-btn" onclick="closeInstagramModal()">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="instagram-video-wrapper">
-                <iframe 
-                    src="https://www.instagram.com/reel/${reelId}/embed/captioned/" 
-                    frameborder="0" 
-                    scrolling="no" 
-                    allowtransparency="true"
-                    allowfullscreen="true"
-                    class="instagram-embed-iframe">
-                </iframe>
-                <div class="instagram-loading">
-                    <div class="instagram-spinner"></div>
-                    <p>Loading Reel...</p>
-                </div>
-            </div>
-            <div class="instagram-modal-footer">
-                <div class="instagram-video-info">
-                    <h3>${title || 'Client Interview'}</h3>
-                    <p><i class="fas fa-user-tie"></i> BizzShort Client Interview Series</p>
-                </div>
-                <div class="instagram-actions">
-                    <a href="https://www.instagram.com/reel/${reelId}/" target="_blank" class="instagram-open-btn">
-                        <i class="fab fa-instagram"></i> Open in Instagram
-                    </a>
-                    <a href="https://www.instagram.com/bizz_short" target="_blank" class="instagram-follow-btn">
-                        <i class="fas fa-user-plus"></i> Follow
-                    </a>
-                </div>
-            </div>
-        </div>
-    `;
+    window.location.href = `article.html?${params.toString()}`;
+};
 
-    // Add modal styles if not already added
-    if (!document.getElementById('instagramModalStyles')) {
-        const styles = document.createElement('style');
-        styles.id = 'instagramModalStyles';
-        styles.textContent = `
+// Add modal styles if not already added
+if (!document.getElementById('instagramModalStyles')) {
+    const styles = document.createElement('style');
+    styles.id = 'instagramModalStyles';
+    styles.textContent = `
             .instagram-video-modal {
                 position: fixed;
                 top: 0;
@@ -647,20 +608,20 @@ window.playInstagramReel = function (reelId, title) {
                 }
             }
         `;
-        document.head.appendChild(styles);
+    document.head.appendChild(styles);
+}
+
+document.body.appendChild(modal);
+document.body.style.overflow = 'hidden';
+
+// ESC key to close
+const escHandler = function (e) {
+    if (e.key === 'Escape') {
+        closeInstagramModal();
+        document.removeEventListener('keydown', escHandler);
     }
-
-    document.body.appendChild(modal);
-    document.body.style.overflow = 'hidden';
-
-    // ESC key to close
-    const escHandler = function (e) {
-        if (e.key === 'Escape') {
-            closeInstagramModal();
-            document.removeEventListener('keydown', escHandler);
-        }
-    };
-    document.addEventListener('keydown', escHandler);
+};
+document.addEventListener('keydown', escHandler);
 };
 
 // Close Instagram modal
@@ -687,71 +648,39 @@ window.closeVideoModal = function () {
     }
 };
 
-// YouTube video player - Opens in modal
+// YouTube video redirect
 window.playVideo = function (videoId, source, title) {
     if (!videoId) return;
-    console.log('▶️ Playing video:', videoId, source);
+    console.log('▶️ Redirecting to article:', videoId, source);
 
-    // If Instagram, use the premium Instagram modal
+    // If Instagram, use the Instagram handler
     if (source === 'instagram') {
         playInstagramReel(videoId, title);
         return;
     }
 
-    // Remove existing modal
-    const existing = document.getElementById('videoModal');
-    if (existing) existing.remove();
-
-    const modal = document.createElement('div');
-    modal.id = 'videoModal';
-    modal.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;z-index:100000;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.95);padding:20px;';
-
-    // YouTube video/shorts - use regular embed with origin parameter
-    modal.innerHTML = `
-        <div style="position:relative;width:100%;max-width:900px;">
-            <div style="position:absolute;top:-55px;right:0;display:flex;gap:10px;align-items:center;">
-                <a href="https://www.youtube.com/watch?v=${videoId}" target="_blank" 
-                   style="background:#ff0000;color:white;padding:10px 20px;border-radius:25px;text-decoration:none;font-weight:600;font-size:14px;display:flex;align-items:center;gap:8px;">
-                    <i class="fab fa-youtube"></i> Watch on YouTube
-                </a>
-                <button onclick="closeVideoModal()" 
-                        style="background:#e74c3c;color:white;border:none;width:45px;height:45px;
-                               border-radius:50%;cursor:pointer;font-size:24px;z-index:100001;">×</button>
-            </div>
-            <div style="position:relative;padding-bottom:56.25%;height:0;background:#000;border-radius:12px;overflow:hidden;">
-                <iframe 
-                    id="youtubePlayer"
-                    src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1&playsinline=1&enablejsapi=1" 
-                    frameborder="0" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                    allowfullscreen
-                    referrerpolicy="strict-origin-when-cross-origin"
-                    style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;">
-                </iframe>
-            </div>
-            <div style="padding:16px;background:linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);border-radius:0 0 12px 12px;color:white;">
-                <h3 style="margin:0 0 8px 0;font-size:18px;">${title || 'BizzShort Video'}</h3>
-                <p style="margin:0;opacity:0.7;font-size:14px;display:flex;align-items:center;gap:8px;">
-                    <i class="fab fa-youtube" style="color:#ff0000;"></i> @bizz_short • Business News in 60 Seconds
-                </p>
-            </div>
-        </div>
-    `;
-
-    document.body.appendChild(modal);
-    document.body.style.overflow = 'hidden';
-
-    modal.addEventListener('click', function (e) {
-        if (e.target === modal) closeVideoModal();
+    // Redirect to article page
+    const params = new URLSearchParams({
+        id: videoId,
+        source: 'youtube',
+        title: title || 'BizzShort Video',
+        mode: 'watch'
     });
 
-    // ESC key to close
-    document.addEventListener('keydown', function escHandler(e) {
-        if (e.key === 'Escape') {
-            closeVideoModal();
-            document.removeEventListener('keydown', escHandler);
-        }
-    });
+    window.location.href = `article.html?${params.toString()}`;
+};
+
+modal.addEventListener('click', function (e) {
+    if (e.target === modal) closeVideoModal();
+});
+
+// ESC key to close
+document.addEventListener('keydown', function escHandler(e) {
+    if (e.key === 'Escape') {
+        closeVideoModal();
+        document.removeEventListener('keydown', escHandler);
+    }
+});
 };
 
 // Initialize on DOM ready

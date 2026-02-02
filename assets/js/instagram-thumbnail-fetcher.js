@@ -64,6 +64,12 @@ const InstagramThumbnailFetcher = {
                 img.src = data.thumbnailUrl;
                 img.style.display = 'block';
                 console.log(`📸 Updated thumbnail for ${reelId}`);
+            } else if (data && data.usePlaceholder) {
+                // Use branded placeholder color
+                const thumbContainer = card.querySelector('.instagram-thumbnail');
+                if (thumbContainer && data.placeholderColor) {
+                    thumbContainer.style.background = `linear-gradient(135deg, ${data.placeholderColor} 0%, #1a1a2e 100%)`;
+                }
             }
         }
     },

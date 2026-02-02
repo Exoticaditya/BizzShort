@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,7 +23,7 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             padding: 20px 30px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
         .admin-header-content {
@@ -61,7 +62,7 @@
         }
 
         .logout-btn {
-            background: rgba(255,255,255,0.2);
+            background: rgba(255, 255, 255, 0.2);
             color: white;
             border: 2px solid white;
             padding: 8px 20px;
@@ -93,7 +94,7 @@
             background: white;
             padding: 25px;
             border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
             display: flex;
             align-items: center;
             gap: 20px;
@@ -110,10 +111,21 @@
             color: white;
         }
 
-        .stat-icon.videos { background: linear-gradient(135deg, #667eea, #764ba2); }
-        .stat-icon.events { background: linear-gradient(135deg, #f093fb, #f5576c); }
-        .stat-icon.ads { background: linear-gradient(135deg, #4facfe, #00f2fe); }
-        .stat-icon.users { background: linear-gradient(135deg, #43e97b, #38f9d7); }
+        .stat-icon.videos {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .stat-icon.events {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+        }
+
+        .stat-icon.ads {
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+        }
+
+        .stat-icon.users {
+            background: linear-gradient(135deg, #43e97b, #38f9d7);
+        }
 
         .stat-info h3 {
             font-size: 32px;
@@ -130,7 +142,7 @@
         .admin-tabs {
             background: white;
             border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
             overflow: hidden;
         }
 
@@ -245,7 +257,9 @@
             gap: 10px;
         }
 
-        .edit-btn, .delete-btn, .view-btn {
+        .edit-btn,
+        .delete-btn,
+        .view-btn {
             padding: 6px 12px;
             border: none;
             border-radius: 6px;
@@ -306,7 +320,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0, 0, 0, 0.5);
             z-index: 1000;
             align-items: center;
             justify-content: center;
@@ -356,7 +370,9 @@
             color: #2c3e50;
         }
 
-        .form-input, .form-textarea, .form-select {
+        .form-input,
+        .form-textarea,
+        .form-select {
             width: 100%;
             padding: 12px;
             border: 2px solid #e0e0e0;
@@ -369,7 +385,9 @@
             min-height: 100px;
         }
 
-        .form-input:focus, .form-textarea:focus, .form-select:focus {
+        .form-input:focus,
+        .form-textarea:focus,
+        .form-select:focus {
             outline: none;
             border-color: #667eea;
         }
@@ -417,7 +435,7 @@
             border-radius: 10px;
             padding: 15px;
             margin-bottom: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -528,7 +546,8 @@
                 font-size: 12px;
             }
 
-            .data-table th, .data-table td {
+            .data-table th,
+            .data-table td {
                 padding: 10px;
             }
 
@@ -538,6 +557,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="admin-header">
         <div class="admin-header-content">
@@ -614,8 +634,8 @@
                 <div class="action-bar">
                     <h2>Manage Videos</h2>
                     <div style="display: flex; gap: 10px;">
-                        <input type="text" class="search-box" placeholder="Search videos..." 
-                               onkeyup="searchVideos(this.value)">
+                        <input type="text" class="search-box" placeholder="Search videos..."
+                            onkeyup="searchVideos(this.value)">
                         <button class="add-btn" onclick="openAddVideoModal()">
                             <i class="fas fa-plus"></i> Add Video
                         </button>
@@ -643,9 +663,15 @@
             <div class="tab-content" id="articles-tab">
                 <div class="action-bar">
                     <h2>Manage Articles</h2>
-                    <button class="add-btn" onclick="openAddArticleModal()">
-                        <i class="fas fa-plus"></i> Add Article
-                    </button>
+                    <div style="display: flex; gap: 10px;">
+                        <button class="add-btn" onclick="openVideoToArticleModal()"
+                            style="background: linear-gradient(135deg, #10b981, #059669);">
+                            <i class="fas fa-magic"></i> Create from Video
+                        </button>
+                        <button class="add-btn" onclick="openAddArticleModal()">
+                            <i class="fas fa-plus"></i> Add Manually
+                        </button>
+                    </div>
                 </div>
                 <div id="articlesContent" class="loading">
                     <i class="fas fa-spinner fa-spin"></i> Loading articles...
@@ -699,7 +725,8 @@
                 <input type="hidden" name="videoId" id="editVideoId">
                 <div class="form-group">
                     <label>YouTube Video ID</label>
-                    <input type="text" class="form-input" name="youtubeId" id="videoYoutubeId" placeholder="e.g., dQw4w9WgXcQ" required>
+                    <input type="text" class="form-input" name="youtubeId" id="videoYoutubeId"
+                        placeholder="e.g., dQw4w9WgXcQ" required>
                 </div>
                 <div class="form-group">
                     <label>Title</label>
@@ -744,7 +771,8 @@
                 </div>
                 <div class="form-group">
                     <label>Location</label>
-                    <input type="text" class="form-input" name="location" id="eventLocation" placeholder="e.g., Mumbai, India" required>
+                    <input type="text" class="form-input" name="location" id="eventLocation"
+                        placeholder="e.g., Mumbai, India" required>
                 </div>
                 <div class="form-group">
                     <label>Event Date</label>
@@ -795,6 +823,48 @@
         </div>
     </div>
 
+    <!-- Create Article from Video Modal -->
+    <div id="videoToArticleModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-magic"></i> <span id="v2aModalTitle">Create Article from Video</span></h2>
+                <button class="close-modal" onclick="closeModal('videoToArticleModal')">&times;</button>
+            </div>
+            <form id="videoToArticleForm" onsubmit="createArticleFromVideo(event)">
+                <div class="form-group">
+                    <label>Video URL (YouTube or Instagram)</label>
+                    <input type="url" class="form-input" name="videoUrl" id="v2aVideoUrl"
+                        placeholder="https://youtube.com/watch?v=..." required
+                        onchange="fetchVideoMetadata(this.value)">
+                </div>
+                <div class="form-group">
+                    <label>Article Title</label>
+                    <input type="text" class="form-input" name="title" id="v2aTitle" required>
+                </div>
+                <div class="form-group">
+                    <label>Transcription / Translated Text</label>
+                    <textarea class="form-textarea" name="transcription" id="v2atranscription" rows="8"
+                        placeholder="Paste the video transcription or translation here..." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <select class="form-select" name="category" id="v2aCategory" required>
+                        <option value="business">Business</option>
+                        <option value="markets">Markets</option>
+                        <option value="technology">Technology</option>
+                        <option value="startups">Startups</option>
+                        <option value="economy">Economy</option>
+                    </select>
+                </div>
+                <div id="v2aPreview" style="margin-bottom: 20px; display: none;">
+                    <label>Thumbnail Preview</label>
+                    <img id="v2aThumbnail" src="" style="width: 100%; border-radius: 8px; margin-top: 5px;">
+                </div>
+                <button type="submit" class="submit-btn">Create Article</button>
+            </form>
+        </div>
+    </div>
+
     <!-- Advertisement Modal -->
     <div id="adModal" class="modal">
         <div class="modal-content">
@@ -823,7 +893,8 @@
                 </div>
                 <div class="form-group">
                     <label>Target URL</label>
-                    <input type="url" class="form-input" name="targetUrl" id="adTargetUrl" placeholder="https://..." required>
+                    <input type="url" class="form-input" name="targetUrl" id="adTargetUrl" placeholder="https://..."
+                        required>
                 </div>
                 <div class="form-group">
                     <label>Image URL</label>
@@ -886,7 +957,7 @@
             };
 
             const response = await fetch(`${API_URL}${endpoint}`, config);
-            
+
             if (response.status === 401) {
                 logout();
                 return null;
@@ -1269,7 +1340,7 @@
             try {
                 const method = videoId ? 'PUT' : 'POST';
                 const endpoint = videoId ? `/api/videos/${videoId}` : '/api/videos';
-                
+
                 const result = await fetchAPI(endpoint, {
                     method: method,
                     body: JSON.stringify(videoData)
@@ -1304,7 +1375,7 @@
             try {
                 const method = eventId ? 'PUT' : 'POST';
                 const endpoint = eventId ? `/api/events/${eventId}` : '/api/events';
-                
+
                 const result = await fetchAPI(endpoint, {
                     method: method,
                     body: JSON.stringify(eventData)
@@ -1334,7 +1405,7 @@
             try {
                 const method = articleId ? 'PUT' : 'POST';
                 const endpoint = articleId ? `/api/articles/${articleId}` : '/api/articles';
-                
+
                 const result = await fetchAPI(endpoint, {
                     method: method,
                     body: JSON.stringify(articleData)
@@ -1364,7 +1435,7 @@
             try {
                 const method = adId ? 'PUT' : 'POST';
                 const endpoint = adId ? `/api/advertisements/${adId}` : '/api/advertisements';
-                
+
                 const result = await fetchAPI(endpoint, {
                     method: method,
                     body: JSON.stringify(adData)
@@ -1589,11 +1660,12 @@
         }
 
         // Close modal when clicking outside
-        window.onclick = function(event) {
+        window.onclick = function (event) {
             if (event.target.classList.contains('modal')) {
                 event.target.classList.remove('active');
             }
         }
     </script>
 </body>
+
 </html>

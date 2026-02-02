@@ -8,16 +8,12 @@ const API_BASE_URL = window.APIConfig ? window.APIConfig.baseURL :
         ? `${window.location.protocol}//${window.location.hostname}:${window.location.port || 3000}`
         : 'https://bizzshort.onrender.com');
 
-console.log('📺 Latest Updates API URL:', API_BASE_URL);
-
 let currentCategory = 'all';
 
 // Initialize Latest Updates section on page load
 document.addEventListener('DOMContentLoaded', async function () {
-    console.log('📺 Latest Updates loader initialized');
     const gridContainer = document.getElementById('latestUpdatesGrid');
     if (gridContainer) {
-        console.log('📺 Grid container found');
         // Ensure grid is visible
         gridContainer.style.display = 'grid';
     } else {
@@ -41,26 +37,18 @@ async function loadLatestUpdates(category = 'all') {
         // Show loading state
         gridContainer.innerHTML = '<div class="loading-spinner" style="grid-column:1/-1;text-align:center;padding:40px;">Loading latest updates...</div>';
 
-        console.log('📺 Fetching videos from:', `${API_BASE_URL}/api/videos?limit=12&source=youtube`);
-
         // Fetch videos from backend API
         const response = await fetch(`${API_BASE_URL}/api/videos?limit=12&source=youtube`);
-
-        console.log('📺 API Response status:', response.status);
 
         if (!response.ok) {
             throw new Error('Failed to fetch videos: ' + response.status);
         }
 
         const result = await response.json();
-        console.log('📺 API Result:', result);
-        
         const videos = result.data || result; // Handle both { data: [...] } and direct array
-        console.log('📺 Videos array:', videos?.length, 'videos');
 
         // If API returns empty array, use fallback data
         if (!videos || videos.length === 0) {
-            console.log('📺 No videos in database, using fallback data');
             throw new Error('No videos in database');
         }
 
@@ -145,7 +133,6 @@ function renderVideoCards(videos, container) {
 
             // Add click event listener
             card.addEventListener('click', function () {
-                console.log('🎬 Card clicked:', videoId);
                 if (typeof playVideo === 'function') {
                     playVideo(videoId, 'youtube', videoTitle);
                 } else {
@@ -173,7 +160,6 @@ function setupCategoryFilters() {
     const filterButtons = document.querySelectorAll('.category-filters .filter-btn');
 
     if (filterButtons.length === 0) {
-        console.warn('No category filter buttons found');
         return;
     }
 
@@ -191,14 +177,10 @@ function setupCategoryFilters() {
             const category = this.getAttribute('data-category');
             currentCategory = category;
 
-            console.log('Filter clicked:', category);
-
             // Reload videos with filter
             loadLatestUpdates(category);
         });
     });
-
-    console.log('Category filters initialized:', filterButtons.length, 'buttons');
 }
 
 // Note: playVideo(), openVideoModal(), closeVideoModal() are now handled by video-manager.js
