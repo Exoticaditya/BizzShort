@@ -7,7 +7,7 @@
 
     <!-- Content Security Policy -->
     <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self'; script-src 'self' https://translate.google.com https://translate.googleapis.com 'unsafe-inline' 'unsafe-eval'; style-src 'self' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://translate.googleapis.com 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https:; connect-src 'self' https://bizzshort.onrender.com https://translate.googleapis.com; frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com https://www.instagram.com https://translate.google.com https://translate.googleapis.com; child-src 'self' https://www.youtube.com https://www.youtube-nocookie.com https://www.instagram.com;">
+        content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' 'unsafe-hashes' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://www.googletagmanager.com https://pagead2.googlesyndication.com https://translate.google.com https://translate.googleapis.com; style-src 'self' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://translate.googleapis.com 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https:; connect-src 'self' https://bizzshort.onrender.com https://translate.googleapis.com; frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com https://www.instagram.com https://translate.google.com https://translate.googleapis.com; child-src 'self' https://www.youtube.com https://www.youtube-nocookie.com https://www.instagram.com;">
 
     <!-- SEO Meta Tags -->
     <title id="pageTitle">Article - BizzShort</title>
@@ -256,11 +256,34 @@
 
             .article-title {
                 font-size: 1.8rem;
+                line-height: 1.3;
             }
 
             .article-header-card,
             .article-content {
                 padding: 25px;
+                border-radius: 12px;
+            }
+
+            .article-body {
+                font-size: 1.05rem;
+                line-height: 1.7;
+            }
+
+            .media-container {
+                border-radius: 12px;
+                margin-bottom: 20px;
+            }
+
+            .breaking-news-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .article-meta {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
             }
         }
     </style>
@@ -396,42 +419,6 @@
     <script type="text/javascript"
         src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
-    <!-- Google Translate Floating Widget -->
-    <div id="translate-floating-widget" class="translate-widget-container" style="display:none;">
-        <button class="close-translate-btn" onclick="closeTranslateWidget()">&times;</button>
-        <div id="google_translate_element"></div>
-        <div class="translate-text">Translate Page</div>
-    </div>
-
-    <script type="text/javascript">
-        function googleTranslateElementInit() {
-            new google.translate.TranslateElement({
-                pageLanguage: 'en',
-                includedLanguages: 'en,hi',
-                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-                autoDisplay: false
-            }, 'google_translate_element');
-
-            // Show widget after a short delay
-            setTimeout(() => {
-                const widget = document.getElementById('translate-floating-widget');
-                // Check session storage instead of local to be less annoying
-                if (!sessionStorage.getItem('translateWidgetClosed')) {
-                    widget.style.display = 'flex';
-                    widget.classList.add('slide-up');
-                }
-            }, 2000);
-        }
-
-        function closeTranslateWidget() {
-            const widget = document.getElementById('translate-floating-widget');
-            widget.style.display = 'none';
-            sessionStorage.setItem('translateWidgetClosed', 'true');
-        }
-    </script>
-    <script type="text/javascript"
-        src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-
     <!-- Script to Handle URL Params and Data -->
     <script>
         const API_BASE = 'https://bizzshort.onrender.com';
@@ -481,24 +468,52 @@
             loadSuggestedNews();
         }
 
-        function loadSuggestedNews() {
+        async function loadSuggestedNews() {
             const grid = document.getElementById('suggestedNewsGrid');
-            // Mock suggested news items
+
+            try {
+                // Fetch latest videos from API
+                const response = await fetch(`${API_BASE}/api/videos/latest?limit=3`);
+                if (response.ok) {
+                    const videos = await response.json();
+                    if (videos && videos.length > 0) {
+                        grid.innerHTML = videos.map(video => `
+                            <article class="suggested-card" onclick="window.location.href='article.html?id=${video.videoId}&source=${video.source}&title=${encodeURIComponent(video.title)}'">
+                                <div class="suggested-thumb">
+                                    <img src="${video.thumbnail}" alt="${video.title}" onerror="this.src='assets/images/placeholder-news.jpg'">
+                                </div>
+                                <div class="suggested-content">
+                                    <h4>${video.title}</h4>
+                                    <div class="suggested-meta">
+                                        <span><i class="far fa-clock"></i> ${new Date(video.publishedAt).toLocaleDateString()}</span>
+                                        <span>Read More <i class="fas fa-arrow-right"></i></span>
+                                    </div>
+                                </div>
+                            </article>
+                        `).join('');
+                        return;
+                    }
+                }
+            } catch (error) {
+                console.log('Falling back to static suggested news');
+            }
+
+            // Fallback to valid static suggestions
             const suggestions = [
-                { title: "Market Rally Continues", img: "https://img.youtube.com/vi/wG7_1jViDRs/mqdefault.jpg" },
-                { title: "Tech Sector Boom", img: "https://img.youtube.com/vi/d0sU0TBhBkE/mqdefault.jpg" },
-                { title: "Startup Funding News", img: "https://img.youtube.com/vi/VDOutGjKtRg/mqdefault.jpg" }
+                { id: 'pK70FxjUJCY', title: "Manufacturing Sector Growth", source: 'youtube' },
+                { id: 'VDOutGjKtRg', title: "Market Analysis Today", source: 'youtube' },
+                { id: '6QRvRv_OOfs', title: "Business News Update", source: 'youtube' }
             ];
 
             grid.innerHTML = suggestions.map(item => `
-                <article class="suggested-card" onclick="window.location.href='article.html?id=wG7_1jViDRs&source=youtube&title=${encodeURIComponent(item.title)}'">
+                <article class="suggested-card" onclick="window.location.href='article.html?id=${item.id}&source=${item.source}&title=${encodeURIComponent(item.title)}'">
                     <div class="suggested-thumb">
-                        <img src="${item.img}" alt="${item.title}">
+                        <img src="https://img.youtube.com/vi/${item.id}/mqdefault.jpg" alt="${item.title}" onerror="this.src='assets/images/placeholder-news.jpg'">
                     </div>
                     <div class="suggested-content">
                         <h4>${item.title}</h4>
                         <div class="suggested-meta">
-                            <span><i class="far fa-clock"></i> Yesterday</span>
+                            <span><i class="far fa-clock"></i> Recent</span>
                             <span>Read More <i class="fas fa-arrow-right"></i></span>
                         </div>
                     </div>

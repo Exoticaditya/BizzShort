@@ -200,7 +200,7 @@ class LiveMarketCharts {
             data.push(baseValue + (Math.random() - 0.5) * 200);
         }
 
-        new Chart(ctx, {
+        this.charts['nifty-intraday'] = new Chart(ctx, {
             type: 'line',
             data: {
                 labels: labels,
@@ -237,8 +237,6 @@ class LiveMarketCharts {
                 }
             }
         });
-
-        this.charts['nifty-intraday'] = new Chart(ctx, config);
     }
 
     createSectoralPerformanceChart() {

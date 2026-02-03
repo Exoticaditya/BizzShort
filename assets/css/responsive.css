@@ -120,7 +120,8 @@ img {
         line-height: 1.5;
         margin-bottom: 15px;
         display: -webkit-box;
-        -webkit-line-clamp: 4;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
     }
@@ -1244,8 +1245,6 @@ screen and (min-resolution: 192dpi) {
     .section-header-bar h2 {
         font-size: 14px;
     }
-}
-}
 }
 
 /* Tablet Responsive */

@@ -483,6 +483,7 @@ a {
     line-height: 1.4;
     display: -webkit-box;
     -webkit-line-clamp: 2;
+    line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
@@ -807,9 +808,18 @@ a {
 
 /* Market value update animation */
 @keyframes valueUpdate {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); color: #004de6; }
-    100% { transform: scale(1); }
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+        color: #004de6;
+    }
+
+    100% {
+        transform: scale(1);
+    }
 }
 
 .market-value.value-updating {
@@ -4736,15 +4746,15 @@ a.interview-video-card.instagram-reel-card {
     .article-news-section {
         padding: 40px 0;
     }
-    
+
     .article-modal-content {
         padding: 20px;
     }
-    
+
     .article-modal-content h1 {
         font-size: 1.5em;
     }
-    
+
     .read-overlay i {
         font-size: 36px;
     }
