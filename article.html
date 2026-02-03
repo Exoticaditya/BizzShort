@@ -279,7 +279,7 @@
                 </a>
 
                 <!-- Ad Banner (Garvik India) -->
-                <div class="ad-banner-container" style="display: none; md:display: block;">
+                <div class="ad-banner-container" style="display: none;">
                     <a href="https://garvikadvertising.com" target="_blank" rel="noopener noreferrer"
                         style="text-decoration: none; display: flex; align-items: center; background: linear-gradient(135deg, #0b2d5b 0%, #1a4570 50%, #0b2d5b 100%); padding: 8px 20px; border-radius: 8px; gap: 15px; border: 1px solid rgba(255,215,0,0.2);">
                         <div style="display: flex; flex-direction: column;">
@@ -355,6 +355,78 @@
         </article>
 
     </main>
+
+    <!-- Google Translate Floating Widget -->
+    <div id="translate-floating-widget" class="translate-widget-container" style="display:none;">
+        <button class="close-translate-btn" onclick="closeTranslateWidget()">&times;</button>
+        <div id="google_translate_element"></div>
+        <div class="translate-text">Translate Page</div>
+    </div>
+
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'en',
+                includedLanguages: 'en,hi',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                autoDisplay: false
+            }, 'google_translate_element');
+
+            // Show widget after a short delay
+            setTimeout(() => {
+                const widget = document.getElementById('translate-floating-widget');
+                // Check session storage instead of local to be less annoying
+                if (!sessionStorage.getItem('translateWidgetClosed')) {
+                    widget.style.display = 'flex';
+                    widget.classList.add('slide-up');
+                }
+            }, 2000);
+        }
+
+        function closeTranslateWidget() {
+            const widget = document.getElementById('translate-floating-widget');
+            widget.style.display = 'none';
+            sessionStorage.setItem('translateWidgetClosed', 'true');
+        }
+    </script>
+    <script type="text/javascript"
+        src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+    <!-- Google Translate Floating Widget -->
+    <div id="translate-floating-widget" class="translate-widget-container" style="display:none;">
+        <button class="close-translate-btn" onclick="closeTranslateWidget()">&times;</button>
+        <div id="google_translate_element"></div>
+        <div class="translate-text">Translate Page</div>
+    </div>
+
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'en',
+                includedLanguages: 'en,hi',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                autoDisplay: false
+            }, 'google_translate_element');
+
+            // Show widget after a short delay
+            setTimeout(() => {
+                const widget = document.getElementById('translate-floating-widget');
+                // Check session storage instead of local to be less annoying
+                if (!sessionStorage.getItem('translateWidgetClosed')) {
+                    widget.style.display = 'flex';
+                    widget.classList.add('slide-up');
+                }
+            }, 2000);
+        }
+
+        function closeTranslateWidget() {
+            const widget = document.getElementById('translate-floating-widget');
+            widget.style.display = 'none';
+            sessionStorage.setItem('translateWidgetClosed', 'true');
+        }
+    </script>
+    <script type="text/javascript"
+        src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
     <!-- Script to Handle URL Params and Data -->
     <script>

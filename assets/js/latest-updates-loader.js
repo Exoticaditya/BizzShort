@@ -101,7 +101,8 @@ function renderVideoCards(videos, container) {
         <div class="news-video-card-large" 
              data-category="${videoCategory}" 
              data-video-id="${videoId}"
-             data-video-title="${videoTitle}">
+             data-video-title="${videoTitle}"
+             data-video-desc="${video.excerpt || video.description || ''}">
             <div class="video-player-wrapper">
                 <img src="https://img.youtube.com/vi/${videoId}/mqdefault.jpg" 
                      alt="${video.title}" 
@@ -130,12 +131,13 @@ function renderVideoCards(videos, container) {
         container.querySelectorAll('.news-video-card-large').forEach((card, index) => {
             const videoId = card.dataset.videoId;
             const videoTitle = card.dataset.videoTitle;
+            const videoDesc = card.dataset.videoDesc; // Retrieve description
 
             // Add click event listener
             card.addEventListener('click', function () {
                 // Redirect to article page
                 const encodedTitle = encodeURIComponent(videoTitle);
-                const encodedDesc = encodeURIComponent(video.excerpt || video.description || '');
+                const encodedDesc = encodeURIComponent(videoDesc);
                 window.location.href = `article.html?id=${videoId}&source=youtube&title=${encodedTitle}&desc=${encodedDesc}`;
             });
             card.style.cursor = 'pointer';

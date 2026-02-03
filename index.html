@@ -1102,11 +1102,10 @@
         };
 
         console.log('✅ Video player initialized - modal playback with PIP support');
+    </script>
 
-
-
-        <!-- API Configuration -->
-        <script src="assets/js/config.js?v=20260118"></script>
+    <!-- API Configuration -->
+    <script src="assets/js/config.js?v=20260118"></script>
 
     <!-- Core Functionality -->
     <script src="assets/js/api.js?v=20260118"></script>
@@ -1114,6 +1113,42 @@
     <script src="assets/js/live-market-data.js?v=20260123"></script>
     <script src="assets/js/realtime-market-stream.js?v=20260123"></script>
     <script src="assets/js/main-functionality.js?v=20260118"></script>
+
+    <!-- Google Translate Floating Widget -->
+    <div id="translate-floating-widget" class="translate-widget-container" style="display:none;">
+        <button class="close-translate-btn" onclick="closeTranslateWidget()">&times;</button>
+        <div id="google_translate_element"></div>
+        <div class="translate-text">Translate Page</div>
+    </div>
+
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'en',
+                includedLanguages: 'en,hi',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                autoDisplay: false
+            }, 'google_translate_element');
+
+            // Show widget after a short delay
+            setTimeout(() => {
+                const widget = document.getElementById('translate-floating-widget');
+                if (!localStorage.getItem('translateWidgetClosed')) {
+                    widget.style.display = 'flex';
+                    widget.classList.add('slide-up');
+                }
+            }, 2000);
+        }
+
+        function closeTranslateWidget() {
+            const widget = document.getElementById('translate-floating-widget');
+            widget.style.display = 'none';
+            // Remember user preference for session
+            sessionStorage.setItem('translateWidgetClosed', 'true');
+        }
+    </script>
+    <script type="text/javascript"
+        src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
     <!-- Video System -->
     <script src="assets/js/video-manager.js?v=20260118"></script>
