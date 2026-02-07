@@ -1402,46 +1402,7 @@ app.delete('/api/videos/:id', protect, async (req, res) => {
     } catch (err) { res.status(500).json({ success: false, error: err.message }); }
 });
 
-// Synced Videos API - Public endpoint for frontend video loader
-// Returns videos in format expected by bizzshort-video-loader.js
-app.get('/api/synced-videos', async (req, res) => {
-    try {
-        const { source, limit = 20, category } = req.query;
-        let query = {};
-
-        if (source) query.source = source;
-        if (category) query.category = new RegExp(category, 'i');
-
-        const videos = await Video.find(query)
-            .sort({ createdAt: -1 })
-            .limit(parseInt(limit));
-
-        // Transform to format expected by frontend
-        const formattedVideos = videos.map(v => ({
-            videoId: v.videoId,
-            title: v.title,
-            category: v.category,
-            source: v.source,
-            thumbnail: v.thumbnail || (v.source === 'youtube'
-                ? `https://img.youtube.com/vi/${v.videoId}/hqdefault.jpg`
-                : null),
-            views: v.views || '0',
-            date: v.date || new Date(v.createdAt).toLocaleDateString(),
-            relativeTime: getRelativeTime(v.createdAt),
-            featured: v.featured
-        }));
-
-        res.json({
-            success: true,
-            data: formattedVideos,
-            count: formattedVideos.length,
-            syncedAt: new Date().toISOString()
-        });
-    } catch (err) {
-        console.error('Synced videos error:', err);
-        res.status(500).json({ success: false, error: err.message });
-    }
-});
+// NOTE: The /api/synced-videos endpoint is defined later in this file (uses daily-video-sync utility)
 
 // Helper function for relative time
 function getRelativeTime(date) {

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -180,15 +181,20 @@
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
         .spinner {
             display: inline-block;
             width: 16px;
             height: 16px;
-            border: 3px solid rgba(255,255,255,.3);
+            border: 3px solid rgba(255, 255, 255, .3);
             border-radius: 50%;
             border-top-color: #fff;
             animation: spin 1s ease-in-out infinite;
@@ -196,6 +202,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="login-container">
         <div class="login-header">
@@ -205,14 +212,14 @@
         <div class="login-body">
             <div id="errorMessage" class="error-message"></div>
             <div id="successMessage" class="success-message"></div>
-            
+
             <form id="loginForm" onsubmit="handleLogin(event)">
                 <div class="form-group">
                     <label for="username">Username or Email</label>
                     <div class="input-wrapper">
                         <i class="fas fa-user"></i>
-                        <input type="text" id="username" name="username" class="form-input" 
-                               placeholder="Enter your username or email" required autofocus>
+                        <input type="text" id="username" name="username" class="form-input"
+                            placeholder="Enter your username or email" required autofocus>
                     </div>
                 </div>
 
@@ -220,8 +227,8 @@
                     <label for="password">Password</label>
                     <div class="input-wrapper">
                         <i class="fas fa-lock"></i>
-                        <input type="password" id="password" name="password" class="form-input" 
-                               placeholder="Enter your password" required>
+                        <input type="password" id="password" name="password" class="form-input"
+                            placeholder="Enter your password" required>
                     </div>
                 </div>
 
@@ -260,7 +267,7 @@
 
         async function handleLogin(event) {
             event.preventDefault();
-            
+
             const username = document.getElementById('username').value.trim();
             const password = document.getElementById('password').value;
             const loginBtn = document.getElementById('loginBtn');
@@ -282,12 +289,12 @@
                 const data = await response.json();
 
                 if (response.ok && data.success) {
-                    // Store session
-                    localStorage.setItem('adminToken', data.sessionId);
+                    // Store session - use 'adminSession' to match admin-streamlined.js checkAuth()
+                    localStorage.setItem('adminSession', data.token || data.sessionId);
                     localStorage.setItem('adminUser', JSON.stringify(data.user));
-                    
+
                     showSuccess('Login successful! Redirecting...');
-                    
+
                     // Redirect to admin panel
                     setTimeout(() => {
                         window.location.href = 'admin.html';
@@ -307,7 +314,7 @@
 
         // Check if already logged in
         window.addEventListener('DOMContentLoaded', () => {
-            const token = localStorage.getItem('adminToken');
+            const token = localStorage.getItem('adminSession');
             if (token) {
                 // Verify token is still valid
                 fetch(`${API_URL}/api/videos`, {
@@ -323,4 +330,5 @@
         });
     </script>
 </body>
+
 </html>

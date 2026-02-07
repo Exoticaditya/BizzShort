@@ -1,49 +1,22 @@
 /**
  * BizzShort Video Loader
  * Populates all video sections from BizzShort YouTube channel and Instagram
- * Connects YouTube, Instagram, and Website seamlessly
  * 
  * Features:
- * - Auto-fetches from /api/synced-videos (daily 8 AM sync)
- * - Fallback to hardcoded data if API unavailable
- * - Populates Breaking News, Latest Updates, Client Interviews
- * - Category-wise video organization
+ * - Fetches real videos from /api/synced-videos
+ * - News Videos: BizzShort logo (general news/updates)
+ * - Client Videos: Client logo (client features/interviews)
+ * - Auto-categorizes based on videoType field
  */
 
 const BizzShortVideoLoader = {
     // API endpoint for synced videos
     apiEndpoint: '/api/synced-videos',
 
-    // Strict categorization of videos as per user request
-    // News: BizzShort Logo (Market, Economy, Business Updates)
-    newsVideos: [
-        { id: 'fH8Ir7doWGk', title: 'Weekly Market Roundup: Top Gainers & Losers', category: 'Markets', date: '2 Days Ago' },
-        { id: 'dHFaUxh_sBE', title: 'Stock Market Analysis: Nifty & Sensex Today', category: 'Markets', date: '3 Days Ago' },
-        { id: 'TXoQOkT8FiQ', title: 'Indian Economy Update: GDP Growth & Outlook', category: 'Economy', date: '4 Days Ago' },
-        { id: 'DBjSV7cGluE', title: 'Banking Sector Update: RBI Policies', category: 'Banking', date: '5 Days Ago' },
-        { id: 'zX280yTaG_E', title: 'Energy Sector Update: Oil Prices & Renewable Energy', category: 'Industry', date: '1 Week Ago' },
-        { id: '47bNBV5Ca7Y', title: 'Real Estate Market: Property Trends & Investment Tips', category: 'Markets', date: '1 Week Ago' },
-        { id: 'wG7_1jViDRs', title: 'Global Market cues and Indian Indices', category: 'Markets', date: 'Yesterday' },
-        { id: 'uSkTR0Q-HVQ', title: 'Business Headlines: Key Corporate Announcements', category: 'Business', date: 'Today' }
-    ],
-
-    // Client Features: Client Logo (Success Stories, Testimonials, Interviews)
-    // Note: Reusing known valid BizzShort IDs as placeholders since specific Client IDs weren't provided.
-    // User should update these IDs with the actual Client Video IDs.
-    clientVideos: [
-        { id: 'fH8Ir7doWGk', title: 'Client Success: Transforming Manufacturing with Tech', category: 'Success Story', client: 'Alpha Corp' },
-        { id: 'pK70FxjUJCY', title: 'Testimonial: How BizzShort Helped Us Grow', category: 'Testimonial', client: 'Beta Industries' },
-        { id: 'tR1ZlYUvzUo', title: 'Partner Spotlight: Innovation in Logistics', category: 'Spotlight', client: 'Gamma Logistics' },
-        { id: 'zX280yTaG_E', title: 'Startup Journey: From Idea to IPO', category: 'Interview', client: 'Delta Startups' },
-        { id: '47bNBV5Ca7Y', title: 'Scaling Up: A Founder\'s Perspective', category: 'Interview', client: 'Epsilon Growth' }
-    ],
-
-    // Instagram Reels (Shorts)
-    reels: [
-        { id: 'C4-79y_vG5-', title: 'Office Fun: Behind the Scenes', category: 'Culture' },
-        { id: 'C3z5_7xH9-2', title: 'Team Building Event Highlights', category: 'Events' },
-        { id: 'C2y8_4wL3-1', title: 'Employee Spotlight: Meet the Team', category: 'People' }
-    ],
+    // Video arrays - populated from API (no hardcoded data)
+    newsVideos: [],      // Videos with BizzShort logo
+    clientVideos: [],    // Videos with client logo
+    reels: [],           // Instagram reels
 
     // Cached API data
     cachedVideos: null,
@@ -51,24 +24,72 @@ const BizzShortVideoLoader = {
 
     // Fetch videos from API with caching
     async fetchVideos(source = null, limit = 20) {
-        // Implementation remains similar but fills specific arrays if API provides category
-        // For now, relying on the hardcoded lists above for strict separation as requested
-        return this.newsVideos;
+        try {
+            const baseUrl = window.APIConfig ? window.APIConfig.endpoint('/api/synced-videos') : '/api/synced-videos';
+            const url = source ? `${baseUrl}?source=${source}&limit=${limit}` : `${baseUrl}?limit=${limit}`;
+
+            const response = await fetch(url);
+            if (response.ok) {
+                const data = await response.json();
+                if (data.success && data.data && data.data.length > 0) {
+                    // Sort by date (newest first)
+                    const sorted = data.data.sort((a, b) => {
+                        const dateA = a.createdAt ? new Date(a.createdAt) : new Date(0);
+                        const dateB = b.createdAt ? new Date(b.createdAt) : new Date(0);
+                        return dateB - dateA;
+                    });
+                    console.log(`📡 Fetched ${sorted.length} videos from API`);
+                    return sorted;
+                }
+            }
+        } catch (error) {
+            console.warn('⚠️ API fetch failed:', error.message);
+        }
+        // Return empty array if API fails (no hardcoded fallback)
+        return [];
     },
 
     // Initialize the loader
     async init() {
         console.log('🎬 BizzShort Video Loader initializing...');
-        console.log('📅 Content strictly categorized: News (Logo) vs Client (No Logo)');
 
         // Disable conflicting/old loaders
         window.LatestUpdatesLoader = null;
         window.BreakingNewsLoader = null;
 
-        this.loadBreakingNews(); // Uses News Videos
-        this.loadLatestUpdates('all'); // Uses News Videos
-        this.loadClientFeatures(); // Uses Client Videos
-        this.loadClientInterviews(); // Uses Reels
+        // Fetch real videos from API
+        const apiVideos = await this.fetchVideos('youtube', 30);
+        if (apiVideos && apiVideos.length > 0) {
+            // Separate news videos (with BizzShort logo) and client videos
+            this.newsVideos = apiVideos
+                .filter(v => v.videoType !== 'client')
+                .map(v => ({
+                    id: v.videoId,
+                    title: v.title,
+                    category: v.category || 'Latest',
+                    date: v.date || v.relativeTime || 'Today',
+                    description: v.description || ''
+                }));
+
+            this.clientVideos = apiVideos
+                .filter(v => v.videoType === 'client')
+                .map(v => ({
+                    id: v.videoId,
+                    title: v.title,
+                    category: v.category || 'Client Feature',
+                    date: v.date || v.relativeTime || 'Today',
+                    description: v.description || ''
+                }));
+
+            console.log(`✅ Loaded ${this.newsVideos.length} news videos, ${this.clientVideos.length} client videos`);
+        } else {
+            console.log('⚠️ No videos loaded from API');
+        }
+
+        this.loadBreakingNews();
+        this.loadLatestUpdates('all');
+        this.loadClientFeatures();
+        this.loadClientInterviews();
 
         // Setup Category Filters
         this.setupCategoryFilters();
