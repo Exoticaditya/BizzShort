@@ -19,8 +19,8 @@ class BreakingNewsLoader {
 
     async loadBreakingNews() {
         try {
-            // Try to fetch videos
-            const response = await fetch(`${this.apiBaseURL}/api/videos?source=youtube&limit=7`);
+            // Fetch ONLY breaking news section videos (exclude client features)
+            const response = await fetch(`${this.apiBaseURL}/api/videos?source=youtube&section=breaking-news&limit=7`);
 
             if (!response.ok) {
                 console.warn(`API returned ${response.status}, using fallback videos`);

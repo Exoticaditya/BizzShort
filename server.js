@@ -1356,11 +1356,13 @@ app.delete('/api/advertisements/:id', protect, async (req, res) => {
 // Videos
 app.get('/api/videos', async (req, res) => {
     try {
-        const { source, limit, category } = req.query;
+        const { source, limit, category, section, videoType } = req.query;
         let query = {};
 
         if (source) query.source = source;
         if (category) query.category = new RegExp(category, 'i');
+        if (section) query.section = section;
+        if (videoType) query.videoType = videoType;
 
         let videosQuery = Video.find(query).sort({ createdAt: -1 });
         if (limit) videosQuery = videosQuery.limit(parseInt(limit));
