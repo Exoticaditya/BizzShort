@@ -534,22 +534,30 @@
 
         async function loadSuggestedNews() {
             const grid = document.getElementById('suggestedNewsGrid');
+            const currentVideoId = getQueryParam('id');
 
             try {
-                // Fetch latest videos from API
-                const response = await fetch(`${API_BASE}/api/videos/latest?limit=3`);
+                // Fetch latest videos from API (get more to have options)
+                const response = await fetch(`${API_BASE}/api/videos?source=youtube&limit=12`);
                 if (response.ok) {
-                    const videos = await response.json();
-                    if (videos && videos.length > 0) {
-                        grid.innerHTML = videos.map(video => `
-                            <article class="suggested-card" onclick="window.location.href='article.html?id=${video.videoId}&source=${video.source}&title=${encodeURIComponent(video.title)}'">
+                    const result = await response.json();
+                    const allVideos = result.data || result;
+                    
+                    if (allVideos && allVideos.length > 0) {
+                        // Filter out current video and get 3 random different ones
+                        const otherVideos = allVideos.filter(v => v.videoId !== currentVideoId);
+                        const shuffled = otherVideos.sort(() => Math.random() - 0.5);
+                        const selected = shuffled.slice(0, 3);
+                        
+                        grid.innerHTML = selected.map(video => `
+                            <article class="suggested-card" onclick="window.location.href='article.html?id=${video.videoId}&source=${video.source || 'youtube'}&title=${encodeURIComponent(video.title)}'">
                                 <div class="suggested-thumb">
-                                    <img src="${video.thumbnail}" alt="${video.title}" onerror="this.src='assets/images/placeholder-news.jpg'">
+                                    <img src="${video.thumbnail || `https://img.youtube.com/vi/${video.videoId}/mqdefault.jpg`}" alt="${video.title}" onerror="this.src='assets/images/placeholder-news.jpg'">
                                 </div>
                                 <div class="suggested-content">
-                                    <h4>${video.title}</h4>
+                                    <h4>${video.title.substring(0, 80)}${video.title.length > 80 ? '...' : ''}</h4>
                                     <div class="suggested-meta">
-                                        <span><i class="far fa-clock"></i> ${new Date(video.publishedAt).toLocaleDateString()}</span>
+                                        <span><i class="far fa-clock"></i> ${video.date || 'Recent'}</span>
                                         <span>Read More <i class="fas fa-arrow-right"></i></span>
                                     </div>
                                 </div>
@@ -559,7 +567,7 @@
                     }
                 }
             } catch (error) {
-                console.log('Falling back to static suggested news');
+                console.log('Falling back to static suggested news:', error);
             }
 
             // Fallback to valid static suggestions
