@@ -734,7 +734,14 @@
                 </div>
                 <div class="form-group">
                     <label>Description</label>
-                    <textarea class="form-textarea" name="description" id="videoDescription" required></textarea>
+                    <textarea class="form-textarea" name="description" id="videoDescription" rows="3"></textarea>
+                    <small style="color: #888; font-size: 12px;">Short description for preview (optional)</small>
+                </div>
+                <div class="form-group">
+                    <label>Transcription</label>
+                    <textarea class="form-textarea" name="transcription" id="videoTranscription" rows="8"
+                        placeholder="Full audio transcription for article content... (optional)"></textarea>
+                        <small style="color: #888; font-size: 12px;">Audio-to-text transcription will be displayed as article content</small>
                 </div>
                 <div class="form-group">
                     <label>Category</label>
@@ -1287,6 +1294,7 @@
             document.getElementById('videoYoutubeId').value = video.youtubeId || video.videoId || '';
             document.getElementById('videoTitle').value = video.title || '';
             document.getElementById('videoDescription').value = video.description || '';
+            document.getElementById('videoTranscription').value = video.transcription || '';
             document.getElementById('videoCategory').value = video.category || 'business';
             document.getElementById('videoType').value = video.videoType || 'news';
             document.getElementById('videoSection').value = video.section || 'breaking-news';
