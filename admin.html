@@ -1542,7 +1542,7 @@
             container.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Loading...</div>';
 
             try {
-                const data = await fetchAPI('/api/admin/employees');
+                const data = await fetchAPI('/api/admin/employees-progress');
                 const employees = data?.data || [];
 
                 if (employees.length === 0) {
@@ -1706,8 +1706,8 @@
         }
     </script>
 
-    <!-- Admin Streamlined Functions -->
-    <script src="assets/js/admin-streamlined.js"></script>
+    <!-- Admin Streamlined Functions - DISABLED: conflicts with inline admin.html JS -->
+    <!-- <script src="assets/js/admin-streamlined.js"></script> -->
 
 </body>
 
