@@ -504,12 +504,26 @@
                 // Default YouTube - using youtube-nocookie.com for better embed compatibility
                 document.getElementById('instagramWrapper').classList.remove('active');
                 document.getElementById('youtubeWrapper').classList.add('active');
-                // Updated with proper YouTube embed parameters for better compatibility
                 const youtubePlayer = document.getElementById('youtubePlayer');
                 youtubePlayer.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=0&rel=0&modestbranding=1&enablejsapi=1&origin=${window.location.origin}`;
                 youtubePlayer.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
                 youtubePlayer.referrerPolicy = 'strict-origin-when-cross-origin';
                 youtubePlayer.allowFullscreen = true;
+
+                // Add error handling for embed restrictions
+                youtubePlayer.onerror = function() {
+                    const wrapper = document.getElementById('youtubeWrapper');
+                    wrapper.innerHTML = `
+                        <div style="background: #1a1a1a; padding: 40px; border-radius: 12px; text-align: center;">
+                            <i class="fab fa-youtube" style="font-size: 48px; color: #ff0000; margin-bottom: 20px;"></i>
+                            <h3 style="color: #fff; margin-bottom: 10px;">Video Unavailable</h3>
+                            <p style="color: #999; margin-bottom: 20px;">This video cannot be embedded. The creator may have disabled embedding.</p>
+                            <a href="https://www.youtube.com/watch?v=${id}" target="_blank" rel="noopener"
+                               style="display: inline-block; background: #ff0000; color: #fff; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: 600;">
+                                <i class="fab fa-youtube"></i> Watch on YouTube
+                            </a>
+                        </div>`;
+                };
             }
 
             loadSuggestedNews();
