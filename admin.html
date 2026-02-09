@@ -1543,7 +1543,7 @@
 
             try {
                 const data = await fetchAPI('/api/admin/employees-progress');
-                const employees = data?.data || [];
+                const employees = data?.employees || [];
 
                 if (employees.length === 0) {
                     container.innerHTML = '<p style="color:#7f8c8d;text-align:center;padding:20px;">No approved employees yet</p>';
@@ -1557,8 +1557,9 @@
                             <p>${emp.email}</p>
                             <span class="role-badge ${emp.role.toLowerCase()}">${emp.role}</span>
                             <div class="stats-row">
-                                <span class="stat-item">Videos: <strong>${emp.stats?.videosAdded || 0}</strong></span>
-                                <span class="stat-item">Articles: <strong>${emp.stats?.articlesWritten || 0}</strong></span>
+                                <span class="stat-item">Videos: <strong>${emp.stats?.videos || 0}</strong></span>
+                                <span class="stat-item">Events: <strong>${emp.stats?.events || 0}</strong></span>
+                                <span class="stat-item">Ads: <strong>${emp.stats?.advertisements || 0}</strong></span>
                             </div>
                         </div>
                     </div>
