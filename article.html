@@ -440,18 +440,42 @@
             let category = 'Business';
             let videoType = 'news';
 
-            // Try to fetch full video details from API
+            // Try to fetch full video details from multiple API endpoints
             try {
-                const response = await fetch(`${API_BASE}/api/synced-videos?limit=50`);
+                // First try: direct video lookup by videoId
+                let found = false;
+                
+                // Try /api/videos endpoint with all videos
+                const response = await fetch(`${API_BASE}/api/videos?source=youtube&limit=50`);
                 if (response.ok) {
                     const result = await response.json();
-                    if (result.success && result.data) {
-                        const video = result.data.find(v => v.videoId === id);
+                    const videos = result.data || result;
+                    if (videos && videos.length > 0) {
+                        const video = videos.find(v => v.videoId === id);
                         if (video) {
                             title = video.title || title;
-                            description = video.description || video.transcription || '';
+                            // Prefer transcription for article content, fallback to description
+                            description = video.transcription || video.description || '';
                             category = video.category || 'Business';
                             videoType = video.videoType || 'news';
+                            found = true;
+                        }
+                    }
+                }
+                
+                // Fallback: try synced-videos endpoint
+                if (!found) {
+                    const response2 = await fetch(`${API_BASE}/api/synced-videos?limit=50`);
+                    if (response2.ok) {
+                        const result2 = await response2.json();
+                        if (result2.success && result2.data) {
+                            const video = result2.data.find(v => v.videoId === id);
+                            if (video) {
+                                title = video.title || title;
+                                description = video.transcription || video.description || '';
+                                category = video.category || 'Business';
+                                videoType = video.videoType || 'news';
+                            }
                         }
                     }
                 }
@@ -459,12 +483,14 @@
                 console.log('Could not fetch video details:', error);
             }
 
-            // If still no description, try URL param
+            // If still no description, try URL params
+            if (!description) {
+                const descParam = getQueryParam('desc');
+                if (descParam) description = decodeURIComponent(descParam);
+            }
             if (!description) {
                 const contentParam = getQueryParam('content');
-                if (contentParam) {
-                    description = decodeURIComponent(contentParam);
-                }
+                if (contentParam) description = decodeURIComponent(contentParam);
             }
 
             // Format description as article content

@@ -37,8 +37,8 @@ async function loadLatestUpdates(category = 'all') {
         // Show loading state
         gridContainer.innerHTML = '<div class="loading-spinner" style="grid-column:1/-1;text-align:center;padding:40px;">Loading latest updates...</div>';
 
-        // Fetch videos from backend API
-        const response = await fetch(`${API_BASE_URL}/api/videos?limit=12&source=youtube`);
+        // Fetch videos from backend API - ONLY latest-updates section
+        const response = await fetch(`${API_BASE_URL}/api/videos?limit=18&source=youtube&section=latest-updates`);
 
         if (!response.ok) {
             throw new Error('Failed to fetch videos: ' + response.status);
