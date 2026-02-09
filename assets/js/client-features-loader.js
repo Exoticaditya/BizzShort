@@ -70,8 +70,10 @@ class ClientFeaturesLoader {
 
         const videoId = video.videoId || video.youtubeId;
         const thumbnailUrl = video.thumbnail || `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
-        const title = (video.title || 'Client Feature').substring(0, 80);
-        const description = (video.description || 'Learn about this featured client.').substring(0, 120);
+        const maxTitleLength = window.innerWidth <= 768 ? 90 : 80;
+        const maxDescLength = window.innerWidth <= 768 ? 140 : 120;
+        const title = (video.title || 'Client Feature').substring(0, maxTitleLength);
+        const description = (video.description || 'Learn about this featured client.').substring(0, maxDescLength);
         const category = video.category || 'Business';
         const views = this.formatViews(video.views || 0);
         const timeAgo = video.date || this.getTimeAgo(video.publishedAt || video.createdAt);

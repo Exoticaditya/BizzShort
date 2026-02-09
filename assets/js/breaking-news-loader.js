@@ -155,11 +155,18 @@ class BreakingNewsLoader {
                 }
 
                 if (title && video.title) {
-                    title.textContent = video.title.substring(0, 60) + (video.title.length > 60 ? '...' : '');
+                    // Better mobile-friendly title display
+                    const maxLength = window.innerWidth <= 768 ? 80 : 60;
+                    title.textContent = video.title.length > maxLength 
+                        ? video.title.substring(0, maxLength) + '...' 
+                        : video.title;
                 }
 
                 if (description && video.description) {
-                    description.textContent = video.description.substring(0, 100) + '...';
+                    const descMaxLength = window.innerWidth <= 768 ? 120 : 100;
+                    description.textContent = video.description.length > descMaxLength
+                        ? video.description.substring(0, descMaxLength) + '...'
+                        : video.description + '...';
                 }
 
                 if (viewCount && video.views) {
