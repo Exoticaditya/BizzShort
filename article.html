@@ -7,7 +7,7 @@
 
     <!-- Content Security Policy -->
     <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' 'unsafe-hashes' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://www.googletagmanager.com https://pagead2.googlesyndication.com https://translate.google.com https://translate.googleapis.com https://www.youtube.com; style-src 'self' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://translate.googleapis.com 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https: http:; connect-src 'self' https://bizzshort.onrender.com https://www.bizzshort.com https://translate.googleapis.com https://www.youtube.com; frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com https://youtube.com https://www.instagram.com https://translate.google.com https://translate.googleapis.com; child-src 'self' https://www.youtube.com https://www.youtube-nocookie.com https://youtube.com https://www.instagram.com;">
+        content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' 'unsafe-hashes' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://www.googletagmanager.com https://pagead2.googlesyndication.com https://translate.google.com https://translate.googleapis.com https://www.youtube.com; style-src 'self' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://translate.googleapis.com https://translate.gstatic.com 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https: http:; connect-src 'self' https://bizzshort.onrender.com https://www.bizzshort.com https://translate.googleapis.com https://www.youtube.com; frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com https://youtube.com https://www.instagram.com https://translate.google.com https://translate.googleapis.com; child-src 'self' https://www.youtube.com https://www.youtube-nocookie.com https://youtube.com https://www.instagram.com;">
 
     <!-- SEO Meta Tags -->
     <title id="pageTitle">Article - BizzShort</title>
@@ -343,10 +343,13 @@
 
             <!-- Article Content Section -->
             <div class="article-content-wrapper">
-                <h3
-                    style="color: var(--color-text-secondary); margin-bottom: 15px; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">
-                    <i class="fas fa-align-left"></i> Read Article
-                </h3>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;">
+                    <h3
+                        style="color: var(--color-text-secondary); margin: 0; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">
+                        <i class="fas fa-align-left"></i> Read Article
+                    </h3>
+                    <div id="google_translate_element" style="transform: scale(0.9); transform-origin: right;"></div>
+                </div>
 
                 <div class="article-header-card"
                     style="margin-bottom: 20px; padding: 0; background: transparent; box-shadow: none;">
@@ -383,41 +386,20 @@
 
     </main>
 
-    <!-- Google Translate Floating Widget -->
-    <div id="translate-floating-widget" class="translate-widget-container" style="display:none;">
-        <button class="close-translate-btn" onclick="closeTranslateWidget()">&times;</button>
-        <div id="google_translate_element"></div>
-        <div class="translate-text">Translate Page</div>
-    </div>
+
 
     <script type="text/javascript">
         function googleTranslateElementInit() {
             new google.translate.TranslateElement({
                 pageLanguage: 'en',
-                includedLanguages: 'en,hi',
+                includedLanguages: 'en,hi,ur,pa,ta,te,bn,mr,gu,kn,ml,or',
                 layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
                 autoDisplay: false
             }, 'google_translate_element');
-
-            // Show widget after a short delay
-            setTimeout(() => {
-                const widget = document.getElementById('translate-floating-widget');
-                // Check session storage instead of local to be less annoying
-                if (!sessionStorage.getItem('translateWidgetClosed')) {
-                    widget.style.display = 'flex';
-                    widget.classList.add('slide-up');
-                }
-            }, 2000);
-        }
-
-        function closeTranslateWidget() {
-            const widget = document.getElementById('translate-floating-widget');
-            widget.style.display = 'none';
-            sessionStorage.setItem('translateWidgetClosed', 'true');
         }
     </script>
     <script type="text/javascript"
-        src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+        src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
     <!-- Script to Handle URL Params and Data -->
     <script>
