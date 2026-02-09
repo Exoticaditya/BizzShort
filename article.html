@@ -519,13 +519,14 @@
                 document.getElementById('instagramWrapper').classList.add('active');
                 document.getElementById('instagramPlayer').src = `https://www.instagram.com/reel/${id}/embed/captioned/`;
             } else {
-                // Default YouTube
+                // Default YouTube - using youtube-nocookie.com for better embed compatibility
                 document.getElementById('instagramWrapper').classList.remove('active');
                 document.getElementById('youtubeWrapper').classList.add('active');
                 // Updated with proper YouTube embed parameters for better compatibility
                 const youtubePlayer = document.getElementById('youtubePlayer');
-                youtubePlayer.src = `https://www.youtube.com/embed/${id}?autoplay=0&rel=0&modestbranding=1&enablejsapi=1`;
+                youtubePlayer.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=0&rel=0&modestbranding=1&enablejsapi=1&origin=${window.location.origin}`;
                 youtubePlayer.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+                youtubePlayer.referrerPolicy = 'strict-origin-when-cross-origin';
                 youtubePlayer.allowFullscreen = true;
             }
 
