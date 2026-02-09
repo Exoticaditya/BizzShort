@@ -15,9 +15,46 @@ const validator = require('validator');
 // Load env vars
 dotenv.config();
 
+// ============ Video Seed Migration ============
+async function seedVideosIfNeeded() {
+    try {
+        const fs = require('fs');
+        const seedPath = path.join(__dirname, 'data', 'seed-videos.json');
+        if (!fs.existsSync(seedPath)) {
+            console.log('No seed-videos.json found, skipping video migration');
+            return;
+        }
+
+        const Video = require('./models/Video');
+        // Check if we already have real transcribed videos
+        const realCount = await Video.countDocuments({ 
+            transcription: { $exists: true, $ne: null, $ne: '' }
+        });
+        
+        if (realCount >= 30) {
+            console.log(`✅ Already have ${realCount} transcribed videos, skipping seed`);
+            return;
+        }
+
+        console.log(`🔄 Found only ${realCount} transcribed videos. Seeding ${30} real videos...`);
+        
+        // Delete ALL existing videos
+        const deleteResult = await Video.deleteMany({});
+        console.log(`   Deleted ${deleteResult.deletedCount} old videos`);
+        
+        // Load and insert seed data
+        const seedData = JSON.parse(fs.readFileSync(seedPath, 'utf8'));
+        await Video.insertMany(seedData);
+        console.log(`   ✅ Seeded ${seedData.length} real transcribed videos`);
+    } catch (err) {
+        console.error('Video seed migration error:', err.message);
+    }
+}
+
 // Connect to Database (non-blocking for faster server startup)
-// This allows the server to start and respond to health checks while DB connects
-connectDB().catch(err => console.error('Initial DB connection error:', err));
+connectDB().then(async (connected) => {
+    if (connected) await seedVideosIfNeeded();
+}).catch(err => console.error('Initial DB connection error:', err));
 
 // Models
 const Article = require('./models/Article');
@@ -2010,13 +2047,7 @@ app.get('/api/sync-status', async (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT} (MongoDB Mode)`);
 
-    // Start the daily 8 AM video sync scheduler
-    console.log('\n🎬 Starting BizzShort Video Sync Scheduler...');
-    videoSync.scheduleDaily8AM();
-
-    // Run initial sync on server start (optional - comment out if not needed)
-    if (process.env.SYNC_ON_START === 'true') {
-        console.log('📹 Running initial video sync...');
-        videoSync.runDailySync().catch(err => console.error('Initial sync error:', err));
-    }
+    // Daily video sync scheduler disabled — using pipeline seed data instead
+    // videoSync.scheduleDaily8AM();
+    console.log('📹 Video sync scheduler disabled (using seed-based pipeline)');
 });
