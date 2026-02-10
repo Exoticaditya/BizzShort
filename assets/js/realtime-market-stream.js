@@ -17,12 +17,37 @@ class RealTimeMarketStream {
     init() {
         console.log('🚀 Initializing Real-Time Market Stream (SSE)...');
         this.updateLiveBadgeState();
+        this.updateMarketClosedState();
         // Re-check market hours every minute to show/hide the badge automatically
-        this.marketHoursInterval = setInterval(() => this.updateLiveBadgeState(), 60000);
+        this.marketHoursInterval = setInterval(() => {
+            this.updateLiveBadgeState();
+            this.updateMarketClosedState();
+        }, 60000);
 
         if (!this.isMarketOpen()) {
             console.log('⏸️ Market closed (Mon–Fri, 9:15–15:30 IST); live badge hidden.');
         }
+    }
+
+    updateMarketClosedState() {
+        const isOpen = this.isMarketOpen();
+        // Hide change badges and trend notes when market is closed
+        const changeEls = document.querySelectorAll('.market-change');
+        const noteEls = document.querySelectorAll('#nifty-note, #sensex-note, #bank-nifty-note');
+
+        changeEls.forEach(el => {
+            el.style.display = isOpen ? '' : 'none';
+        });
+        noteEls.forEach(el => {
+            if (isOpen) {
+                el.style.display = '';
+            } else {
+                el.textContent = 'Market Closed';
+                el.style.display = '';
+                el.style.color = 'rgba(255,255,255,0.45)';
+                el.style.fontStyle = 'italic';
+            }
+        });
     }
 
     isMarketOpen() {

@@ -3564,7 +3564,7 @@ a.interview-video-card.instagram-reel-card {
     background: linear-gradient(180deg, #1a1f2e 0%, #2c3e50 50%, #1a252f 100%);
     color: white;
     padding: 70px 0 0;
-    margin-top: 100px;
+    margin-top: 0;
     position: relative;
     overflow: hidden;
 }

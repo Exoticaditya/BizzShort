@@ -77,6 +77,8 @@ class LiveMarketData {
     }
 
     displayMarketData(data) {
+        const marketOpen = this.isMarketOpen;
+
         // Update Nifty 50 - using element IDs
         const niftyValue = document.getElementById('nifty-value');
         const niftyChange = document.getElementById('nifty-change');
@@ -85,13 +87,13 @@ class LiveMarketData {
         if (niftyValue && data.nifty) {
             niftyValue.textContent = `₹${Math.round(data.nifty.value).toLocaleString('en-IN')}`;
         }
-        if (niftyChange && data.nifty) {
+        if (niftyChange && data.nifty && marketOpen) {
             const change = data.nifty.change;
             const isPositive = change >= 0;
             niftyChange.textContent = `${isPositive ? '+' : ''}${change.toFixed(2)}%`;
             niftyChange.className = `market-change ${isPositive ? 'positive' : 'negative'}`;
         }
-        if (niftyNote && data.nifty && data.nifty.note) {
+        if (niftyNote && data.nifty && data.nifty.note && marketOpen) {
             niftyNote.textContent = data.nifty.note;
         }
 
@@ -103,13 +105,13 @@ class LiveMarketData {
         if (sensexValue && data.sensex) {
             sensexValue.textContent = `₹${Math.round(data.sensex.value).toLocaleString('en-IN')}`;
         }
-        if (sensexChange && data.sensex) {
+        if (sensexChange && data.sensex && marketOpen) {
             const change = data.sensex.change;
             const isPositive = change >= 0;
             sensexChange.textContent = `${isPositive ? '+' : ''}${change.toFixed(2)}%`;
             sensexChange.className = `market-change ${isPositive ? 'positive' : 'negative'}`;
         }
-        if (sensexNote && data.sensex && data.sensex.note) {
+        if (sensexNote && data.sensex && data.sensex.note && marketOpen) {
             sensexNote.textContent = data.sensex.note;
         }
 
@@ -121,13 +123,13 @@ class LiveMarketData {
         if (bankNiftyValue && data.bankNifty) {
             bankNiftyValue.textContent = `₹${Math.round(data.bankNifty.value).toLocaleString('en-IN')}`;
         }
-        if (bankNiftyChange && data.bankNifty) {
+        if (bankNiftyChange && data.bankNifty && marketOpen) {
             const change = data.bankNifty.change;
             const isPositive = change >= 0;
             bankNiftyChange.textContent = `${isPositive ? '+' : ''}${change.toFixed(2)}%`;
             bankNiftyChange.className = `market-change ${isPositive ? 'positive' : 'negative'}`;
         }
-        if (bankNiftyNote && data.bankNifty && data.bankNifty.note) {
+        if (bankNiftyNote && data.bankNifty && data.bankNifty.note && marketOpen) {
             bankNiftyNote.textContent = data.bankNifty.note;
         }
 
