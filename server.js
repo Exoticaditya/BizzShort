@@ -77,14 +77,16 @@ app.use(helmet({
     contentSecurityPolicy: {
         directives: {
             defaultSrc: ["'self'"],
-            styleSrc: ["'self'", "'unsafe-inline'", "https://cdnjs.cloudflare.com", "https://fonts.googleapis.com", "https://translate.googleapis.com"],
-            scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", "'unsafe-hashes'", "https://cdnjs.cloudflare.com", "https://cdn.jsdelivr.net", "https://www.googletagmanager.com", "https://pagead2.googlesyndication.com", "https://translate.google.com", "https://translate.googleapis.com"],
-            scriptSrcElem: ["'self'", "'unsafe-inline'", "https://cdnjs.cloudflare.com", "https://cdn.jsdelivr.net", "https://www.googletagmanager.com", "https://pagead2.googlesyndication.com", "https://translate.google.com", "https://translate.googleapis.com"],
+            styleSrc: ["'self'", "'unsafe-inline'", "https://cdnjs.cloudflare.com", "https://cdn.jsdelivr.net", "https://fonts.googleapis.com", "https://translate.googleapis.com", "https://translate.gstatic.com", "https://www.gstatic.com"],
+            styleSrcElem: ["'self'", "'unsafe-inline'", "https://cdnjs.cloudflare.com", "https://cdn.jsdelivr.net", "https://fonts.googleapis.com", "https://translate.googleapis.com", "https://translate.gstatic.com", "https://www.gstatic.com"],
+            scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", "'unsafe-hashes'", "https://cdnjs.cloudflare.com", "https://cdn.jsdelivr.net", "https://www.googletagmanager.com", "https://www.google-analytics.com", "https://pagead2.googlesyndication.com", "https://translate.google.com", "https://translate.googleapis.com", "https://translate-pa.googleapis.com", "https://www.youtube.com", "https://www.instagram.com"],
+            scriptSrcElem: ["'self'", "'unsafe-inline'", "https://cdnjs.cloudflare.com", "https://cdn.jsdelivr.net", "https://www.googletagmanager.com", "https://www.google-analytics.com", "https://pagead2.googlesyndication.com", "https://translate.google.com", "https://translate.googleapis.com", "https://translate-pa.googleapis.com", "https://www.youtube.com", "https://www.instagram.com"],
             scriptSrcAttr: ["'self'", "'unsafe-inline'"],
-            imgSrc: ["'self'", "data:", "https:", "http:", "https://translate.google.com", "https://translate.googleapis.com"],
-            fontSrc: ["'self'", "https://cdnjs.cloudflare.com", "https://fonts.gstatic.com"],
-            connectSrc: ["'self'", "https://bizzshort.onrender.com", "https://www.bizzshort.com", "https://www.google-analytics.com", "https://analytics.google.com", "https://translate.googleapis.com"],
-            frameSrc: ["'self'", "https://www.youtube.com", "https://www.youtube-nocookie.com", "https://youtube.com", "https://www.instagram.com", "https://translate.google.com"],
+            imgSrc: ["'self'", "data:", "https:", "http:"],
+            fontSrc: ["'self'", "https://cdnjs.cloudflare.com", "https://cdn.jsdelivr.net", "https://fonts.gstatic.com"],
+            connectSrc: ["'self'", "https://bizzshort.onrender.com", "https://www.bizzshort.com", "https://www.google-analytics.com", "https://analytics.google.com", "https://translate.googleapis.com", "https://translate-pa.googleapis.com", "https://www.instagram.com"],
+            frameSrc: ["'self'", "https://www.youtube.com", "https://www.youtube-nocookie.com", "https://youtube.com", "https://www.instagram.com", "https://translate.google.com", "https://translate.googleapis.com"],
+            childSrc: ["'self'", "https://www.youtube.com", "https://www.youtube-nocookie.com", "https://youtube.com", "https://www.instagram.com"],
         }
     },
     crossOriginEmbedderPolicy: false,

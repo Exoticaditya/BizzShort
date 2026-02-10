@@ -5,9 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Content Security Policy -->
-    <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' 'unsafe-hashes' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://www.googletagmanager.com https://pagead2.googlesyndication.com https://translate.google.com https://translate.googleapis.com https://www.youtube.com; script-src-elem 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://www.googletagmanager.com https://pagead2.googlesyndication.com https://translate.google.com https://translate.googleapis.com https://www.youtube.com; style-src 'self' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://translate.googleapis.com https://translate.gstatic.com 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https: http:; connect-src 'self' https://bizzshort.onrender.com https://www.bizzshort.com https://translate.googleapis.com https://www.youtube.com; frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com https://youtube.com https://www.instagram.com https://translate.google.com https://translate.googleapis.com; child-src 'self' https://www.youtube.com https://www.youtube-nocookie.com https://youtube.com https://www.instagram.com;">
+    <!-- Content Security Policy is set by server helmet headers -->
 
     <!-- SEO Meta Tags -->
     <title id="pageTitle">Article - BizzShort</title>
@@ -342,8 +340,8 @@
             }
 
             .logo-img {
-                width: 50px !important;
-                height: 50px !important;
+                width: 60px !important;
+                height: auto !important;
             }
 
             .header .container {
@@ -397,6 +395,17 @@
                 transform: scale(0.75) !important;
             }
         }
+        /* Google Translate bar fix */
+        .goog-te-banner-frame {
+            display: none !important;
+        }
+        body { top: 0 !important; }
+        .skiptranslate iframe {
+            display: none !important;
+        }
+        #goog-gt-tt {
+            display: none !important;
+        }
     </style>
 </head>
 
@@ -410,7 +419,7 @@
                 <a href="index.html" class="logo"
                     style="display: flex; align-items: center; text-decoration: none;">
                     <img src="assets/images/logo.jpeg" alt="BizzShort Logo" class="logo-img"
-                        style="width: 70px; height: 70px; border-radius: 8px; object-fit: cover;">
+                        style="width: 100px; height: auto; border-radius: 10px; object-fit: contain;">
                 </a>
 
                 <!-- Ad Banner (Garvik India) -->
@@ -440,11 +449,14 @@
                 <div id="videoSection" class="media-container">
                     <!-- YouTube Wrapper -->
                     <div id="youtubeWrapper" class="video-wrapper">
-                        <iframe id="youtubePlayer" frameborder="0" allowfullscreen allow="autoplay"></iframe>
+                        <iframe id="youtubePlayer" frameborder="0" allowfullscreen
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            src="about:blank"></iframe>
                     </div>
                     <!-- Instagram Wrapper -->
                     <div id="instagramWrapper" class="reel-wrapper">
-                        <iframe id="instagramPlayer" frameborder="0" scrolling="no" allowtransparency="true"></iframe>
+                        <iframe id="instagramPlayer" frameborder="0" scrolling="no" allowtransparency="true"
+                            src="about:blank"></iframe>
                     </div>
                 </div>
             </div>
@@ -495,8 +507,7 @@
 
     </main>
 
-
-
+    <!-- Google Translate -->
     <script type="text/javascript">
         function googleTranslateElementInit() {
             new google.translate.TranslateElement({
@@ -509,6 +520,63 @@
     </script>
     <script type="text/javascript"
         src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+    <!-- Footer -->
+    <footer style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: #94a3b8; padding: 50px 0 0; margin-top: 60px;">
+        <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; padding-bottom: 40px; border-bottom: 1px solid rgba(255,255,255,0.08);">
+                <!-- About -->
+                <div>
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+                        <img src="assets/images/logo.jpeg" alt="BizzShort" style="width: 40px; height: 40px; border-radius: 8px;">
+                        <h3 style="color: #fff; font-size: 1.2rem; margin: 0;">BizzShort</h3>
+                    </div>
+                    <p style="font-size: 0.9rem; line-height: 1.6; margin-bottom: 15px;">Your trusted source for real-time business news, market insights, and financial analysis.</p>
+                    <div style="display: flex; gap: 12px;">
+                        <a href="https://www.facebook.com/share/1JsieyAznj/?mibextid=wwXIfr" target="_blank" rel="noopener" style="color: #94a3b8; font-size: 1.1rem;"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://twitter.com/bizzshort" target="_blank" rel="noopener" style="color: #94a3b8; font-size: 1.1rem;"><i class="fab fa-twitter"></i></a>
+                        <a href="https://www.linkedin.com/company/bizzshort" target="_blank" rel="noopener" style="color: #94a3b8; font-size: 1.1rem;"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="https://www.instagram.com/bizz_short?igsh=NDVwdHJza2R3dnF0" target="_blank" rel="noopener" style="color: #94a3b8; font-size: 1.1rem;"><i class="fab fa-instagram"></i></a>
+                        <a href="https://youtube.com/@bizz_short?si=FZvH5iMI2v_J4vGE" target="_blank" rel="noopener" style="color: #94a3b8; font-size: 1.1rem;"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <!-- Explore -->
+                <div>
+                    <h4 style="color: #fff; font-size: 1rem; margin-bottom: 15px;">Explore</h4>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="margin-bottom: 8px;"><a href="index.html" style="color: #94a3b8; text-decoration: none; font-size: 0.9rem;">Home</a></li>
+                        <li style="margin-bottom: 8px;"><a href="index.html#latest-news" style="color: #94a3b8; text-decoration: none; font-size: 0.9rem;">Latest Updates</a></li>
+                        <li style="margin-bottom: 8px;"><a href="index.html#breaking-news" style="color: #94a3b8; text-decoration: none; font-size: 0.9rem;">Breaking News</a></li>
+                        <li style="margin-bottom: 8px;"><a href="events.html" style="color: #94a3b8; text-decoration: none; font-size: 0.9rem;">Events</a></li>
+                    </ul>
+                </div>
+                <!-- Company -->
+                <div>
+                    <h4 style="color: #fff; font-size: 1rem; margin-bottom: 15px;">Company</h4>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="margin-bottom: 8px;"><a href="about.html" style="color: #94a3b8; text-decoration: none; font-size: 0.9rem;">About Us</a></li>
+                        <li style="margin-bottom: 8px;"><a href="contact.html" style="color: #94a3b8; text-decoration: none; font-size: 0.9rem;">Contact</a></li>
+                        <li style="margin-bottom: 8px;"><a href="advertise.html" style="color: #94a3b8; text-decoration: none; font-size: 0.9rem;">Advertise</a></li>
+                        <li style="margin-bottom: 8px;"><a href="about.html#policy" style="color: #94a3b8; text-decoration: none; font-size: 0.9rem;">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <!-- Contact -->
+                <div>
+                    <h4 style="color: #fff; font-size: 1rem; margin-bottom: 15px;">Contact</h4>
+                    <p style="font-size: 0.9rem; margin-bottom: 8px;"><i class="fas fa-envelope" style="margin-right: 8px;"></i>info@bizzshort.com</p>
+                    <p style="font-size: 0.9rem; margin-bottom: 8px;"><i class="fas fa-phone" style="margin-right: 8px;"></i>+91 1234567890</p>
+                </div>
+            </div>
+            <!-- Bottom bar -->
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 20px 0; flex-wrap: wrap; gap: 10px;">
+                <p style="font-size: 0.85rem; margin: 0;">&copy; 2025 BizzShort. All rights reserved. Developed by Garvik India</p>
+                <div style="display: flex; gap: 15px;">
+                    <a href="employee-login.html" style="color: #64748b; text-decoration: none; font-size: 0.8rem;"><i class="fas fa-user-tie"></i> Employee</a>
+                    <a href="admin-login.html" style="color: #64748b; text-decoration: none; font-size: 0.8rem;"><i class="fas fa-shield-alt"></i> Admin</a>
+                </div>
+            </div>
+        </div>
+    </footer>
 
     <!-- Script to Handle URL Params and Data -->
     <script>
@@ -610,14 +678,11 @@
                 document.getElementById('instagramWrapper').classList.add('active');
                 document.getElementById('instagramPlayer').src = `https://www.instagram.com/reel/${id}/embed/captioned/`;
             } else {
-                // Default YouTube - using youtube-nocookie.com for better embed compatibility
+                // Default YouTube embed
                 document.getElementById('instagramWrapper').classList.remove('active');
                 document.getElementById('youtubeWrapper').classList.add('active');
                 const youtubePlayer = document.getElementById('youtubePlayer');
-                youtubePlayer.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=0&rel=0&modestbranding=1`;
-                youtubePlayer.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
-                youtubePlayer.referrerPolicy = 'strict-origin-when-cross-origin';
-                youtubePlayer.allowFullscreen = true;
+                youtubePlayer.src = `https://www.youtube.com/embed/${id}`;
 
                 // Add error handling for embed restrictions
                 youtubePlayer.onerror = function () {
