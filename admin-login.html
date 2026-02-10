@@ -249,7 +249,7 @@
 
     <script src="assets/js/config.js"></script>
     <script>
-        const API_URL = APIConfig ? APIConfig.baseURL : 'https://bizzshort.onrender.com';
+        const API_URL = (typeof window.APIConfig !== 'undefined' && window.APIConfig) ? APIConfig.baseURL : 'https://bizzshort.onrender.com';
 
         function showError(message) {
             const errorDiv = document.getElementById('errorMessage');
@@ -290,7 +290,7 @@
 
                 if (response.ok && data.success) {
                     // Store session - use 'adminSession' to match admin-streamlined.js checkAuth()
-                    localStorage.setItem('adminSession', data.token || data.sessionId);
+                    localStorage.setItem('adminSession', data.sessionId || data.token);
                     localStorage.setItem('adminUser', JSON.stringify(data.user));
 
                     showSuccess('Login successful! Redirecting...');

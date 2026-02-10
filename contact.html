@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="assets/css/unified-design-system.css?v=20260116">
     <link rel="stylesheet" href="assets/css/main-style.css">
     <link rel="stylesheet" href="assets/css/responsive.css">
-    <link rel="stylesheet" href="assets/css/global-enhancements.css">
     <link
         href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
@@ -166,7 +165,7 @@
                                 </div>
                                 <div class="contact-details">
                                     <h4>Phone</h4>
-                                    <p>+91 9876543210</p>
+                                    <p>+91 9999935011</p>
                                     <span>Mon-Fri, 9:00 AM - 6:00 PM IST</span>
                                 </div>
                             </div>
@@ -365,8 +364,7 @@
                         <ul class="footer-links">
                             <li><a href="index.html">Home</a></li>
                             <li><a href="index.html#latest-news">Latest Updates</a></li>
-                            <li><a href="index.html#breaking-news">Breaking News</a></li>
-                            <li><a href="index.html#interviews">Interviews</a></li>
+                            <li><a href="index.html#latest-news">Breaking News</a></li>
                             <li><a href="events.html">Events</a></li>
                         </ul>
                     </div>
@@ -413,7 +411,7 @@
             <div class="footer-bottom">
                 <div class="footer-bottom-content">
                     <div class="footer-bottom-left">
-                        <p class="footer-copyright">&copy; 2025 BizzShort. All rights reserved.</p>
+                        <p class="footer-copyright">&copy; 2026 BizzShort. All rights reserved.</p>
                         <p class="footer-developed">Developed by Garvik India</p>
                     </div>
                     <div class="footer-bottom-right">
@@ -428,12 +426,16 @@
     </footer>
 
     <script src="assets/js/api.js"></script>
-    <script src="assets/js/language.js"></script>
-    <script src="assets/js/script.js"></script>
     <script src="assets/js/contact.js"></script>
-    <script src="assets/js/search.js"></script>
-    <script src="assets/js/enhanced-features.js"></script>
-    <script src="assets/js/enhanced.js"></script>
+    <script>
+        // Newsletter subscribe handler
+        function subscribeNewsletter(event) {
+            event.preventDefault();
+            const email = event.target.querySelector('input[type="email"]').value;
+            alert('Thank you for subscribing! We\'ll send updates to ' + email);
+            event.target.reset();
+        }
+    </script>
 </body>
 
 </html>

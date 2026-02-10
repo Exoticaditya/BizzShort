@@ -340,7 +340,7 @@
             }
 
             .logo-img {
-                width: 60px !important;
+                width: 80px !important;
                 height: auto !important;
             }
 
@@ -419,7 +419,7 @@
                 <a href="index.html" class="logo"
                     style="display: flex; align-items: center; text-decoration: none;">
                     <img src="assets/images/logo.jpeg" alt="BizzShort Logo" class="logo-img"
-                        style="width: 100px; height: auto; border-radius: 10px; object-fit: contain;">
+                        style="width: 130px; height: auto; border-radius: 10px; object-fit: contain;">
                 </a>
 
                 <!-- Ad Banner (Garvik India) -->
@@ -451,6 +451,7 @@
                     <div id="youtubeWrapper" class="video-wrapper">
                         <iframe id="youtubePlayer" frameborder="0" allowfullscreen
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="no-referrer-when-downgrade"
                             src="about:blank"></iframe>
                     </div>
                     <!-- Instagram Wrapper -->
@@ -458,6 +459,13 @@
                         <iframe id="instagramPlayer" frameborder="0" scrolling="no" allowtransparency="true"
                             src="about:blank"></iframe>
                     </div>
+                </div>
+                <!-- Watch on YouTube fallback -->
+                <div id="youtubeDirectLink" style="display:none; text-align:center; margin-top:10px;">
+                    <a id="youtubeDirectUrl" href="#" target="_blank" rel="noopener noreferrer"
+                       style="display:inline-flex; align-items:center; gap:8px; background:#ff0000; color:#fff; padding:12px 24px; border-radius:8px; text-decoration:none; font-weight:600; font-size:0.95rem; transition: opacity 0.2s;">
+                        <i class="fab fa-youtube" style="font-size:1.2rem;"></i> Watch on YouTube
+                    </a>
                 </div>
             </div>
 
@@ -569,7 +577,7 @@
             </div>
             <!-- Bottom bar -->
             <div style="display: flex; justify-content: space-between; align-items: center; padding: 20px 0; flex-wrap: wrap; gap: 10px;">
-                <p style="font-size: 0.85rem; margin: 0;">&copy; 2025 BizzShort. All rights reserved. Developed by Garvik India</p>
+                <p style="font-size: 0.85rem; margin: 0;">&copy; 2026 BizzShort. All rights reserved. Developed by Garvik India</p>
                 <div style="display: flex; gap: 15px;">
                     <a href="employee-login.html" style="color: #64748b; text-decoration: none; font-size: 0.8rem;"><i class="fas fa-user-tie"></i> Employee</a>
                     <a href="admin-login.html" style="color: #64748b; text-decoration: none; font-size: 0.8rem;"><i class="fas fa-shield-alt"></i> Admin</a>
@@ -681,23 +689,77 @@
                 // Default YouTube embed
                 document.getElementById('instagramWrapper').classList.remove('active');
                 document.getElementById('youtubeWrapper').classList.add('active');
-                const youtubePlayer = document.getElementById('youtubePlayer');
-                youtubePlayer.src = `https://www.youtube.com/embed/${id}`;
 
-                // Add error handling for embed restrictions
-                youtubePlayer.onerror = function () {
-                    const wrapper = document.getElementById('youtubeWrapper');
-                    wrapper.innerHTML = `
-                        <div style="background: #1a1a1a; padding: 40px; border-radius: 12px; text-align: center;">
-                            <i class="fab fa-youtube" style="font-size: 48px; color: #ff0000; margin-bottom: 20px;"></i>
-                            <h3 style="color: #fff; margin-bottom: 10px;">Video Unavailable</h3>
-                            <p style="color: #999; margin-bottom: 20px;">This video cannot be embedded. The creator may have disabled embedding.</p>
-                            <a href="https://www.youtube.com/watch?v=${id}" target="_blank" rel="noopener"
-                               style="display: inline-block; background: #ff0000; color: #fff; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: 600;">
-                                <i class="fab fa-youtube"></i> Watch on YouTube
-                            </a>
-                        </div>`;
-                };
+                // Always show "Watch on YouTube" link as fallback
+                const directLink = document.getElementById('youtubeDirectLink');
+                const directUrl = document.getElementById('youtubeDirectUrl');
+                directUrl.href = `https://www.youtube.com/watch?v=${id}`;
+                directLink.style.display = 'block';
+
+                // Use YouTube IFrame API for better error handling
+                const youtubePlayer = document.getElementById('youtubePlayer');
+
+                // Load YouTube IFrame API
+                if (!window.YT) {
+                    const tag = document.createElement('script');
+                    tag.src = 'https://www.youtube.com/iframe_api';
+                    document.head.appendChild(tag);
+                }
+
+                function initYTPlayer() {
+                    if (window.YT && window.YT.Player) {
+                        try {
+                            new YT.Player('youtubePlayer', {
+                                videoId: id,
+                                playerVars: {
+                                    'rel': 0,
+                                    'modestbranding': 1,
+                                    'playsinline': 1
+                                },
+                                events: {
+                                    'onError': function(event) {
+                                        // Error 101 or 150 = embedding restricted
+                                        console.log('YouTube error code:', event.data);
+                                        const wrapper = document.getElementById('youtubeWrapper');
+                                        wrapper.style.display = 'none';
+                                        wrapper.classList.remove('active');
+                                        const fallback = document.getElementById('youtubeDirectLink');
+                                        fallback.innerHTML = `
+                                            <div style="background: #1a1a1a; padding: 40px; border-radius: 12px; text-align: center; margin-bottom: 15px;">
+                                                <i class="fab fa-youtube" style="font-size: 48px; color: #ff0000; margin-bottom: 15px;"></i>
+                                                <h3 style="color: #fff; margin-bottom: 10px;">Video Cannot Be Embedded</h3>
+                                                <p style="color: #999; margin-bottom: 20px;">This video's creator has restricted embedding. Please watch it directly on YouTube.</p>
+                                                <a href="https://www.youtube.com/watch?v=${id}" target="_blank" rel="noopener noreferrer"
+                                                   style="display:inline-flex; align-items:center; gap:8px; background:#ff0000; color:#fff; padding:14px 28px; border-radius:8px; text-decoration:none; font-weight:700; font-size:1rem;">
+                                                    <i class="fab fa-youtube" style="font-size:1.3rem;"></i> Watch on YouTube
+                                                </a>
+                                            </div>`;
+                                        fallback.style.display = 'block';
+                                    }
+                                }
+                            });
+                        } catch(e) {
+                            console.log('YT Player init error:', e);
+                            youtubePlayer.src = `https://www.youtube.com/embed/${id}?rel=0&modestbranding=1`;
+                        }
+                    } else {
+                        // Fallback: direct embed
+                        youtubePlayer.src = `https://www.youtube.com/embed/${id}?rel=0&modestbranding=1`;
+                    }
+                }
+
+                // Wait for YT API or use fallback
+                window.onYouTubeIframeAPIReady = initYTPlayer;
+                // If API is already loaded
+                if (window.YT && window.YT.Player) {
+                    initYTPlayer();
+                }
+                // Timeout fallback - if YT API doesn't load in 3s, use direct embed
+                setTimeout(function() {
+                    if (!youtubePlayer.src || youtubePlayer.src === 'about:blank') {
+                        youtubePlayer.src = `https://www.youtube.com/embed/${id}?rel=0&modestbranding=1`;
+                    }
+                }, 3000);
             }
 
             loadSuggestedNews();

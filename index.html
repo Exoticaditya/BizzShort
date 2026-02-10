@@ -899,7 +899,7 @@
                     <div class="footer-bottom">
                         <div class="footer-bottom-content">
                             <div class="footer-bottom-left">
-                                <p class="footer-copyright">&copy; 2025 BizzShort. All rights reserved.</p>
+                                <p class="footer-copyright">&copy; 2026 BizzShort. All rights reserved.</p>
                                 <p class="footer-developed">Developed by Garvik India</p>
                             </div>
                             <div class="footer-bottom-right">
@@ -1112,6 +1112,9 @@
     <script src="assets/js/realtime-market-stream.js?v=20260123"></script>
     <script src="assets/js/main-functionality.js?v=20260118"></script>
 
+    <!-- Advanced Market Features (Chart Modal, Newsletter) -->
+    <script src="assets/js/advanced-market.js?v=20260210"></script>
+
     <!-- Google Translate Floating Widget -->
     <div id="translate-floating-widget" class="translate-widget-container" style="display:none;">
         <button class="close-translate-btn" onclick="closeTranslateWidget()">&times;</button>
@@ -1123,7 +1126,7 @@
         function googleTranslateElementInit() {
             new google.translate.TranslateElement({
                 pageLanguage: 'en',
-                includedLanguages: 'en,hi',
+                includedLanguages: 'en,hi,ur,pa,ta,te,bn,mr,gu,kn,ml,or',
                 layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
                 autoDisplay: false
             }, 'google_translate_element');
@@ -1131,7 +1134,7 @@
             // Show widget after a short delay
             setTimeout(() => {
                 const widget = document.getElementById('translate-floating-widget');
-                if (!localStorage.getItem('translateWidgetClosed')) {
+                if (!sessionStorage.getItem('translateWidgetClosed')) {
                     widget.style.display = 'flex';
                     widget.classList.add('slide-up');
                 }

@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="pageTitle">Article - BizzShort</title>
+    <meta name="description" id="pageDescription" content="Read insightful business articles on BizzShort">
+    <meta name="robots" content="index, follow">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="assets/css/unified-design-system.css?v=20260202">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        body {
+            background-color: var(--color-background);
+            color: var(--color-text-primary);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            padding: 15px 0;
+        }
+
+        .header .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo-img {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .article-page-container {
+            max-width: 900px;
+            margin: 120px auto 60px;
+            padding: 0 20px;
+        }
+
+        .article-header-card {
+            background: var(--color-surface);
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .category-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+        }
+
+        .article-title {
+            font-size: 2rem;
+            line-height: 1.3;
+            margin-bottom: 20px;
+            color: var(--color-primary);
+            font-weight: 800;
+        }
+
+        .article-meta {
+            display: flex;
+            gap: 25px;
+            color: #64748b;
+            font-size: 0.95rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.06);
+            padding-top: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .article-meta i {
+            margin-right: 8px;
+            color: #94a3b8;
+        }
+
+        .article-thumb {
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 30px;
+            max-height: 400px;
+        }
+
+        .article-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .article-body {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: #334155;
+            font-family: 'Georgia', serif;
+        }
+
+        .article-body p {
+            margin-bottom: 20px;
+        }
+
+        .read-original {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            padding: 14px 28px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1rem;
+            margin-top: 20px;
+            transition: all 0.2s;
+        }
+
+        .read-original:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: #64748b;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 30px;
+            margin-bottom: 25px;
+        }
+
+        .back-link:hover {
+            color: var(--color-primary);
+            background: white;
+        }
+
+        /* Google Translate bar fix */
+        .goog-te-banner-frame { display: none !important; }
+        body { top: 0 !important; }
+        .skiptranslate iframe { display: none !important; }
+
+        @media (max-width: 768px) {
+            .article-page-container {
+                padding: 0 12px;
+                margin-top: 90px;
+            }
+
+            .article-title {
+                font-size: 1.4rem;
+            }
+
+            .article-header-card {
+                padding: 20px;
+            }
+
+            .logo-img {
+                width: 80px !important;
+                height: auto !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0;">
+                <a href="index.html" style="display: flex; align-items: center; text-decoration: none;">
+                    <img src="assets/images/logo.jpeg" alt="BizzShort Logo" class="logo-img"
+                        style="width: 130px; height: auto; border-radius: 10px; object-fit: contain;">
+                </a>
+                <div id="google_translate_element" style="transform: scale(0.9); transform-origin: right;"></div>
+            </div>
+        </div>
+    </header>
+
+    <main class="article-page-container">
+        <a href="index.html" class="back-link">
+            <i class="fas fa-arrow-left"></i> Back to Home
+        </a>
+
+        <article>
+            <!-- Thumbnail -->
+            <div class="article-thumb" id="articleThumb" style="display:none;">
+                <img id="thumbImg" src="" alt="">
+            </div>
+
+            <!-- Article Content -->
+            <div class="article-header-card">
+                <span class="category-badge" id="categoryBadge">Business</span>
+                <h1 class="article-title" id="articleTitle">Loading Article...</h1>
+                <div class="article-meta">
+                    <span id="publishDate"><i class="far fa-clock"></i> ...</span>
+                    <span id="sourceInfo"><i class="fas fa-external-link-alt"></i> ...</span>
+                </div>
+            </div>
+
+            <div style="background: var(--color-surface); padding: 40px; border-radius: 16px; box-shadow: 0 5px 20px rgba(0,0,0,0.05);">
+                <div class="article-body" id="articleBody">
+                    <p>Loading article content...</p>
+                </div>
+                <a id="originalLink" href="#" target="_blank" rel="noopener noreferrer" class="read-original" style="display:none;">
+                    <i class="fas fa-external-link-alt"></i> Read Full Article
+                </a>
+            </div>
+        </article>
+    </main>
+
+    <!-- Google Translate -->
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'en',
+                includedLanguages: 'en,hi,ur,pa,ta,te,bn,mr,gu,kn,ml,or',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                autoDisplay: false
+            }, 'google_translate_element');
+        }
+    </script>
+    <script type="text/javascript"
+        src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+    <!-- Footer -->
+    <footer style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: #94a3b8; padding: 50px 0 0; margin-top: 60px;">
+        <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; padding-bottom: 40px; border-bottom: 1px solid rgba(255,255,255,0.08);">
+                <div>
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+                        <img src="assets/images/logo.jpeg" alt="BizzShort" style="width: 40px; height: 40px; border-radius: 8px;">
+                        <h3 style="color: #fff; font-size: 1.2rem; margin: 0;">BizzShort</h3>
+                    </div>
+                    <p style="font-size: 0.9rem; line-height: 1.6;">Your trusted source for real-time business news, market insights, and financial analysis.</p>
+                </div>
+                <div>
+                    <h4 style="color: #fff; font-size: 1rem; margin-bottom: 15px;">Explore</h4>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="margin-bottom: 8px;"><a href="index.html" style="color: #94a3b8; text-decoration: none; font-size: 0.9rem;">Home</a></li>
+                        <li style="margin-bottom: 8px;"><a href="about.html" style="color: #94a3b8; text-decoration: none; font-size: 0.9rem;">About Us</a></li>
+                        <li style="margin-bottom: 8px;"><a href="contact.html" style="color: #94a3b8; text-decoration: none; font-size: 0.9rem;">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="color: #fff; font-size: 1rem; margin-bottom: 15px;">Contact</h4>
+                    <p style="font-size: 0.9rem; margin-bottom: 8px;"><i class="fas fa-envelope" style="margin-right: 8px;"></i>info@bizzshort.com</p>
+                    <p style="font-size: 0.9rem; margin-bottom: 8px;"><i class="fas fa-phone" style="margin-right: 8px;"></i>+91 1234567890</p>
+                </div>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 20px 0; flex-wrap: wrap; gap: 10px;">
+                <p style="font-size: 0.85rem; margin: 0;">&copy; 2026 BizzShort. All rights reserved. Developed by Garvik India</p>
+                <div style="display: flex; gap: 15px;">
+                    <a href="employee-login.html" style="color: #64748b; text-decoration: none; font-size: 0.8rem;"><i class="fas fa-user-tie"></i> Employee</a>
+                    <a href="admin-login.html" style="color: #64748b; text-decoration: none; font-size: 0.8rem;"><i class="fas fa-shield-alt"></i> Admin</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const title = getQueryParam('title');
+            const thumb = getQueryParam('thumb');
+            const url = getQueryParam('url');
+            const source = getQueryParam('source');
+            const category = getQueryParam('category');
+            const published = getQueryParam('published');
+            const excerpt = getQueryParam('excerpt');
+            const id = getQueryParam('id');
+
+            // Handle old-style article by ID
+            if (id && !title) {
+                window.location.href = `article.html?id=${id}&source=youtube`;
+                return;
+            }
+
+            // Set page title
+            if (title) {
+                const decodedTitle = decodeURIComponent(title);
+                document.getElementById('pageTitle').textContent = `${decodedTitle} - BizzShort`;
+                document.getElementById('articleTitle').textContent = decodedTitle;
+            }
+
+            // Set thumbnail
+            if (thumb) {
+                const decodedThumb = decodeURIComponent(thumb);
+                if (decodedThumb && decodedThumb !== 'undefined') {
+                    document.getElementById('thumbImg').src = decodedThumb;
+                    document.getElementById('thumbImg').alt = decodeURIComponent(title || '');
+                    document.getElementById('articleThumb').style.display = 'block';
+                }
+            }
+
+            // Set category badge
+            if (category) {
+                const cat = decodeURIComponent(category);
+                document.getElementById('categoryBadge').textContent = cat.charAt(0).toUpperCase() + cat.slice(1);
+            }
+
+            // Set publish date
+            if (published) {
+                const date = new Date(decodeURIComponent(published));
+                const formatted = isNaN(date.getTime()) ? decodeURIComponent(published) : date.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+                document.getElementById('publishDate').innerHTML = `<i class="far fa-clock"></i> ${formatted}`;
+            }
+
+            // Set source info
+            if (source) {
+                const src = decodeURIComponent(source);
+                document.getElementById('sourceInfo').innerHTML = `<i class="fas fa-external-link-alt"></i> ${src}`;
+            }
+
+            // Set article body / excerpt
+            if (excerpt) {
+                const content = decodeURIComponent(excerpt);
+                document.getElementById('articleBody').innerHTML = content
+                    .split(/\n+/)
+                    .map(p => `<p>${p.trim()}</p>`)
+                    .join('');
+            } else {
+                document.getElementById('articleBody').innerHTML = '<p>Full article content is available at the original source.</p>';
+            }
+
+            // Set original article link
+            if (url) {
+                const decodedUrl = decodeURIComponent(url);
+                const originalLink = document.getElementById('originalLink');
+                originalLink.href = decodedUrl;
+                originalLink.style.display = 'inline-flex';
+            }
+        });
+    </script>
+</body>
+
+</html>

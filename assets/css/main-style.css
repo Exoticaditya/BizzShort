@@ -743,13 +743,16 @@ a {
 }
 
 .sidebar-header::after {
-    content: '● LIVE';
+    display: none;
+}
+
+.market-live-badge {
     position: absolute;
     top: 50%;
     right: 20px;
     transform: translateY(-50%);
-    background: #e74c3c;
-    color: white;
+    background: #000000;
+    color: #ffffff;
     font-size: 10px;
     font-weight: 700;
     padding: 4px 10px;

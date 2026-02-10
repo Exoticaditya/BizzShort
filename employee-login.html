@@ -335,7 +335,7 @@
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        email: document.getElementById('loginEmail').value,
+                        username: document.getElementById('loginEmail').value,
                         password: document.getElementById('loginPassword').value
                     })
                 });
@@ -343,8 +343,8 @@
                 const data = await response.json();
 
                 if (data.success) {
-                    localStorage.setItem('employeeToken', data.token);
-                    localStorage.setItem('employeeUser', JSON.stringify(data.user));
+                    localStorage.setItem('adminSession', data.sessionId || data.token);
+                    localStorage.setItem('adminUser', JSON.stringify(data.user));
                     showMessage('Login successful! Redirecting...', 'success');
                     setTimeout(() => {
                         window.location.href = 'employee.html';
