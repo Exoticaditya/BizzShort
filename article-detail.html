@@ -282,12 +282,91 @@
     </footer>
 
     <script>
+        const API_BASE = 'https://bizzshort.onrender.com';
+
         function getQueryParam(param) {
             const urlParams = new URLSearchParams(window.location.search);
             return urlParams.get(param);
         }
 
-        document.addEventListener('DOMContentLoaded', function () {
+        function formatContentToHtml(content) {
+            if (!content) return '<p>Full article content is available at the original source.</p>';
+            return content
+                .split(/\n+/)
+                .filter(Boolean)
+                .map(p => `<p>${p.trim()}</p>`)
+                .join('');
+        }
+
+        function applyArticleData({
+            title = 'Article',
+            thumb,
+            category = 'Business',
+            published,
+            source = 'BizzShort',
+            content,
+            originalUrl
+        }) {
+            document.getElementById('pageTitle').textContent = `${title} - BizzShort`;
+            document.getElementById('articleTitle').textContent = title;
+
+            if (thumb) {
+                document.getElementById('thumbImg').src = thumb;
+                document.getElementById('thumbImg').alt = title;
+                document.getElementById('articleThumb').style.display = 'block';
+            }
+
+            if (category) {
+                document.getElementById('categoryBadge').textContent = category.charAt(0).toUpperCase() + category.slice(1);
+            }
+
+            if (published) {
+                const date = new Date(published);
+                const formatted = isNaN(date.getTime()) ? published : date.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+                document.getElementById('publishDate').innerHTML = `<i class="far fa-clock"></i> ${formatted}`;
+            }
+
+            if (source) {
+                document.getElementById('sourceInfo').innerHTML = `<i class="fas fa-external-link-alt"></i> ${source}`;
+            }
+
+            document.getElementById('articleBody').innerHTML = formatContentToHtml(content);
+
+            const originalLink = document.getElementById('originalLink');
+            if (originalUrl) {
+                originalLink.href = originalUrl;
+                originalLink.style.display = 'inline-flex';
+            } else {
+                originalLink.style.display = 'none';
+            }
+        }
+
+        async function loadArticleFromApi(id) {
+            try {
+                const response = await fetch(`${API_BASE}/api/articles/${encodeURIComponent(id)}`);
+                if (!response.ok) return false;
+                const payload = await response.json();
+                const article = payload.data || payload;
+                if (!article || !article.title) return false;
+
+                applyArticleData({
+                    title: article.title,
+                    thumb: article.image,
+                    category: article.category || 'Business',
+                    published: article.publishedAt || article.createdAt,
+                    source: article.source || 'BizzShort',
+                    content: article.content || article.excerpt,
+                    originalUrl: article.sourceUrl || article.url
+                });
+
+                return true;
+            } catch (err) {
+                console.warn('Failed to load article by ID', err);
+                return false;
+            }
+        }
+
+        function hydrateFromQueryParams() {
             const title = getQueryParam('title');
             const thumb = getQueryParam('thumb');
             const url = getQueryParam('url');
@@ -295,68 +374,27 @@
             const category = getQueryParam('category');
             const published = getQueryParam('published');
             const excerpt = getQueryParam('excerpt');
+
+            applyArticleData({
+                title: title ? decodeURIComponent(title) : undefined,
+                thumb: thumb ? decodeURIComponent(thumb) : undefined,
+                category: category ? decodeURIComponent(category) : undefined,
+                published: published ? decodeURIComponent(published) : undefined,
+                source: source ? decodeURIComponent(source) : undefined,
+                content: excerpt ? decodeURIComponent(excerpt) : undefined,
+                originalUrl: url ? decodeURIComponent(url) : undefined
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', async function () {
             const id = getQueryParam('id');
 
-            // Handle old-style article by ID
-            if (id && !title) {
-                window.location.href = `article.html?id=${id}&source=youtube`;
-                return;
+            if (id) {
+                const loaded = await loadArticleFromApi(id);
+                if (loaded) return;
             }
 
-            // Set page title
-            if (title) {
-                const decodedTitle = decodeURIComponent(title);
-                document.getElementById('pageTitle').textContent = `${decodedTitle} - BizzShort`;
-                document.getElementById('articleTitle').textContent = decodedTitle;
-            }
-
-            // Set thumbnail
-            if (thumb) {
-                const decodedThumb = decodeURIComponent(thumb);
-                if (decodedThumb && decodedThumb !== 'undefined') {
-                    document.getElementById('thumbImg').src = decodedThumb;
-                    document.getElementById('thumbImg').alt = decodeURIComponent(title || '');
-                    document.getElementById('articleThumb').style.display = 'block';
-                }
-            }
-
-            // Set category badge
-            if (category) {
-                const cat = decodeURIComponent(category);
-                document.getElementById('categoryBadge').textContent = cat.charAt(0).toUpperCase() + cat.slice(1);
-            }
-
-            // Set publish date
-            if (published) {
-                const date = new Date(decodeURIComponent(published));
-                const formatted = isNaN(date.getTime()) ? decodeURIComponent(published) : date.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
-                document.getElementById('publishDate').innerHTML = `<i class="far fa-clock"></i> ${formatted}`;
-            }
-
-            // Set source info
-            if (source) {
-                const src = decodeURIComponent(source);
-                document.getElementById('sourceInfo').innerHTML = `<i class="fas fa-external-link-alt"></i> ${src}`;
-            }
-
-            // Set article body / excerpt
-            if (excerpt) {
-                const content = decodeURIComponent(excerpt);
-                document.getElementById('articleBody').innerHTML = content
-                    .split(/\n+/)
-                    .map(p => `<p>${p.trim()}</p>`)
-                    .join('');
-            } else {
-                document.getElementById('articleBody').innerHTML = '<p>Full article content is available at the original source.</p>';
-            }
-
-            // Set original article link
-            if (url) {
-                const decodedUrl = decodeURIComponent(url);
-                const originalLink = document.getElementById('originalLink');
-                originalLink.href = decodedUrl;
-                originalLink.style.display = 'inline-flex';
-            }
+            hydrateFromQueryParams();
         });
     </script>
 </body>

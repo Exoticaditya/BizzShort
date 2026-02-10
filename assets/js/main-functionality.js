@@ -350,6 +350,27 @@ function chooseCategory(text) {
     return 'business';
 }
 
+function buildArticleDetailUrl(item = {}) {
+    const id = item._id || item.id;
+    if (id) {
+        const slug = item.slug ? `&slug=${encodeURIComponent(item.slug)}` : '';
+        return `article-detail.html?id=${encodeURIComponent(id)}${slug}`;
+    }
+
+    // Fallback for external items without an internal ID
+    const params = new URLSearchParams();
+    if (item.url) params.set('url', item.url);
+    if (item.title) params.set('title', item.title);
+    if (item.thumbnail || item.thumb) params.set('thumb', item.thumbnail || item.thumb);
+    if (item.source) params.set('source', item.source);
+    if (item.category) params.set('category', item.category);
+    if (item.published) params.set('published', item.published);
+    if (item.excerpt) params.set('excerpt', buildExcerpt(item.excerpt, 200));
+
+    const qs = params.toString();
+    return qs ? `article-detail.html?${qs}` : 'article-detail.html';
+}
+
 function escapeHtml(str) {
     const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
     return String(str || '').replace(/[&<>"']/g, s => map[s]);
@@ -359,7 +380,7 @@ function buildVideoCard(item) {
     const el = document.createElement('article');
     el.className = 'video-card';
     const thumb = item.thumbnail || 'assets/images/logo.jpeg';
-    const articleUrl = `article-detail.html?title=${encodeURIComponent(item.title)}&thumb=${encodeURIComponent(thumb)}&url=${encodeURIComponent(item.url)}&source=${encodeURIComponent(item.source)}&category=${encodeURIComponent(item.category)}&published=${encodeURIComponent(item.published)}&excerpt=${encodeURIComponent(item.excerpt)}`;
+    const articleUrl = buildArticleDetailUrl({ ...item, thumbnail: thumb });
     el.innerHTML = `
         <a href="${articleUrl}" class="blog-card-link">
             <div class="video-thumbnail">
@@ -380,7 +401,7 @@ function buildNewsCardSmall(item) {
     el.className = 'news-card';
     const cat = item.category || chooseCategory(`${item.title} ${item.excerpt}`);
     const thumb = item.thumbnail || 'assets/images/logo.jpeg';
-    const articleUrl = `article-detail.html?title=${encodeURIComponent(item.title)}&thumb=${encodeURIComponent(thumb)}&url=${encodeURIComponent(item.url)}&source=${encodeURIComponent(item.source)}&category=${encodeURIComponent(cat)}&published=${encodeURIComponent(item.published)}&excerpt=${encodeURIComponent(item.excerpt)}`;
+    const articleUrl = buildArticleDetailUrl({ ...item, category: cat, thumbnail: thumb });
     el.innerHTML = `
         <a href="${articleUrl}" class="blog-card-link">
             <img src="${thumb}" alt="${escapeHtml(item.title)}">
@@ -402,7 +423,7 @@ function buildNewsItem(item) {
     el.className = 'news-item';
     const cat = item.category || chooseCategory(`${item.title} ${item.excerpt}`);
     const thumb = item.thumbnail || 'assets/images/logo.jpeg';
-    const articleUrl = `article-detail.html?title=${encodeURIComponent(item.title)}&thumb=${encodeURIComponent(thumb)}&url=${encodeURIComponent(item.url)}&source=${encodeURIComponent(item.source)}&category=${encodeURIComponent(cat)}&published=${encodeURIComponent(item.published)}&excerpt=${encodeURIComponent(item.excerpt)}`;
+    const articleUrl = buildArticleDetailUrl({ ...item, category: cat, thumbnail: thumb });
     el.innerHTML = `
         <a href="${articleUrl}" class="blog-card-link">
             <img src="${thumb}" alt="${escapeHtml(item.title)}">
@@ -425,7 +446,7 @@ function buildArticleCard(item) {
     el.className = 'blog-card';
     el.setAttribute('data-category', item.category);
     const thumb = item.thumbnail || 'assets/images/logo.jpeg';
-    const url = `article-detail.html?title=${encodeURIComponent(item.title)}&thumb=${encodeURIComponent(thumb)}&url=${encodeURIComponent(item.url)}&source=${encodeURIComponent(item.source)}&category=${encodeURIComponent(item.category)}&published=${encodeURIComponent(item.published)}&excerpt=${encodeURIComponent(item.excerpt)}`;
+    const url = buildArticleDetailUrl({ ...item, thumbnail: thumb });
     el.innerHTML = `
         <a href="${url}" class="blog-card-link">
             <div class="blog-image">
@@ -453,7 +474,7 @@ function buildNewsCardLarge(item) {
     el.setAttribute('data-category', cat);
     const thumb = item.thumbnail || 'assets/images/logo.jpeg';
     const badgeClass = cat === 'technology' ? 'technology' : cat === 'markets' ? 'markets' : cat === 'finance' ? 'finance' : cat === 'startups' ? 'business' : 'business';
-    const articleUrl = `article-detail.html?title=${encodeURIComponent(item.title)}&thumb=${encodeURIComponent(thumb)}&url=${encodeURIComponent(item.url)}&source=${encodeURIComponent(item.source)}&category=${encodeURIComponent(cat)}&published=${encodeURIComponent(item.published)}&excerpt=${encodeURIComponent(item.excerpt)}`;
+    const articleUrl = buildArticleDetailUrl({ ...item, category: cat, thumbnail: thumb });
     el.innerHTML = `
         <a href="${articleUrl}" class="blog-card-link">
             <img src="${thumb}" alt="${escapeHtml(item.title)}">
@@ -549,7 +570,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             if (h3) h3.textContent = top.title;
             const finalCat = (top.category || chooseCategory(top.title));
             if (cat) cat.textContent = finalCat.charAt(0).toUpperCase() + finalCat.slice(1);
-            const articleUrl = `article-detail.html?title=${encodeURIComponent(top.title)}&thumb=${encodeURIComponent(top.thumbnail || 'assets/images/logo.jpeg')}&url=${encodeURIComponent(top.url)}&source=${encodeURIComponent(top.source)}&category=${encodeURIComponent(finalCat)}&published=${encodeURIComponent(top.published)}&excerpt=${encodeURIComponent(top.excerpt)}`;
+            const articleUrl = buildArticleDetailUrl({ ...top, category: finalCat, thumbnail: top.thumbnail || 'assets/images/logo.jpeg' });
             breakingStory.style.cursor = 'pointer';
             breakingStory.onclick = () => { window.location.href = articleUrl; };
         }
@@ -648,7 +669,7 @@ async function loadBackendContent() {
 
         breakingStory.style.cursor = 'pointer';
         breakingStory.onclick = () => {
-            window.location.href = `article-detail.html?id=${top._id}`;
+            window.location.href = buildArticleDetailUrl({ ...top, id: top._id || top.id });
         };
     }
 
@@ -666,7 +687,7 @@ async function loadBackendContent() {
                 thumbnail: item.thumbnail, // Already processed
                 category: item.category,
                 published: item.publishedAt || item.createdAt,
-                url: `article-detail.html?id=${item.id}`,
+                    url: buildArticleDetailUrl({ ...item, id: item._id || item.id }),
                 source: 'bizzshort'
             };
             latestGrid.appendChild(buildNewsCardLarge(mapped));

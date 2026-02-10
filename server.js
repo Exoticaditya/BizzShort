@@ -11,6 +11,7 @@ const mongoSanitize = require('express-mongo-sanitize');
 const rateLimit = require('express-rate-limit');
 const xss = require('xss-clean');
 const validator = require('validator');
+const https = require('https');
 
 // Load env vars
 dotenv.config();
@@ -1459,52 +1460,58 @@ function getRelativeTime(date) {
     return `${Math.floor(diffDays / 30)} months ago`;
 }
 
+async function fetchYahooFinance(symbol) {
+    return new Promise((resolve, reject) => {
+        const url = `https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?interval=1d&range=1d`;
+        const options = {
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+            }
+        };
+
+        https.get(url, options, (response) => {
+            let data = '';
+            response.on('data', chunk => data += chunk);
+            response.on('end', () => {
+                try {
+                    if (response.statusCode === 429) {
+                        return reject(new Error('Too Many Requests'));
+                    }
+
+                    if (response.statusCode !== 200) {
+                        return reject(new Error(`Yahoo Finance returned ${response.statusCode}`));
+                    }
+
+                    const parsed = JSON.parse(data);
+                    if (parsed.chart && parsed.chart.result && parsed.chart.result[0]) {
+                        const result = parsed.chart.result[0];
+                        const meta = result.meta;
+                        const quote = result.indicators.quote[0];
+
+                        resolve({
+                            symbol: meta.symbol,
+                            price: meta.regularMarketPrice || meta.previousClose,
+                            previousClose: meta.previousClose || meta.chartPreviousClose,
+                            change: (meta.regularMarketPrice || meta.previousClose) - (meta.previousClose || meta.chartPreviousClose),
+                            changePercent: ((meta.regularMarketPrice || meta.previousClose) - (meta.previousClose || meta.chartPreviousClose)) / (meta.previousClose || meta.chartPreviousClose) * 100,
+                            high: quote.high ? quote.high[quote.high.length - 1] : meta.regularMarketPrice,
+                            low: quote.low ? quote.low[quote.low.length - 1] : meta.regularMarketPrice,
+                            volume: quote.volume ? quote.volume[quote.volume.length - 1] : 0
+                        });
+                    } else {
+                        reject(new Error('Invalid response structure'));
+                    }
+                } catch (e) {
+                    reject(e);
+                }
+            });
+        }).on('error', reject);
+    });
+}
+
 // ============ Market Data API (Real-time NSE/BSE Data via Yahoo Finance) ============
 app.get('/api/market-data', async (req, res) => {
     try {
-        const https = require('https');
-
-        // Yahoo Finance API - Free and supports Indian indices
-        const fetchYahooFinance = (symbol) => {
-            return new Promise((resolve, reject) => {
-                const url = `https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?interval=1d&range=1d`;
-                const options = {
-                    headers: {
-                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-                    }
-                };
-                https.get(url, options, (response) => {
-                    let data = '';
-                    response.on('data', chunk => data += chunk);
-                    response.on('end', () => {
-                        try {
-                            const parsed = JSON.parse(data);
-                            if (parsed.chart && parsed.chart.result && parsed.chart.result[0]) {
-                                const result = parsed.chart.result[0];
-                                const meta = result.meta;
-                                const quote = result.indicators.quote[0];
-
-                                resolve({
-                                    symbol: meta.symbol,
-                                    price: meta.regularMarketPrice || meta.previousClose,
-                                    previousClose: meta.previousClose || meta.chartPreviousClose,
-                                    change: (meta.regularMarketPrice || meta.previousClose) - (meta.previousClose || meta.chartPreviousClose),
-                                    changePercent: ((meta.regularMarketPrice || meta.previousClose) - (meta.previousClose || meta.chartPreviousClose)) / (meta.previousClose || meta.chartPreviousClose) * 100,
-                                    high: quote.high ? quote.high[quote.high.length - 1] : meta.regularMarketPrice,
-                                    low: quote.low ? quote.low[quote.low.length - 1] : meta.regularMarketPrice,
-                                    volume: quote.volume ? quote.volume[quote.volume.length - 1] : 0
-                                });
-                            } else {
-                                reject(new Error('Invalid response structure'));
-                            }
-                        } catch (e) {
-                            reject(e);
-                        }
-                    });
-                }).on('error', reject);
-            });
-        };
-
         try {
             // Fetch real-time data from Yahoo Finance
             const [niftyData, sensexData, bankNiftyData] = await Promise.all([
@@ -1826,58 +1833,6 @@ app.get('/api/market-stream', async (req, res) => {
                 console.log('📊 Market data streamed from cache');
                 return;
             }
-
-            const https = require('https');
-
-            // Fetch from Yahoo Finance
-            const fetchYahooFinance = (symbol) => {
-                return new Promise((resolve, reject) => {
-                    const url = `https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?interval=1d&range=1d`;
-                    const options = {
-                        headers: {
-                            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-                        }
-                    };
-
-                    https.get(url, options, (response) => {
-                        let data = '';
-                        response.on('data', chunk => data += chunk);
-                        response.on('end', () => {
-                            try {
-                                if (response.statusCode === 429) {
-                                    return reject(new Error('Too Many Requests'));
-                                }
-
-                                if (response.statusCode !== 200) {
-                                    return reject(new Error(`Yahoo Finance returned ${response.statusCode}`));
-                                }
-
-                                const parsed = JSON.parse(data);
-                                if (parsed.chart && parsed.chart.result && parsed.chart.result[0]) {
-                                    const result = parsed.chart.result[0];
-                                    const meta = result.meta;
-                                    const quote = result.indicators.quote[0];
-
-                                    resolve({
-                                        symbol: meta.symbol,
-                                        price: meta.regularMarketPrice || meta.previousClose,
-                                        previousClose: meta.previousClose || meta.chartPreviousClose,
-                                        change: (meta.regularMarketPrice || meta.previousClose) - (meta.previousClose || meta.chartPreviousClose),
-                                        changePercent: ((meta.regularMarketPrice || meta.previousClose) - (meta.previousClose || meta.chartPreviousClose)) / (meta.previousClose || meta.chartPreviousClose) * 100,
-                                        high: quote.high ? quote.high[quote.high.length - 1] : meta.regularMarketPrice,
-                                        low: quote.low ? quote.low[quote.low.length - 1] : meta.regularMarketPrice,
-                                        volume: quote.volume ? quote.volume[quote.volume.length - 1] : 0
-                                    });
-                                } else {
-                                    reject(new Error('Invalid response structure'));
-                                }
-                            } catch (e) {
-                                reject(e);
-                            }
-                        });
-                    }).on('error', reject);
-                });
-            };
 
             // Fetch all three indices
             const [niftyData, sensexData, bankNiftyData] = await Promise.all([

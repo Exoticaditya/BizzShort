@@ -19,7 +19,7 @@ img {
 /* Container responsive behavior */
 .container {
     width: 100%;
-    padding: 0 15px;
+    padding: 0 20px;
     margin: 0 auto;
 }
 
@@ -52,7 +52,7 @@ img {
 @media screen and (min-width: 1024px) {
     .container {
         max-width: 1200px;
-        padding: 0 40px;
+        padding: 0 20px;
     }
 
     .trending-grid {

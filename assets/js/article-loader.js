@@ -118,12 +118,9 @@ class ArticleLoader {
         const articleId = article._id || article.id;
         const slug = article.slug || articleId;
 
-        // Option 1: Navigate to dedicated article page (SEO-friendly)
-        const encodedTitle = encodeURIComponent(article.title);
-        const encodedContent = encodeURIComponent(article.content || article.excerpt || '');
-        const encodedImage = encodeURIComponent(article.image || '');
-
-        window.location.href = `article.html?id=${articleId}&source=article&mode=read&title=${encodedTitle}&content=${encodedContent}&image=${encodedImage}`;
+        // Navigate with compact params: ID (and optional slug for readability)
+        const slugParam = slug ? `&slug=${encodeURIComponent(slug)}` : '';
+        window.location.href = `article-detail.html?id=${encodeURIComponent(articleId)}${slugParam}`;
 
         // Option 2: Open in modal (uncomment below if you prefer modal)
         // this.showArticleModal(article);
