@@ -83,9 +83,26 @@ a {
 
 /* HEADER */
 .header-top-section {
-    background: #ffffff;
+    background: url('https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExdDJrcnZoeDQxYmNoeWsxMTR4b3dtOGQ2N251a3pkYThuYzA4OTFrciZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/26BRuo6sLetdllPAQ/giphy.gif') center center / cover no-repeat;
     padding: 20px 0;
     border-bottom: 1px solid #e8e8e8;
+    position: relative;
+}
+
+.header-top-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.85);
+    z-index: 1;
+}
+
+.header-top-section > .container {
+    position: relative;
+    z-index: 2;
 }
 
 .logo-ad-wrapper {
@@ -203,7 +220,7 @@ a {
 
 /* NAVBAR - STATIC DESIGN */
 .navbar-section {
-    background: rgba(var(--brand-blue-rgb), 0.92);
+    background: #0b2fd4;
     position: relative;
     z-index: 1000;
     border-bottom: 1px solid rgba(255, 255, 255, 0.18);
@@ -228,7 +245,7 @@ a {
 }
 
 .navbar-section.scrolled {
-    background: rgba(var(--brand-blue-rgb), 0.72);
+    background: rgba(11, 47, 212, 0.95);
     border-bottom-color: rgba(255, 255, 255, 0.22);
     box-shadow: 0 14px 45px rgba(0, 0, 0, 0.28);
 }
@@ -737,7 +754,7 @@ a {
 }
 
 .sidebar-header {
-    background: linear-gradient(135deg, #004de6 0%, #0037a3 100%);
+    background: #000000;
     padding: 18px 20px;
     position: relative;
 }
@@ -759,6 +776,17 @@ a {
     border-radius: 12px;
     letter-spacing: 0.5px;
     animation: pulse 2s infinite;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.market-live-badge.live-closed {
+    display: none;
+}
+
+.market-live-badge.updating {
+    box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.08);
 }
 
 .sidebar-header h3 {

@@ -10,31 +10,53 @@ class RealTimeMarketStream {
         this.reconnectAttempts = 0;
         this.maxReconnectAttempts = 5;
         this.reconnectDelay = 3000; // 3 seconds
+        this.marketHoursInterval = null;
         this.init();
     }
 
     init() {
         console.log('🚀 Initializing Real-Time Market Stream (SSE)...');
-        this.connect();
+        this.updateLiveBadgeState();
+        // Re-check market hours every minute to show/hide the badge automatically
+        this.marketHoursInterval = setInterval(() => this.updateLiveBadgeState(), 60000);
+
+        if (!this.isMarketOpen()) {
+            console.log('⏸️ Market closed (Mon–Fri, 9:15–15:30 IST); live badge hidden.');
+        }
+    }
+
+    isMarketOpen() {
+        // Market hours: Monday–Friday, 9:15 AM to 3:30 PM IST
+        const now = new Date();
+        const istNow = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
+        const day = istNow.getDay(); // 0 = Sunday, 6 = Saturday
+        if (day === 0 || day === 6) return false;
+
+        const minutes = istNow.getHours() * 60 + istNow.getMinutes();
+        const marketOpen = 9 * 60 + 15;
+        const marketClose = 15 * 60 + 30;
+        return minutes >= marketOpen && minutes <= marketClose;
     }
 
     connect() {
+        if (!this.isMarketOpen()) {
+            this.setLiveBadge(false);
+            return;
+        }
+
         try {
-            // Close existing connection if any
             if (this.eventSource) {
                 this.eventSource.close();
             }
 
-            // Create new SSE connection
             this.eventSource = new EventSource(`${this.apiBaseURL}/api/market-stream`);
 
-            // Handle incoming messages
             this.eventSource.onmessage = (event) => {
                 try {
                     const data = JSON.parse(event.data);
                     if (data.success) {
                         this.updateMarketDisplay(data);
-                        this.reconnectAttempts = 0; // Reset on successful message
+                        this.reconnectAttempts = 0;
                         console.log('📊 Real-time market update received:', data.source);
                     }
                 } catch (error) {
@@ -42,16 +64,17 @@ class RealTimeMarketStream {
                 }
             };
 
-            // Handle connection open
             this.eventSource.onopen = () => {
                 console.log('✅ SSE connection established - receiving real-time updates every 30 seconds');
                 this.reconnectAttempts = 0;
             };
 
-            // Handle errors
             this.eventSource.onerror = (error) => {
                 console.error('❌ SSE connection error:', error);
-                this.eventSource.close();
+                if (this.eventSource) {
+                    this.eventSource.close();
+                    this.eventSource = null;
+                }
                 this.handleReconnect();
             };
 
@@ -62,13 +85,17 @@ class RealTimeMarketStream {
     }
 
     handleReconnect() {
+        if (!this.isMarketOpen()) {
+            this.setLiveBadge(false);
+            return;
+        }
+
         if (this.reconnectAttempts < this.maxReconnectAttempts) {
             this.reconnectAttempts++;
             console.log(`🔄 Reconnecting... (Attempt ${this.reconnectAttempts}/${this.maxReconnectAttempts})`);
             setTimeout(() => this.connect(), this.reconnectDelay);
         } else {
             console.error('❌ Max reconnection attempts reached. Falling back to polling.');
-            // Fallback to old polling method
             this.fallbackToPolling();
         }
     }
@@ -81,33 +108,57 @@ class RealTimeMarketStream {
         }
     }
 
+    updateLiveBadgeState(source = '') {
+        const isOpen = this.isMarketOpen();
+        this.setLiveBadge(isOpen, source);
+
+        if (!isOpen) {
+            this.disconnect();
+            return;
+        }
+
+        if (!this.eventSource) {
+            this.connect();
+        }
+    }
+
+    setLiveBadge(isLive, source = '') {
+        const badge = document.querySelector('.market-live-badge');
+        if (!badge) return;
+
+        badge.style.display = isLive ? 'inline-flex' : 'none';
+        badge.classList.toggle('live-closed', !isLive);
+
+        if (isLive) {
+            const sourceText = source === 'yahoo_finance_stream' ? 'Yahoo Finance' : 'Live feed';
+            badge.textContent = 'LIVE';
+            badge.setAttribute('title', `Live data from ${sourceText}`);
+        } else {
+            badge.textContent = 'LIVE';
+            badge.setAttribute('title', 'Market closed (Mon–Fri, 9:15–15:30 IST)');
+        }
+    }
+
     updateMarketDisplay(result) {
-        const { data, source, timestamp, marketStatus } = result;
+        const { data, source, timestamp } = result;
 
-        // Update Nifty 50
+        this.setLiveBadge(this.isMarketOpen(), source);
+
         this.updateCard('nifty', data.nifty);
-
-        // Update Sensex
         this.updateCard('sensex', data.sensex);
-
-        // Update Bank Nifty
         this.updateCard('bankNifty', data.bankNifty);
 
-        // Update timestamp
         const timestampElement = document.querySelector('.market-timestamp');
         if (timestampElement) {
             const time = new Date(timestamp).toLocaleTimeString('en-IN');
             timestampElement.textContent = `Last Updated: ${time} (Live)`;
         }
 
-        // Add visual indicator for real-time updates
         this.showUpdateIndicator(source);
     }
 
     updateCard(market, data) {
-        // Convert camelCase to kebab-case for element IDs
         const elementId = market === 'bankNifty' ? 'bank-nifty' : market;
-        
         const valueEl = document.getElementById(`${elementId}-value`);
         const changeEl = document.getElementById(`${elementId}-change`);
         const noteEl = document.getElementById(`${elementId}-note`);
@@ -118,7 +169,6 @@ class RealTimeMarketStream {
         }
 
         try {
-            // Animate value change
             const newValue = `₹${Math.round(data.value).toLocaleString('en-IN')}`;
             if (valueEl.textContent !== newValue) {
                 valueEl.classList.add('value-updating');
@@ -142,32 +192,19 @@ class RealTimeMarketStream {
     }
 
     showUpdateIndicator(source) {
-        // Create or update live indicator
-        let indicator = document.querySelector('.live-indicator');
-        if (!indicator) {
-            indicator = document.createElement('div');
-            indicator.className = 'live-indicator';
-            indicator.innerHTML = '<span class="pulse"></span> LIVE';
+        this.setLiveBadge(this.isMarketOpen(), source);
 
-            const marketSection = document.querySelector('.market-today') || document.querySelector('#market-today');
-            if (marketSection) {
-                marketSection.style.position = 'relative';
-                marketSection.appendChild(indicator);
-            }
-        }
+        const badge = document.querySelector('.market-live-badge');
+        if (!badge) return;
 
-        // Pulse animation on update
-        indicator.classList.add('updating');
-        setTimeout(() => indicator.classList.remove('updating'), 1000);
-
-        // Update source indicator
-        const sourceText = source === 'yahoo_finance_stream' ? 'Yahoo Finance' : 'Estimated';
-        indicator.setAttribute('title', `Live data from ${sourceText}`);
+        badge.classList.add('updating');
+        setTimeout(() => badge.classList.remove('updating'), 800);
     }
 
     disconnect() {
         if (this.eventSource) {
             this.eventSource.close();
+            this.eventSource = null;
             console.log('📡 SSE connection closed');
         }
     }
@@ -175,7 +212,6 @@ class RealTimeMarketStream {
 
 // Auto-initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-    // Only initialize if market cards exist on the page
     if (document.getElementById('nifty-value') || document.querySelector('.market-today')) {
         window.marketStream = new RealTimeMarketStream();
         console.log('✅ Real-Time Market Stream initialized');
@@ -188,74 +224,3 @@ window.addEventListener('beforeunload', () => {
         window.marketStream.disconnect();
     }
 });
-
-// Add CSS for live indicator and animations
-const style = document.createElement('style');
-style.textContent = `
-    .live-indicator {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        background: linear-gradient(135deg, #e74c3c, #c0392b);
-        color: white;
-        padding: 6px 12px;
-        border-radius: 20px;
-        font-size: 11px;
-        font-weight: 700;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        box-shadow: 0 2px 10px rgba(231, 76, 60, 0.3);
-        z-index: 10;
-        animation: slideIn 0.3s ease;
-    }
-
-    .live-indicator .pulse {
-        width: 8px;
-        height: 8px;
-        background: white;
-        border-radius: 50%;
-        animation: pulse 2s infinite;
-    }
-
-    .live-indicator.updating .pulse {
-        animation: pulse 0.5s infinite;
-    }
-
-    @keyframes pulse {
-        0%, 100% {
-            opacity: 1;
-            transform: scale(1);
-        }
-        50% {
-            opacity: 0.5;
-            transform: scale(1.2);
-        }
-    }
-
-    @keyframes slideIn {
-        from {
-            opacity: 0;
-            transform: translateX(20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateX(0);
-        }
-    }
-
-    .value-updating {
-        animation: valueFlash 0.5s ease;
-    }
-
-    @keyframes valueFlash {
-        0%, 100% {
-            background: transparent;
-        }
-        50% {
-            background: rgba(102, 126, 234, 0.1);
-            transform: scale(1.02);
-        }
-    }
-`;
-document.head.appendChild(style);
