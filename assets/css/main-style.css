@@ -83,9 +83,9 @@ a {
 
 /* HEADER */
 .header-top-section {
-    background: url('https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExdDJrcnZoeDQxYmNoeWsxMTR4b3dtOGQ2N251a3pkYThuYzA4OTFrciZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/26BRuo6sLetdllPAQ/giphy.gif') center center / cover no-repeat;
+    background: url('../images/Video_Generation_and_CSS_Sizing.gif') center center / cover no-repeat;
     padding: 20px 0;
-    border-bottom: 1px solid #e8e8e8;
+    border-bottom: none;
     position: relative;
 }
 
@@ -96,7 +96,7 @@ a {
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(255, 255, 255, 0.85);
+    background: rgba(0, 0, 30, 0.55);
     z-index: 1;
 }
 
@@ -743,13 +743,13 @@ a {
 
 /* MARKET SIDEBAR */
 .market-sidebar {
-    background: #ffffff;
+    background: #000000;
     border-radius: 12px;
     position: sticky;
     top: 80px;
     height: fit-content;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    border: 1px solid #e0e0e0;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    border: 1px solid #1a1a1a;
     overflow: hidden;
 }
 
@@ -802,23 +802,24 @@ a {
     display: flex;
     flex-direction: column;
     gap: 16px;
-    background: #f8f9fa;
+    background: #000000;
 }
 
 .market-card {
-    background: white;
+    background: #0a0a0a;
     border-radius: 12px;
     padding: 20px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 2px 8px rgba(255, 255, 255, 0.05);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    border: 2px solid transparent;
-    border-left: 4px solid #004de6;
+    border: 2px solid #1a1a1a;
+    border-left: 4px solid #0b2fd4;
 }
 
 .market-card:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0, 77, 230, 0.15);
-    border-color: #004de6;
+    box-shadow: 0 8px 20px rgba(11, 47, 212, 0.4);
+    border-color: #0b2fd4;
+    background: #121212;
 }
 
 .market-card-header {
@@ -860,14 +861,14 @@ a {
 .market-card h4 {
     font-size: 15px;
     font-weight: 600;
-    color: #2c3e50;
+    color: #ffffff;
     margin-bottom: 2px;
 }
 
 .market-value {
     font-size: 28px;
     font-weight: 800;
-    color: #2c3e50;
+    color: #ffffff;
     margin-bottom: 10px;
     margin-top: 8px;
 }
@@ -883,8 +884,8 @@ a {
 }
 
 .market-change.positive {
-    background: #e8f5e9;
-    color: #27ae60;
+    background: rgba(39, 174, 96, 0.15);
+    color: #4ade80;
 }
 
 .market-change.positive::before {
@@ -892,8 +893,8 @@ a {
 }
 
 .market-change.negative {
-    background: #ffebee;
-    color: #e74c3c;
+    background: rgba(231, 76, 60, 0.15);
+    color: #f87171;
 }
 
 .market-change.negative::before {
@@ -902,7 +903,7 @@ a {
 
 .market-card p {
     font-size: 12px;
-    color: #7f8c8d;
+    color: #9ca3af;
     margin-top: 8px;
 }
 
@@ -4788,5 +4789,117 @@ a.interview-video-card.instagram-reel-card {
 
     .read-overlay i {
         font-size: 36px;
+    }
+}
+
+/* ===== GOOGLE TRANSLATE FLOATING WIDGET ===== */
+.translate-widget-container {
+    position: fixed;
+    bottom: 24px;
+    left: 24px;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #ffffff;
+    border-radius: 50px;
+    padding: 10px 18px 10px 14px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18), 0 2px 8px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    /* Hidden by default — slides up when .visible is added */
+    opacity: 0;
+    transform: translateY(80px) scale(0.9);
+    pointer-events: none;
+    transition: opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.translate-widget-container.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+}
+
+.translate-widget-container.hiding {
+    opacity: 0;
+    transform: translateY(60px) scale(0.85);
+    pointer-events: none;
+    transition: opacity 0.35s cubic-bezier(0.55, 0, 1, 0.45),
+                transform 0.35s cubic-bezier(0.55, 0, 1, 0.45);
+}
+
+.translate-widget-container.hidden {
+    display: none;
+}
+
+.translate-widget-container .translate-icon {
+    font-size: 22px;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.translate-widget-container .translate-text {
+    font-size: 12px;
+    font-weight: 600;
+    color: #555;
+    white-space: nowrap;
+    letter-spacing: 0.3px;
+}
+
+.translate-widget-container .close-translate-btn {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #333;
+    color: #fff;
+    border: 2px solid #fff;
+    font-size: 14px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: background 0.2s, transform 0.2s;
+    padding: 0;
+}
+
+.translate-widget-container .close-translate-btn:hover {
+    background: #e74c3c;
+    transform: scale(1.15);
+}
+
+/* Hide Google branding clutter inside the widget */
+.translate-widget-container .goog-te-gadget-simple {
+    background: transparent !important;
+    border: none !important;
+    font-size: 13px !important;
+    padding: 0 !important;
+}
+
+.translate-widget-container .goog-te-gadget-simple img {
+    display: none !important;
+}
+
+.translate-widget-container .goog-te-gadget-simple .goog-te-menu-value {
+    color: #0b2fd4 !important;
+    font-weight: 600 !important;
+}
+
+.translate-widget-container .goog-te-gadget-simple .goog-te-menu-value span:last-child {
+    color: #0b2fd4 !important;
+}
+
+@media (max-width: 480px) {
+    .translate-widget-container {
+        bottom: 16px;
+        left: 16px;
+        padding: 8px 14px 8px 10px;
+    }
+    .translate-widget-container .translate-text {
+        display: none;
     }
 }

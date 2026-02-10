@@ -1116,8 +1116,9 @@
     <script src="assets/js/advanced-market.js?v=20260210"></script>
 
     <!-- Google Translate Floating Widget -->
-    <div id="translate-floating-widget" class="translate-widget-container" style="display:none;">
-        <button class="close-translate-btn" onclick="closeTranslateWidget()">&times;</button>
+    <div id="translate-floating-widget" class="translate-widget-container">
+        <button class="close-translate-btn" onclick="closeTranslateWidget()" aria-label="Close translate widget">&times;</button>
+        <div class="translate-icon">🌐</div>
         <div id="google_translate_element"></div>
         <div class="translate-text">Translate Page</div>
     </div>
@@ -1131,20 +1132,24 @@
                 autoDisplay: false
             }, 'google_translate_element');
 
-            // Show widget after a short delay
+            // Show widget after a short delay with slide-in animation
             setTimeout(() => {
                 const widget = document.getElementById('translate-floating-widget');
                 if (!sessionStorage.getItem('translateWidgetClosed')) {
-                    widget.style.display = 'flex';
-                    widget.classList.add('slide-up');
+                    widget.classList.add('visible');
                 }
-            }, 2000);
+            }, 2500);
         }
 
         function closeTranslateWidget() {
             const widget = document.getElementById('translate-floating-widget');
-            widget.style.display = 'none';
-            // Remember user preference for session
+            widget.classList.remove('visible');
+            widget.classList.add('hiding');
+            // Wait for exit animation to finish, then fully hide
+            setTimeout(() => {
+                widget.classList.add('hidden');
+                widget.classList.remove('hiding');
+            }, 400);
             sessionStorage.setItem('translateWidgetClosed', 'true');
         }
     </script>
