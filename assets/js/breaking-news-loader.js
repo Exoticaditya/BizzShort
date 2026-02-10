@@ -146,7 +146,7 @@ class BreakingNewsLoader {
                     thumbnail.alt = video.title || 'Video Thumbnail';
                     // Add fallback for thumbnail
                     thumbnail.onerror = function () {
-                        this.src = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+                        this.src = `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`;
                     };
                 }
 
@@ -157,8 +157,8 @@ class BreakingNewsLoader {
                 if (title && video.title) {
                     // Better mobile-friendly title display
                     const maxLength = window.innerWidth <= 768 ? 80 : 60;
-                    title.textContent = video.title.length > maxLength 
-                        ? video.title.substring(0, maxLength) + '...' 
+                    title.textContent = video.title.length > maxLength
+                        ? video.title.substring(0, maxLength) + '...'
                         : video.title;
                 }
 

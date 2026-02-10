@@ -27,21 +27,21 @@ async function seedVideosIfNeeded() {
 
         const Video = require('./models/Video');
         // Check if we already have real transcribed videos
-        const realCount = await Video.countDocuments({ 
+        const realCount = await Video.countDocuments({
             transcription: { $exists: true, $ne: null, $ne: '' }
         });
-        
+
         if (realCount >= 30) {
             console.log(`✅ Already have ${realCount} transcribed videos, skipping seed`);
             return;
         }
 
         console.log(`🔄 Found only ${realCount} transcribed videos. Seeding ${30} real videos...`);
-        
+
         // Delete ALL existing videos
         const deleteResult = await Video.deleteMany({});
         console.log(`   Deleted ${deleteResult.deletedCount} old videos`);
-        
+
         // Load and insert seed data
         const seedData = JSON.parse(fs.readFileSync(seedPath, 'utf8'));
         await Video.insertMany(seedData);
@@ -77,13 +77,14 @@ app.use(helmet({
     contentSecurityPolicy: {
         directives: {
             defaultSrc: ["'self'"],
-            styleSrc: ["'self'", "'unsafe-inline'", "https://cdnjs.cloudflare.com", "https://fonts.googleapis.com"],
-            scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", "'unsafe-hashes'", "https://cdnjs.cloudflare.com", "https://cdn.jsdelivr.net", "https://www.googletagmanager.com", "https://pagead2.googlesyndication.com"],
+            styleSrc: ["'self'", "'unsafe-inline'", "https://cdnjs.cloudflare.com", "https://fonts.googleapis.com", "https://translate.googleapis.com"],
+            scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", "'unsafe-hashes'", "https://cdnjs.cloudflare.com", "https://cdn.jsdelivr.net", "https://www.googletagmanager.com", "https://pagead2.googlesyndication.com", "https://translate.google.com", "https://translate.googleapis.com"],
+            scriptSrcElem: ["'self'", "'unsafe-inline'", "https://cdnjs.cloudflare.com", "https://cdn.jsdelivr.net", "https://www.googletagmanager.com", "https://pagead2.googlesyndication.com", "https://translate.google.com", "https://translate.googleapis.com"],
             scriptSrcAttr: ["'self'", "'unsafe-inline'"],
-            imgSrc: ["'self'", "data:", "https:", "http:"],
+            imgSrc: ["'self'", "data:", "https:", "http:", "https://translate.google.com", "https://translate.googleapis.com"],
             fontSrc: ["'self'", "https://cdnjs.cloudflare.com", "https://fonts.gstatic.com"],
-            connectSrc: ["'self'", "https://bizzshort.onrender.com", "https://www.bizzshort.com", "https://www.google-analytics.com", "https://analytics.google.com"],
-            frameSrc: ["'self'", "https://www.youtube.com", "https://www.youtube-nocookie.com", "https://youtube.com", "https://www.instagram.com"],
+            connectSrc: ["'self'", "https://bizzshort.onrender.com", "https://www.bizzshort.com", "https://www.google-analytics.com", "https://analytics.google.com", "https://translate.googleapis.com"],
+            frameSrc: ["'self'", "https://www.youtube.com", "https://www.youtube-nocookie.com", "https://youtube.com", "https://www.instagram.com", "https://translate.google.com"],
         }
     },
     crossOriginEmbedderPolicy: false,

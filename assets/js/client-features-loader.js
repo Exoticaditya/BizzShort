@@ -81,7 +81,7 @@ class ClientFeaturesLoader {
         // Click handler to open article page
         const encodedTitle = encodeURIComponent(video.title || 'Client Feature');
         const encodedDesc = encodeURIComponent(video.description || '');
-        article.onclick = function() {
+        article.onclick = function () {
             console.log('🎯 Client feature card clicked:', videoId);
             window.location.href = `article.html?id=${videoId}&source=youtube&title=${encodedTitle}&desc=${encodedDesc}`;
         };
@@ -91,7 +91,7 @@ class ClientFeaturesLoader {
                 <img src="${thumbnailUrl}" 
                      alt="${title}" 
                      loading="lazy"
-                     onerror="this.src='https://img.youtube.com/vi/${videoId}/hqdefault.jpg'">
+                     onerror="this.src='https://img.youtube.com/vi/${videoId}/mqdefault.jpg'">
                 <div class="play-overlay">
                     <i class="fab fa-youtube"></i>
                 </div>

@@ -119,7 +119,7 @@ const BizzShortVideoLoader = {
         const videoInfo = document.querySelector('.breaking-video-player .video-info');
 
         if (thumbnail) {
-            thumbnail.src = `https://img.youtube.com/vi/${mainVideo.id}/hqdefault.jpg`;
+            thumbnail.src = `https://img.youtube.com/vi/${mainVideo.id}/mqdefault.jpg`;
             thumbnail.alt = mainVideo.title;
         }
 
@@ -159,7 +159,7 @@ const BizzShortVideoLoader = {
 
                 const img = card.querySelector('.video-thumbnail img');
                 if (img) {
-                    img.src = `https://img.youtube.com/vi/${video.id}/hqdefault.jpg`;
+                    img.src = `https://img.youtube.com/vi/${video.id}/mqdefault.jpg`;
                     img.alt = video.title;
                 }
 
@@ -195,7 +195,7 @@ const BizzShortVideoLoader = {
         grid.innerHTML = filteredVideos.map(video => `
             <article class="news-video-card-large video-card" onclick="window.location.href='article.html?id=${video.id}&source=youtube&title=${encodeURIComponent(video.title)}'" style="cursor:pointer;">
                 <div class="video-thumbnail">
-                    <img src="https://img.youtube.com/vi/${video.id}/hqdefault.jpg" 
+                    <img src="https://img.youtube.com/vi/${video.id}/mqdefault.jpg" 
                          alt="${video.title}" 
                          loading="lazy">
                     <div class="play-overlay">
@@ -227,7 +227,7 @@ const BizzShortVideoLoader = {
         grid.innerHTML = videos.map(video => `
             <article class="news-video-card-large video-card" onclick="window.location.href='article.html?id=${video.id}&source=youtube&title=${encodeURIComponent(video.title)}'" style="cursor:pointer;">
                 <div class="video-thumbnail">
-                    <img src="https://img.youtube.com/vi/${video.id}/hqdefault.jpg" 
+                    <img src="https://img.youtube.com/vi/${video.id}/mqdefault.jpg" 
                          alt="${video.title}" 
                          loading="lazy">
                     <div class="play-overlay">

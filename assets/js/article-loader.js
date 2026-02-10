@@ -79,7 +79,7 @@ class ArticleLoader {
         const badgeColor = badgeColors[article.category?.toUpperCase()] || badgeColors.DEFAULT;
 
         // Get image URL or use placeholder
-        const imageUrl = article.image || `https://img.youtube.com/vi/wG7_1jViDRs/hqdefault.jpg`;
+        const imageUrl = article.image || `https://img.youtube.com/vi/wG7_1jViDRs/mqdefault.jpg`;
 
         // Format views with K/M suffix
         const formatViews = (views) => {
