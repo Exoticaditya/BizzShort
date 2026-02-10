@@ -743,7 +743,7 @@ a {
 
 /* MARKET SIDEBAR */
 .market-sidebar {
-    background: #000000;
+    background: #000000 !important;
     border-radius: 12px;
     position: sticky;
     top: 80px;
@@ -754,9 +754,10 @@ a {
 }
 
 .sidebar-header {
-    background: #000000;
+    background: #000000 !important;
     padding: 18px 20px;
     position: relative;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.25);
 }
 
 .sidebar-header::after {
@@ -768,8 +769,8 @@ a {
     top: 50%;
     right: 20px;
     transform: translateY(-50%);
-    background: #000000;
-    color: #ffffff;
+    background: #e74c3c !important;
+    color: #ffffff !important;
     font-size: 10px;
     font-weight: 700;
     padding: 4px 10px;
@@ -786,11 +787,11 @@ a {
 }
 
 .market-live-badge.updating {
-    box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 0 0 4px rgba(231, 76, 60, 0.3);
 }
 
 .sidebar-header h3 {
-    color: white;
+    color: #ffffff !important;
     font-size: 18px;
     font-weight: 700;
     text-transform: uppercase;
@@ -802,24 +803,24 @@ a {
     display: flex;
     flex-direction: column;
     gap: 16px;
-    background: #000000;
+    background: #000000 !important;
 }
 
 .market-card {
-    background: #0a0a0a;
+    background: #000000 !important;
     border-radius: 12px;
     padding: 20px;
-    box-shadow: 0 2px 8px rgba(255, 255, 255, 0.05);
+    box-shadow: none;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    border: 2px solid #1a1a1a;
-    border-left: 4px solid #0b2fd4;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    border-left: 4px solid #0b2fd4 !important;
 }
 
 .market-card:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(11, 47, 212, 0.4);
-    border-color: #0b2fd4;
-    background: #121212;
+    box-shadow: 0 8px 20px rgba(11, 47, 212, 0.35);
+    border-color: #0b2fd4 !important;
+    background: #0a0a0a !important;
 }
 
 .market-card-header {
@@ -846,7 +847,7 @@ a {
 
     50% {
         transform: scale(1.05);
-        color: #004de6;
+        color: #4a90ff;
     }
 
     100% {
@@ -861,14 +862,14 @@ a {
 .market-card h4 {
     font-size: 15px;
     font-weight: 600;
-    color: #ffffff;
+    color: #ffffff !important;
     margin-bottom: 2px;
 }
 
 .market-value {
     font-size: 28px;
     font-weight: 800;
-    color: #ffffff;
+    color: #ffffff !important;
     margin-bottom: 10px;
     margin-top: 8px;
 }
@@ -884,8 +885,8 @@ a {
 }
 
 .market-change.positive {
-    background: rgba(39, 174, 96, 0.15);
-    color: #4ade80;
+    background: rgba(39, 174, 96, 0.2);
+    color: #4ade80 !important;
 }
 
 .market-change.positive::before {
@@ -893,8 +894,8 @@ a {
 }
 
 .market-change.negative {
-    background: rgba(231, 76, 60, 0.15);
-    color: #f87171;
+    background: rgba(231, 76, 60, 0.2);
+    color: #f87171 !important;
 }
 
 .market-change.negative::before {
@@ -903,7 +904,7 @@ a {
 
 .market-card p {
     font-size: 12px;
-    color: #9ca3af;
+    color: #9ca3af !important;
     margin-top: 8px;
 }
 
@@ -4792,114 +4793,184 @@ a.interview-video-card.instagram-reel-card {
     }
 }
 
-/* ===== GOOGLE TRANSLATE FLOATING WIDGET ===== */
-.translate-widget-container {
+/* ===== GOOGLE TRANSLATE – FLOATING BUTTON + PANEL ===== */
+
+/* FAB (Floating Action Button) */
+.gt-floating-btn {
     position: fixed;
     bottom: 24px;
     left: 24px;
-    z-index: 9999;
+    z-index: 10000;
     display: flex;
     align-items: center;
-    gap: 10px;
-    background: #ffffff;
-    border-radius: 50px;
-    padding: 10px 18px 10px 14px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18), 0 2px 8px rgba(0, 0, 0, 0.08);
-    border: 1px solid rgba(0, 0, 0, 0.06);
-    /* Hidden by default — slides up when .visible is added */
-    opacity: 0;
-    transform: translateY(80px) scale(0.9);
-    pointer-events: none;
-    transition: opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-                transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    gap: 8px;
+    background: #fff;
+    color: #3c4043;
+    border: 1px solid #dadce0;
+    border-radius: 24px;
+    padding: 10px 20px 10px 14px;
+    font-family: 'Google Sans', 'Inter', Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(60, 64, 67, 0.15), 0 4px 12px rgba(60, 64, 67, 0.1);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    user-select: none;
 }
 
-.translate-widget-container.visible {
+.gt-floating-btn:hover {
+    background: #f8f9fa;
+    box-shadow: 0 2px 6px rgba(60, 64, 67, 0.2), 0 6px 16px rgba(60, 64, 67, 0.15);
+    transform: translateY(-1px);
+}
+
+.gt-floating-btn.active {
+    background: #e8f0fe;
+    color: #1a73e8;
+    border-color: #1a73e8;
+}
+
+.gt-floating-btn svg {
+    flex-shrink: 0;
+}
+
+/* Slide-up Panel */
+.gt-translate-panel {
+    position: fixed;
+    bottom: 76px;
+    left: 24px;
+    z-index: 10001;
+    width: 320px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 28px rgba(60, 64, 67, 0.28), 0 2px 8px rgba(0, 0, 0, 0.06);
+    border: 1px solid #dadce0;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(16px) scale(0.96);
+    pointer-events: none;
+    transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.gt-translate-panel.open {
     opacity: 1;
     transform: translateY(0) scale(1);
     pointer-events: auto;
 }
 
-.translate-widget-container.hiding {
-    opacity: 0;
-    transform: translateY(60px) scale(0.85);
-    pointer-events: none;
-    transition: opacity 0.35s cubic-bezier(0.55, 0, 1, 0.45),
-                transform 0.35s cubic-bezier(0.55, 0, 1, 0.45);
+.gt-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    border-bottom: 1px solid #e8eaed;
+    background: #f8f9fa;
 }
 
-.translate-widget-container.hidden {
-    display: none;
+.gt-panel-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Google Sans', 'Inter', Arial, sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    color: #3c4043;
 }
 
-.translate-widget-container .translate-icon {
-    font-size: 22px;
-    line-height: 1;
-    flex-shrink: 0;
-}
-
-.translate-widget-container .translate-text {
-    font-size: 12px;
-    font-weight: 600;
-    color: #555;
-    white-space: nowrap;
-    letter-spacing: 0.3px;
-}
-
-.translate-widget-container .close-translate-btn {
-    position: absolute;
-    top: -8px;
-    right: -8px;
-    width: 22px;
-    height: 22px;
+.gt-panel-close {
+    width: 28px;
+    height: 28px;
+    border: none;
+    background: transparent;
+    color: #5f6368;
+    font-size: 20px;
+    cursor: pointer;
     border-radius: 50%;
-    background: #333;
-    color: #fff;
-    border: 2px solid #fff;
-    font-size: 14px;
-    line-height: 1;
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    transition: background 0.2s, transform 0.2s;
     padding: 0;
+    transition: background 0.15s;
 }
 
-.translate-widget-container .close-translate-btn:hover {
-    background: #e74c3c;
-    transform: scale(1.15);
+.gt-panel-close:hover {
+    background: #e8eaed;
+    color: #202124;
 }
 
-/* Hide Google branding clutter inside the widget */
-.translate-widget-container .goog-te-gadget-simple {
-    background: transparent !important;
-    border: none !important;
-    font-size: 13px !important;
-    padding: 0 !important;
+.gt-panel-body {
+    padding: 16px;
 }
 
-.translate-widget-container .goog-te-gadget-simple img {
+.gt-panel-footer {
+    padding: 10px 16px;
+    background: #f8f9fa;
+    border-top: 1px solid #e8eaed;
+    font-size: 11px;
+    color: #9aa0a6;
+    font-family: 'Google Sans', 'Inter', Arial, sans-serif;
+}
+
+/* Clean up Google Translate dropdown inside panel */
+.gt-panel-body .goog-te-gadget-simple {
+    background: #fff !important;
+    border: 1px solid #dadce0 !important;
+    border-radius: 8px !important;
+    padding: 8px 14px !important;
+    font-size: 14px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+.gt-panel-body .goog-te-gadget-simple:hover {
+    border-color: #1a73e8 !important;
+    box-shadow: 0 0 0 1px #1a73e8 !important;
+}
+
+.gt-panel-body .goog-te-gadget-simple img {
     display: none !important;
 }
 
-.translate-widget-container .goog-te-gadget-simple .goog-te-menu-value {
-    color: #0b2fd4 !important;
-    font-weight: 600 !important;
+.gt-panel-body .goog-te-gadget-simple .goog-te-menu-value {
+    color: #202124 !important;
+    font-weight: 500 !important;
+    font-family: 'Google Sans', 'Inter', Arial, sans-serif !important;
 }
 
-.translate-widget-container .goog-te-gadget-simple .goog-te-menu-value span:last-child {
-    color: #0b2fd4 !important;
+.gt-panel-body .goog-te-gadget-simple .goog-te-menu-value span {
+    color: #202124 !important;
 }
+
+.gt-panel-body .goog-te-gadget {
+    font-family: 'Google Sans', 'Inter', Arial, sans-serif !important;
+    font-size: 0 !important;
+}
+
+.gt-panel-body .goog-te-gadget > span {
+    display: none !important;
+}
+
+/* Hide Google top-bar banner */
+.goog-te-banner-frame { display: none !important; }
+body { top: 0 !important; }
 
 @media (max-width: 480px) {
-    .translate-widget-container {
+    .gt-floating-btn {
         bottom: 16px;
         left: 16px;
-        padding: 8px 14px 8px 10px;
+        padding: 10px 16px 10px 12px;
+        font-size: 13px;
     }
-    .translate-widget-container .translate-text {
+    .gt-floating-btn span {
         display: none;
+    }
+    .gt-translate-panel {
+        left: 16px;
+        right: 16px;
+        width: auto;
+        bottom: 64px;
     }
 }

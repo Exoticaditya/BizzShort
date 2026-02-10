@@ -50,7 +50,7 @@
 
     <!-- Essential CSS Only (Order Matters) -->
     <link rel="stylesheet" href="assets/css/unified-design-system.css?v=20260117g">
-    <link rel="stylesheet" href="assets/css/main-style.css?v=20260127">
+    <link rel="stylesheet" href="assets/css/main-style.css?v=20260210b">
     <link rel="stylesheet" href="assets/css/responsive.css?v=20260117g">
 
 
@@ -1115,15 +1115,38 @@
     <!-- Advanced Market Features (Chart Modal, Newsletter) -->
     <script src="assets/js/advanced-market.js?v=20260210"></script>
 
-    <!-- Google Translate Floating Widget -->
-    <div id="translate-floating-widget" class="translate-widget-container">
-        <button class="close-translate-btn" onclick="closeTranslateWidget()" aria-label="Close translate widget">&times;</button>
-        <div class="translate-icon">🌐</div>
-        <div id="google_translate_element"></div>
-        <div class="translate-text">Translate Page</div>
+    <!-- Google Translate – Floating Button (Google-style) -->
+    <div id="gt-fab" class="gt-floating-btn" onclick="toggleGTranslate()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10A15.3 15.3 0 0 1 12 2z"/></svg>
+        <span>Translate</span>
+    </div>
+
+    <div id="gt-panel" class="gt-translate-panel">
+        <div class="gt-panel-header">
+            <div class="gt-panel-title">
+                <img src="https://www.gstatic.com/images/branding/googlelogo/svg/googlelogo_clr_74x24px.svg" alt="Google" height="18">
+                <span>Translate</span>
+            </div>
+            <button class="gt-panel-close" onclick="toggleGTranslate()" aria-label="Close">&times;</button>
+        </div>
+        <div class="gt-panel-body">
+            <div id="google_translate_element"></div>
+        </div>
+        <div class="gt-panel-footer">
+            <span>Powered by Google Translate</span>
+        </div>
     </div>
 
     <script type="text/javascript">
+        let gtPanelOpen = false;
+        function toggleGTranslate() {
+            const panel = document.getElementById('gt-panel');
+            const fab = document.getElementById('gt-fab');
+            gtPanelOpen = !gtPanelOpen;
+            panel.classList.toggle('open', gtPanelOpen);
+            fab.classList.toggle('active', gtPanelOpen);
+        }
+
         function googleTranslateElementInit() {
             new google.translate.TranslateElement({
                 pageLanguage: 'en',
@@ -1131,26 +1154,6 @@
                 layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
                 autoDisplay: false
             }, 'google_translate_element');
-
-            // Show widget after a short delay with slide-in animation
-            setTimeout(() => {
-                const widget = document.getElementById('translate-floating-widget');
-                if (!sessionStorage.getItem('translateWidgetClosed')) {
-                    widget.classList.add('visible');
-                }
-            }, 2500);
-        }
-
-        function closeTranslateWidget() {
-            const widget = document.getElementById('translate-floating-widget');
-            widget.classList.remove('visible');
-            widget.classList.add('hiding');
-            // Wait for exit animation to finish, then fully hide
-            setTimeout(() => {
-                widget.classList.add('hidden');
-                widget.classList.remove('hiding');
-            }, 400);
-            sessionStorage.setItem('translateWidgetClosed', 'true');
         }
     </script>
     <script type="text/javascript"

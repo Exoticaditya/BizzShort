@@ -164,6 +164,129 @@
         body { top: 0 !important; }
         .skiptranslate iframe { display: none !important; }
 
+        /* Header translate - Google-style inline */
+        .header-translate-wrap {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            padding: 6px 14px;
+            transition: background 0.2s;
+        }
+        .header-translate-wrap:hover {
+            background: rgba(255,255,255,0.18);
+        }
+        .header-translate-wrap .goog-te-gadget-simple {
+            background: transparent !important;
+            border: none !important;
+            padding: 0 !important;
+            font-size: 13px !important;
+        }
+        .header-translate-wrap .goog-te-gadget-simple img { display: none !important; }
+        .header-translate-wrap .goog-te-gadget-simple .goog-te-menu-value {
+            color: #fff !important;
+            font-weight: 500 !important;
+        }
+        .header-translate-wrap .goog-te-gadget-simple .goog-te-menu-value span {
+            color: #fff !important;
+        }
+        .header-translate-wrap .goog-te-gadget > span { display: none !important; }
+        .header-translate-label {
+            color: rgba(255,255,255,0.7);
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .header-translate-label svg {
+            opacity: 0.8;
+        }
+
+        /* Inline article translate button */
+        .article-actions-row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+            margin-top: 24px;
+        }
+        .translate-article-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #f8f9fa;
+            color: #3c4043;
+            border: 1px solid #dadce0;
+            border-radius: 8px;
+            padding: 12px 22px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Google Sans', 'Segoe UI', sans-serif;
+            position: relative;
+        }
+        .translate-article-btn:hover {
+            background: #e8f0fe;
+            color: #1a73e8;
+            border-color: #1a73e8;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(26, 115, 232, 0.15);
+        }
+        .translate-article-btn svg {
+            flex-shrink: 0;
+        }
+        .article-translate-panel {
+            display: none;
+            position: absolute;
+            bottom: calc(100% + 8px);
+            left: 0;
+            background: #fff;
+            border: 1px solid #dadce0;
+            border-radius: 10px;
+            padding: 14px 16px;
+            box-shadow: 0 6px 20px rgba(60,64,67,0.25);
+            z-index: 100;
+            min-width: 260px;
+        }
+        .article-translate-panel.show {
+            display: block;
+            animation: gtPanelIn 0.2s ease;
+        }
+        @keyframes gtPanelIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .article-translate-panel .goog-te-gadget-simple {
+            background: #fff !important;
+            border: 1px solid #dadce0 !important;
+            border-radius: 8px !important;
+            padding: 8px 14px !important;
+            font-size: 14px !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+        }
+        .article-translate-panel .goog-te-gadget-simple:hover {
+            border-color: #1a73e8 !important;
+        }
+        .article-translate-panel .goog-te-gadget-simple img { display: none !important; }
+        .article-translate-panel .goog-te-gadget > span { display: none !important; }
+        .article-translate-panel .goog-te-gadget-simple .goog-te-menu-value {
+            color: #202124 !important;
+            font-weight: 500 !important;
+        }
+        .at-panel-label {
+            font-size: 12px;
+            color: #5f6368;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .at-panel-label img { height: 14px; }
+
         @media (max-width: 768px) {
             .article-page-container {
                 padding: 0 12px;
@@ -195,7 +318,12 @@
                     <img src="assets/images/logo.jpeg" alt="BizzShort Logo" class="logo-img"
                         style="width: 130px; height: auto; border-radius: 10px; object-fit: contain;">
                 </a>
-                <div id="google_translate_element" style="transform: scale(0.9); transform-origin: right;"></div>
+                <div class="header-translate-wrap">
+                    <span class="header-translate-label">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10A15.3 15.3 0 0 1 12 2z"/></svg>
+                    </span>
+                    <div id="google_translate_element"></div>
+                </div>
             </div>
         </div>
     </header>
@@ -225,9 +353,24 @@
                 <div class="article-body" id="articleBody">
                     <p>Loading article content...</p>
                 </div>
-                <a id="originalLink" href="#" target="_blank" rel="noopener noreferrer" class="read-original" style="display:none;">
-                    <i class="fas fa-external-link-alt"></i> Read Full Article
-                </a>
+                <div class="article-actions-row">
+                    <a id="originalLink" href="#" target="_blank" rel="noopener noreferrer" class="read-original" style="display:none; margin-top:0;">
+                        <i class="fas fa-external-link-alt"></i> Read Full Article
+                    </a>
+                    <div style="position: relative;">
+                        <button class="translate-article-btn" onclick="toggleArticleTranslate()">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10A15.3 15.3 0 0 1 12 2z"/></svg>
+                            Translate Article
+                        </button>
+                        <div id="articleTranslatePanel" class="article-translate-panel">
+                            <div class="at-panel-label">
+                                <img src="https://www.gstatic.com/images/branding/googlelogo/svg/googlelogo_clr_74x24px.svg" alt="Google">
+                                Translate
+                            </div>
+                            <div id="google_translate_article"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </article>
     </main>
@@ -242,6 +385,29 @@
                 autoDisplay: false
             }, 'google_translate_element');
         }
+
+        function toggleArticleTranslate() {
+            var panel = document.getElementById('articleTranslatePanel');
+            panel.classList.toggle('show');
+            // Initialize translate in article panel if not already done
+            if (!document.getElementById('google_translate_article').innerHTML) {
+                // Clone the header translate into article panel area
+                var headerGT = document.getElementById('google_translate_element');
+                if (headerGT) {
+                    panel.querySelector('#google_translate_article').innerHTML =
+                        '<p style="font-size:13px;color:#5f6368;">Use the language selector in the header above to translate this article.</p>';
+                }
+            }
+        }
+
+        // Close article translate panel when clicking outside
+        document.addEventListener('click', function(e) {
+            var panel = document.getElementById('articleTranslatePanel');
+            var btn = document.querySelector('.translate-article-btn');
+            if (panel && !panel.contains(e.target) && !btn.contains(e.target)) {
+                panel.classList.remove('show');
+            }
+        });
     </script>
     <script type="text/javascript"
         src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
