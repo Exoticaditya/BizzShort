@@ -72,6 +72,25 @@ const Video = require('./models/Video');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// ============ CORS — must be FIRST, before Helmet/rate-limiters ============
+const corsOptions = {
+    origin: [
+        'https://bizzshort.com',
+        'https://www.bizzshort.com',
+        'https://bizzshort.onrender.com',
+        'http://localhost:3000',
+        'http://localhost:5500',
+        'http://127.0.0.1:5500'
+    ],
+    credentials: true,
+    optionsSuccessStatus: 200,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'session-id']
+};
+app.use(cors(corsOptions));
+// Handle preflight for all routes explicitly
+app.options('*', cors(corsOptions));
+
 // Security Middleware
 // Set security headers
 app.use(helmet({
@@ -119,32 +138,7 @@ app.use(mongoSanitize());
 // Data sanitization against XSS
 app.use(xss());
 
-// CORS Configuration with whitelist
-const allowedOrigins = (process.env.CORS_ORIGIN || '')
-    .split(',')
-    .map(origin => origin.trim())
-    .filter(origin => origin.length > 0);
-
-if (allowedOrigins.length === 0) {
-    // Default allowed origins if not configured
-    allowedOrigins.push(
-        'https://bizzshort.com',
-        'https://www.bizzshort.com',
-        'https://bizzshort.onrender.com',
-        'http://localhost:3000'
-    );
-}
-
-const corsOptions = {
-    origin: '*', // Allow all origins (can be restricted later)
-    credentials: false,
-    optionsSuccessStatus: 200,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'session-id']
-};
-
 // Middleware
-app.use(cors(corsOptions));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
@@ -316,7 +310,10 @@ app.get('/api/news-with-images', async (req, res) => {
 
     try {
         // Using Currents API (free tier - 600 requests/day)
-        const apiKey = process.env.CURRENTS_API_KEY || 'bkG7YBkB8bS1TaIMbWHFzD8bDh4VcRnJWILU11YTEWAMpGW2';
+        const apiKey = process.env.CURRENTS_API_KEY;
+        if (!apiKey) {
+            return res.status(500).json({ success: false, error: 'CURRENTS_API_KEY not configured' });
+        }
 
         const apiUrl = `https://api.currentsapi.services/v1/search?` +
             `keywords=business,finance,economy,stock market,startup` +
@@ -420,183 +417,6 @@ function getFallbackNewsArticles() {
         }
     ];
 }
-
-app.get('/api/setup-production', async (req, res) => {
-
-    // Basic protection using query param from environment
-    const setupKey = process.env.SETUP_KEY || 'secure_setup_123';
-
-    if (req.query.key !== setupKey) {
-        return res.status(403).send('Forbidden: Invalid Setup Key. Use ?key=YOUR_SETUP_KEY');
-    }
-
-    try {
-        // 1. Create OR Update Admin
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash('admin123', salt);
-
-        let admin = await User.findOne({ name: 'admin' });
-        if (!admin) {
-            admin = await User.create({
-                name: 'admin',
-                email: 'admin@bizzshort.com',
-                password: hashedPassword,
-                role: 'ADMIN'
-            });
-            console.log('Setup: Admin Created');
-        } else {
-            // FORCE RESET PASSWORD
-            admin.password = hashedPassword;
-            await admin.save();
-            console.log('Setup: Admin Password Reset');
-        }
-
-        // Helper to slugify
-        const slugify = (text) => text.toString().toLowerCase()
-            .replace(/\s+/g, '-')           // Replace spaces with -
-            .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
-            .replace(/\-\-+/g, '-')         // Replace multiple - with single -
-            .replace(/^-+/, '')             // Trim - from start of text
-            .replace(/-+$/, '');            // Trim - from end of text
-
-        // 2. Data to Seed
-        const seedData = {
-            articles: [
-                {
-                    title: "Tata Group and Intel Announce Strategic Alliance for Semiconductor Manufacturing",
-                    slug: slugify("Tata Group and Intel Announce Strategic Alliance for Semiconductor Manufacturing"),
-                    category: "Technology",
-                    author: "Business Desk",
-                    content: "Tata Group and Intel Corporation announced a strategic alliance to explore collaboration in consumer and enterprise hardware enablement, and semiconductor and systems manufacturing to support India's domestic semiconductor ecosystem.",
-                    date: "2025-12-08"
-                },
-                {
-                    title: "Microsoft Announces $17.5 Billion Investment in India's AI Infrastructure",
-                    slug: slugify("Microsoft Announces $17.5 Billion Investment in India's AI Infrastructure"),
-                    category: "Technology",
-                    author: "Tech Reporter",
-                    content: "Microsoft announced its largest investment in Asia, committing US$17.5 billion over four years (CY 2026 to 2029) to advance India's cloud and artificial intelligence (AI) infrastructure.",
-                    date: "2025-12-12"
-                },
-                {
-                    title: "Sensex Surges to 85,221 as Markets Break Three-Day Losing Streak",
-                    slug: slugify("Sensex Surges to 85,221 as Markets Break Three-Day Losing Streak"),
-                    category: "Markets",
-                    author: "Market Analyst",
-                    content: "Indian equity indices broke a three-day losing streak, with the Nifty closing near 25,900 and the Sensex at 84,818.13, both supported by positive global cues.",
-                    date: "2025-12-12"
-                },
-                {
-                    title: "India's Wealth Creation Reaches ₹148 Trillion from 2020-2025",
-                    slug: slugify("India's Wealth Creation Reaches ₹148 Trillion from 2020-2025"),
-                    category: "Economy",
-                    author: "Economic Affairs",
-                    content: "India's wealth creation reached ₹148 trillion from 2020-2025, with Bharti Airtel leading the wealth creation charts.",
-                    date: "2025-12-10"
-                }
-            ],
-            events: [
-                {
-                    name: "E-Summit 2025: Asia's Largest Business Conclave",
-                    date: "2025-12-11",
-                    location: "IIT Bombay, Mumbai",
-                    description: "Asia's largest business conclave, focusing on groundbreaking ideas and visionary solutions.",
-                },
-                {
-                    name: "Bengaluru Tech Summit 2025",
-                    date: "2025-11-19",
-                    location: "Bangalore Palace Grounds",
-                    description: "A broad-based technology summit covering IT, innovation, IoT, and digital transformation.",
-                }
-            ],
-            interviews: [
-                {
-                    intervieweeName: "Roshni Nadar Malhotra",
-                    designation: "Chairperson",
-                    company: "HCLTech",
-                    title: "Discussing India's AI Future and Women's Leadership in Tech",
-                    summary: "Discussing India's AI Future and Women's Leadership in Tech at Davos 2024."
-                },
-                {
-                    intervieweeName: "Satya Nadella",
-                    designation: "Chairman & CEO",
-                    company: "Microsoft",
-                    title: "Microsoft's Commitment to India's Digital Transformation",
-                    summary: "Microsoft's Commitment to India's Digital Transformation and AI investment."
-                }
-            ],
-            industry: [
-                {
-                    sector: "Semiconductor",
-                    title: "India's Semiconductor Boom",
-                    description: "With Tata-Intel alliance and government incentives, India is positioning itself as a major hub."
-                }
-            ],
-            clients: [
-                { name: "Tata Group", type: "Corporate" },
-                { name: "Reliance Industries", type: "Corporate" }
-            ]
-        };
-
-        // 3. Clear and Insert Data (Upsert style to avoid dupes or just simple insert?)
-        // Let's check counts to be safe, or just insert. For setup, we'll try to insert if empty.
-
-        let logs = [];
-
-        // Articles
-        const articleCount = await Article.countDocuments();
-        if (articleCount === 0) {
-            await Article.insertMany(seedData.articles);
-            logs.push(`✅ Added ${seedData.articles.length} Articles`);
-        } else {
-            logs.push(`ℹ️ Articles already exist (${articleCount})`);
-        }
-
-        // Events
-        const eventCount = await Event.countDocuments();
-        if (eventCount === 0) {
-            await Event.insertMany(seedData.events);
-            logs.push(`✅ Added ${seedData.events.length} Events`);
-        } else {
-            logs.push(`ℹ️ Events already exist (${eventCount})`);
-        }
-
-        // Interviews
-        const interviewCount = await Interview.countDocuments();
-        if (interviewCount === 0) {
-            await Interview.insertMany(seedData.interviews);
-            logs.push(`✅ Added ${seedData.interviews.length} Interviews`);
-        }
-
-        // Industry 
-        const indCount = await IndustryUpdate.countDocuments();
-        if (indCount === 0) {
-            await IndustryUpdate.insertMany(seedData.industry);
-            logs.push(`✅ Added ${seedData.industry.length} Industry Updates`);
-        }
-
-        // Clients
-        const clientCount = await Client.countDocuments();
-        if (clientCount === 0) {
-            await Client.insertMany(seedData.clients);
-            logs.push(`✅ Added ${seedData.clients.length} Clients`);
-        }
-
-        res.send(`
-            <h1>Setup Complete 🚀</h1>
-            <p>Admin User: Verified/Created</p>
-            <ul>
-                ${logs.map(l => `<li>${l}</li>`).join('')}
-            </ul>
-            <p><a href="/admin-login.html">Login to Admin Panel</a></p>
-        `);
-
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Setup Failed: ' + err.message);
-    }
-});
-
 
 // ============ API Routes ============
 
@@ -2005,7 +1825,7 @@ app.get('/api/sync-status', async (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT} (MongoDB Mode)`);
 
-    // Daily video sync scheduler disabled — using pipeline seed data instead
-    // videoSync.scheduleDaily8AM();
-    console.log('📹 Video sync scheduler disabled (using seed-based pipeline)');
+    // Daily video sync with transcription — runs at 8:00 AM IST
+    videoSync.scheduleDaily8AM();
+    console.log('📹 Video sync scheduler enabled (8:00 AM IST daily with transcription)');
 });

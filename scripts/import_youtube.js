@@ -88,23 +88,20 @@ function parseXML(xml) {
 
 async function loginAdmin() {
     console.log('🔑 Logging in as Admin...');
+    const username = process.env.ADMIN_USERNAME;
+    const password = process.env.ADMIN_PASSWORD;
+    if (!username || !password) {
+        console.error('❌ Set ADMIN_USERNAME and ADMIN_PASSWORD environment variables');
+        return null;
+    }
     try {
         const res = await fetch(`${API_BASE}/admin/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username: 'admin', password: 'password' }) // Default credentials from context
+            body: JSON.stringify({ username, password })
         });
         const data = await res.json();
         if (data.success) return data.sessionId || data.token;
-
-        // Try admin/admin123
-        const res2 = await fetch(`${API_BASE}/admin/login`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username: 'admin', password: 'admin123' })
-        });
-        const data2 = await res2.json();
-        if (data2.success) return data2.sessionId || data2.token;
     } catch (e) {
         console.error("Login failed", e);
     }

@@ -91,14 +91,37 @@ def download_audio(video_id: str, output_dir: str) -> str:
     return None
 
 def transcribe_audio(audio_path: str, model_name: str = "base") -> str:
-    """Transcribe audio using Whisper"""
+    """Transcribe audio using Whisper with proper Hindi/English detection.
+    
+    Whisper often misdetects Hindi as Urdu since they sound identical.
+    We first detect the language, and if it's Urdu we force Hindi.
+    Only English and Hindi are allowed as output languages.
+    """
     import whisper
     
     print(f"   🔄 Loading Whisper model ({model_name})...")
     model = whisper.load_model(model_name)
     
-    print(f"   🎤 Transcribing audio...")
-    result = model.transcribe(audio_path, language=None)  # Auto-detect language
+    # Step 1: Detect language from first 30 seconds
+    print(f"   🔍 Detecting language...")
+    audio = whisper.load_audio(audio_path)
+    audio_30s = whisper.pad_or_trim(audio)
+    mel = whisper.log_mel_spectrogram(audio_30s).to(model.device)
+    _, probs = model.detect_language(mel)
+    detected = max(probs, key=probs.get)
+    print(f"   🌐 Detected language: {detected} (confidence: {probs[detected]:.2f})")
+    
+    # Step 2: Map Urdu → Hindi, allow only en/hi
+    # Hindi and Urdu are the same spoken language (Hindustani)
+    LANG_MAP = {'ur': 'hi', 'sd': 'hi', 'pa': 'hi'}  # Urdu, Sindhi, Punjabi → Hindi
+    lang = LANG_MAP.get(detected, detected)
+    if lang not in ('en', 'hi'):
+        # Default to Hindi for any other South Asian language detected
+        lang = 'hi'
+    print(f"   🎤 Transcribing as: {lang}")
+    
+    # Step 3: Transcribe with forced language
+    result = model.transcribe(audio_path, language=lang)
     
     return result["text"].strip()
 
