@@ -135,7 +135,7 @@ def get_mongodb_connection():
     try:
         client = MongoClient(mongo_uri)
         db = client.get_database()
-        print(f"✅ Connected to MongoDB: {db.name}")
+        print("✅ Connected to MongoDB: bizzshort")
         return db
     except Exception as e:
         print(f"❌ MongoDB connection failed: {e}")
@@ -216,6 +216,9 @@ def main():
             video_id = sys.argv[i + 1]
         elif arg in ["tiny", "base", "small", "medium", "large"]:
             model_name = arg
+        elif not arg.startswith("--") and video_id is None:
+            # If it's not a flag and we don't have a video ID yet, use it as video ID
+            video_id = arg
     
     # Connect to MongoDB
     db = get_mongodb_connection()
