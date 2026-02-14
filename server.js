@@ -27,17 +27,9 @@ async function seedVideosIfNeeded() {
         }
 
         const Video = require('./models/Video');
-        // Check if we already have real transcribed videos
-        const realCount = await Video.countDocuments({
-            transcription: { $exists: true, $ne: null, $ne: '' }
-        });
-
-        if (realCount >= 30) {
-            console.log(`✅ Already have ${realCount} transcribed videos, skipping seed`);
-            return;
-        }
-
-        console.log(`🔄 Found only ${realCount} transcribed videos. Seeding ${30} real videos...`);
+        
+        // ALWAYS delete all existing videos and re-seed from fresh seed file
+        console.log(`🔄 Clearing database and loading fresh videos from seed...`);
 
         // Delete ALL existing videos
         const deleteResult = await Video.deleteMany({});
